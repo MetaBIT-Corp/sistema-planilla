@@ -9,8 +9,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class BaseController {
 	
 	@GetMapping("/index")
-	public String base() {
+	public String index() {
 		return "index";
+	}
+	
+	@GetMapping("/base")
+	public String base() {
+		return "base";
+	}
+	
+	@GetMapping("/ejemplo")
+	public String ejemplo() {
+		return "example";
 	}
 
 }
