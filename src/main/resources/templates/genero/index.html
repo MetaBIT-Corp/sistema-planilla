@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{layouts/layout}">
+<body>
+	
+	<h1 class="m-0 text-dark" layout:fragment="titulo_seccion">Generos</h1>
+
+	<ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item active">Generos</li>
+    </ol>
+
+	<div layout:fragment="content">
+		
+		<button class="btn btn-md btn-primary" title="Agregar Genero" data-toggle="modal" data-target="#generoModal">
+			<i class="fas fa-plus-circle fa-md text-white-80"></i>
+		</button>
+		
+		<div class="modal" id="generoModal" tabindex="-1" role="dialog">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title">Crear Genero</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <form method="post" action="#" th:action="@{/generos/store}" th:object="${generoEntity}">
+			      <div class="modal-body">
+			        <div class="form-group">
+					    <label for="generoInput">Genero:</label>
+					    <input type="text" th:field="*{genero}" class="form-control" id="generoInput" placeholder="Ingrese el titulo del genero...">
+					  </div>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="submit" class="btn btn-primary">Guardar</button>
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+			      </div>
+		      </form>
+		    </div>
+		  </div>
+		</div>
+		
+		<div th:if="${store_success != null}" class="alert alert-success" role="alert">
+			Agregado exitosamente!
+		</div>
+		
+	</div>
+	
+	<section layout:fragment="scripts">
+	</section>
+
+</body>
+</html>
