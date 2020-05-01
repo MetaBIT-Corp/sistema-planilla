@@ -27,7 +27,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		//Agregar dentro de .antMatchers() las urls permitidas
+
 		http.authorizeRequests()
 			.antMatchers( //***************Agregar urls que no neciten logueo****************//
 					"/planilla/ejemplo",
@@ -35,7 +35,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 					"/planilla/base",
 					"/planilla/index"
 					).permitAll()
-			.antMatchers("/css/**","/imgs/**","/dist/**","/plugins/**").permitAll()
+			.antMatchers("/css/**","/imgs/**","/js/**","/dist/**","/plugins/**").permitAll()
 			.anyRequest().authenticated()
 			.and()
 			.formLogin().loginPage("/planilla/login").loginProcessingUrl("/planilla/login-check")
