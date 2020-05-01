@@ -30,7 +30,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 		//Agregar dentro de .antMatchers() las urls permitidas
 		http.authorizeRequests()
 			.antMatchers( //***************Agregar urls que no neciten logueo****************//
-					"/planilla/ejemplo"
+					"/planilla/ejemplo",
+					"/planilla/puesto/***",
+					"/planilla/base",
+					"/planilla/index"
 					).permitAll()
 			.antMatchers("/css/**","/imgs/**","/dist/**","/plugins/**").permitAll()
 			.anyRequest().authenticated()
