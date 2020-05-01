@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.hibernate.jdbc.Expectations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.GrantedAuthority;
@@ -29,7 +30,17 @@ public class UserServiceImpl implements UserDetailsService{
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		com.metabit.planilla.entity.Usuario user = userJpaRepository.findByUsername(username);
-		List<GrantedAuthority> authorities = buildAuthorities(user.getRoles());
+		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+		
+		if(user != null) {
+			user.setIntentos(user.getIntentos()+1);
+			
+			if(user.getIntentos()>3) {
+				user.setEnabled(false);
+			}
+			userJpaRepository.save(user);
+		}
+		
 		return buildUser(user, authorities);
  	}
 	
@@ -42,9 +53,6 @@ public class UserServiceImpl implements UserDetailsService{
 	private List<GrantedAuthority> buildAuthorities(List<Rol> roles){
 		List<GrantedAuthority>  auths = new ArrayList<GrantedAuthority>();
 		
-		/*for(UserRole userRole : userRoles) {
-			auths.add(new SimpleGrantedAuthority(userRole.getRole()));
-		}*/
 		for(Rol r:roles) {
 			List<RolesRecursosPrivilegios> rolesRecursosPrivilegios = r.getRolesRecursosPrivilegios();
 			String authority="";

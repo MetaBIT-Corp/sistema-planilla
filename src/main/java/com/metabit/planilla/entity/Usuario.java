@@ -46,7 +46,7 @@ public class Usuario {
 	private boolean passwordExpired;
 
 	@Column(name = "intentos", nullable = false)
-	private int intentos;
+	private int intentos = 0;
 
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
 	@JoinTable(name = "usuarios_roles", 
