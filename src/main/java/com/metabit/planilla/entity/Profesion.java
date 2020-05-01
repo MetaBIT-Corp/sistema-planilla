@@ -32,7 +32,6 @@ public class Profesion {
 		super();
 		this.idProfesion = idProfesion;
 		this.profesion = profesion;
-		this.formato = formato;
 		this.esProfesion = esProfesion;
 	}
 	
