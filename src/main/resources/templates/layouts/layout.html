@@ -28,8 +28,7 @@
   <link rel="stylesheet" th:href="@{/plugins/summernote/summernote-bs4.css}">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-  
-  
+    
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -73,13 +72,13 @@
 	           <i class="far fa-id-badge mr-2"></i> Ver perfil
 	          </a>
 	          <div class="dropdown-divider"></div>
-	          <a href="#" class="dropdown-item">
-	           <i class="fas fa-sign-out-alt mr-2"></i> Logout
-	          </a>
-	          <div class="dropdown-divider"></div>
+	          	<form th:action="@{/planilla/logout}" method="POST">
+	           		<button class="dropdown-item" type="submit"><i class="fas fa-sign-out-alt mr-2"></i> Logout</button>
+	           </form>
+	          <!--<div class="dropdown-divider"></div>
 	          <a href="#" class="dropdown-item">
 	           <i class="fas fa-sign-in-alt mr-2"></i> Login
-	          </a>
+	          </a>-->
 	          <div class="dropdown-divider"></div>
 	          <a href="#" class="dropdown-item dropdown-footer"> </a>
 	        </div>

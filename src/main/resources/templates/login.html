@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <title>Sistema de planilla | Log in</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+  <!-- Font Awesome -->
+<link rel="stylesheet" th:href="@{/plugins/fontawesome-free/css/all.min.css}"/>
+<!-- Ionicons -->
+<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"/>
+  <!-- iCheck -->
+<link rel="stylesheet" th:href="@{/plugins/icheck-bootstrap/icheck-bootstrap.min.css}"/>
+  <!-- Theme style -->
+<link rel="stylesheet" th:href="@{/dist/css/adminlte.min.css}"/>
+  <!-- Google Font: Source Sans Pro -->
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet"/>
+</head>
+
+<body class="hold-transition login-page">
+<div class="login-box">
+
+  <!-- /.login-logo -->
+  <div class="card">
+    <div class="card-body login-card-body">
+      <p class="login-box-msg">Bienvenido</p>
+
+      <form class="user" th:action="@{/planilla/login-check}" method="POST">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Username" id="usernameId" name="username"/>
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-user"></span>
+            </div>
+          </div>
+          <div></div>
+        </div>
+
+        <div class="input-group mb-3">
+          <input type="password" class="form-control" placeholder="Password" name="password" id="passwordId"/>
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+            </div>
+          </div>
+        </div>
+
+          <div th:if="${error != null}" class="alert alert-danger" role="alert">email y/o contraseña no son validos.</div>
+          <div th:if="${logout != null}" class="alert alert-info" role="alert">Vuelva pronto</div>
+          <input type="submit" value="Login" class="btn btn-primary btn-user btn-block"/>
+          <hr>
+      </form>
+
+    </div>
+    <!-- /.login-card-body -->
+  </div>
+</div>
+
+<!-- jQuery -->
+  <script th:src="@{/plugins/jquery/jquery.min.js}"></script>
+<!-- Bootstrap 4 -->
+  <script th:src="@{/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<!-- AdminLTE App -->
+  <script th:src="@{/dist/js/adminlte.js}"></script>
+
+</body>
+
+<script>
+  $(document).ready(function(){
+      setTimeout(function() {
+         $(".alert").fadeOut();           
+      },3000);
+  })
+</script>
+</html>
