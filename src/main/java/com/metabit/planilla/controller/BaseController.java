@@ -14,20 +14,16 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/planilla")
 public class BaseController {
 	
-	//@PreAuthorize("hasAuthority('EMPLEADO_DELETE')")
 	@GetMapping("/index")
 	public String index() {
 		return "index";
 	}
 	
-	//@PreAuthorize("hasAuthority('PLANILLA_READ')")
 	@GetMapping("/base")
 	public String base() {
-		//User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return "base";
 	}
 	
-	//@PreAuthorize("hasAuthority('GENERO_WRITE')")
 	@GetMapping("/ejemplo")
 	public String ejemplo() {
 		return "example";

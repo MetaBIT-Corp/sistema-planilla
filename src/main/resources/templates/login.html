@@ -30,7 +30,7 @@
       <form class="user" th:action="@{/planilla/login-check}" method="POST">
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="Username" id="usernameId" name="username" value="user"/>
+          <input type="text" class="form-control" placeholder="Username" id="usernameId" name="username"/>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-user"></span>
@@ -40,7 +40,7 @@
         </div>
 
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Password" name="password" id="passwordId" value="user"/>
+          <input type="password" class="form-control" placeholder="Password" name="password" id="passwordId"/>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
@@ -67,4 +67,12 @@
   <script th:src="@{/dist/js/adminlte.js}"></script>
 
 </body>
+
+<script>
+  $(document).ready(function(){
+      setTimeout(function() {
+         $(".alert").fadeOut();           
+      },3000);
+  })
+</script>
 </html>
