@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserDetailsService{
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		com.metabit.planilla.entity.Usuario user = userJpaRepository.findByUsername(username);
-		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+		List<GrantedAuthority> authorities = buildAuthorities(user.getRoles());
 		
 		if(user != null) {
 			user.setIntentos(user.getIntentos()+1);
@@ -40,12 +40,10 @@ public class UserServiceImpl implements UserDetailsService{
 			}
 			userJpaRepository.save(user);
 		}
-		
 		return buildUser(user, authorities);
  	}
 	
 	private User buildUser(com.metabit.planilla.entity.Usuario user, List<GrantedAuthority> authorities) {
-		 
 		return new User(user.getUsername(), user.getPassword(), user.isEnabled(), 
 				true, true, true,  authorities);
 	}
