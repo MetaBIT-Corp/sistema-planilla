@@ -1,12 +1,32 @@
+/* PUESTOS */
 INSERT INTO puestos(id_puesto, descripcion, puesto, salario_maximo, salario_minimo, usuario_requerido)
-	   VALUES      (1, 'Descripción del puesto', 'Gerente', 5000, 1200, 1);
-
+	   VALUES      (1, 'Descripción del puesto', 'Administrador Presupuestario', 5000, 1200, 1);
 INSERT INTO puestos(id_puesto, descripcion, puesto, salario_maximo, salario_minimo, usuario_requerido)
-	   VALUES      (2, 'Descripción del puesto', 'Jefe de Departamento', 4000, 800, 1);
-
+	   VALUES      (2, 'Descripción del puesto', 'Gerente de Departamento', 4000, 800, 1);
 INSERT INTO puestos(id_puesto, descripcion, puesto, salario_maximo, salario_minimo, usuario_requerido)
-	   VALUES      (3, 'Descripción del puesto', 'Secretaria', 1000, 360, 0);
-
+	   VALUES      (3, 'Descripción del puesto', 'Jefe de planilla', 1000, 360, 1);
+INSERT INTO puestos(id_puesto, descripcion, puesto, salario_maximo, salario_minimo, usuario_requerido)
+	   VALUES      (4, 'Descripción del puesto', 'Analista Financiero', 1000, 360, 0);
+INSERT INTO puestos(id_puesto, descripcion, puesto, salario_maximo, salario_minimo, usuario_requerido)
+	   VALUES      (5, 'Descripción del puesto', 'Analista de Sistemas', 1000, 360, 0);
+INSERT INTO puestos(id_puesto, descripcion, puesto, salario_maximo, salario_minimo, usuario_requerido)
+	   VALUES      (6, 'Descripción del puesto', 'Auxiliar de planilla', 1000, 360, 1);
+INSERT INTO puestos(id_puesto, descripcion, puesto, salario_maximo, salario_minimo, usuario_requerido)
+	   VALUES      (7, 'Descripción del puesto', 'Asesor Legal', 1000, 360, 0);
+INSERT INTO puestos(id_puesto, descripcion, puesto, salario_maximo, salario_minimo, usuario_requerido)
+	   VALUES      (8, 'Descripción del puesto', 'Contador', 1000, 360, 0);
+INSERT INTO puestos(id_puesto, descripcion, puesto, salario_maximo, salario_minimo, usuario_requerido)
+	   VALUES      (9, 'Descripción del puesto', 'Auxiliar Contable', 1000, 360, 0);
+INSERT INTO puestos(id_puesto, descripcion, puesto, salario_maximo, salario_minimo, usuario_requerido)
+	   VALUES      (10, 'Descripción del puesto', 'Secretaria', 1000, 360, 0);
+INSERT INTO puestos(id_puesto, descripcion, puesto, salario_maximo, salario_minimo, usuario_requerido)
+	   VALUES      (11, 'Descripción del puesto', 'Programador', 1000, 360, 0);
+INSERT INTO puestos(id_puesto, descripcion, puesto, salario_maximo, salario_minimo, usuario_requerido)
+	   VALUES      (12, 'Descripción del puesto', 'Soporte técnico', 1000, 360, 0);
+INSERT INTO puestos(id_puesto, descripcion, puesto, salario_maximo, salario_minimo, usuario_requerido)
+	   VALUES      (13, 'Descripción del puesto', 'Técnico de Redes', 1000, 360, 0);
+INSERT INTO puestos(id_puesto, descripcion, puesto, salario_maximo, salario_minimo, usuario_requerido)
+	   VALUES      (14, 'Descripción del puesto', 'Administrador de Bases de Datos', 1000, 360, 0);
 /*PROFESIONES*/
 
 INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (1, 'Ingeniero en Sistemas Informáticos', 1);
@@ -64,3 +84,16 @@ INSERT ALL INTO USUARIOS_ROLES VALUES(1,1)
 SELECT * FROM DUAL;
 
 /*-------------------------------------------------------------------------------------*/
+INSERT INTO GENEROS (ID_GENERO, GENERO) VALUES(1, 'Hombre');
+INSERT INTO GENEROS (ID_GENERO, GENERO) VALUES(2, 'Mujer');
+INSERT INTO GENEROS (ID_GENERO, GENERO) VALUES(3, 'Lesbiana');
+INSERT INTO GENEROS (ID_GENERO, GENERO) VALUES(4, 'Gay');
+INSERT INTO GENEROS (ID_GENERO, GENERO) VALUES(5, 'Bisexual');
+INSERT INTO GENEROS (ID_GENERO, GENERO) VALUES(6, 'Transexual');
+INSERT INTO GENEROS (ID_GENERO, GENERO) VALUES(7, 'Intersexual');
+INSERT INTO GENEROS (ID_GENERO, GENERO) VALUES(8, 'Queer');
+INSERT INTO GENEROS (ID_GENERO, GENERO) VALUES(9, 'Pansexual');
+INSERT INTO GENEROS (ID_GENERO, GENERO) VALUES(10, 'Asexual');
+
+
+
