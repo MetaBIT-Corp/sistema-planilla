@@ -18,52 +18,72 @@
     </ol>
 
 	<div layout:fragment="content">
+		<div class="row ml-3 mr-3">
+			
+			<div class="col-md-12 ">
+			 <div class="card">
+	            <div class="card-header">
+	              <h3 class="card-title"></h3>
+	            </div>
+	            <!-- /.card-header -->
+	            <div class="card-body">
+	              <table id="example1" class="table table-bordered table-striped">
+	                <thead>
+	                <tr>
+	                  <th>Título</th>
+	                  <th>Descripción</th>
+	                  <th>Salario mínimo</th>
+	                  <th>Salario máximo</th>
+	                  <th>Requiere usuario</th>
+	                  <th>Acciones</th>
+	                </tr>
+	                </thead>
+	                <tbody>
+	                <tr th:each="puesto: ${puestos}">
+	                  <td><span th:text="${puesto.puesto}"></span></td>
+	                  <td><span th:text="${puesto.descripcion}"></td>
+	                  <td><span th:text=" '$'+ ${#numbers.formatDecimal(puesto.salarioMinimo, 1, 'COMMA', 2, 'POINT')}"></td>
+	                  <td><span th:text=" '$'+ ${#numbers.formatDecimal(puesto.salarioMaximo, 1, 'COMMA', 2, 'POINT')}"></td>
+	                  
+	                  <td th:if="${puesto.usuarioRequerido}"><span> Requerido </td>
+	                  <td th:unless="${puesto.usuarioRequerido}"><span >No Requerido</td>
+	                  <td> 
+	                  	
+	                      <div class="btn-group">
+	                        
+	
+	                        <div class="btn-group">
+	                          <button type="button" class="btn btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
+	                          	<span>Acción</span>
+	                          </button>
+	                          <div class="dropdown-menu" style="">
+	                            <a class="dropdown-item" href="#"><i class="far fa-edit mr-3"></i>Editar</a>
+	                            <a class="dropdown-item" href="#"><i class="far fa-trash-alt mr-3"></i> Eliminar</a>
+	                          </div>
+	                        </div>
+	                      </div>
+	                    
+	                  </td>
+	                </tr>              
+	                </tbody>
+	                <tfoot>
+	                <tr>
+	                  <th>Título</th>
+	                  <th>Descripción</th>
+	                  <th>Salario mínimo</th>
+	                  <th>Salario máximo</th>
+	                  <th>Requiere usuario</th>
+	                  <th>Acciones</th>
+	                </tr>
+	                </tfoot>
+	              </table>
+	            </div>
+	            <!-- /.card-body -->
+	          </div>
+	          <!-- /.card -->
 		
-		 <div class="card">
-            <div class="card-header">
-              <h3 class="card-title"></h3>
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body">
-              <table id="example1" class="table table-bordered table-striped">
-                <thead>
-                <tr>
-                  <th>Título</th>
-                  <th>Descripción</th>
-                  <th>Salario mínimo</th>
-                  <th>Salario máximo</th>
-                  <th>Requiere usuario</th>
-                  <th>Acciones</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                  <td>Gerente</td>
-                  <td>Descripción</td>
-                  <td>$25,000 </td>
-                  <td> $40,000 </td>
-                  <td> Requiere</td>
-                  <td> X </td>
-                </tr>              
-                </tbody>
-                <tfoot>
-                <tr>
-                  <th>Título</th>
-                  <th>Descripción</th>
-                  <th>Salario mínimo</th>
-                  <th>Salario máximo</th>
-                  <th>Requiere usuario</th>
-                  <th>Acciones</th>
-                </tr>
-                </tfoot>
-              </table>
-            </div>
-            <!-- /.card-body -->
-          </div>
-          <!-- /.card -->
-		
-		
-		
+			</div>
+		</div>
 	</div>
 	
 	
