@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layouts/layout}">
+
+<head>
+
+  <meta charset="utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  
+</head>
+
+<body>
+	
+	<h1 class="m-0 text-dark" layout:fragment="titulo_seccion">Empresa</h1>
+
+	<ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item active">Empresa</li>
+    </ol>
+
+	<div layout:fragment="content">
+		<h1 style="text-align: center;">
+			<span th:text="${empresa.empresa}"> Empresa </span>
+		</h1>
+		
+		<div class="card offset-3 col-md-6">
+		  <img class="card-img-top" height="250" th:src="@{/img/metabit.png}" th:alt="${empresa.empresa}">
+		  <div class="card-body">
+		  
+		  <table class="table table-bordered table-hover">
+		  	<tr>
+		  		<td><b>Correo electronico</b></td>
+		  		<td th:text="${empresa.correoEmpresa}"></td>	
+		  	<tr>
+		  	<tr>
+		  		<td><b>Telefono</b></td>
+		  		<td th:text="${empresa.telefono}"></td>	
+		  	<tr>
+		  	<tr>
+		  		<td><b>Twitter</b></td>
+		  		<td th:text="${empresa.page}"></td>	
+		  	<tr>
+		  	<tr>
+		  		<td><b>Sitio web</b></td>
+		  		<td th:text="${empresa.paginaEmpresa}"></td>	
+		  	<tr>
+		  	<tr>
+		  		<td><b>NIC</b></td>
+		  		<td th:text="${empresa.nicEmpresa}"></td>	
+		  	<tr>
+		  	<tr>
+		  		<td><b>NIT</b></td>
+		  		<td th:text="${empresa.nitEmpresa}"></td>	
+		  	<tr>
+		  	<tr>
+		  		<td colspan="2">
+		  			<p class="card-text"><b>Direccion</b></p>
+		  		</td>
+		  	</tr>
+		  	<tr>
+		  		<td colspan="2">
+		  			<p class="card-text" th:text="${empresa.direccion.calle} + ', ' + ${empresa.direccion.numeroCasa} + ', ' + ${empresa.direccion.municipio.municipio} + ', ' + ${empresa.direccion.municipio.departamento.departamento}"></p>
+		  		</td>
+		  	</tr>
+		  </table><br/>
+		  
+		  <a th:href="@{#}" class="btn btn-primary">
+		   		<span><i class="fas fa-pencil-alt"></i></span>
+		   </a>
+		   
+		   <a th:href="@{/planilla/index}" class="btn btn-secondary">
+		   		<span><i class="fas fa-home"></i></span>
+		   </a>
+		   
+		  </div>
+		</div>
+	</div>
+	
+	
+	<section layout:fragment="scripts">
+	</section>
+
+</body>
+</html>

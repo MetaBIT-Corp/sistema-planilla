@@ -95,5 +95,13 @@ INSERT INTO GENEROS (ID_GENERO, GENERO) VALUES(8, 'Queer');
 INSERT INTO GENEROS (ID_GENERO, GENERO) VALUES(9, 'Pansexual');
 INSERT INTO GENEROS (ID_GENERO, GENERO) VALUES(10, 'Asexual');
 
+--Direcciones
+insert into departamentos (id_departamento,departamento) values (1, 'San Salvador');
+
+insert into municipios (id_municipio,municipio,id_departamento) values (1, 'San Salvador', 1);
+
+insert into direcciones (id_direccion,calle,complemento,numero_casa,urbanizacion,id_municipio) values (1, 'Calle Campos', 'Condominio San Francisco', '4-A', null, 1);
+
+insert into empresas (id_empresa,correo_empresa,empresa,nic_empresa,nit_empresa,page,pagina_empresa,telefono,id_direccion) values(1,'metabit@gmail.com','MetaBIT','000001','000002','@MetaBIT','www.metabit.com','2237-2828',1);
 
 
