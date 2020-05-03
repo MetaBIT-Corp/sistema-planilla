@@ -62,11 +62,7 @@
     <!-- /.login-card-body -->
   </div>
 </div>
-<!--
-<button type="button" class="btn btn-danger toastrDefaultError">
-  LaunchError Toast
-</button> 
--->
+
 <!-- jQuery -->
   <script th:src="@{/plugins/jquery/jquery.min.js}"></script>
 <!-- Bootstrap 4 -->
@@ -79,18 +75,20 @@
 <script th:src="@{/plugins/toastr/toastr.min.js}"></script>
 </body>
 
-<script>
-  $(document).ready(function(){
-      setTimeout(function() {
-         $(".alert").fadeOut();           
-      },3000);
-  })
+<script th:inline="javascript">
+/*<![CDATA[*/
+$(document).ready(function(){
+  var user_attemps = [[${session.user_attemps}]];
 
-  /*$(function() {
-    $('.toastrDefaultError').click(function() {
-      toastr.error('Usuario bloqueado, usted ha consumido la cantidad máxima de intentos.<hr/> Favor contactar al administrador')
-    });
-  });*/
+  setTimeout(function() {
+    $(".alert").fadeOut();           
+  },3000);
+
+  if(user_attemps > 3){
+    toastr.error('Usuario bloqueado, usted ha consumido la cantidad máxima de intentos.<hr/> Favor contactar al Administrador')
+  }
+})
+/*]]>*/
 </script>
 
 </html>

@@ -5,6 +5,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.hibernate.jdbc.Expectations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -15,9 +18,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.metabit.planilla.entity.Rol;
 import com.metabit.planilla.entity.RolesRecursosPrivilegios;
+import com.metabit.planilla.entity.Usuario;
 import com.metabit.planilla.repository.UserJpaRepository;
 
 @Service("userServiceImpl")
@@ -31,15 +37,7 @@ public class UserServiceImpl implements UserDetailsService{
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		com.metabit.planilla.entity.Usuario user = userJpaRepository.findByUsername(username);
 		List<GrantedAuthority> authorities = buildAuthorities(user.getRoles());
-		
-		if(user != null) {
-			user.setIntentos(user.getIntentos()+1);
-			
-			if(user.getIntentos()>3) {
-				user.setEnabled(false);
-			}
-			userJpaRepository.save(user);
-		}
+		userAttemps(user);
 		return buildUser(user, authorities);
  	}
 	
@@ -63,5 +61,18 @@ public class UserServiceImpl implements UserDetailsService{
 		return new ArrayList<GrantedAuthority>(auths);
 	}
 	
-
+	private void userAttemps(Usuario user) {
+		if(user != null) {
+			user.setIntentos(user.getIntentos()+1);
+			HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+			HttpSession session = request.getSession(true);
+			session.setAttribute("user_attemps",user.getIntentos());
+			
+			if(user.getIntentos()>3) {
+				user.setEnabled(false);
+			}
+			userJpaRepository.save(user);
+		}
+	}
+	
 }
