@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.metabit.planilla.entity.Genero;
 
-@Repository("generoRepository")
-public interface GeneroRepository extends JpaRepository<Genero, Serializable>{
+@Repository("generoJpaRepository")
+public interface GeneroJpaRepository extends JpaRepository<Genero, Serializable>{
 
 }

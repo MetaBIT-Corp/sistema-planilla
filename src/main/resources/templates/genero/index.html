@@ -11,10 +11,6 @@
 
 	<div layout:fragment="content">
 		
-		<button class="btn btn-md btn-primary" title="Agregar Genero" data-toggle="modal" data-target="#generoModal">
-			<i class="fas fa-plus-circle fa-md text-white-80"></i>
-		</button>
-		
 		<!-- Modal para Agregar Genero -->
 		<div class="modal" id="generoModal" tabindex="-1" role="dialog">
 		  <div class="modal-dialog" role="document">
@@ -25,7 +21,7 @@
 		          <span aria-hidden="true">&times;</span>
 		        </button>
 		      </div>
-		      <form method="post" action="#" th:action="@{/generos/store}" th:object="${generoEntity}">
+		      <form method="post" action="#" th:action="@{/planilla/genero/store}" th:object="${generoEntity}">
 			      <div class="modal-body">
 			        <div class="form-group">
 					    <label for="generoInput">Genero:</label>
@@ -42,38 +38,81 @@
 		</div>
 		
 		<!-- Alert de exito al almacenar nuevo genero -->
-		<div th:if="${store_success != null}" class="alert alert-success" role="alert" style="margin-top: 8px">
+		<div th:if="${store_success != null}" class="alert alert-info offset-1 col-md-10" role="alert" style="margin-top: 8px">
 			Agregado exitosamente!
 		</div>
 		
-		<!-- Listado de generos con DataTable -->
-		<div class="card-body offset-1 col-md-10">
-			<div class="table-responsive">
-				<table class="table table-striped" id="dataTable" width="100%"
-					cellspacing="0">
-					<thead>
-						<tr>
-							<th>Genero</th>
-							<th>Acciones</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr th:each="genero: ${generos}">
-							<td><span th:text="${genero.genero}"></span></td>
-							<td>						
-								<button class="btn btn-sm btn-primary" style="text-decoration: none; color: white;"
-									title="Editar" onclick="activeEditModal(${genero.idGenero}, ${genero.genero})">
-									<span><i class="fas fa-pencil-alt"></i></span>
-								</button>
+		<!-- Alert de exito al actualizar genero -->
+		<div th:if="${update_success != null}" class="alert alert-info offset-1 col-md-10" role="alert" style="margin-top: 8px">
+			Actualizado exitosamente!
+		</div>
+		
+		<!-- Alert de exito al eliminar genero -->
+		<div th:if="${delete_success != null}" class="alert alert-info offset-1 col-md-10" role="alert" style="margin-top: 8px">
+			Eliminado exitosamente!
+		</div>
+		
+		<!-- DataTable de Generos -->
+		<div class="row ml-3 mr-3">
+			
+			<div class="offset-1 col-md-10">
+			 <div class="card">
+	            <div class="card-header">
+	            <button class="btn btn-md btn-primary" title="Agregar Genero" data-toggle="modal" data-target="#generoModal">
+					<i class="fas fa-plus-circle fa-md text-white-60"></i>
+				</button>
+	              <h3 class="card-title"></h3>
+	            </div>
+	            <!-- /.card-header -->
+	            <div class="card-body">
+	              <table id="example1" class="table table-bordered table-striped">
+	                <thead>
+	                <tr>
+	                  <th>Genero</th>
+					  <th>Acciones</th>
+	                </tr>
+	                </thead>
+	                <tbody>
+	                <tr th:each="genero: ${generos}">
+	                  <td><span th:text="${genero.genero}"></span></td>
+						<td>						
+							<button class="btn btn-sm btn-primary" th:attr="data-idGenero=${genero.idGenero}, data-genero=${genero.genero}" 
+									onclick="activateModalEdit(this)" style="text-decoration: none; color: white;"
+									title="Editar">
+									
+								<span><i class="fas fa-pencil-alt"></i></span>
 								
-								<a class="btn btn-sm btn-danger" title="Eliminar"
+							</button>
+							
+							<button class="btn btn-sm btn-danger" th:attr="data-idGenero=${genero.idGenero}, data-genero=${genero.genero}" 
+									onclick="activateModalDestroy(this)" title="Eliminar"
 									style="text-decoration: none; color: white;">
-									<i class="fas fa-lock "></i>
-								</a>
-							</td>
-						</tr>
-					</tbody>
-				</table>
+									
+								<i class="fas fa-lock "></i>
+								
+							</button>
+						</td>
+	                </tr>
+	                
+	                <tr th:if="${#lists.isEmpty(generos)}">
+	                	<td colspan="2">
+	                		No hay Generos actualmente.
+	                	</td>
+	                </tr>
+	                              
+	                </tbody>
+	                <tfoot>
+	                <tr>
+	                  <th>Genero</th>
+					  <th>Acciones</th>
+	                </tr>
+	                </tfoot>
+	              </table>
+	            </div>
+	            <!-- /.card-body -->
+	          </div>
+	          <!-- /.card -->
+		
 			</div>
 		</div>
 		
@@ -87,12 +126,12 @@
 		          <span aria-hidden="true">&times;</span>
 		        </button>
 		      </div>
-		      <form method="post" action="#" th:action="@{/generos/update}">
+		      <form method="post" action="#" th:action="@{/planilla/genero/update}">
 			      <div class="modal-body">
 			        <div class="form-group">
 					    <label for="generoInput">Genero:</label>
-					    <input type="hidden" class="form-control" id="generoInputEdit" value="">
-					    <input type="text" class="form-control" id="generoInputEdit" value="">
+					    <input type="hidden" class="form-control" id="idGeneroInputEdit" name="idGenero" value="">
+					    <input type="text" class="form-control" id="generoInputEdit"  name="genero" value="">
 					  </div>
 			      </div>
 			      <div class="modal-footer">
@@ -103,10 +142,81 @@
 		    </div>
 		  </div>
 		</div>
+	
+	
+	<!-- Modal para Confirmar Eliminacion de Genero -->
+		<div class="modal" id="generoModalDestroy" tabindex="-1" role="dialog">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title">Eliminar Genero</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <form method="post" action="#" th:action="@{/planilla/genero/destroy}">
+			      <div class="modal-body">
+			        <div class="form-group">
+					    <div id="divMessage"></div>
+					    <input type="hidden" class="form-control" id="idGeneroInputDestroy" name="idGeneroDestroy" value="">				
+					  </div>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="submit" class="btn btn-danger">Confirmar</button>
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+			      </div>
+		      </form>
+		    </div>
+		  </div>
+		</div>
 	</div>
 	
 	<section layout:fragment="scripts">
-		<script th:src="@{/js/genero/main.js}"></script>
+		
+		<!-- DataTables -->
+	  	<script th:src="@{/plugins/datatables/jquery.dataTables.min.js}"></script>
+	  	<script th:src="@{/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
+		<script th:src="@{/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
+		<script th:src="@{/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
+		
+		<script>
+		  $(function () {
+		    $("#example2").DataTable({
+		      "responsive": true,
+		      "autoWidth": false,
+		    });
+		    $('#example1').DataTable({
+		      "paging": true,
+		      "lengthChange": false,
+		      "searching": true,
+		      "ordering": true,
+		      "info": true,
+		      "autoWidth": false,
+		      "responsive": true,
+		    });
+		  });
+		  
+		  function activateModalEdit(param){
+			  
+			  	var id_genero = $(param).attr("data-idGenero");
+			  	var genero = $(param).attr("data-genero");
+			  	
+			  	$("#idGeneroInputEdit").val(id_genero);
+			  	$("#generoInputEdit").val(genero);
+				
+			  	$("#generoModalEdit").modal();
+			}
+		  
+		  function activateModalDestroy(param){
+			  
+			  var id_genero = $(param).attr("data-idGenero");
+			  var genero = $(param).attr("data-genero");
+			  document.getElementById("divMessage").innerHTML = "<p>Esta seguro que desea eliminar el genero: <b>" + genero + "</b>?</p>";
+			  $("#idGeneroInputDestroy").val(id_genero);
+			  
+			  $("#generoModalDestroy").modal();
+		  }
+		</script>
 	</section>
 
 </body>

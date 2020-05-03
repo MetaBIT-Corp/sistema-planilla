@@ -40,6 +40,14 @@
 			</exclusions>
 		</dependency>
 		
+		<!-- ##############################################################################################################-->
+		<!--<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>-->
+		<!-- ##############################################################################################################-->
+
+
 		<!-- Dependencia para utilizar los layouts con thymelife con el objetivo de hacer herencia de plantillas -->
 		<dependency>
 	    	<groupId>nz.net.ultraq.thymeleaf</groupId>
@@ -52,12 +60,27 @@
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 		
-		<!-- Dependencia para el uso de la basededatos Oracle -->
+		<!-- Dependencia para el uso de la basededatos Oracle --> 
 		<dependency>
 			<groupId>com.oracle</groupId>
 			<artifactId>ojdbc8</artifactId>
 			<version>12.2.0.1</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
+		<dependency>
+	        <groupId>org.thymeleaf.extras</groupId>
+	        <artifactId>thymeleaf-extras-springsecurity5</artifactId>
+    	</dependency>
+		
+		<dependency>
+	        <groupId>org.springframework.boot</groupId>
+	        <artifactId>spring-boot-starter-actuator</artifactId>
+	    </dependency>
 		
 	</dependencies>
 
