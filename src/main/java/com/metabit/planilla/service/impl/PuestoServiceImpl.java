@@ -23,4 +23,27 @@ public class PuestoServiceImpl implements PuestoService{
 		return puestoJpaRepository.findAll();
 	}
 
+	@Override
+	public Puesto getPuesto(int id) {
+		return puestoJpaRepository.findById(id).get();
+	}
+
+	@Override
+	public Puesto storePuesto(Puesto puesto) {
+		// TODO Auto-generated method stub
+		return puestoJpaRepository.save(puesto);
+	}
+
+	@Override
+	public Puesto updatePuesto(Puesto puesto) {
+		// TODO Auto-generated method stub
+		return puestoJpaRepository.save(puesto);
+	}
+
+	@Override
+	public void deletePuesto(int idPuesto) {
+		// TODO Auto-generated method stub
+		puestoJpaRepository.deleteById(idPuesto);
+	}
+
 }
