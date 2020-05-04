@@ -40,6 +40,13 @@ INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (8, 'Técn
 INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (9, 'Técnico en Base de Datos', 1);
 INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (10, 'Técnico en Redes Computacionales', 1);
 INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (11, 'Técnico en Hardware Computacional', 1);
+INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (12, 'Plomero', 0);
+INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (13, 'Chofer', 0);
+INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (14, 'Pintor', 0);
+INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (15, 'Licenciado en Psicología', 1);
+INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (16, 'Licenciado en Ciencias Jurídicas', 1);
+
+
 
 /*TIPOS DE DOCUMENTO*/
 

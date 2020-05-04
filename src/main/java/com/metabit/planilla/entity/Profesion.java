@@ -52,17 +52,17 @@ public class Profesion {
 		this.profesion = profesion;
 	}
 
-	public boolean isProfesion() {
+	public boolean getEsProfesion() {
 		return esProfesion;
 	}
 
-	public void setIsProfesion(boolean esProfesion) {
+	public void setEsProfesion(boolean esProfesion) {
 		this.esProfesion = esProfesion;
 	}
 
 	@Override
 	public String toString() {
-		return "Profesion [ Profesion=" + profesion + ", ¿Es profesion? = " + esProfesion + "]";
+		return "Profesion [idProfesion=" + idProfesion + ", profesion=" + profesion + ", esProfesion=" + esProfesion + "]";
 	}	
 
 }

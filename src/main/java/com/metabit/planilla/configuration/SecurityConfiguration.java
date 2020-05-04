@@ -32,6 +32,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 			.antMatchers( //***************Agregar urls que no neciten logueo****************//
 					"/planilla/ejemplo",
 					"/planilla/puesto/***",
+					"/planilla/profesion/***",
 					"/planilla/base",
 					"/planilla/index"
 					).permitAll()
