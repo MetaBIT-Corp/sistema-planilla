@@ -9,6 +9,5 @@ import com.metabit.planilla.entity.Usuario;
 
 @Repository("userJpaRepository")
 public interface UserJpaRepository extends JpaRepository<Usuario, Serializable>{
-
 	public abstract Usuario findByUsername(String username);
 }

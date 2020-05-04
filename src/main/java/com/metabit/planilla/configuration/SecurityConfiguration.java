@@ -35,7 +35,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 					"/planilla/profesion/***",
 					"/planilla/tipo-documento/***",
 					"/planilla/base",
-					"/planilla/index"
+					"/planilla/index",
+					"/api/municipios/{idDepartamento}"
 					).permitAll()
 			.antMatchers("/css/**","/imgs/**","/js/**","/dist/**","/plugins/**").permitAll()
 			.anyRequest().authenticated()
