@@ -12,7 +12,7 @@ import java.util.List;
 @Service("estadoCivilServiceImpl")
 public class EstadoCivilServiceImpl implements EstadoCivilService {
     @Autowired
-    @Qualifier("estadoCivilJpaRepository")
+    @Qualifier("estadoCivilJpaRespository")
     private EstadoCivilJpaRepository estadoCivilJpaRepository;
 
     @Override
