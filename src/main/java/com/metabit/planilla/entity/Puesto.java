@@ -5,7 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "puestos")
@@ -17,27 +19,44 @@ public class Puesto {
 	private int idPuesto;
 	
 	@NotNull
+	@Size(min = 1, max = 250)
 	@Column(name = "puesto")
 	private String puesto;
 	
 	@NotNull
+	@Min(360)
 	@Column(name = "salario_minimo")
 	private double salarioMinimo;
 	
 	@NotNull
+	@Min(360)
 	@Column(name = "salario_maximo")
 	private double salarioMaximo;
 	
-	@Column(name = "descripcion")
+	@Size(min = 0, max = 250)
+	@Column(name = "descripcion", nullable = true)
 	private String descripcion;
 	
-	@NotNull
 	@Column(name = "usuario_requerido")
 	private boolean usuarioRequerido;
 	
 	public Puesto() {
 		super();
 	}
+	
+	
+
+	public Puesto(@NotNull String puesto, @NotNull double salarioMinimo, @NotNull double salarioMaximo,
+			String descripcion, @NotNull boolean usuarioRequerido) {
+		super();
+		this.puesto = puesto;
+		this.salarioMinimo = salarioMinimo;
+		this.salarioMaximo = salarioMaximo;
+		this.descripcion = descripcion;
+		this.usuarioRequerido = usuarioRequerido;
+	}
+
+
 
 	public Puesto(int idPuesto, String puesto, double salarioMinimo, double salarioMaximo, String descripcion,
 			boolean usuarioRequerido) {
@@ -101,8 +120,11 @@ public class Puesto {
 
 	@Override
 	public String toString() {
-		return "Puesto [puesto=" + puesto + ", descripcion=" + descripcion + "]";
+		return "Puesto [idPuesto=" + idPuesto + ", puesto=" + puesto + ", salarioMinimo=" + salarioMinimo
+				+ ", salarioMaximo=" + salarioMaximo + ", descripcion=" + descripcion + ", usuarioRequerido="
+				+ usuarioRequerido + "]";
 	}
+
 	
 	
 
