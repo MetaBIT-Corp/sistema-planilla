@@ -1,6 +1,8 @@
 package com.metabit.planilla.service.impl;
 
+
 import java.util.List;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -20,5 +22,6 @@ public class DepartamentoServiceImpl implements DepartamentoService{
 	public List<Departamento> getAllDepartamentos() {
 		return departamentoJpaRepository.findAll();
 	}
+
 
 }

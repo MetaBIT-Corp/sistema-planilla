@@ -13,7 +13,7 @@
 	<h1 class="m-0 text-dark" layout:fragment="titulo_seccion">Puestos</h1>
 
 	<ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item"><a href="#" th:href="@{/planilla/index}">Home</a></li>
         <li class="breadcrumb-item active">Puestos</li>
     </ol>
 
@@ -23,7 +23,10 @@
 			<div class="col-md-12 ">
 			 <div class="card">
 	            <div class="card-header">
-	              <h3 class="card-title"></h3>
+                   <a href="#" th:href="@{/planilla/puesto/form-puesto}" type="button" class="btn btn-sm btn-primary">
+                   	<i class="fas fa-plus-circle mr-1 text-white"></i>
+                   	<span class="text-white">Nuevo</span>
+                   </a>
 	            </div>
 	            <!-- /.card-header -->
 	            <div class="card-body">
@@ -57,7 +60,7 @@
 	                          	<span>Acción</span>
 	                          </button>
 	                          <div class="dropdown-menu" style="">
-	                            <a class="dropdown-item" href="#"><i class="far fa-edit mr-3"></i>Editar</a>
+	                            <a class="dropdown-item" href="#" th:href="@{'/planilla/puesto/form-puesto/'+${puesto.idPuesto}+''}"><i class="far fa-edit mr-3"></i>Editar</a>
 	                            <a class="dropdown-item" href="#"><i class="far fa-trash-alt mr-3"></i> Eliminar</a>
 	                          </div>
 	                        </div>

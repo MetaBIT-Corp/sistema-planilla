@@ -1,10 +1,10 @@
 package com.metabit.planilla.service;
 
-import java.util.List;
 
 import com.metabit.planilla.entity.Departamento;
+import java.util.List;
 
 public interface DepartamentoService {
+    public abstract List<Departamento> getAllDepartamentos();
 
-	public abstract List<Departamento> getAllDepartamentos();
 }

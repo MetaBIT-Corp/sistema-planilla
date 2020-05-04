@@ -47,7 +47,7 @@ public class EmpresaController {
 	public String update(@ModelAttribute(name="empresaEntity") Empresa empresa) {
 		empresa.getDireccion().setIdDireccion(empresaService.getEmpresa().getDireccion().getIdDireccion());
 		
-		empresa.setDireccion(direccionService.updateDireccion(empresa.getDireccion()));
+		empresa.setDireccion(direccionService.updateDirection(empresa.getDireccion()));
 		empresaService.updateEmpresa(empresa);
 		return "redirect:/empresa/perfil/show?update_success";
 	}
