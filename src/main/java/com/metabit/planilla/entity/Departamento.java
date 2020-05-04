@@ -43,6 +43,11 @@ public class Departamento {
 		this.departamento = departamento;
 	}
 
-	
-		
+	public List<Municipio> getMunicipios() {
+		return municipios;
+	}
+
+	public void setMunicipios(List<Municipio> municipios) {
+		this.municipios = municipios;
+	}
 }
