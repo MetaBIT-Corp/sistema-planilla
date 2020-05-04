@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface DepartamentoService {
     public abstract List<Departamento> getAllDepartamentos();
+    public abstract Departamento getDepartamento(int idDepartamento);
 
 }

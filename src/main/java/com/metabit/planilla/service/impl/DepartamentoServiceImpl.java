@@ -22,6 +22,10 @@ public class DepartamentoServiceImpl implements DepartamentoService{
 	public List<Departamento> getAllDepartamentos() {
 		return departamentoJpaRepository.findAll();
 	}
+	@Override
+	public Departamento getDepartamento(int idDepartamento) {
+		return departamentoJpaRepository.getOne(idDepartamento);
+	}
 
 
 }

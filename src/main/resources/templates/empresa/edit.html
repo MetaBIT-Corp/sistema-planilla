@@ -68,11 +68,19 @@
 				</div>
 				  <div class="form-group">
 					<label>Departamento: </label>
-					<input type="tel" th:field="*{direccion.municipio.departamento.idDepartamento}" class="form-control">
+					<select id="departamento_select" name="departamento" class="form-control">
+						<option th:each="departamento: ${departamentos}" th:selected="*{direccion.municipio.departamento.idDepartamento} == ${departamento.idDepartamento}" th:value="${departamento.idDepartamento}">
+							<span th:text="${departamento.departamento}"></span>
+						</option>
+					</select>
 				</div> 
 				<div class="form-group">
 					<label>Municipio: </label>
-					<input type="tel" th:field="*{direccion.municipio.idMunicipio}" class="form-control">
+					<select name="municipio" class="form-control">
+						<option th:each="municipio: ${municipios}" th:selected="*{direccion.municipio.idMunicipio} == ${municipio.idMunicipio}" th:value="${municipio.idMunicipio}">
+							<span th:text="${municipio.municipio}"></span>
+						</option>
+					</select>
 				</div> 
 				<input type="submit" class="btn btn-primary" value="Guardar">
 				<a class="btn btn-secondary" href="#" th:href="@{/empresa/perfil/show}">Cancelar</a>
@@ -82,6 +90,11 @@
 	
 	
 	<section layout:fragment="scripts">
+		<script type="text/javascript">
+			$("#departamento_select").on('change', function(){
+				alert("Ajax");
+			});
+		</script>
 	</section>
 
 </body>
