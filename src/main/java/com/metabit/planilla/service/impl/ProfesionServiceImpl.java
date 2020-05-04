@@ -19,7 +19,6 @@ public class ProfesionServiceImpl implements ProfesionService {
 
     @Override
     public List<Profesion> getProfesiones() {
-        // TODO Auto-generated method stub
         return profesionJpaRepository.findAll();
     }
 
@@ -30,19 +29,16 @@ public class ProfesionServiceImpl implements ProfesionService {
 
     @Override
     public Profesion storeProfesion(Profesion profesion) {
-        // TODO Auto-generated method stub
         return profesionJpaRepository.save(profesion);
     }
 
     @Override
     public Profesion updateProfesion(Profesion profesion) {
-        // TODO Auto-generated method stub
         return profesionJpaRepository.save(profesion);
     }
 
     @Override
     public void deleteProfesion(int idProfesion) {
-        // TODO Auto-generated method stub
         profesionJpaRepository.deleteById(idProfesion);
     }
 

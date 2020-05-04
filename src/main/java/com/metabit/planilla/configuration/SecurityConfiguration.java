@@ -33,6 +33,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 					"/planilla/ejemplo",
 					"/planilla/puesto/***",
 					"/planilla/profesion/***",
+					"/planilla/tipo-documento/***",
 					"/planilla/base",
 					"/planilla/index"
 					).permitAll()

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layouts/layout}">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Sistema Planilla | Crear Tipo de Documento</title>
+</head>
+
+<body>
+
+<h1 class="m-0 text-dark" layout:fragment="titulo_seccion"></h1>
+
+<ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
+    <li class="breadcrumb-item"><a href="#" th:href="@{/planilla/index}">Home</a></li>
+    <li class="breadcrumb-item"><a href="#" th:href="@{/planilla/tipo-documento/index}">Tipos de Documento</a></li>
+    <li class="breadcrumb-item active">Crear</li>
+</ol>
+
+<div layout:fragment="content">
+
+    <div class="row">
+        <!-- left column -->
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+
+            <!-- general form elements -->
+            <div class="card card-primary">
+
+                <div class="card-header">
+                    <h3 class="card-title">Nuevo Tipo de Documento</h3>
+                </div>
+                <!-- /.card-header -->
+
+                <!-- form start -->
+                <form role="form"
+                      class="user" action="#"
+                      th:action="@{/planilla/tipo-documento/form-post}"
+                      th:object="${tipoDocumentoEntity}" method="POST">
+
+                    <div class="card-body">
+                        <input type="hidden" class="form-control form-control-user" th:field="*{idTipoDocumento}">
+
+                        <div class="form-group">
+                            <label for="tipo_documento">Nombre *</label>
+                            <input type="text" class="form-control" id="tipo_documento" placeholder="Nombre de Tipo de Documento" th:field="*{tipoDocumento}" th:value="${tipoDocumento}">
+                            <p class="mt-2 ml-3" style="color: #ff0000; font-size: 15px;" th:if="${#fields.hasErrors('tipoDocumento')}" th:errors="*{tipoDocumento}">TipoDocumento has errors</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="formato">Formato *</label>
+                            <input type="text" class="form-control" id="formato" placeholder="Formato de Tipo de Documento" th:field="*{formato}" th:value="${formato}">
+                            <p class="mt-2 ml-3" style="color: #ff0000; font-size: 15px;" th:if="${#fields.hasErrors('formato')}" th:errors="*{formato}">Formato has errors</p>
+                        </div>
+
+                        <div class="alert alert-dismissible alert-info">
+                            <strong>Formato</strong><br>
+                            - Utilice ceros (0) para indicar la posición donde debería ir un número.<br>
+                            - Utilice letras 'a' para indicar la posición donde debería ir una letra.<br>
+                            - Utilice un guión (-) para indicar la posición donde debería ir un guión.<br><br>
+                            <strong>Ejemplos:</strong><br>
+                            DUI: 00000000-0<br>
+                            NIT: 0000-000000-000-0
+
+                        </div>
+
+                    </div>
+                    <!-- /.card-body -->
+
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary">Crear</button>
+                        <a type="button" class="btn btn-default" href="#" th:href="@{/planilla/tipo-documento/index}">Cancelar</a>
+                    </div>
+
+                </form>
+
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
+
+</div>
+<section layout:fragment="scripts">
+</section>
+
+</body>
+</html>
