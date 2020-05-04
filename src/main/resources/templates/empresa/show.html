@@ -12,7 +12,7 @@
 
 <body>
 	
-	<h1 class="m-0 text-dark" layout:fragment="titulo_seccion">Empresa</h1>
+	<h1 class="m-0 text-dark" layout:fragment="titulo_seccion">Perfil de la Empresa</h1>
 
 	<ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
         <li class="breadcrumb-item"><a href="#">Home</a></li>
@@ -20,38 +20,43 @@
     </ol>
 
 	<div layout:fragment="content">
+		<!-- Alert de exito al actualizar genero -->
+		<div th:if="${update_success != null}" class="alert alert-info offset-1 col-md-10" role="alert" style="margin-top: 8px">
+			Actualizado exitosamente!
+		</div>
+		
 		<h1 style="text-align: center;">
-			<span th:text="${empresa.empresa}"> Empresa </span>
+			<span th:text="${empresaEntity.empresa}"> Empresa </span>
 		</h1>
 		
-		<div class="card offset-3 col-md-6">
-		  <img class="card-img-top" height="250" th:src="@{/img/metabit.png}" th:alt="${empresa.empresa}">
+		<div class="card offset-2 col-md-8">
+		  <img class="card-img-top offset-3 col-md-6" height="250" th:src="@{/img/metabit.png}" th:alt="${empresaEntity.empresa}">
 		  <div class="card-body">
 		  
 		  <table class="table table-bordered table-hover">
 		  	<tr>
 		  		<td><b>Correo electronico</b></td>
-		  		<td th:text="${empresa.correoEmpresa}"></td>	
+		  		<td th:text="${empresaEntity.correoEmpresa}"></td>	
 		  	<tr>
 		  	<tr>
 		  		<td><b>Telefono</b></td>
-		  		<td th:text="${empresa.telefono}"></td>	
+		  		<td th:text="${empresaEntity.telefono}"></td>	
 		  	<tr>
 		  	<tr>
 		  		<td><b>Twitter</b></td>
-		  		<td th:text="${empresa.page}"></td>	
+		  		<td th:text="${empresaEntity.page}"></td>	
 		  	<tr>
 		  	<tr>
 		  		<td><b>Sitio web</b></td>
-		  		<td th:text="${empresa.paginaEmpresa}"></td>	
+		  		<td th:text="${empresaEntity.paginaEmpresa}"></td>	
 		  	<tr>
 		  	<tr>
 		  		<td><b>NIC</b></td>
-		  		<td th:text="${empresa.nicEmpresa}"></td>	
+		  		<td th:text="${empresaEntity.nicEmpresa}"></td>	
 		  	<tr>
 		  	<tr>
 		  		<td><b>NIT</b></td>
-		  		<td th:text="${empresa.nitEmpresa}"></td>	
+		  		<td th:text="${empresaEntity.nitEmpresa}"></td>	
 		  	<tr>
 		  	<tr>
 		  		<td colspan="2">
@@ -60,12 +65,29 @@
 		  	</tr>
 		  	<tr>
 		  		<td colspan="2">
-		  			<p class="card-text" th:text="${empresa.direccion.calle} + ', ' + ${empresa.direccion.numeroCasa} + ', ' + ${empresa.direccion.municipio.municipio} + ', ' + ${empresa.direccion.municipio.departamento.departamento}"></p>
+		  			<div th:if="${empresaEntity.direccion.calle}">
+		  				<p><i>Calle: </i> <span th:text="${empresaEntity.direccion.calle + ','}"></span></p>	
+		  			</div>
+		  			<div th:if="${empresaEntity.direccion.urbanizacion}">
+		  				<p><i>Urbanizacion: </i> <span th:text="${empresaEntity.direccion.urbanizacion + ','}"></span></p>
+		  			</div>
+		  			<div th:if="${empresaEntity.direccion.complemento}">
+		  				<p><i>Complemento: </i> <span th:text="${empresaEntity.direccion.complemento + ','}"></span></p>
+		  			</div>
+		  			<div th:if="${empresaEntity.direccion.numeroCasa}">
+		  				<p><i>Numero de casa: </i> <span th:text="${empresaEntity.direccion.numeroCasa + ','}"></span></p>
+		  			</div>
+		  			<div th:if="${empresaEntity.direccion.municipio}">
+		  				<p><i>Municipio: </i> <span th:text="${empresaEntity.direccion.municipio.municipio + ','}"></span></p>
+		  			</div>
+		  			<div th:if="${empresaEntity.direccion.municipio.departamento}">
+		  				<p><i>Departamento: </i> <span th:text="${empresaEntity.direccion.municipio.departamento.departamento + '.'}"></span></p>
+		  			</div> 
 		  		</td>
 		  	</tr>
 		  </table><br/>
 		  
-		  <a th:href="@{#}" class="btn btn-primary">
+		  <a th:href="@{/empresa/perfil/edit}" class="btn btn-primary">
 		   		<span><i class="fas fa-pencil-alt"></i></span>
 		   </a>
 		   

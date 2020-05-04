@@ -26,18 +26,18 @@ public class TipoDocumento {
 	
 	@NotNull
 	@Column(name = "tipo_documento_habilitado")
-	private boolean habilitado;
+	private boolean tipoDocumentoHabilitado;
 	
 	public TipoDocumento() {
 		super();
 	}
 
-	public TipoDocumento(int idTipoDocumento, String tipoDocumento, String formato, boolean habilitado) {
+	public TipoDocumento(int idTipoDocumento, String tipoDocumento, String formato, boolean tipoDocumentoHabilitado) {
 		super();
 		this.idTipoDocumento = idTipoDocumento;
 		this.tipoDocumento = tipoDocumento;
 		this.formato = formato;
-		this.habilitado = habilitado;
+		this.tipoDocumentoHabilitado = tipoDocumentoHabilitado;
 	}
 	
 	
@@ -65,12 +65,12 @@ public class TipoDocumento {
 		this.formato = formato;
 	}
 
-	public boolean isHabilitado() {
-		return habilitado;
+	public boolean getTipoDocumentoHabilitado() {
+		return tipoDocumentoHabilitado;
 	}
 
-	public void setHabilitado(boolean habilitado) {
-		this.habilitado = habilitado;
+	public void setTipoDocumentoHabilitado(boolean tipoDocumentoHabilitado) {
+		this.tipoDocumentoHabilitado = tipoDocumentoHabilitado;
 	}
 
 	@Override

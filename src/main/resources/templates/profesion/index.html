@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layouts/layout}">
+
+<head>
+
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Sistema Planilla | Profesiones</title>
+
+</head>
+<body>
+
+    <h1 class="m-0 text-dark" layout:fragment="titulo_seccion">Profesiones/Oficios</h1>
+
+    <ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
+        <li class="breadcrumb-item"><a href="#" th:href="@{/planilla/index}">Home</a></li>
+        <li class="breadcrumb-item active">Profesiones y Oficios</li>
+    </ol>
+
+    <div layout:fragment="content">
+        <div class="row ml-3 mr-3">
+            <div class="col-md-12">
+
+                <div class="card">
+
+                    <div class="card-header">
+                        <a href="#" th:href="@{/planilla/profesion/form-profesion}" type="button" class="btn btn-sm btn-primary">
+                            <i class="fas fa-plus-circle mr-1 text-white"></i>
+                            <span class="text-white">Nueva Profesi&oacute;n/Oficio</span>
+                        </a>
+                    </div>
+                    <!-- /.card-header -->
+
+                    <div class="card-body">
+                        <table id="example1" class="table table-bordered table-striped">
+
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Profesi&oacute;n/Oficio</th>
+                                    <th>Acciones</th>
+                                </tr>
+
+                            <tbody>
+                            <tr th:each="profesion: ${profesiones}">
+
+                                <td><span th:text="${profesion.profesion}"></span></td>
+
+                                <td>
+                                    <span th:if="${profesion.esProfesion}">Profesi&oacute;n</span>
+                                    <span th:unless="${profesion.esProfesion}">Oficio</span>
+                                </td>
+
+                                <td>
+                                    <div class="btn-group">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
+                                                <span>Acci&oacute;n</span>
+                                            </button>
+                                            <div class="dropdown-menu" style="">
+                                                <a class="dropdown-item" href="#" th:href="@{'/planilla/profesion/form-profesion'+${profesion.idProfesion}+''}"><i class="far fa-edit mr-3"></i>Editar</a>
+                                                <a class="dropdown-item" href="#"><i class="far fa-trash-alt mr-3"></i> Eliminar</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+
+                            </tr>
+                            </tbody>
+
+                            <tfoot>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Profesi&oacute;n/Oficio</th>
+                                <th>Acciones</th>
+                            </tr>
+                            </tfoot>
+
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+
+                </div>
+                <!-- /.card -->
+
+            </div>
+        </div>
+    </div>
+
+    <section layout:fragment="scripts">
+
+        <!-- DataTables -->
+        <script th:src="@{/plugins/datatables/jquery.dataTables.min.js}"></script>
+        <script th:src="@{/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
+        <script th:src="@{/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
+        <script th:src="@{/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
+
+        <!-- page script -->
+        <script>
+            $(function () {
+                $("#example1").DataTable({
+                    "responsive": true,
+                    "autoWidth": false,
+                });
+                $('#example2').DataTable({
+                    "paging": true,
+                    "lengthChange": false,
+                    "searching": false,
+                    "ordering": true,
+                    "info": true,
+                    "autoWidth": false,
+                    "responsive": true,
+                });
+            });
+        </script>
+
+    </section>
+
+</body>
+</html>

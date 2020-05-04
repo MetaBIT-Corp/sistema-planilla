@@ -72,7 +72,7 @@ public class Empleado {
 	
 	@NotNull
 	@Column(name = "empleado_habilitado", nullable = false)
-	private String empleadoHabilitado;
+	private Boolean empleadoHabilitado;
 	
 	//Personals Documents
 	@OneToMany(mappedBy="empleado",cascade=CascadeType.ALL)
@@ -101,7 +101,148 @@ public class Empleado {
 	//Professions
 	@OneToMany(mappedBy="empleado",cascade=CascadeType.ALL)
 	private List<EmpleadoProfesion> profesionesEmpleado=new ArrayList<>();
-	
-	
-	
+
+	public int getIdEmpleado() {
+		return idEmpleado;
+	}
+
+	public void setIdEmpleado(int idEmpleado) {
+		this.idEmpleado = idEmpleado;
+	}
+
+	public String getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
+	}
+
+	public String getNombrePrimero() {
+		return nombrePrimero;
+	}
+
+	public void setNombrePrimero(String nombrePrimero) {
+		this.nombrePrimero = nombrePrimero;
+	}
+
+	public String getNombreSegundo() {
+		return nombreSegundo;
+	}
+
+	public void setNombreSegundo(String nombreSegundo) {
+		this.nombreSegundo = nombreSegundo;
+	}
+
+	public String getApellidoPaterno() {
+		return apellidoPaterno;
+	}
+
+	public void setApellidoPaterno(String apellidoPaterno) {
+		this.apellidoPaterno = apellidoPaterno;
+	}
+
+	public String getApellidoMaterno() {
+		return apellidoMaterno;
+	}
+
+	public void setApellidoMaterno(String apellidoMaterno) {
+		this.apellidoMaterno = apellidoMaterno;
+	}
+
+	public String getApellidoCasada() {
+		return apellidoCasada;
+	}
+
+	public void setApellidoCasada(String apellidoCasada) {
+		this.apellidoCasada = apellidoCasada;
+	}
+
+	public Date getFechaNacimiento() {
+		return fechaNacimiento;
+	}
+
+	public void setFechaNacimiento(Date fechaNacimiento) {
+		this.fechaNacimiento = fechaNacimiento;
+	}
+
+	public String getCorreoPersonal() {
+		return correoPersonal;
+	}
+
+	public void setCorreoPersonal(String correoPersonal) {
+		this.correoPersonal = correoPersonal;
+	}
+
+	public double getSalarioBaseMensual() {
+		return salarioBaseMensual;
+	}
+
+	public void setSalarioBaseMensual(double salarioBaseMensual) {
+		this.salarioBaseMensual = salarioBaseMensual;
+	}
+
+	public int getHorasTrabajo() {
+		return horasTrabajo;
+	}
+
+	public void setHorasTrabajo(int horasTrabajo) {
+		this.horasTrabajo = horasTrabajo;
+	}
+
+	public Boolean getEsAdministrativo() {
+		return esAdministrativo;
+	}
+
+	public void setEsAdministrativo(Boolean esAdministrativo) {
+		this.esAdministrativo = esAdministrativo;
+	}
+
+	public Boolean getEmpleadoHabilitado() {
+		return empleadoHabilitado;
+	}
+
+	public void setEmpleadoHabilitado(Boolean empleadoHabilitado) {
+		this.empleadoHabilitado = empleadoHabilitado;
+	}
+
+	public List<EmpleadoDocumento> getDocumentosEmpleado() {
+		return documentosEmpleado;
+	}
+
+	public void setDocumentosEmpleado(List<EmpleadoDocumento> documentosEmpleado) {
+		this.documentosEmpleado = documentosEmpleado;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+
+	public EstadoCivil getEstadoCivil() {
+		return estadoCivil;
+	}
+
+	public void setEstadoCivil(EstadoCivil estadoCivil) {
+		this.estadoCivil = estadoCivil;
+	}
+
+	public Direccion getDireccion() {
+		return direccion;
+	}
+
+	public void setDireccion(Direccion direccion) {
+		this.direccion = direccion;
+	}
+
+	public List<EmpleadoProfesion> getProfesionesEmpleado() {
+		return profesionesEmpleado;
+	}
+
+	public void setProfesionesEmpleado(List<EmpleadoProfesion> profesionesEmpleado) {
+		this.profesionesEmpleado = profesionesEmpleado;
+	}
 }
