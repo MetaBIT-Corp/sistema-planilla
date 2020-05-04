@@ -26,8 +26,8 @@
 
 		<div class="row">
 			<!-- left column -->
-			<div class="col-md-3"></div>
-			<div class="col-md-6">
+			<div class="col-md-2"></div>
+			<div class="col-md-7">
 				<!-- general form elements -->
 				<div class="card card-primary">
 					<div class="card-header">
@@ -46,12 +46,7 @@
 								<label for="puesto">Título *</label> 
 								<input type="text" class="form-control" id="puesto" placeholder="Título del puesto" 
 									th:field="*{puesto}"
-									th:value="${puesto}">
-								<p class="mt-2 ml-3" style="color: red; font-size: 15px;"
-									th:if="${#fields.hasErrors('puesto')}" 
-									th:errors="*{puesto}">
-									Puesto has errors
-								</p>
+									th:value="${puesto}">								
 							</div>
 							
 							<div class="form-group">
@@ -65,30 +60,23 @@
 								<div class="col-md-6">
 									<div class="form-group">
 										<label for="salariominimo">Salario mínimo *</label> 
-										<input type="number" class="form-control" id="salariominimo" placeholder="Salario minimo" 
+										<input type="number" class="form-control" id="salariominimo" placeholder="Salario minimo" min="300"
 											th:field="*{salarioMinimo}"
 											th:value="${salarioMinimo}">
-										<p class="mt-2 ml-3" style="color: red; font-size: 15px;"
-											th:if="${#fields.hasErrors('salarioMinimo')}"
-											th:errors="*{salarioMinimo}">
-											Salario Minimo has errors
-										</p>
+										
 									</div>
 								</div>
 								<div class="col-md-6">
 									<div class="form-group">
 										<label for="salariomaximo">Salario Máximo *</label> 
-										<input type="number" class="form-control" id="salariomaximo" placeholder="Salario maximo" 
+										<input type="number" class="form-control" id="salariomaximo" placeholder="Salario maximo" min="300"
 											th:field="*{salarioMaximo}"
 											th:value="${salarioMaximo}">
-										<p class="mt-2 ml-3" style="color: red; font-size: 15px;"
-											th:if="${#fields.hasErrors('salarioMaximo')}"
-											th:errors="*{salarioMaximo}">
-											Salario Maximo has errors
-										</p>
+										
 									</div>
 								</div>
 							</div>
+
 							<!-- En el caso de los checkbox, si es true thymeleaf agrega el checked. Sorprendente  -->
 							<div class="form-group">
 								<div class="custom-control custom-checkbox">
@@ -98,11 +86,32 @@
 									<label class="custom-control-label" for="usuariorequerido">Usuario requerido</label>
 								</div>
 							</div>
+							
+							<div  class="callout callout-danger" id="messageError" style="display:none;">
+								<p id="mayor" style="display:none;">
+									<i class="icon fas fa-ban mr-2" style="color:red;"></i><span style="text-size=4px"> El salario máximo debe ser mayor al minimo</span>
+								</p>
+								<p id="minimo" style="display:none;">
+									<i class="icon fas fa-ban mr-2" style="color:red;"></i><span style="text-size=4px"> El salario mínimo debe ser mayor a $300.00</span>
+								</p>
+								
+							</div>
+							<div  class="callout callout-danger" th:if="${ #fields.hasErrors('puesto') || #fields.hasErrors('salarioMinimo') || #fields.hasErrors('salarioMaximo') }">
+								<p th:if="${#fields.hasErrors('puesto')}">
+									<i class="icon fas fa-ban mr-2" style="color:red;"></i><span th:errors="*{puesto}"> </span>
+								</p>
+								<p th:if="${#fields.hasErrors('salarioMinimo')}">
+									<i class="icon fas fa-ban mr-2" style="color:red;"></i><span th:errors="*{salarioMaximo}"> </span>
+								</p>
+								<p th:if="${#fields.hasErrors('salarioMaximo')}">
+									<i class="icon fas fa-ban mr-2" style="color:red;"></i><span th:errors="*{salarioMaximo}"> </span>
+								</p>
+							</div>
 						</div>
 						<!-- /.card-body -->
 
 						<div class="card-footer">
-							<button type="submit" class="btn btn-primary">Crear</button>
+							<button type="submit" id="enviar" class="btn btn-primary" >Enviar</button>
 							<a type="button" class="btn btn-default" href="#"
 								th:href="@{/planilla/puesto/index}">Cancelar</a>
 						</div>
@@ -112,6 +121,8 @@
 			</div>
 		</div>
 	</div>
-	<section layout:fragment="scripts"></section>
+	<section layout:fragment="scripts">
+		<script th:src="@{/js/puesto/validacion.js}"></script>
+	</section>
 </body>
 </html>
