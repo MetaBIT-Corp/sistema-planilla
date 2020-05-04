@@ -1,6 +1,6 @@
 package com.metabit.planilla.controller;
 
-import com.metabit.planilla.entity.Genero;
+import com.metabit.planilla.entity.Empleado;
 import com.metabit.planilla.repository.UserJpaRepository;
 import com.metabit.planilla.service.EmpleadoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,8 +57,19 @@ public class EmpleadoController {
         return "";
     }
 
-    @PostMapping("/destroy")
-    private String disable() {
-        return "";
+    @GetMapping("/status")
+    private String disable(@RequestParam("id") int id) {
+        Empleado e = empleadoService.findEmployeeById(id);
+        String cadena="habilito";
+
+        //FALTA HABILITAR O INHABILITAR USUARIO
+        if(e.getEmpleadoHabilitado()){
+            e.setEmpleadoHabilitado(false);
+            cadena="deshabilito";
+        }else{
+            e.setEmpleadoHabilitado(true);
+        }
+        empleadoService.updateEmployee(e);
+        return "redirect:/planilla/empleado/index";
     }
 }
