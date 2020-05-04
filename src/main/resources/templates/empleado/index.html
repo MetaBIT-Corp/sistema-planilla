@@ -12,19 +12,166 @@
 
 <body>
 
-<h1 class="m-0 text-dark" layout:fragment="titulo_seccion">Plantilla</h1>
+<h1 class="ml-4 text-dark" layout:fragment="titulo_seccion">Empleados Registrados</h1>
 
 <ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
-    <li class="breadcrumb-item"><a href="#">Home</a></li>
-    <li class="breadcrumb-item active">Planilla</li>
+    <li class="breadcrumb-item"><a th:href="@{/planilla/index}">Home</a></li>
+    <li class="breadcrumb-item active">Empleados Registrados</li>
 </ol>
 
 <div layout:fragment="content">
-    <h5>Empleados Registrados</h5>
+    <div class="row ml-3 mr-3">
+
+        <div class="col-md-12 ">
+            <div class="card">
+                <div class="card-header text-right">
+                    <a th:href="@{/planilla/empleado/create}" type="button" class="btn btn-sm btn-primary">
+                        <i class="fas fa-plus-circle mr-1 text-white"></i>
+                        <span class="text-white">Nuevo Empleado</span>
+                    </a>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <table id="example1" class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th>Codigo</th>
+                            <th>Nombres</th>
+                            <th>Apellidos paterno</th>
+                            <th>Apellido materno</th>
+                            <th>Fecha de nacimiento</th>
+                            <th>Correo personal</th>
+                            <th>Status</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="e: ${empleados}">
+                            <td><span th:text="${e.getCodigo()}"></span></td>
+                            <td><span th:text="${e.nombrePrimero}"></span></td>
+                            <td><span th:text="${e.apellidoPaterno}"></span></td>
+                            <td><span th:text="${e.apellidoMaterno}"></span></td>
+                            <td><span th:text="${#dates.format(e.fechaNacimiento, 'dd-MMM-yyyy')}"></span></td>
+                            <td><span th:text="${e.correoPersonal}"></span></td>
+                            <td><span th:if="${e.empleadoHabilitado}" class="badge badge-success">Habilitado</span>
+                            <span th:unless="${e.empleadoHabilitado}" class="badge badge-danger">Deshabilitado</span ></td>
+                            <td>
+                                <div class="btn-group">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
+                                            <span>Acción</span>
+                                        </button>
+                                        <div class="dropdown-menu" style="">
+                                            <a class="dropdown-item" href="#" ><i class="far fa-eye mr-3"></i>Ver</a>
+                                            <a class="dropdown-item" href="#" ><i class="far fa-edit mr-3"></i>Editar</a>
+                                            <a th:if="${!e.empleadoHabilitado}" class="disable_enable dropdown-item" href="#" th:attr="data-id=${e.idEmpleado}, data-type=${e.empleadoHabilitado}"><i class="far fa-check-circle mr-3"></i>Habiltar</a>
+                                            <a th:unless="${!e.empleadoHabilitado}" class="disable_enable dropdown-item" href="#" th:attr="data-id=${e.idEmpleado}, data-type=${e.empleadoHabilitado}"><i class="far fa-window-close mr-3"></i>Deshabilitar</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <th>Codigo</th>
+                            <th>Nombres</th>
+                            <th>Apellidos paterno</th>
+                            <th>Apellido materno</th>
+                            <th>Fecha de nacimiento</th>
+                            <th>Correo personal</th>
+                            <th>Status</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="status_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="titulo_modal"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="mensaje_modal">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <a type="button" id="accion_modal" class="text-light"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Fin MODAL-->
 </div>
 
 
 <section layout:fragment="scripts">
+
+    <!-- DataTables -->
+    <script th:src="@{/plugins/datatables/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
+    <script th:src="@{/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
+    <script th:src="@{/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
+
+    <!-- page script -->
+    <script>
+        $(function () {
+            $("#example1").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+            });
+            $('#example2').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+            });
+        });
+        $(".disable_enable").click(function () {
+            var id=$(this).data("id");
+            var type=$(this).data("type");
+            var  title="";
+            var message_modal="";
+            var accion_modal="";
+            $('#accion_modal').removeClass("btn btn-success");
+            $('#accion_modal').removeClass("btn btn-danger");
+            if(type!=true){
+                $('#accion_modal').addClass("btn btn-success");
+                title="Habilitar Usuario";
+                message_modal="¿Esta seguro que desea habilitar el empleado seleccionado?";
+                accion_modal="Habilitar";
+            }else {
+                $('#accion_modal').addClass("btn btn-danger");
+                title="Deshabilitar Usuario";
+                message_modal="¿Esta seguro que desea deshabilitar el empleado seleccionado?";
+                accion_modal="Deshabilitar";
+            }
+
+            console.log(document.location.pathname);
+            $('#titulo_modal').text(title);
+            $('#mensaje_modal').text(message_modal);
+            $('#accion_modal').attr("href",document.location.origin+"/planilla/empleado/status?id="+id);
+            $('#accion_modal').text(accion_modal).click();
+            $('#status_modal').modal("show");
+        });
+    </script>
+
 </section>
 
 </body>

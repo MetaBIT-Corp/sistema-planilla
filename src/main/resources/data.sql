@@ -104,4 +104,8 @@ insert into direcciones (id_direccion,calle,complemento,numero_casa,urbanizacion
 
 insert into empresas (id_empresa,correo_empresa,empresa,nic_empresa,nit_empresa,page,pagina_empresa,telefono,id_direccion) values(1,'metabit@gmail.com','MetaBIT','000001','000002','@MetaBIT','www.metabit.com','2237-2828',1);
 
+--Empleados de prueba
+insert into empleados values(1,null,'Lopez','Estupinian','EL16002','el16002@ues.edu.sv',1,0,'28-JUN-97',2,'Ricardo','Bladimir',2000,null,null,null);
+
+insert into empleados values(2,null,'Lopez','Estupinian','EL14002','el14002@ues.edu.sv',0,0,'17-MAR-95',2,'Estefany','Lizeida',2000,null,null,null);
 
