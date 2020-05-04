@@ -7,4 +7,5 @@ public interface DireccionService {
     public abstract Direccion addDirection(Direccion d);
     public abstract Direccion updateDirection(Direccion d);
     public abstract Direccion getDirection(int id);
+
 }
