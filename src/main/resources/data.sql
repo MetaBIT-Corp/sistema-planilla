@@ -27,6 +27,7 @@ INSERT INTO puestos(id_puesto, descripcion, puesto, salario_maximo, salario_mini
 	   VALUES      (13, 'Descripción del puesto', 'Técnico de Redes', 1000, 360, 0);
 INSERT INTO puestos(id_puesto, descripcion, puesto, salario_maximo, salario_minimo, usuario_requerido)
 	   VALUES      (14, 'Descripción del puesto', 'Administrador de Bases de Datos', 1000, 360, 0);
+
 /*PROFESIONES*/
 
 INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (1, 'Ingeniero en Sistemas Informáticos', 1);
@@ -45,8 +46,6 @@ INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (13, 'Chof
 INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (14, 'Pintor', 0);
 INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (15, 'Licenciado en Psicología', 1);
 INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (16, 'Licenciado en Ciencias Jurídicas', 1);
-
-
 
 /*TIPOS DE DOCUMENTO*/
 

@@ -54,8 +54,20 @@ public class TipoDocumentoController {
             return "/tipo-documento/create";
         }else{
             tipoDocumentoService.storeTipoDocumento(tipoDocumento);
-            return "redirect:planilla/tipo-documento/index";
+            return "redirect:index";
         }
+    }
+
+    @PostMapping("/disable")
+    private String disable(@RequestParam("idTipoDocumentoDisable") int idTipoDocumento) {
+        TipoDocumento tipoDocumento = tipoDocumentoService.getTipoDocumento(idTipoDocumento);
+        if(tipoDocumento.getTipoDocumentoHabilitado()){
+            tipoDocumento.setTipoDocumentoHabilitado(false);
+        }else{
+            tipoDocumento.setTipoDocumentoHabilitado(true);
+        }
+        tipoDocumentoService.updateTipoDocumento(tipoDocumento);
+        return "redirect:/planilla/tipo-documento/index";
     }
 
 }

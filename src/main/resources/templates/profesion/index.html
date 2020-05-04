@@ -9,6 +9,7 @@
     <title>Sistema Planilla | Profesiones</title>
 
 </head>
+
 <body>
 
     <h1 class="m-0 text-dark" layout:fragment="titulo_seccion">Profesiones/Oficios</h1>
@@ -19,6 +20,7 @@
     </ol>
 
     <div layout:fragment="content">
+
         <div class="row ml-3 mr-3">
             <div class="col-md-12">
 
@@ -29,8 +31,7 @@
                             <i class="fas fa-plus-circle mr-1 text-white"></i>
                             <span class="text-white">Nueva Profesi&oacute;n/Oficio</span>
                         </a>
-                    </div>
-                    <!-- /.card-header -->
+                    </div><!-- /.card-header -->
 
                     <div class="card-body">
                         <table id="example1" class="table table-bordered table-striped">
@@ -41,6 +42,7 @@
                                     <th>Profesi&oacute;n/Oficio</th>
                                     <th>Acciones</th>
                                 </tr>
+                            </thead>
 
                             <tbody>
                             <tr th:each="profesion: ${profesiones}">
@@ -59,8 +61,16 @@
                                                 <span>Acci&oacute;n</span>
                                             </button>
                                             <div class="dropdown-menu" style="">
-                                                <a class="dropdown-item" href="#" th:href="@{'/planilla/profesion/form-profesion'+${profesion.idProfesion}+''}"><i class="far fa-edit mr-3"></i>Editar</a>
-                                                <a class="dropdown-item" href="#"><i class="far fa-trash-alt mr-3"></i> Eliminar</a>
+                                                <a class="dropdown-item" href="#" th:href="@{'/planilla/profesion/form-profesion/'+${profesion.idProfesion}+''}"><i class="far fa-edit mr-3"></i>Editar</a>
+                                                <a class="dropdown-item"
+                                                   style="cursor:pointer"
+                                                   th:attr="
+                                                        data-idProfesion=${profesion.idProfesion},
+                                                        data-profesion=${profesion.profesion}"
+                                                   onclick="activateModalDestroy(this)">
+                                                    <i class="far fa-trash-alt mr-3"></i>
+                                                    Eliminar
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
@@ -78,14 +88,46 @@
                             </tfoot>
 
                         </table>
-                    </div>
-                    <!-- /.card-body -->
-
-                </div>
-                <!-- /.card -->
+                    </div><!-- /.card-body -->
+                </div><!-- /.card -->
 
             </div>
         </div>
+
+        <!-- Modal para Confirmar Eliminacion de Profesion -->
+        <div class="modal" id="profesionModalDestroy" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title">Eliminar Profesi&oacute;n</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <form method="post"
+                          action="#"
+                          th:action="@{/planilla/profesion/destroy}">
+
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <div id="divMessage"></div>
+                                <input type="hidden" class="form-control" id="idProfesionInputDestroy" name="idProfesionDestroy" value="">
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <section layout:fragment="scripts">
@@ -113,6 +155,17 @@
                     "responsive": true,
                 });
             });
+
+            function activateModalDestroy(param){
+
+                var id_profesion = $(param).attr("data-idProfesion");
+                var profesion = $(param).attr("data-profesion");
+
+                document.getElementById("divMessage").innerHTML = "<p>¿Esta seguro que desea eliminar la profesi&oacute;n <b>" + profesion + "</b>?</p>";
+                $("#idProfesionInputDestroy").val(id_profesion);
+
+                $("#profesionModalDestroy").modal();
+            }
         </script>
 
     </section>
