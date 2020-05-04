@@ -76,7 +76,7 @@
 				</div> 
 				<div class="form-group">
 					<label>Municipio: </label>
-					<select name="municipio" class="form-control">
+					<select id="municipio_select" name="municipio" class="form-control">
 						<option th:each="municipio: ${municipios}" th:selected="*{direccion.municipio.idMunicipio} == ${municipio.idMunicipio}" th:value="${municipio.idMunicipio}">
 							<span th:text="${municipio.municipio}"></span>
 						</option>
@@ -88,11 +88,21 @@
 		</form>
 	</div>
 	
-	
 	<section layout:fragment="scripts">
 		<script type="text/javascript">
 			$("#departamento_select").on('change', function(){
-				alert("Ajax");
+				var idDepartamento = $(this).val();
+				$.get('/api/municipios/' + idDepartamento, function(data){
+					var options = "";
+					for(var i = 0; i < data.length; i++){
+						var municipio = data[i];
+						options +=   '<option value="' + municipio.idMunicipio + '">' + 
+										municipio.municipio 
+									 + '</option>'
+					}
+					
+					document.getElementById("municipio_select").innerHTML = options;
+				});
 			});
 		</script>
 	</section>

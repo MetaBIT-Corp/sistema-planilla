@@ -1,7 +1,5 @@
 package com.metabit.planilla.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.metabit.planilla.entity.Direccion;
 import com.metabit.planilla.entity.Empresa;
 import com.metabit.planilla.entity.Municipio;
 import com.metabit.planilla.service.DepartamentoService;
@@ -52,7 +49,7 @@ public class EmpresaController {
 	@GetMapping("/edit")
 	public String edit(Model model) {
 		model.addAttribute("departamentos", departmentoService.getAllDepartamentos());
-		model.addAttribute("municipios", municipioService.getAllMunicipios());
+		model.addAttribute("municipios", municipioService.getMunicipiosByDepartamento(empresaService.getEmpresa().getDireccion().getMunicipio().getDepartamento()));
 		model.addAttribute("empresaEntity", empresaService.getEmpresa());
 		return "empresa/edit";
 	}
@@ -68,9 +65,4 @@ public class EmpresaController {
 		empresaService.updateEmpresa(empresa);
 		return "redirect:/empresa/perfil/show?update_success";
 	}
-	
-	/*@GetMapping("/municipios")
-	public List<Municipio> getMunicipiosByDepto(){
-		return municipioService.getMunicipiosByDepartamento(1);
-	}*/
 }
