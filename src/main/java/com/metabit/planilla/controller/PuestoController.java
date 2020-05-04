@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.metabit.planilla.entity.Puesto;
@@ -68,12 +69,21 @@ public class PuestoController {
 		LOGGER.info("PUESTO: " + puesto);
 		if (bindingResult.hasErrors()) {
 			//retornamos al layout
-			return "/puesto/create";
+			return CREATE_VIEW;
 		} else {
 			//creamos y retornamos a listado de puestos
 			puestoService.storePuesto(puesto);
 			return "redirect:/planilla/puesto/index";
 		}
+	}
+	
+	@PostMapping("/destroy")
+	private String destroy(@RequestParam("idPuestoDestroy") int idPuesto) {
+		
+		//eliminar el puesto mediante su id
+		puestoService.deletePuesto(idPuesto);
+		
+		return "redirect:/planilla/puesto/index";
 	}
 
 	

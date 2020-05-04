@@ -2,94 +2,116 @@
 <html layout:decorate="~{layouts/layout}">
 <head>
 
-  <meta charset="utf-8"/>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<!-- Tell the browser to be responsive to screen width -->
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
 </head>
 <body>
-	
+
 	<h1 class="m-0 text-dark" layout:fragment="titulo_seccion"></h1>
 
 	<ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
-        <li class="breadcrumb-item"><a href="#" th:href="@{/planilla/index}">Home</a></li>
-        <li class="breadcrumb-item"><a href="#" th:href="@{/planilla/puesto/index}">Puestos</a></li>
-        <li class="breadcrumb-item active">Crear</li>
-    </ol>
+		<li class="breadcrumb-item">
+			<a href="#" th:href="@{/planilla/index}">Home</a>
+		</li>
+		<li class="breadcrumb-item">
+			<a href="#" th:href="@{/planilla/puesto/index}">Puestos</a>
+		</li>
+		<li class="breadcrumb-item active">Formulario</li>
+	</ol>
 
 	<div layout:fragment="content">
-		
-		<div class="row">
-          <!-- left column -->
-          <div class="col-md-3"></div>
-          <div class="col-md-6">
-            <!-- general form elements -->
-            <div class="card card-primary">
-              <div class="card-header">
-                <h3 class="card-title">Nuevo Puesto</h3>
-              </div>
-              <!-- /.card-header -->
-              <!-- form start -->
-              <form role="form" 
-              		class="user" action="#"
-					th:action="@{/planilla/puesto/form-post}"
-					th:object="${puestoEntity}" method="POST">
-                <div class="card-body">
-                  <input type="hidden" class="form-control form-control-user" th:field="*{idPuesto}">
-                  <div class="form-group">
-                    <label for="puesto">Título *</label>
-                    <input type="text" class="form-control" id="puesto" placeholder="Título del puesto" th:field="*{puesto}" th:value="${puesto}">
-                    <p class="mt-2 ml-3" style="color: red; font-size: 15px;" th:if="${#fields.hasErrors('puesto')}" th:errors="*{puesto}">Puesto has errors</p>
-                  </div>
-                  <div class="form-group">
-                    <label for="descripcion">Descripción </label>
-                    <textarea class="form-control" id="descripcion" placeholder="Descripción del puesto" rows=3 th:field="*{descripcion}" th:value="${descripcion}"></textarea>
-                  </div>
-                  <div class="row">
-                  	<div class="col-md-6">
-                  		<div class="form-group">
-		                    <label for="salariominimo">Salario mínimo *</label>
-		                    <input type="number" class="form-control" id="salariominimo" placeholder="Salario minimo" th:field="*{salarioMinimo}" th:value="${salarioMinimo}">
-		                    <p class="mt-2 ml-3" style="color: red; font-size: 15px;" th:if="${#fields.hasErrors('salarioMinimo')}" th:errors="*{salarioMinimo}">Salario Minimo has errors</p>
-		                  </div>
-                  	</div>
-                  	<div class="col-md-6">
-                  		<div class="form-group">
-		                    <label for="salariomaximo">Salario Máximo *</label>
-		                    <input type="number" class="form-control" id="salariomaximo" placeholder="Salario maximo" th:field="*{salarioMaximo}" th:value="${salarioMaximo}">
-		                    <p class="mt-2 ml-3" style="color: red; font-size: 15px;" th:if="${#fields.hasErrors('salarioMaximo')}" th:errors="*{salarioMaximo}">Salario Maximo has errors</p>
-		                  </div>
-                  	</div>
-                  </div>
-                  <!-- En el caso de los checkbox, si es true thymeleaf agrega el checked. Sorprendente  -->
-                  <!--  -->
-                  <div class="form-group">
-                    <div class="custom-control custom-checkbox">
-                 	  
-					  <input type="checkbox" class="custom-control-input" id="usuariorequerido" th:field="*{usuarioRequerido}" th:value="${usuarioRequerido}"> 
-					  <label class="custom-control-label" for="usuariorequerido">Usuario requerido</label>
-					  
-					</div>
-                  </div>
-                  
-                </div>
-                <!-- /.card-body -->
 
-                <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">Crear</button>
-                  <a type="button" class="btn btn-default" href="#" th:href="@{/planilla/puesto/index}">Cancelar</a>
-                </div>
-              </form>
-            </div>
-            <!-- /.card -->
-		 </div>
+		<div class="row">
+			<!-- left column -->
+			<div class="col-md-3"></div>
+			<div class="col-md-6">
+				<!-- general form elements -->
+				<div class="card card-primary">
+					<div class="card-header">
+						<h3 class="card-title">Nuevo Puesto</h3>
+					</div>
+					<!-- /.card-header -->
+					<!-- form start -->
+					<form role="form" class="user" action="#"
+						th:action="@{/planilla/puesto/form-post}"
+						th:object="${puestoEntity}" method="POST">
+						<div class="card-body">
+						
+							<input type="hidden" class="form-control form-control-user" th:field="*{idPuesto}">
+							
+							<div class="form-group">
+								<label for="puesto">Título *</label> 
+								<input type="text" class="form-control" id="puesto" placeholder="Título del puesto" 
+									th:field="*{puesto}"
+									th:value="${puesto}">
+								<p class="mt-2 ml-3" style="color: red; font-size: 15px;"
+									th:if="${#fields.hasErrors('puesto')}" 
+									th:errors="*{puesto}">
+									Puesto has errors
+								</p>
+							</div>
+							
+							<div class="form-group">
+								<label for="descripcion">Descripción </label>
+								<textarea class="form-control" id="descripcion" placeholder="Descripción del puesto" rows=3
+									th:field="*{descripcion}" th:value="${descripcion}">
+								</textarea>
+							</div>
+							
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label for="salariominimo">Salario mínimo *</label> 
+										<input type="number" class="form-control" id="salariominimo" placeholder="Salario minimo" 
+											th:field="*{salarioMinimo}"
+											th:value="${salarioMinimo}">
+										<p class="mt-2 ml-3" style="color: red; font-size: 15px;"
+											th:if="${#fields.hasErrors('salarioMinimo')}"
+											th:errors="*{salarioMinimo}">
+											Salario Minimo has errors
+										</p>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label for="salariomaximo">Salario Máximo *</label> 
+										<input type="number" class="form-control" id="salariomaximo" placeholder="Salario maximo" 
+											th:field="*{salarioMaximo}"
+											th:value="${salarioMaximo}">
+										<p class="mt-2 ml-3" style="color: red; font-size: 15px;"
+											th:if="${#fields.hasErrors('salarioMaximo')}"
+											th:errors="*{salarioMaximo}">
+											Salario Maximo has errors
+										</p>
+									</div>
+								</div>
+							</div>
+							<!-- En el caso de los checkbox, si es true thymeleaf agrega el checked. Sorprendente  -->
+							<div class="form-group">
+								<div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" id="usuariorequerido" 
+										th:field="*{usuarioRequerido}"
+										th:value="${usuarioRequerido}"> 
+									<label class="custom-control-label" for="usuariorequerido">Usuario requerido</label>
+								</div>
+							</div>
+						</div>
+						<!-- /.card-body -->
+
+						<div class="card-footer">
+							<button type="submit" class="btn btn-primary">Crear</button>
+							<a type="button" class="btn btn-default" href="#"
+								th:href="@{/planilla/puesto/index}">Cancelar</a>
+						</div>
+					</form>
+				</div>
+				<!-- /.card -->
+			</div>
 		</div>
 	</div>
-	
-	
-	<section layout:fragment="scripts">
-	</section>
-
+	<section layout:fragment="scripts"></section>
 </body>
 </html>
