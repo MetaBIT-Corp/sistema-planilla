@@ -15,7 +15,7 @@
 <h1 class="ml-4 text-dark" layout:fragment="titulo_seccion">Empleados Registrados</h1>
 
 <ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
-    <li class="breadcrumb-item"><a th:href="@{/planilla/index}">Home</a></li>
+    <li class="breadcrumb-item"><a th:href="@{/index}">Home</a></li>
     <li class="breadcrumb-item active">Empleados Registrados</li>
 </ol>
 
@@ -25,7 +25,7 @@
         <div class="col-md-12 ">
             <div class="card">
                 <div class="card-header text-right">
-                    <a th:href="@{/planilla/empleado/create}" type="button" class="btn btn-sm btn-primary">
+                    <a th:href="@{/empleado/create}" type="button" class="btn btn-sm btn-primary">
                         <i class="fas fa-plus-circle mr-1 text-white"></i>
                         <span class="text-white">Nuevo Empleado</span>
                     </a>
@@ -62,7 +62,7 @@
                                             <span>Acción</span>
                                         </button>
                                         <div class="dropdown-menu" style="">
-                                            <a class="dropdown-item" href="#" th:href="@{/planilla/empleado/show?id={id}(id=${e.idEmpleado})}"><i class="far fa-eye mr-3"></i>Ver</a>
+                                            <a class="dropdown-item" href="#" th:href="@{/empleado/show?id={id}(id=${e.idEmpleado})}"><i class="far fa-eye mr-3"></i>Ver</a>
                                             <a class="dropdown-item" href="#" ><i class="far fa-edit mr-3"></i>Editar</a>
                                             <a th:if="${!e.empleadoHabilitado}" class="disable_enable dropdown-item" href="#" th:attr="data-id=${e.idEmpleado}, data-type=${e.empleadoHabilitado}"><i class="far fa-check-circle mr-3"></i>Habiltar</a>
                                             <a th:unless="${!e.empleadoHabilitado}" class="disable_enable dropdown-item" href="#" th:attr="data-id=${e.idEmpleado}, data-type=${e.empleadoHabilitado}"><i class="far fa-window-close mr-3"></i>Deshabilitar</a>
@@ -156,7 +156,7 @@
             console.log(document.location.pathname);
             $('#titulo_modal').text(title);
             $('#mensaje_modal').text(message_modal);
-            $('#accion_modal').attr("href",document.location.origin+"/planilla/empleado/status?id="+id);
+            $('#accion_modal').attr("href",document.location.origin+"/empleado/status?id="+id);
             $('#accion_modal').text(accion_modal).click();
             $('#status_modal').modal("show");
         });

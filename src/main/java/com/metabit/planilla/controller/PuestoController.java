@@ -24,7 +24,7 @@ import com.metabit.planilla.entity.Puesto;
 import com.metabit.planilla.service.PuestoService;
 
 @Controller
-@RequestMapping("/planilla/puesto")
+@RequestMapping("/puesto")
 public class PuestoController {
 	
 	@Autowired
@@ -83,10 +83,10 @@ public class PuestoController {
 			//creamos y retornamos a listado de puestos
 			if(puesto.getIdPuesto() == 0) {
 				puestoService.storePuesto(puesto);
-				return "redirect:/planilla/puesto/index?store_success=true";
+				return "redirect:/puesto/index?store_success=true";
 			}else {
 				puestoService.updatePuesto(puesto);
-				return "redirect:/planilla/puesto/index?update_success=true";
+				return "redirect:/puesto/index?update_success=true";
 			}
 			
 		}
@@ -97,8 +97,7 @@ public class PuestoController {
 	public String destroyPuesto(@RequestParam("idPuestoDestroy") int id) {
 		LOGGER.info("PUESTO: " + id);
 		puestoService.destroyPuesto(id);
-		return "redirect:/planilla/puesto/index?delete_success=true";
+		return "redirect:/puesto/index?delete_success=true";
 	}
 
-	
 }

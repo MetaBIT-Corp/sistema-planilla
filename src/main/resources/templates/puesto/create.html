@@ -14,10 +14,10 @@
 
 	<ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
 		<li class="breadcrumb-item">
-			<a href="#" th:href="@{/planilla/index}">Home</a>
+			<a href="#" th:href="@{/index}">Home</a>
 		</li>
 		<li class="breadcrumb-item">
-			<a href="#" th:href="@{/planilla/puesto/index}">Puestos</a>
+			<a href="#" th:href="@{/puesto/index}">Puestos</a>
 		</li>
 		<li class="breadcrumb-item active">Formulario</li>
 	</ol>
@@ -36,7 +36,7 @@
 					<!-- /.card-header -->
 					<!-- form start -->
 					<form role="form" class="user" action="#"
-						th:action="@{/planilla/puesto/form-post}"
+						th:action="@{/puesto/form-post}"
 						th:object="${puestoEntity}" method="POST">
 						<div class="card-body">
 						
@@ -113,7 +113,7 @@
 						<div class="card-footer">
 							<button type="submit" id="enviar" class="btn btn-primary" >Enviar</button>
 							<a type="button" class="btn btn-default" href="#"
-								th:href="@{/planilla/puesto/index}">Cancelar</a>
+								th:href="@{/puesto/index}">Cancelar</a>
 						</div>
 					</form>
 				</div>

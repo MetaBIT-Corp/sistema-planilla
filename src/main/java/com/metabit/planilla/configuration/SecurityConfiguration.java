@@ -30,23 +30,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 
 		http.authorizeRequests()
 			.antMatchers( //***************Agregar urls que no neciten logueo****************//
-					"/planilla/ejemplo",
-					"/planilla/puesto/***",
-					"/planilla/profesion/***",
-					"/planilla/tipo-documento/***",
-					"/planilla/base",
-					"/planilla/index",
-					"/planilla/empleado/**",
 					"/api/**"
 					).permitAll()
 			.antMatchers("/css/**","/imgs/**","/js/**","/dist/**","/plugins/**").permitAll()
 			.anyRequest().authenticated()
 			.and()
-			.formLogin().loginPage("/planilla/login").loginProcessingUrl("/planilla/login-check")
+			.formLogin().loginPage("/login").loginProcessingUrl("/login-check")
 			.usernameParameter("username").passwordParameter("password")
-			.defaultSuccessUrl("/planilla/loginsuccess").permitAll()
+			.defaultSuccessUrl("/loginsuccess").permitAll()
 			.and()
-			.logout().logoutUrl("/planilla/logout").logoutSuccessUrl("/planilla/login?logout").permitAll();
+			.logout().logoutUrl("/logout").logoutSuccessUrl("/login?logout").permitAll();
 
 		//Agregado por Ricardo, tenia problemas con el POST en AJAX
 		http.csrf().disable();

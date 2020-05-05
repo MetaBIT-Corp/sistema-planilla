@@ -15,7 +15,7 @@ import javax.validation.Valid;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/planilla/tipo-documento")
+@RequestMapping("/tipo-documento")
 public class TipoDocumentoController {
 
     @Autowired
@@ -67,7 +67,7 @@ public class TipoDocumentoController {
             tipoDocumento.setTipoDocumentoHabilitado(true);
         }
         tipoDocumentoService.updateTipoDocumento(tipoDocumento);
-        return "redirect:/planilla/tipo-documento/index";
+        return "redirect:/tipo-documento/index";
     }
 
 }

@@ -17,7 +17,7 @@ import com.metabit.planilla.entity.Profesion;
 import com.metabit.planilla.service.ProfesionService;
 
 @Controller
-@RequestMapping("/planilla/profesion")
+@RequestMapping("/profesion")
 public class ProfesionController {
 
     @Autowired
@@ -64,7 +64,7 @@ public class ProfesionController {
     @PostMapping("/destroy")
     private String destroy(@RequestParam("idProfesionDestroy") int idProfesion) {
         profesionService.deleteProfesion(idProfesion);
-        return "redirect:/planilla/profesion/index";
+        return "redirect:/profesion/index";
     }
 
 }

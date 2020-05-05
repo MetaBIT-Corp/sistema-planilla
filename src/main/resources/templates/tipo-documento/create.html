@@ -13,8 +13,8 @@
 <h1 class="m-0 text-dark" layout:fragment="titulo_seccion"></h1>
 
 <ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
-    <li class="breadcrumb-item"><a href="#" th:href="@{/planilla/index}">Home</a></li>
-    <li class="breadcrumb-item"><a href="#" th:href="@{/planilla/tipo-documento/index}">Tipos de Documento</a></li>
+    <li class="breadcrumb-item"><a href="#" th:href="@{/index}">Home</a></li>
+    <li class="breadcrumb-item"><a href="#" th:href="@{/tipo-documento/index}">Tipos de Documento</a></li>
     <li class="breadcrumb-item active">Crear</li>
 </ol>
 
@@ -36,7 +36,7 @@
                 <!-- form start -->
                 <form role="form"
                       class="user" action="#"
-                      th:action="@{/planilla/tipo-documento/form-post}"
+                      th:action="@{/tipo-documento/form-post}"
                       th:object="${tipoDocumentoEntity}" method="POST">
 
                     <div class="card-body">
@@ -70,7 +70,7 @@
 
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary">Crear</button>
-                        <a type="button" class="btn btn-default" href="#" th:href="@{/planilla/tipo-documento/index}">Cancelar</a>
+                        <a type="button" class="btn btn-default" href="#" th:href="@{/tipo-documento/index}">Cancelar</a>
                     </div>
 
                 </form>

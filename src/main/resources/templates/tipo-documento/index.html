@@ -14,7 +14,7 @@
 <h1 class="m-0 text-dark" layout:fragment="titulo_seccion">Tipos de Documento</h1>
 
 <ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
-    <li class="breadcrumb-item"><a href="#" th:href="@{/planilla/index}">Home</a></li>
+    <li class="breadcrumb-item"><a href="#" th:href="@{/index}">Home</a></li>
     <li class="breadcrumb-item active">Tipos de Documento</li>
 </ol>
 
@@ -25,7 +25,7 @@
             <div class="card">
 
                 <div class="card-header">
-                    <a href="#" th:href="@{/planilla/tipo-documento/form-tipo-documento}" type="button" class="btn btn-sm btn-primary">
+                    <a href="#" th:href="@{/tipo-documento/form-tipo-documento}" type="button" class="btn btn-sm btn-primary">
                         <i class="fas fa-plus-circle mr-1 text-white"></i>
                         <span class="text-white">Nuevo Tipo de Documento</span>
                     </a>
@@ -60,7 +60,7 @@
                                             <span>Acci&oacute;n</span>
                                         </button>
                                         <div class="dropdown-menu" style="">
-                                            <a class="dropdown-item" href="#" th:href="@{'/planilla/tipo-documento/form-tipo-documento/'+${tipoDocumento.idTipoDocumento}+''}"><i class="far fa-edit mr-3"></i>Editar</a>
+                                            <a class="dropdown-item" href="#" th:href="@{'/tipo-documento/form-tipo-documento/'+${tipoDocumento.idTipoDocumento}+''}"><i class="far fa-edit mr-3"></i>Editar</a>
                                             <a class="dropdown-item"
                                                style="cursor:pointer"
                                                th:attr="
@@ -113,7 +113,7 @@
 
                 <form method="post"
                       action="#"
-                      th:action="@{/planilla/tipo-documento/disable}">
+                      th:action="@{/tipo-documento/disable}">
 
                     <div class="modal-body">
                         <div class="form-group">

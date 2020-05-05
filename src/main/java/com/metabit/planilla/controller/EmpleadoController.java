@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 
 
 @Controller
-@RequestMapping("/planilla/empleado")
+@RequestMapping("/empleado")
 public class EmpleadoController {
 
     @Autowired
@@ -310,7 +310,7 @@ public class EmpleadoController {
             e.setEmpleadoHabilitado(true);
         }
         empleadoService.updateEmployee(e);
-        return "redirect:/planilla/empleado/index";
+        return "redirect:/empleado/index";
     }
     
     @PreAuthorize("hasAuthority('EMPLEADO_SHOW')")
