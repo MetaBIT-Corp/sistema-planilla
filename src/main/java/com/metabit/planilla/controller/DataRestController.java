@@ -2,6 +2,8 @@ package com.metabit.planilla.controller;
 
 import java.util.List;
 
+import com.metabit.planilla.entity.Genero;
+import com.metabit.planilla.service.GeneroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,10 +29,18 @@ public class DataRestController {
 	@Autowired
 	@Qualifier("municipioServiceImpl")
 	private MunicipioService municipioService;
+
+	@Autowired
+	@Qualifier("generoServiceImpl")
+	private GeneroService generoService;
 	
 	@GetMapping("/municipios/{idDepartamento}")
 	public List<Municipio> getMunicipiosByDepto(@PathVariable("idDepartamento") int idDepartamento){
 		Departamento depto = departmentoService.getDepartamento(idDepartamento);
 		return municipioService.getMunicipiosByDepartamento(depto);
+	}
+	@GetMapping("/genero/{id}")
+	public Genero getGenero(@PathVariable("id") int idGenero){
+		return generoService.getGenero(idGenero);
 	}
 }

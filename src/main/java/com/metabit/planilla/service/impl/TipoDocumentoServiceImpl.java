@@ -39,4 +39,9 @@ public class TipoDocumentoServiceImpl implements TipoDocumentoService {
     public void deleteTipoDocumento(int idTipoDocumento) {
         tipoDocumentoJpaRepository.deleteById(idTipoDocumento);
     }
+
+    @Override
+    public List<TipoDocumento> getTipoDocHabilitado() {
+        return tipoDocumentoJpaRepository.getAllByTipoDocumentoHabilitadoIsTrue();
+    }
 }

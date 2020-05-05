@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface EmpleadoDocumentoService {
     public abstract List<EmpleadoDocumento> getDocumentsByEmployee(Empleado e);
-    public abstract Boolean createOrUpdateDocumentsEmployee(List<EmpleadoDocumento> ed);
+    public abstract EmpleadoDocumento createOrUpdateDocumentsEmployee(EmpleadoDocumento ed);
 }

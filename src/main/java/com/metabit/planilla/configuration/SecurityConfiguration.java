@@ -37,7 +37,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 					"/planilla/base",
 					"/planilla/index",
 					"/planilla/empleado/**",
-					"/api/municipios/{idDepartamento}"
+					"/api/**"
 					).permitAll()
 			.antMatchers("/css/**","/imgs/**","/js/**","/dist/**","/plugins/**").permitAll()
 			.anyRequest().authenticated()
@@ -47,6 +47,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 			.defaultSuccessUrl("/planilla/loginsuccess").permitAll()
 			.and()
 			.logout().logoutUrl("/planilla/logout").logoutSuccessUrl("/planilla/login?logout").permitAll();
+
+		//Agregado por Ricardo, tenia problemas con el POST en AJAX
+		http.csrf().disable();
 	}
 	
 	

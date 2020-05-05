@@ -22,8 +22,7 @@ public class EmpleadoProfesionServiceImpl implements EmpleadoProfesionService {
     }
 
     @Override
-    public Boolean createOrUpdateProfessionsEmployee(List<EmpleadoProfesion> ep) {
-        Iterable<EmpleadoProfesion> i = ep;
-        return !empleadoProfesionJpaRepository.saveAll(i).isEmpty();
+    public EmpleadoProfesion createOrUpdateProfessionsEmployee(EmpleadoProfesion ep) {
+        return empleadoProfesionJpaRepository.save(ep);
     }
 }

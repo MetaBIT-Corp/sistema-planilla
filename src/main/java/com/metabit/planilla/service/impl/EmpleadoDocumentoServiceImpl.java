@@ -23,8 +23,7 @@ public class EmpleadoDocumentoServiceImpl implements EmpleadoDocumentoService {
     }
 
     @Override
-    public Boolean createOrUpdateDocumentsEmployee(List<EmpleadoDocumento> ed) {
-        Iterable<EmpleadoDocumento> i = ed;
-        return !empleadoDocumentoJpaRepository.saveAll(i).isEmpty();
+    public EmpleadoDocumento createOrUpdateDocumentsEmployee(EmpleadoDocumento ed) {
+        return empleadoDocumentoJpaRepository.save(ed);
     }
 }

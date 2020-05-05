@@ -111,12 +111,18 @@ insert into municipios (id_municipio,municipio,id_departamento) values (2, 'San 
 insert into municipios (id_municipio,municipio,id_departamento) values (3, 'Alegria', 2);
 insert into municipios (id_municipio,municipio,id_departamento) values (4, 'California', 2);
 
-insert into direcciones (id_direccion,calle,complemento,numero_casa,urbanizacion,id_municipio) values (1, 'Campos', 'Condominio San Francisco', '4-A', null, 3);
+insert into direcciones (id_direccion,calle,complemento,numero_casa,urbanizacion,id_municipio) values (78, 'Campos', 'Condominio San Francisco', '4-A', 'La loma', 3);
 
-insert into empresas (id_empresa,correo_empresa,empresa,nic_empresa,nit_empresa,page,pagina_empresa,telefono,id_direccion) values(1,'metabit@gmail.com','MetaBIT','000001','000002','@MetaBIT','www.metabit.com','2237-2828',1);
+insert into empresas (id_empresa,correo_empresa,empresa,nic_empresa,nit_empresa,page,pagina_empresa,telefono,id_direccion) values(1,'metabit@gmail.com','MetaBIT','000001','000002','@MetaBIT','www.metabit.com','2237-2828',78);
 
 --Empleados de prueba
-insert into empleados values(1,null,'Lopez','Estupinian','EL16002','el16002@ues.edu.sv',1,0,'28-JUN-97',2,'Ricardo','Bladimir',2000,null,null,null);
+insert into empleados values(190,null,'Lopez','Estupinian','EL16002','el16007@ues.edu.sv','el16077@ues.edu.sv',1,0,'28-JUN-97',2,'Ricardo','Bladimir',2000,null,null,null);
 
-insert into empleados values(2,null,'Lopez','Estupinian','EL14002','el14002@ues.edu.sv',0,0,'17-MAR-95',2,'Estefany','Lizeida',2000,null,null,null);
+insert into empleados values(230,null,'Lopez','Estupinian','EL14002','el14002@ues.edu.sv','el16087@ues.edu.sv',0,0,'17-MAR-95',2,'Richard','Bladi',2000,null,null,null);
 
+--Estado Civil
+insert into estados_civiles values(1,'Soltero/a');
+insert into estados_civiles values(2,'Casado/a');
+insert into estados_civiles values(3,'Divorciado/a');
+insert into estados_civiles values(4,'Viudo/a');
+insert into estados_civiles values(5,'Union Libre');

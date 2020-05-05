@@ -14,8 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import com.sun.istack.NotNull;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "empleados")
@@ -26,15 +26,14 @@ public class Empleado {
 	@Column(name = "id_empleado", nullable = false)
 	private int idEmpleado;
 	
-	@NotNull
-	@Column(name = "codigo", nullable = false)
+	@NotNull(message = "Debe especificar codigo de empleado.")
+	@Column(name = "codigo", nullable = false, unique = true)
 	private String codigo;
 	
-	@NotNull
+	@NotNull(message = "Debe especificar nombre.")
 	@Column(name = "nombre_primero", nullable = false)
 	private String nombrePrimero;
-	
-	@NotNull
+
 	@Column(name = "nombre_segundo")
 	private String nombreSegundo;
 	
@@ -42,36 +41,39 @@ public class Empleado {
 	@Column(name = "apellido_paterno")
 	private String apellidoPaterno;
 	
-	@NotNull
-	@Column(name = "apellido_materno", nullable = false)
+	@NotNull(message = "Debe especificar el apellido materno.")
+	@Column(name = "apellido_materno", nullable = false )
 	private String apellidoMaterno;
 	
 	
 	@Column(name = "apellido_casada")
 	private String apellidoCasada;
 	
-	@NotNull
+	@NotNull(message = "Debe especificar fecha de nacimiento.")
 	@Column(name = "fecha_nacimiento", nullable = false)
 	private Date fechaNacimiento;
-	
-	@NotNull
-	@Column(name = "correo_personal", nullable = false)
+
+	@Email(message = "Formato de correo invalido.")
+	@Column(name = "correo_personal")
 	private String correoPersonal;
+
+	//@NotNull(message = "Debe de especificar un correo institucional.")
+	@Email(message = "Formato de correo invalido.")
+	@Column(name = "correo_institucional", nullable = false)
+	private String correoInstitucional;
 	
-	@NotNull
+	@NotNull(message = "Debe especificar el salario base.")
 	@Column(name = "salario_base_mensual", nullable = false)
 	private double salarioBaseMensual;
 	
-	@NotNull
+	@NotNull(message = "Debe especificar las horas de trabajo.")
 	@Column(name = "horas_trabajo", nullable = false)
 	private int horasTrabajo;
-	
-	@NotNull
-	@Column(name = "es_administrativo", nullable = false)
+
+	@Column(name = "es_administrativo")
 	private Boolean esAdministrativo;
-	
-	@NotNull
-	@Column(name = "empleado_habilitado", nullable = false)
+
+	@Column(name = "empleado_habilitado")
 	private Boolean empleadoHabilitado;
 	
 	//Personals Documents
@@ -101,6 +103,39 @@ public class Empleado {
 	//Professions
 	@OneToMany(mappedBy="empleado",cascade=CascadeType.ALL)
 	private List<EmpleadoProfesion> profesionesEmpleado=new ArrayList<>();
+
+	public Empleado() {
+		super();
+	}
+
+	public Empleado(String codigo, String nombrePrimero, String nombreSegundo, String apellidoPaterno, String apellidoMaterno, String apellidoCasada, Date fechaNacimiento, String correoPersonal, String correoInstitucional, double salarioBaseMensual, int horasTrabajo, Boolean esAdministrativo, Boolean empleadoHabilitado, List<EmpleadoDocumento> documentosEmpleado, Usuario usuario, EstadoCivil estadoCivil, Direccion direccion, List<EmpleadoProfesion> profesionesEmpleado) {
+		this.codigo = codigo;
+		this.nombrePrimero = nombrePrimero;
+		this.nombreSegundo = nombreSegundo;
+		this.apellidoPaterno = apellidoPaterno;
+		this.apellidoMaterno = apellidoMaterno;
+		this.apellidoCasada = apellidoCasada;
+		this.fechaNacimiento = fechaNacimiento;
+		this.correoPersonal = correoPersonal;
+		this.correoInstitucional = correoInstitucional;
+		this.salarioBaseMensual = salarioBaseMensual;
+		this.horasTrabajo = horasTrabajo;
+		this.esAdministrativo = esAdministrativo;
+		this.empleadoHabilitado = empleadoHabilitado;
+		this.documentosEmpleado = documentosEmpleado;
+		this.usuario = usuario;
+		this.estadoCivil = estadoCivil;
+		this.direccion = direccion;
+		this.profesionesEmpleado = profesionesEmpleado;
+	}
+
+	public String getCorreoInstitucional() {
+		return correoInstitucional;
+	}
+
+	public void setCorreoInstitucional(String correoInstitucional) {
+		this.correoInstitucional = correoInstitucional;
+	}
 
 	public int getIdEmpleado() {
 		return idEmpleado;

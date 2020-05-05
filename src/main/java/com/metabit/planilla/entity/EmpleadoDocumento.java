@@ -8,8 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
-import com.sun.istack.NotNull;
 
 @Entity
 @Table(name="empleados_documentos")
@@ -37,9 +37,10 @@ public class EmpleadoDocumento {
 	
 	public EmpleadoDocumento() {}
 
-	public EmpleadoDocumento(int idEmpleadoDocumento, Empleado empleado, String codigoDocumento) {
+	public EmpleadoDocumento(Empleado empleado,TipoDocumento tipoDocumento, String codigoDocumento) {
 		super();
-		this.idEmpleadoDocumento = idEmpleadoDocumento;
+		this.tipoDocumento=tipoDocumento;
+		this.empleado=empleado;
 		this.codigoDocumento = codigoDocumento;
 	}
 

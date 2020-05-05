@@ -10,4 +10,5 @@ public interface TipoDocumentoService {
     public abstract TipoDocumento storeTipoDocumento(TipoDocumento tipoDocumento);
     public abstract TipoDocumento updateTipoDocumento(TipoDocumento tipoDocumento);
     public abstract void deleteTipoDocumento(int idTipoDocumento);
+    public abstract List<TipoDocumento> getTipoDocHabilitado();
 }

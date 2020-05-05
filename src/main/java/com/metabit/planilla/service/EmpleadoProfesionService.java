@@ -8,5 +8,5 @@ import java.util.List;
 public interface EmpleadoProfesionService {
 
     public abstract List<EmpleadoProfesion> getAllProfessionsEmployee(Empleado e);
-    public abstract Boolean createOrUpdateProfessionsEmployee(List<EmpleadoProfesion> ep);
+    public abstract EmpleadoProfesion createOrUpdateProfessionsEmployee(EmpleadoProfesion ep);
 }

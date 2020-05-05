@@ -7,8 +7,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
-import com.sun.istack.NotNull;
 
 @Entity
 @Table(name="direcciones")
@@ -19,7 +19,7 @@ public class Direccion {
 	@Column(name="id_direccion")
 	private int idDireccion;
 	
-	@NotNull
+	@NotNull(message = "Debe especificar urbanizacion")
 	@Column(name="urbanizacion")
 	private String urbanizacion;
 	
@@ -38,10 +38,9 @@ public class Direccion {
 	
 	public Direccion() {}
 
-	public Direccion(int idDireccion, String urbanizacion, String calle, String numeroCasa, String complemento,
+	public Direccion(String urbanizacion, String calle, String numeroCasa, String complemento,
 			Municipio municipio) {
 		super();
-		this.idDireccion = idDireccion;
 		this.urbanizacion = urbanizacion;
 		this.calle = calle;
 		this.numeroCasa = numeroCasa;

@@ -19,4 +19,9 @@ public class EstadoCivilServiceImpl implements EstadoCivilService {
     public List<EstadoCivil> getAllCivilStates() {
         return estadoCivilJpaRepository.findAll();
     }
+
+    @Override
+    public EstadoCivil getCivilState(int id) {
+        return estadoCivilJpaRepository.getOne(id);
+    }
 }
