@@ -1,15 +1,31 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{layouts/layout}">
+<head> 
+<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<!-- Tell the browser to be responsive to screen width -->
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	
+	<!-- SweetAlert2 -->
+  	<link rel="stylesheet" th:href="@{/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css}">
+	<!-- Toastr -->
+  	<link rel="stylesheet" th:href="@{/plugins/toastr/toastr.min.css}">
+</head>
 <body>
 	
 	<h1 class="m-0 text-dark" layout:fragment="titulo_seccion">Generos</h1>
 
 	<ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item"><a href="#" th:href="@{/planilla/index}">Home</a></li>
         <li class="breadcrumb-item active">Generos</li>
     </ol>
 
 	<div layout:fragment="content">
+	
+		<input type="hidden" id="store" th:if="${store_success}" value="true">
+		<input type="hidden" id="update" th:if="${update_success}" value="true">
+		<input type="hidden" id="delete_success" th:if="${delete_success}" value="true">
+		<input type="hidden" id="delete_restricted" th:if="${delete_restricted}" value="true">
 		
 		<!-- Modal para Agregar Genero -->
 		<div class="modal" id="generoModal" tabindex="-1" role="dialog">
@@ -38,29 +54,47 @@
 		</div>
 		
 		<!-- Alert de exito al almacenar nuevo genero -->
-		<div th:if="${store_success != null}" class="alert alert-info offset-1 col-md-10" role="alert" style="margin-top: 8px">
+		<!--<div th:if="${store_success != null}" class="alert alert-info offset-1 col-md-10" role="alert" style="margin-top: 8px">
 			Agregado exitosamente!
-		</div>
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			    <span aria-hidden="true">&times;</span>
+			</button>
+		</div>-->
 		
 		<!-- Alert de exito al actualizar genero -->
-		<div th:if="${update_success != null}" class="alert alert-info offset-1 col-md-10" role="alert" style="margin-top: 8px">
+		<!--<div th:if="${update_success != null}" class="alert alert-info alert-dismissible fade show offset-1 col-md-10" role="alert" style="margin-top: 8px">
 			Actualizado exitosamente!
-		</div>
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			    <span aria-hidden="true">&times;</span>
+			</button>
+		</div>-->
 		
 		<!-- Alert de exito al eliminar genero -->
-		<div th:if="${delete_success != null}" class="alert alert-info offset-1 col-md-10" role="alert" style="margin-top: 8px">
+		<!--<div th:if="${delete_success != null}" class="alert alert-info alert-dismissible fade show offset-1 col-md-10" role="alert" style="margin-top: 8px">
 			Eliminado exitosamente!
-		</div>
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			    <span aria-hidden="true">&times;</span>
+			</button>
+		</div>-->
+		
+		<!-- Alert de restriccion al eliminar genero -->
+		<!--<div th:if="${delete_restricted != null}" class="alert alert-warning alert-dismissible fade show offset-1 col-md-10" role="alert" style="margin-top: 8px">
+			No es posible eliminar el Genero, ya que hay Empleados que lo poseen!
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			    <span aria-hidden="true">&times;</span>
+			</button>
+		</div>-->
 		
 		<!-- DataTable de Generos -->
 		<div class="row ml-3 mr-3">
 			
 			<div class="offset-1 col-md-10">
 			 <div class="card">
-	            <div class="card-header">
-	            <button class="btn btn-md btn-primary" title="Agregar Genero" data-toggle="modal" data-target="#generoModal">
-					<i class="fas fa-plus-circle fa-md text-white-60"></i>
-				</button>
+	            <div class="card-header text-right">
+		            <button class="btn btn-md btn-primary" title="Agregar Genero" data-toggle="modal" data-target="#generoModal">
+						<i class="fas fa-plus-circle mr-1 text-white"></i>
+						<span class="text-white">Nuevo Genero</span>
+					</button>
 	              <h3 class="card-title"></h3>
 	            </div>
 	            <!-- /.card-header -->
@@ -178,6 +212,10 @@
 	  	<script th:src="@{/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
 		<script th:src="@{/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
 		<script th:src="@{/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
+		<!-- Toastr -->
+		<script th:src="@{/plugins/toastr/toastr.min.js}"></script>
+		<!-- SweetAlert2 -->
+		<script th:src="@{/plugins/sweetalert2/sweetalert2.min.js}"></script>
 		
 		<script>
 		  $(function () {
@@ -193,6 +231,7 @@
 		      "info": true,
 		      "autoWidth": false,
 		      "responsive": true,
+		      "pageLength": 5,
 		    });
 		  });
 		  
@@ -216,6 +255,32 @@
 			  
 			  $("#generoModalDestroy").modal();
 		  }
+		  
+		  $(document).ready(function(){
+			  var store = $('#store').val();
+			  var update = $('#update').val();
+			  var delete_success = $('#delete_success').val();
+			  var delete_restricted = $('#delete_restricted').val();
+			  
+			 
+			  setTimeout(function() {
+			    $(".alert").fadeOut();           
+			  },3000);
+			  
+			  if(store === 'true'){
+				 toastr.success("Genero creado con éxito"); 
+			  }
+			  if(update === 'true'){
+				 toastr.success("Genero actualizado con éxito"); 
+			  }
+			  if(delete_success === 'true'){
+				 toastr.error("Genero eliminado"); 
+			  }
+			  if(delete_restricted === 'true'){
+				 toastr.warning("No es posible eliminar el Genero, ya que hay Empleados que lo poseen!"); 
+			  }
+			  
+			});
 		</script>
 	</section>
 

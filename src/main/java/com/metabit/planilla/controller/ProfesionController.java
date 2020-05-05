@@ -10,11 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.metabit.planilla.entity.Profesion;
@@ -60,9 +56,15 @@ public class ProfesionController {
             return "/profesion/create";
         }else{
             profesionService.storeProfesion(profesion);
-            return "redirect:/planilla/profesion/index";
+            return "redirect:index";
         }
 
+    }
+
+    @PostMapping("/destroy")
+    private String destroy(@RequestParam("idProfesionDestroy") int idProfesion) {
+        profesionService.deleteProfesion(idProfesion);
+        return "redirect:/planilla/profesion/index";
     }
 
 }

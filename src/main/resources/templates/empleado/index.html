@@ -62,14 +62,13 @@
                                             <span>Acción</span>
                                         </button>
                                         <div class="dropdown-menu" style="">
-                                            <a class="dropdown-item" href="#" ><i class="far fa-eye mr-3"></i>Ver</a>
+                                            <a class="dropdown-item" href="#" th:href="@{/planilla/empleado/show?id={id}(id=${e.idEmpleado})}"><i class="far fa-eye mr-3"></i>Ver</a>
                                             <a class="dropdown-item" href="#" ><i class="far fa-edit mr-3"></i>Editar</a>
                                             <a th:if="${!e.empleadoHabilitado}" class="disable_enable dropdown-item" href="#" th:attr="data-id=${e.idEmpleado}, data-type=${e.empleadoHabilitado}"><i class="far fa-check-circle mr-3"></i>Habiltar</a>
                                             <a th:unless="${!e.empleadoHabilitado}" class="disable_enable dropdown-item" href="#" th:attr="data-id=${e.idEmpleado}, data-type=${e.empleadoHabilitado}"><i class="far fa-window-close mr-3"></i>Deshabilitar</a>
                                         </div>
                                     </div>
                                 </div>
-
                             </td>
                         </tr>
                         </tbody>

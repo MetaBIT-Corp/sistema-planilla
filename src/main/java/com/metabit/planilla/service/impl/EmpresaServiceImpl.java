@@ -17,12 +17,12 @@ public class EmpresaServiceImpl implements EmpresaService{
 	
 	@Override
 	public Empresa getEmpresa() {
-		return empresaJpaRepository.getOne(1);
+		return empresaJpaRepository.findAll().get(0);
 	}
 
 	@Override
 	public Empresa updateEmpresa(Empresa empresa) {
-		Empresa emp_obj = empresaJpaRepository.getOne(1);
+		Empresa emp_obj = empresaJpaRepository.findAll().get(0);
 		emp_obj.setEmpresa(empresa.getEmpresa());
 		emp_obj.setTelefono(empresa.getTelefono());
 		emp_obj.setPage(empresa.getPage());

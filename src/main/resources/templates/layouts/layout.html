@@ -107,7 +107,7 @@
 	
 	    <!-- Sidebar -->
 	    <div class="sidebar">
-	      <!-- Sidebar user panel (optional) -->
+	      <!-- Sidebar user panel (optional) 
 	      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
 	        <div class="image">
 	          <img th:src="@{/dist/img/user2-160x160.jpg}" class="img-circle elevation-2" alt="User Image">
@@ -115,7 +115,7 @@
 	        <div class="info">
 	          <a href="#" class="d-block">Username</a>
 	        </div>
-	      </div>
+	      </div>-->
 	
 	      <!-- Sidebar Menu -->
 	      <nav class="mt-2">
@@ -124,90 +124,57 @@
 	               with font-awesome or any other icon font library -->
 	
 	      
-	          <li class="nav-header">MULTI LEVEL EXAMPLE</li>
-	          <li class="nav-item">
-	            <a href="#" class="nav-link  active">
-	              <i class="fas fa-circle nav-icon"></i>
-	              <p>Level 1</p>
-	            </a>
-	          </li>
+	          <li class="nav-header">PLANILLA</li>
+	          
+	          <!-- ADMINISTRACION -->
 	          <li class="nav-item has-treeview">
 	            <a href="#" class="nav-link">
 	              <i class="nav-icon fas fa-circle"></i>
 	              <p>
-	                Level 1
+	                Administración
 	                <i class="right fas fa-angle-left"></i>
 	              </p>
 	            </a>
 	            <ul class="nav nav-treeview">
 	              <li class="nav-item">
-	                <a href="#" class="nav-link">
-	                  <i class="far fa-circle nav-icon"></i>
-	                  <p>Level 2</p>
+	                <a href="#" th:href="@{/empresa/perfil/show}" class="nav-link">
+	                  <i class="far fa-building ml-1 mr-3"></i>
+	                  <p> Empresa</p>
 	                </a>
-	              </li>
-	              <li class="nav-item has-treeview">
-	                <a href="#" class="nav-link">
-	                  <i class="far fa-circle nav-icon"></i>
-	                  <p>
-	                    Level 2
-	                    <i class="right fas fa-angle-left"></i>
-	                  </p>
-	                </a>
-	                <ul class="nav nav-treeview">
-	                  <li class="nav-item">
-	                    <a href="#" class="nav-link">
-	                      <i class="far fa-dot-circle nav-icon"></i>
-	                      <p>Level 3</p>
-	                    </a>
-	                  </li>
-	                  <li class="nav-item">
-	                    <a href="#" class="nav-link">
-	                      <i class="far fa-dot-circle nav-icon"></i>
-	                      <p>Level 3</p>
-	                    </a>
-	                  </li>
-	                  <li class="nav-item">
-	                    <a href="#" class="nav-link">
-	                      <i class="far fa-dot-circle nav-icon"></i>
-	                      <p>Level 3</p>
-	                    </a>
-	                  </li>
-	                </ul>
 	              </li>
 	              <li class="nav-item">
-	                <a href="#" class="nav-link">
-	                  <i class="far fa-circle nav-icon"></i>
-	                  <p>Level 2</p>
+	                <a href="#" th:href="@{/planilla/empleado/index}" class="nav-link">
+	                  <i class="fas fa-users mr-3"></i>
+	                  <p> Empleados</p>
+	                </a>
+	              </li>
+	              <li class="nav-item" sec:authorize="hasAuthority('PUESTO_INDEX')">
+	                <a href="#" th:href="@{/planilla/puesto/index}" class="nav-link">
+	                  <i class="fas fa-briefcase mr-3"></i>
+	                  <p>Puestos</p>
+	                </a>
+	              </li>
+	              <li class="nav-item">
+	                <a href="#" th:href="@{/planilla/profesion/index}" class="nav-link">
+	                  <i class="fas fa-user-tie mr-3"></i>
+	                  <p>Profesiones</p>
+	                </a>
+	              </li>
+	               <li class="nav-item">
+	                <a href="#" th:href="@{/planilla/tipo-documento/index}" class="nav-link">
+	                  <i class="far fa-id-card mr-2"></i>
+	                  <p>Tipos de documentos</p>
+	                </a>
+	              </li>
+	               <li class="nav-item">
+	                <a href="#" th:href="@{/planilla/genero/index}" class="nav-link">
+	                  <i class="fas fa-venus-mars mr-2"></i>
+	                  <p>Generos</p>
 	                </a>
 	              </li>
 	            </ul>
 	          </li>
-	          <li class="nav-item">
-	            <a href="#" class="nav-link">
-	              <i class="fas fa-circle nav-icon"></i>
-	              <p>Level 1</p>
-	            </a>
-	          </li>
-	          <li class="nav-header">LABELS</li>
-	          <li class="nav-item">
-	            <a href="#" class="nav-link">
-	              <i class="nav-icon far fa-circle text-danger"></i>
-	              <p class="text">Important</p>
-	            </a>
-	          </li>
-	          <li class="nav-item">
-	            <a href="#" class="nav-link">
-	              <i class="nav-icon far fa-circle text-warning"></i>
-	              <p>Warning</p>
-	            </a>
-	          </li>
-	          <li class="nav-item">
-	            <a href="#" class="nav-link">
-	              <i class="nav-icon far fa-circle text-info"></i>
-	              <p>Informational</p>
-	            </a>
-	          </li>
+	          <!-- ADMINISTRACION -->
 	        </ul>
 	      </nav>
 	      <!-- /.sidebar-menu -->
@@ -249,7 +216,7 @@
 	  
 	  
 	  <footer class="main-footer">
-	    <strong>Copyright &copy; 2020 <a href="https://github.com/comunidad-ciclo-vii-2019">Metabit</a>.</strong>
+	    <strong>Copyright &copy; 2020 <a href="https://github.com/MetaBIT-Corp">Metabit</a>.</strong>
 	    All rights reserved.
 	    <div class="float-right d-none d-sm-inline-block">
 	      <b>Version</b> 1.0

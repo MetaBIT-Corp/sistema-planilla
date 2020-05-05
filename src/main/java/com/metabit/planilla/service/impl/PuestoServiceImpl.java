@@ -46,4 +46,10 @@ public class PuestoServiceImpl implements PuestoService{
 		puestoJpaRepository.deleteById(idPuesto);
 	}
 
+	@Override
+	public void destroyPuesto(int idPuesto) {
+		// TODO Auto-generated method stub
+		puestoJpaRepository.deleteById(idPuesto);
+	}
+
 }

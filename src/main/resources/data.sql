@@ -27,8 +27,8 @@ INSERT INTO puestos(id_puesto, descripcion, puesto, salario_maximo, salario_mini
 	   VALUES      (13, 'Descripción del puesto', 'Técnico de Redes', 1000, 360, 0);
 INSERT INTO puestos(id_puesto, descripcion, puesto, salario_maximo, salario_minimo, usuario_requerido)
 	   VALUES      (14, 'Descripción del puesto', 'Administrador de Bases de Datos', 1000, 360, 0);
-/*PROFESIONES*/
 
+/*PROFESIONES*/
 INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (1, 'Ingeniero en Sistemas Informáticos', 1);
 INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (2, 'Ingeniero en Redes Informáticas', 1);
 INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (3, 'Ingeniero Electricista', 1);
@@ -45,8 +45,6 @@ INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (13, 'Chof
 INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (14, 'Pintor', 0);
 INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (15, 'Licenciado en Psicología', 1);
 INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (16, 'Licenciado en Ciencias Jurídicas', 1);
-
-
 
 /*TIPOS DE DOCUMENTO*/
 
@@ -68,26 +66,68 @@ INSERT ALL INTO RECURSOS VALUES(1, 'EMPLEADO')
 		   INTO	RECURSOS VALUES(2, 'EMPRESA')
 		   INTO	RECURSOS VALUES(3, 'GENERO')
 		   INTO	RECURSOS VALUES(4, 'TIPODOCUMENTO')
+		   INTO	RECURSOS VALUES(5, 'PUESTO')
+		   INTO	RECURSOS VALUES(6, 'PROFESION')
 SELECT * FROM DUAL;
 
 INSERT ALL INTO ROLES VALUES(1, 'ROLE_ADMIN')
 		   INTO ROLES VALUES(2, 'ROLE_JEFE')
 		   INTO ROLES VALUES(3, 'ROLE_AUXILIAR')
 		   INTO ROLES VALUES(4, 'ROLE_PRESUPUESTO')
+		   INTO ROLES VALUES(5, 'ROLE_USER')
 SELECT * FROM DUAL;
 
 INSERT ALL INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(1,1,1,1)
-		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(2,2,2,1)
-		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(3,3,3,2)
-  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(4,4,4,2)
+		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(2,2,1,1)
+		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(3,3,1,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(4,4,1,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(5,5,1,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(6,1,2,1)
+		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(7,2,2,1)
+		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(8,3,2,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(9,4,2,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(10,5,2,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(11,1,3,1)
+		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(12,2,3,1)
+		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(13,3,3,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(14,4,3,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(15,5,3,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(16,1,4,1)
+		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(17,2,4,1)
+		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(18,3,4,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(19,4,4,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(20,5,4,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(21,1,5,1)
+		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(22,2,5,1)
+		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(23,3,5,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(24,4,5,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(25,5,5,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(26,1,6,1)
+		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(27,2,6,1)
+		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(28,3,6,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(29,4,6,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(30,5,6,1)
+
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(31,1,1,5)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(32,1,2,5)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(33,1,3,5)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(34,1,4,5)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(35,1,5,5)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(36,1,6,5)
 SELECT * FROM DUAL;
 
 INSERT ALL INTO USUARIOS VALUES(1,0,0,1,0,'$2a$10$.wYsFS0/zPkY3.LnN8F/reqimatDtOS71.5Uzh/RzlF718/aFO7oS',1,'admin')
-           INTO USUARIOS VALUES(2,0,0,1,0,'$2a$10$.wYsFS0/zPkY3.LnN8F/reqimatDtOS71.5Uzh/RzlF718/aFO7oS',1,'user')
+           INTO USUARIOS VALUES(2,0,0,1,0,'$2a$10$.wYsFS0/zPkY3.LnN8F/reqimatDtOS71.5Uzh/RzlF718/aFO7oS',1,'jefe')
+           INTO USUARIOS VALUES(3,0,0,1,0,'$2a$10$.wYsFS0/zPkY3.LnN8F/reqimatDtOS71.5Uzh/RzlF718/aFO7oS',1,'auxiliar')
+           INTO USUARIOS VALUES(4,0,0,1,0,'$2a$10$.wYsFS0/zPkY3.LnN8F/reqimatDtOS71.5Uzh/RzlF718/aFO7oS',1,'presupuestario')
+           INTO USUARIOS VALUES(5,0,0,1,0,'$2a$10$.wYsFS0/zPkY3.LnN8F/reqimatDtOS71.5Uzh/RzlF718/aFO7oS',1,'user')
 SELECT * FROM DUAL;
 
 INSERT ALL INTO USUARIOS_ROLES VALUES(1,1)
   		   INTO USUARIOS_ROLES VALUES(2,2)
+  		   INTO USUARIOS_ROLES VALUES(3,3)
+  		   INTO USUARIOS_ROLES VALUES(4,4)
+  		   INTO USUARIOS_ROLES VALUES(5,5)
 SELECT * FROM DUAL;
 
 /*-------------------------------------------------------------------------------------*/
@@ -115,10 +155,6 @@ insert into direcciones (id_direccion,calle,complemento,numero_casa,urbanizacion
 
 insert into empresas (id_empresa,correo_empresa,empresa,nic_empresa,nit_empresa,page,pagina_empresa,telefono,id_direccion) values(1,'metabit@gmail.com','MetaBIT','000001','000002','@MetaBIT','www.metabit.com','2237-2828',78);
 
---Empleados de prueba
-insert into empleados values(190,null,'Lopez','Estupinian','EL16002','el16007@ues.edu.sv','el16077@ues.edu.sv',1,0,'28-JUN-97',2,'Ricardo','Bladimir',2000,null,null,null);
-
-insert into empleados values(230,null,'Lopez','Estupinian','EL14002','el14002@ues.edu.sv','el16087@ues.edu.sv',0,0,'17-MAR-95',2,'Richard','Bladi',2000,null,null,null);
 
 --Estado Civil
 insert into estados_civiles values(1,'Soltero/a');
