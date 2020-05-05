@@ -19,17 +19,17 @@ public class Puesto {
 	private int idPuesto;
 	
 	@NotNull
-	@Size(min = 1, max = 250)
+	@Size(min = 1, max = 250, message= "El titulo es obligatorio* (máximo de 250 caracteres)")
 	@Column(name = "puesto")
 	private String puesto;
 	
 	@NotNull
-	@Min(360)
+	@Min(300)
 	@Column(name = "salario_minimo")
 	private double salarioMinimo;
 	
 	@NotNull
-	@Min(360)
+	@Min(300)
 	@Column(name = "salario_maximo")
 	private double salarioMaximo;
 	
