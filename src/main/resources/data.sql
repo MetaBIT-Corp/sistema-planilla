@@ -29,7 +29,7 @@ INSERT INTO puestos(id_puesto, descripcion, puesto, salario_maximo, salario_mini
 	   VALUES      (14, 'Descripción del puesto', 'Administrador de Bases de Datos', 1000, 360, 0);
 
 /*PROFESIONES*/
-
+/*
 INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (1, 'Ingeniero en Sistemas Informáticos', 1);
 INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (2, 'Ingeniero en Redes Informáticas', 1);
 INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (3, 'Ingeniero Electricista', 1);
@@ -46,15 +46,15 @@ INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (13, 'Chof
 INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (14, 'Pintor', 0);
 INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (15, 'Licenciado en Psicología', 1);
 INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (16, 'Licenciado en Ciencias Jurídicas', 1);
-
+*/
 /*TIPOS DE DOCUMENTO*/
-
+/*
 INSERT INTO tipos_documento(id_tipo_documento, tipo_documento, formato, tipo_documento_habilitado) VALUES (1, 'DUI','00000000-0',1);
 INSERT INTO tipos_documento(id_tipo_documento, tipo_documento, formato, tipo_documento_habilitado) VALUES (2, 'NIT','0000-000000-000-0',1);
 INSERT INTO tipos_documento(id_tipo_documento, tipo_documento, formato, tipo_documento_habilitado) VALUES (3, 'NUP','000000000000',1);
 INSERT INTO tipos_documento(id_tipo_documento, tipo_documento, formato, tipo_documento_habilitado) VALUES (4, 'ISSS','000000000',1);
 INSERT INTO tipos_documento(id_tipo_documento, tipo_documento, formato, tipo_documento_habilitado) VALUES (5, 'Licencia de Conducir','0000-000000-000-0',1);
-
+*/
 /*----------------------PRIVILEGIOS, RECURSOS, ROLES, USUARIO--------------------------*/
 INSERT ALL INTO PRIVILEGIOS VALUES(1, 'INDEX')
            INTO PRIVILEGIOS VALUES(2, 'EDIT') 
@@ -95,7 +95,7 @@ INSERT ALL INTO USUARIOS_ROLES VALUES(1,1)
 SELECT * FROM DUAL;
 
 /*-------------------------------------------------------------------------------------*/
-INSERT INTO GENEROS (ID_GENERO, GENERO) VALUES(1, 'Hombre');
+/*INSERT INTO GENEROS (ID_GENERO, GENERO) VALUES(1, 'Hombre');
 INSERT INTO GENEROS (ID_GENERO, GENERO) VALUES(2, 'Mujer');
 INSERT INTO GENEROS (ID_GENERO, GENERO) VALUES(3, 'Lesbiana');
 INSERT INTO GENEROS (ID_GENERO, GENERO) VALUES(4, 'Gay');
@@ -104,7 +104,7 @@ INSERT INTO GENEROS (ID_GENERO, GENERO) VALUES(6, 'Transexual');
 INSERT INTO GENEROS (ID_GENERO, GENERO) VALUES(7, 'Intersexual');
 INSERT INTO GENEROS (ID_GENERO, GENERO) VALUES(8, 'Queer');
 INSERT INTO GENEROS (ID_GENERO, GENERO) VALUES(9, 'Pansexual');
-INSERT INTO GENEROS (ID_GENERO, GENERO) VALUES(10, 'Asexual');
+INSERT INTO GENEROS (ID_GENERO, GENERO) VALUES(10, 'Asexual');*/
 
 --Direcciones
 insert into departamentos (id_departamento,departamento) values (1, 'San Salvador');
@@ -120,7 +120,7 @@ insert into direcciones (id_direccion,calle,complemento,numero_casa,urbanizacion
 insert into empresas (id_empresa,correo_empresa,empresa,nic_empresa,nit_empresa,page,pagina_empresa,telefono,id_direccion) values(1,'metabit@gmail.com','MetaBIT','000001','000002','@MetaBIT','www.metabit.com','2237-2828',1);
 
 --Empleados de prueba
-insert into empleados values(1,null,'Lopez','Estupinian','EL16002','el16002@ues.edu.sv',1,0,'28-JUN-97',2,'Ricardo','Bladimir',2000,null,null,null);
+insert into empleados values(1,null,'Lopez','Estupinian','EL16002','el16002@ues.edu.sv',1,0,'28-JUN-97',2,'Ricardo','Bladimir',2000,null,null,null,1);
 
-insert into empleados values(2,null,'Lopez','Estupinian','EL14002','el14002@ues.edu.sv',0,0,'17-MAR-95',2,'Estefany','Lizeida',2000,null,null,null);
+insert into empleados values(2,null,'Lopez','Estupinian','EL14002','el14002@ues.edu.sv',0,0,'17-MAR-95',2,'Estefany','Lizeida',2000,null,null,null,1);
 

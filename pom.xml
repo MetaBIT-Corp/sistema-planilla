@@ -64,7 +64,11 @@
 		<dependency>
 			<groupId>com.oracle</groupId>
 			<artifactId>ojdbc8</artifactId>
+<<<<<<< HEAD
 			<version>12.2.0.1</version>
+=======
+			<version>18.3</version>
+>>>>>>> 76fbff66b5c892a554dfa1e73a209008be26e7a9
 		</dependency>
 
 		<dependency>

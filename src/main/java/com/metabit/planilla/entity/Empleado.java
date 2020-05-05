@@ -84,9 +84,9 @@ public class Empleado {
 	private Usuario usuario;
 		
 	//Gender
-	/*@ManyToOne
+	@ManyToOne
 	@JoinColumn(name="id_genero")
-	private Genero genero;*/
+	private Genero genero;
 	
 	//Civil State
 	@ManyToOne

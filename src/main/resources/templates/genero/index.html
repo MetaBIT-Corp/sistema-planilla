@@ -40,16 +40,33 @@
 		<!-- Alert de exito al almacenar nuevo genero -->
 		<div th:if="${store_success != null}" class="alert alert-info offset-1 col-md-10" role="alert" style="margin-top: 8px">
 			Agregado exitosamente!
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			    <span aria-hidden="true">&times;</span>
+			</button>
 		</div>
 		
 		<!-- Alert de exito al actualizar genero -->
-		<div th:if="${update_success != null}" class="alert alert-info offset-1 col-md-10" role="alert" style="margin-top: 8px">
+		<div th:if="${update_success != null}" class="alert alert-info alert-dismissible fade show offset-1 col-md-10" role="alert" style="margin-top: 8px">
 			Actualizado exitosamente!
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			    <span aria-hidden="true">&times;</span>
+			</button>
 		</div>
 		
 		<!-- Alert de exito al eliminar genero -->
-		<div th:if="${delete_success != null}" class="alert alert-info offset-1 col-md-10" role="alert" style="margin-top: 8px">
+		<div th:if="${delete_success != null}" class="alert alert-info alert-dismissible fade show offset-1 col-md-10" role="alert" style="margin-top: 8px">
 			Eliminado exitosamente!
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			    <span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		
+		<!-- Alert de restriccion al eliminar genero -->
+		<div th:if="${delete_restricted != null}" class="alert alert-warning alert-dismissible fade show offset-1 col-md-10" role="alert" style="margin-top: 8px">
+			No es posible eliminar el Genero, ya que hay Empleados que lo poseen!
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			    <span aria-hidden="true">&times;</span>
+			</button>
 		</div>
 		
 		<!-- DataTable de Generos -->
