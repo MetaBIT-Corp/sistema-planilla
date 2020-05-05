@@ -55,7 +55,7 @@
 		  	</tr>
 		  	<tr>
 		  		<td><b>Fecha de Nacimiento</b></td>
-		  		<td th:text="${#dates.format(empleado.fechaNacimiento, 'dd-MMM-yyyy')}"></td>	
+		  		<td th:text="${#temporals.format(empleado.fechaNacimiento)}"></td>
 		  	</tr>
 		  	<tr th:if="${empleado.estadoCivil}">
 		  		<td><b>Estado Civil</b></td>

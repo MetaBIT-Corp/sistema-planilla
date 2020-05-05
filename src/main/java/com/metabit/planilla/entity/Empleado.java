@@ -1,7 +1,7 @@
 package com.metabit.planilla.entity;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -50,15 +50,12 @@ public class Empleado {
 	private String apellidoCasada;
 	
 	@NotNull(message = "Debe especificar fecha de nacimiento.")
-	@Column(name = "fecha_nacimiento", nullable = false)
-	private Date fechaNacimiento;
+	@Column(name = "fecha_nacimiento", nullable = false, columnDefinition="DATE")
+	private LocalDate fechaNacimiento;
 
-	@Email(message = "Formato de correo invalido.")
 	@Column(name = "correo_personal")
 	private String correoPersonal;
 
-	//@NotNull(message = "Debe de especificar un correo institucional.")
-	@Email(message = "Formato de correo invalido.")
 	@Column(name = "correo_institucional", nullable = false)
 	private String correoInstitucional;
 	
@@ -109,7 +106,7 @@ public class Empleado {
 		super();
 	}
 
-	public Empleado(String codigo, String nombrePrimero, String nombreSegundo, String apellidoPaterno, String apellidoMaterno, String apellidoCasada, Date fechaNacimiento, String correoPersonal, String correoInstitucional, double salarioBaseMensual, int horasTrabajo, Boolean esAdministrativo, Boolean empleadoHabilitado, List<EmpleadoDocumento> documentosEmpleado, Usuario usuario, EstadoCivil estadoCivil, Direccion direccion, List<EmpleadoProfesion> profesionesEmpleado) {
+	public Empleado(String codigo, String nombrePrimero, String nombreSegundo, String apellidoPaterno, String apellidoMaterno, String apellidoCasada, LocalDate fechaNacimiento, String correoPersonal, String correoInstitucional, double salarioBaseMensual, int horasTrabajo, Boolean esAdministrativo, Boolean empleadoHabilitado, List<EmpleadoDocumento> documentosEmpleado, Usuario usuario, EstadoCivil estadoCivil, Direccion direccion, List<EmpleadoProfesion> profesionesEmpleado,Genero genero) {
 		this.codigo = codigo;
 		this.nombrePrimero = nombrePrimero;
 		this.nombreSegundo = nombreSegundo;
@@ -128,6 +125,7 @@ public class Empleado {
 		this.estadoCivil = estadoCivil;
 		this.direccion = direccion;
 		this.profesionesEmpleado = profesionesEmpleado;
+		this.genero=genero;
 	}
 
 	public String getCorreoInstitucional() {
@@ -194,7 +192,7 @@ public class Empleado {
 		this.apellidoCasada = apellidoCasada;
 	}
 
-	public Date getFechaNacimiento() {
+	public LocalDate getFechaNacimiento() {
 		return fechaNacimiento;
 	}
 
@@ -205,7 +203,7 @@ public class Empleado {
 	public void setGenero(Genero genero) {
 		this.genero = genero;
 	}
-	public void setFechaNacimiento(Date fechaNacimiento) {
+	public void setFechaNacimiento(LocalDate fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
 	}
 

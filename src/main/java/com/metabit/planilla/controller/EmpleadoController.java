@@ -17,6 +17,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -82,7 +84,7 @@ public class EmpleadoController {
     private static final Log LOGGER = LogFactory.getLog(EmpleadoController.class);
 
     //List all employees
-    //@PreAuthorize("hasAuthority('EMPLEADO_INDEX')")
+    @PreAuthorize("hasAuthority('EMPLEADO_INDEX')")
     @GetMapping("/index")
     public ModelAndView index() {
         ModelAndView mav = new ModelAndView(INDEX_VIEW);
@@ -91,6 +93,7 @@ public class EmpleadoController {
     }
 
     //Form to create employee
+    @PreAuthorize("hasAuthority('EMPLEADO_CREATE')")
     @GetMapping("/create")
     public ModelAndView create() {
         ModelAndView mav = new ModelAndView(CREATE_VIEW);
@@ -152,6 +155,7 @@ public class EmpleadoController {
         //DATOS NECESARIOS PARA REGISTRAR EMPLEADO
         Municipio municipio=municipioService.getMunicipio(Integer.parseInt(allParams.get("idMunicipio")));
         EstadoCivil estadoCivil=estadoCivilService.getCivilState(Integer.parseInt(allParams.get("idEstadoCivil")));
+        Genero genero=generoService.getGenero(Integer.parseInt(allParams.get("idGenero")));
 
         Direccion direccion = new Direccion(
                 allParams.get("urbanizacion"),
@@ -170,7 +174,7 @@ public class EmpleadoController {
                 allParams.get("apellidoPaterno"),
                 allParams.get("apellidoMaterno"),
                 allParams.get("apellidoCasada"),
-                new SimpleDateFormat("dd-MM-yyyy").parse(allParams.get("fechaNacimiento")),
+                LocalDate.parse(allParams.get("fechaNacimiento")),
                 allParams.get("correoPersonal"),
                 allParams.get("correoInstitucional"),
                 Double.parseDouble(allParams.get("salarioBaseMensual")),
@@ -181,7 +185,8 @@ public class EmpleadoController {
                 null,
                 estadoCivil,
                 direccion,
-                null
+                null,
+                genero
         );
         empleado=empleadoService.addEmployee(empleado);
 
@@ -278,23 +283,82 @@ public class EmpleadoController {
             mensajes.put("error_sec4","Error en la seccion Direccion de Empleado. Llenar todos los campos requeridos.");
         }
 
-        //VALIDACION DE CAMPOS REQUERIDOS PARA SECCION INFORMACION PROFESIONAL
-        if(allParams.get("codigo").isEmpty()||allParams.get("correoInstitucional").isEmpty()||allParams.get("salarioBaseMensual").isEmpty()||allParams.get("horasTrabajo").isEmpty()||profesiones.get(0)==0){
-            mensajes.put("error_sec3","Error en la seccion Informacion Profesional. Llenar todos los campos requeridos.");
-        }
+       if(profesiones!=null){
+           //VALIDACION DE CAMPOS REQUERIDOS PARA SECCION INFORMACION PROFESIONAL
+           if(allParams.get("codigo").isEmpty()||allParams.get("correoInstitucional").isEmpty()||allParams.get("salarioBaseMensual").isEmpty()||allParams.get("horasTrabajo").isEmpty()||profesiones.get(0)==0){
+               mensajes.put("error_sec3","Error en la seccion Informacion Profesional. Llenar todos los campos requeridos.");
+           }
+       }else{
+           //VALIDACION DE CAMPOS REQUERIDOS PARA SECCION INFORMACION PROFESIONAL
+           if(allParams.get("codigo").isEmpty()||allParams.get("correoInstitucional").isEmpty()||allParams.get("salarioBaseMensual").isEmpty()||allParams.get("horasTrabajo").isEmpty()){
+               mensajes.put("error_sec3","Error en la seccion Informacion Profesional. Llenar todos los campos requeridos.");
+           }
+       }
         return mensajes;
     }
 
     //Form to edit employee by Id
-    @GetMapping("/edit")
-    public ModelAndView edit() {
+    @PreAuthorize("hasAuthority('EMPLEADO_EDIT')")
+    @GetMapping("/edit/{id}")
+    public ModelAndView edit(@PathVariable(value = "id",required = true) int id) {
         ModelAndView mav = new ModelAndView(EDIT_VIEW);
+        Empleado e=empleadoService.findEmployeeById(id);
+        mav.addObject("empleado",e);
+        mav.addObject("direccion",e.getDireccion());
+        //mav.addObject("user",)
+        mav.addObject("puestos",puestoService.getPuestos());
+        mav.addObject("estadosCiviles",estadoCivilService.getAllCivilStates());
+        mav.addObject("generos",generoService.getAllGeneros());
+        mav.addObject("municipios", municipioService.getMunicipiosByDepartamento(e.getDireccion().getMunicipio().getDepartamento()));
+        mav.addObject("departamentos", departamentoService.getAllDepartamentos());
         return mav;
     }
 
     @PostMapping("/update")
-    public String update() {
-        return "";
+    public ResponseEntity<?> update(@RequestParam Map<String,String> allParams) {
+        //VALIDACIONES
+        Map<String,String> mensajes = validationEmptyFields(allParams,null);
+
+        //Controlando que errores de datos obligatorios sean resueltos
+        if(mensajes.size()>0){
+            return new ResponseEntity<>(mensajes, HttpStatus.BAD_REQUEST);
+        }
+        //DATOS NECESARIOS PARA REGISTRAR EMPLEADO
+        Municipio municipio=municipioService.getMunicipio(Integer.parseInt(allParams.get("idMunicipio")));
+        EstadoCivil estadoCivil=estadoCivilService.getCivilState(Integer.parseInt(allParams.get("idEstadoCivil")));
+        Genero genero=generoService.getGenero(Integer.parseInt(allParams.get("idGenero")));
+
+
+        Empleado empleado = empleadoService.findEmployeeById(Integer.parseInt(allParams.get("idEmpleado")));
+        empleado.setCodigo(allParams.get("codigo"));
+        empleado.setNombrePrimero(allParams.get("nombrePrimero"));
+        empleado.setNombreSegundo(allParams.get("nombreSegundo"));
+        empleado.setApellidoMaterno(allParams.get("apellidoMaterno"));
+        empleado.setApellidoPaterno(allParams.get("apellidoPaterno"));
+        empleado.setApellidoCasada(allParams.get("apellidoCasada"));
+        empleado.setFechaNacimiento(LocalDate.parse(allParams.get("fechaNacimiento")));
+        empleado.setCorreoPersonal(allParams.get("correoPersonal"));
+        empleado.setCorreoInstitucional(allParams.get("correoInstitucional"));
+        empleado.setSalarioBaseMensual(Double.parseDouble(allParams.get("salarioBaseMensual")));
+        empleado.setHorasTrabajo(Integer.parseInt(allParams.get("horasTrabajo")));
+        empleado.setEstadoCivil(estadoCivil);
+        empleado.setGenero(genero);
+
+        empleadoService.addEmployee(empleado);
+
+        //EDITANDO DIRECCION
+        Direccion direccion=empleado.getDireccion();
+        direccion.setUrbanizacion(allParams.get("urbanizacion"));
+        direccion.setCalle(allParams.get("calle"));
+        direccion.setNumeroCasa(allParams.get("numeroCasa"));
+        direccion.setComplemento(allParams.get("complemento"));
+        direccion.setMunicipio(municipio);
+
+        //REGISTRO DE DIRECCION
+        direccionService.updateDirection(direccion);
+
+        mensajes.put("success","Empleado Registrado correctamente");
+        return new ResponseEntity<>(mensajes, HttpStatus.OK);
     }
 
     @GetMapping("/status")
