@@ -93,6 +93,7 @@ public class Empleado {
 	@JoinColumn(name="id_estado_civil")
 	private EstadoCivil estadoCivil;
 	
+
 	//Direction
 	@OneToOne
 	@JoinColumn(name="id_direccion")
@@ -162,6 +163,13 @@ public class Empleado {
 		return fechaNacimiento;
 	}
 
+	public Genero getGenero() {
+		return genero;
+	}
+
+	public void setGenero(Genero genero) {
+		this.genero = genero;
+	}
 	public void setFechaNacimiento(Date fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
 	}

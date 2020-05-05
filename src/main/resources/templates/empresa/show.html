@@ -20,7 +20,7 @@
 	<h1 class="m-0 text-dark" layout:fragment="titulo_seccion">Perfil de la Empresa</h1>
 
 	<ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item"><a href="#" th:href="@{/planilla/index}">Home</a></li>
         <li class="breadcrumb-item active">Empresa</li>
     </ol>
 
@@ -39,34 +39,34 @@
 		</h1>
 		
 		<div class="card offset-2 col-md-8">
-		  <img class="card-img-top offset-3 col-md-6" height="250" th:src="@{/img/metabit.png}" th:alt="${empresaEntity.empresa}">
+		  <img class="card-img-top offset-3 col-md-6" height="250" th:src="@{/img/metabit.png}">
 		  <div class="card-body">
 		  
 		  <table class="table table-bordered table-hover">
 		  	<tr>
 		  		<td><b>Correo electronico</b></td>
 		  		<td th:text="${empresaEntity.correoEmpresa}"></td>	
-		  	<tr>
+		  	</tr>
 		  	<tr>
 		  		<td><b>Telefono</b></td>
 		  		<td th:text="${empresaEntity.telefono}"></td>	
-		  	<tr>
+		  	</tr>
 		  	<tr>
 		  		<td><b>Twitter</b></td>
 		  		<td th:text="${empresaEntity.page}"></td>	
-		  	<tr>
+		  	</tr>
 		  	<tr>
 		  		<td><b>Sitio web</b></td>
 		  		<td th:text="${empresaEntity.paginaEmpresa}"></td>	
-		  	<tr>
+		  	</tr>
 		  	<tr>
 		  		<td><b>NIC</b></td>
 		  		<td th:text="${empresaEntity.nicEmpresa}"></td>	
-		  	<tr>
+		  	</tr>
 		  	<tr>
 		  		<td><b>NIT</b></td>
 		  		<td th:text="${empresaEntity.nitEmpresa}"></td>	
-		  	<tr>
+		  	</tr>
 		  	<tr>
 		  		<td colspan="2">
 		  			<p class="card-text"><b>Direccion</b></p>

@@ -12,15 +12,97 @@
 
 <body>
 	
-	<h1 class="m-0 text-dark" layout:fragment="titulo_seccion">Detalles de Empleado</h1>
+	<h1 class="m-0 text-dark" layout:fragment="titulo_seccion">Detalles de Empleado - <span th:text="${empleado.codigo}"></span></h1>
 
 	<ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item"><a href="#" th:href="@{/planilla/index}">Home</a></li>
         <li class="breadcrumb-item active">Empleado</li>
     </ol>
 
 	<div layout:fragment="content">
-		<h5 th:text="${empleado.nombrePrimero}"></h5>
+		<div class="card offset-2 col-md-8">
+		  <img class="card-img-top offset-4 col-md-4" height="150" th:src="@{/img/employee.png}">
+		  <div class="card-body">
+		  
+		  <table class="table table-bordered table-hover">
+		  	<tr>
+		  		<td><b>Codigo Empleado</b></td>
+		  		<td th:text="${empleado.codigo}"></td>	
+		  	</tr>
+		  	<tr th:if="${empleado.apellidoCasada}">
+		  		<td><b>Apellido Casada</b></td>
+		  		<td th:text="${empleado.apellidoCasada}"></td>	
+		  	</tr>
+		  	<tr>
+		  		<td><b>Apellido Materno</b></td>
+		  		<td th:text="${empleado.apellidoMaterno}"></td>	
+		  	</tr>
+		  	<tr th:if="${empleado.apellidoPaterno}">
+		  		<td><b>Apellido Paterno</b></td>
+		  		<td th:text="${empleado.apellidoPaterno}"></td>	
+		  	</tr>
+		  	<tr>
+		  		<td><b>Primer Nombre</b></td>
+		  		<td th:text="${empleado.nombrePrimero}"></td>	
+		  	</tr>
+		  	<tr th:if="${empleado.nombreSegundo}">
+		  		<td><b>Segundo Nombre</b></td>
+		  		<td th:text="${empleado.nombreSegundo}"></td>	
+		  	</tr>
+		  	<tr th:if="${empleado.genero}">
+		  		<td><b>Genero</b></td>
+		  		<td th:text="${empleado.genero.genero}"></td>	
+		  	</tr>
+		  	<tr>
+		  		<td><b>Fecha de Nacimiento</b></td>
+		  		<td th:text="${#dates.format(empleado.fechaNacimiento, 'dd-MMM-yyyy')}"></td>	
+		  	</tr>
+		  	<tr th:if="${empleado.estadoCivil}">
+		  		<td><b>Estado Civil</b></td>
+		  		<td th:text="${empleado.estadoCivil.estadoCivil}"></td>	
+		  	</tr>
+		  	<tr>
+		  		<td><b>Correo Electronico</b></td>
+		  		<td th:text="${empleado.correoPersonal}"></td>	
+		  	</tr>
+		  	<tr>
+		  		<td><b>Horas de Trabajo</b></td>
+		  		<td th:text="${empleado.horasTrabajo}"></td>	
+		  	</tr>
+		  	<tr>
+		  		<td><b>Salario Base</b></td>
+		  		<td th:text="'$' + ${#numbers.formatDecimal(empleado.salarioBaseMensual, 0, 'COMMA', 2, 'POINT')}"></td>	
+		  	</tr>
+		  	<tr th:if="${empleado.direccion}">
+		  		<td colspan="2">
+		  			<p class="card-text"><b>Direccion</b></p>
+		  		</td>
+		  	</tr>
+		  	<tr th:if="${empleado.direccion}">
+		  		<td colspan="2">
+		  			<div th:if="${empleado.direccion.calle}">
+		  				<p><i>Calle: </i> <span th:text="${empleado.direccion.calle + ','}"></span></p>	
+		  			</div>
+		  			<div th:if="${empleado.direccion.urbanizacion}">
+		  				<p><i>Urbanizacion: </i> <span th:text="${empleado.direccion.urbanizacion + ','}"></span></p>
+		  			</div>
+		  			<div th:if="${empleado.direccion.complemento}">
+		  				<p><i>Complemento: </i> <span th:text="${empleado.direccion.complemento + ','}"></span></p>
+		  			</div>
+		  			<div th:if="${empleado.direccion.numeroCasa}">
+		  				<p><i>Numero de casa: </i> <span th:text="${empleado.direccion.numeroCasa + ','}"></span></p>
+		  			</div>
+		  			<div th:if="${empleado.direccion.municipio}">
+		  				<p><i>Municipio: </i> <span th:text="${empleado.direccion.municipio.municipio + ','}"></span></p>
+		  			</div>
+		  			<div th:if="${empleado.direccion.municipio.departamento}">
+		  				<p><i>Departamento: </i> <span th:text="${empleado.direccion.municipio.departamento.departamento + '.'}"></span></p>
+		  			</div> 
+		  		</td>
+		  	</tr>
+		  </table><br/> 
+		  </div>
+		</div>
 	</div>
 	
 	

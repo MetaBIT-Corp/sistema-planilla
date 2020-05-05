@@ -5,6 +5,7 @@ import com.metabit.planilla.repository.UserJpaRepository;
 import com.metabit.planilla.service.EmpleadoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -75,6 +76,7 @@ public class EmpleadoController {
         return "redirect:/planilla/empleado/index";
     }
     
+    @PreAuthorize("hasAuthority('EMPLEADO_SHOW')")
     @GetMapping("/show")
     public String show(Model model, @RequestParam(value="id", required=true) int id) {
     	model.addAttribute("empleado", empleadoService.findEmployeeById(id));

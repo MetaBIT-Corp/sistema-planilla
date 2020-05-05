@@ -27,9 +27,9 @@ public class GeneroController {
 	@Qualifier("empleadoServiceImpl")
 	private EmpleadoService empleadoService;
 	
-	//@PreAuthorize("hasAuthority('GENERO_INDEX')")
+	@PreAuthorize("hasAuthority('GENERO_INDEX')")
 	@GetMapping("/index")
-	private String index(Model model, @RequestParam(name="store_success", required=false) String store_success, 
+	public String index(Model model, @RequestParam(name="store_success", required=false) String store_success, 
 			@RequestParam(name="update_success", required=false) String update_success,
 			@RequestParam(name="delete_success", required=false) String delete_success,
 			@RequestParam(name="delete_restricted", required=false) String delete_restricted) {
@@ -57,7 +57,7 @@ public class GeneroController {
 	}
 	
 	@PostMapping("/store")
-	private String store(@ModelAttribute(name="generoEntity") Genero genero) {
+	public String store(@ModelAttribute(name="generoEntity") Genero genero) {
 		
 		//Obteniendo el objeto de Genero del formulario para creacion de Genero
 		generoService.addGenero(genero);
@@ -67,7 +67,7 @@ public class GeneroController {
 	}
 	
 	@PostMapping("/update")
-	private String update(@RequestParam("idGenero") int idGenero, @RequestParam("genero") String genero) {
+	public String update(@RequestParam("idGenero") int idGenero, @RequestParam("genero") String genero) {
 		
 		//Obteniendo el Genero a ser actualizado
 		Genero generoSelected = generoService.getGenero(idGenero);
@@ -82,7 +82,7 @@ public class GeneroController {
 	}
 	
 	@PostMapping("/destroy")
-	private String destroy(@RequestParam("idGeneroDestroy") int idGenero) {
+	public String destroy(@RequestParam("idGeneroDestroy") int idGenero) {
 		//Validacion, si hay empleados con este genero, no se debe eliminar.
 		Genero genero_selected = generoService.getGenero(idGenero);
 		

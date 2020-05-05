@@ -38,6 +38,7 @@ public class EmpresaController {
 	@Qualifier("direccionServiceImpl")
 	private DireccionService direccionService;
 	
+	@PreAuthorize("hasAuthority('EMPRESA_SHOW')")
 	@GetMapping("/show")
 	public String show(Model model, @RequestParam(name="update_success", required=false) String update_success) {
 		model.addAttribute("update_success", update_success);
@@ -46,6 +47,7 @@ public class EmpresaController {
 		return "empresa/show";
 	}
 	
+	@PreAuthorize("hasAuthority('EMPRESA_EDIT')")
 	@GetMapping("/edit")
 	public String edit(Model model) {
 		model.addAttribute("departamentos", departmentoService.getAllDepartamentos());
@@ -54,7 +56,6 @@ public class EmpresaController {
 		return "empresa/edit";
 	}
 	
-	@PreAuthorize("permitAll()")
 	@PostMapping("/update")
 	public String update(@ModelAttribute(name="empresaEntity") Empresa empresa, @RequestParam("municipio") int idMunicipio) {
 		empresa.getDireccion().setIdDireccion(empresaService.getEmpresa().getDireccion().getIdDireccion());
