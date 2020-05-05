@@ -16,7 +16,7 @@ import com.metabit.planilla.service.EmpleadoService;
 import com.metabit.planilla.service.GeneroService;
 
 @Controller
-@RequestMapping("/planilla/genero")
+@RequestMapping("/genero")
 public class GeneroController {
 	
 	@Autowired
@@ -63,9 +63,10 @@ public class GeneroController {
 		generoService.addGenero(genero);
 		
 		//Retornando al listado con la variable de exito en el almacenamiento
-		return "redirect:/planilla/genero/index?store_success";
+		return "redirect:/genero/index?store_success";
 	}
-	
+
+	@PreAuthorize("hasAuthority('GENERO_EDIT')")
 	@PostMapping("/update")
 	public String update(@RequestParam("idGenero") int idGenero, @RequestParam("genero") String genero) {
 		
@@ -78,9 +79,10 @@ public class GeneroController {
 		generoService.updateGenero(generoSelected);
 		
 		//Retornando al listado con la variable de exito en actualizacion
-		return "redirect:/planilla/genero/index?update_success";
+		return "redirect:/genero/index?update_success";
 	}
-	
+
+	@PreAuthorize("hasAuthority('GENERO_DELETE')")
 	@PostMapping("/destroy")
 	public String destroy(@RequestParam("idGeneroDestroy") int idGenero) {
 		//Validacion, si hay empleados con este genero, no se debe eliminar.
@@ -91,11 +93,11 @@ public class GeneroController {
 	
 		//Si la cantidad es mayor a cero, significa que no podemos eliminar el genero
 		if(cant_empleados > 0 )
-			return "redirect:/planilla/genero/index?delete_restricted";
+			return "redirect:/genero/index?delete_restricted";
 		
 		//eliminar el genero por el idGenero
 		generoService.deleteGenero(idGenero);
 		
-		return "redirect:/planilla/genero/index?delete_success";
+		return "redirect:/genero/index?delete_success";
 	}
 }

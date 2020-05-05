@@ -16,7 +16,7 @@
 	<h1 class="m-0 text-dark" layout:fragment="titulo_seccion">Generos</h1>
 
 	<ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
-        <li class="breadcrumb-item"><a href="#" th:href="@{/planilla/index}">Home</a></li>
+        <li class="breadcrumb-item"><a href="#" th:href="@{/index}">Home</a></li>
         <li class="breadcrumb-item active">Generos</li>
     </ol>
 
@@ -37,7 +37,7 @@
 		          <span aria-hidden="true">&times;</span>
 		        </button>
 		      </div>
-		      <form method="post" action="#" th:action="@{/planilla/genero/store}" th:object="${generoEntity}">
+		      <form method="post" action="#" th:action="@{/genero/store}" th:object="${generoEntity}">
 			      <div class="modal-body">
 			        <div class="form-group">
 					    <label for="generoInput">Genero:</label>
@@ -160,7 +160,7 @@
 		          <span aria-hidden="true">&times;</span>
 		        </button>
 		      </div>
-		      <form method="post" action="#" th:action="@{/planilla/genero/update}">
+		      <form method="post" action="#" th:action="@{/genero/update}">
 			      <div class="modal-body">
 			        <div class="form-group">
 					    <label for="generoInput">Genero:</label>
@@ -188,7 +188,7 @@
 		          <span aria-hidden="true">&times;</span>
 		        </button>
 		      </div>
-		      <form method="post" action="#" th:action="@{/planilla/genero/destroy}">
+		      <form method="post" action="#" th:action="@{/genero/destroy}">
 			      <div class="modal-body">
 			        <div class="form-group">
 					    <div id="divMessage"></div>

@@ -31,7 +31,7 @@
     <div class="card-body login-card-body">
       <p class="login-box-msg">Bienvenido</p>
 
-      <form class="user" th:action="@{/planilla/login-check}" method="POST">
+      <form class="user" th:action="@{/login-check}" method="POST">
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <div class="input-group mb-3">
           <input type="text" class="form-control" placeholder="Username" id="usernameId" name="username"/>

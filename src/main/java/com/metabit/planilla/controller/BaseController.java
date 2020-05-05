@@ -14,7 +14,7 @@ import com.metabit.planilla.entity.Usuario;
 import com.metabit.planilla.repository.UserJpaRepository;
 
 @Controller
-@RequestMapping({"/planilla","/"})
+@RequestMapping("/")
 public class BaseController {
 	
 	@Autowired
@@ -55,7 +55,7 @@ public class BaseController {
 		usuario.setIntentos(0);
 		userJpaRepository.save(usuario);
 		
-		return "redirect:/planilla/index";	
+		return "redirect:/index";
 	}
 
 }

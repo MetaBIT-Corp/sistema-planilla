@@ -67,7 +67,7 @@
 	      <!-- User Dropdown Menu -->
 	      <li class="nav-item dropdown">
 	        <a class="nav-link" data-toggle="dropdown" href="#">
-	          <i class="far fa-user"></i>
+				<span th:text ="${#authentication.getPrincipal().getUsername()}" class="mr-2"></span><i class="far fa-user"></i>
 	        </a>
 	        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
 	          <span class="dropdown-item dropdown-header">Cuenta</span>
@@ -76,7 +76,7 @@
 	           <i class="far fa-id-badge mr-2"></i> Ver perfil
 	          </a>
 	          <div class="dropdown-divider"></div>
-	          	<form th:action="@{/planilla/logout}" method="POST">
+	          	<form th:action="@{/logout}" method="POST">
 	           		<button class="dropdown-item" type="submit"><i class="fas fa-sign-out-alt mr-2"></i> Logout</button>
 	           </form>
 	          <!--<div class="dropdown-divider"></div>
@@ -106,16 +106,19 @@
 	    </a>
 	
 	    <!-- Sidebar -->
+
 	    <div class="sidebar">
-	      <!-- Sidebar user panel (optional) 
+			<!--
 	      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
 	        <div class="image">
 	          <img th:src="@{/dist/img/user2-160x160.jpg}" class="img-circle elevation-2" alt="User Image">
 	        </div>
 	        <div class="info">
-	          <a href="#" class="d-block">Username</a>
+	          <a href="#" class="d-block"><span th:text ="${#authentication.getPrincipal().getUsername()}"></span></a>
 	        </div>
-	      </div>-->
+
+	      </div>
+	      -->
 	
 	      <!-- Sidebar Menu -->
 	      <nav class="mt-2">
@@ -143,31 +146,31 @@
 	                </a>
 	              </li>
 	              <li class="nav-item">
-	                <a href="#" th:href="@{/planilla/empleado/index}" class="nav-link">
+	                <a href="#" th:href="@{/empleado/index}" class="nav-link">
 	                  <i class="fas fa-users mr-3"></i>
 	                  <p> Empleados</p>
 	                </a>
 	              </li>
 	              <li class="nav-item" sec:authorize="hasAuthority('PUESTO_INDEX')">
-	                <a href="#" th:href="@{/planilla/puesto/index}" class="nav-link">
+	                <a href="#" th:href="@{/puesto/index}" class="nav-link">
 	                  <i class="fas fa-briefcase mr-3"></i>
 	                  <p>Puestos</p>
 	                </a>
 	              </li>
 	              <li class="nav-item">
-	                <a href="#" th:href="@{/planilla/profesion/index}" class="nav-link">
+	                <a href="#" th:href="@{/profesion/index}" class="nav-link">
 	                  <i class="fas fa-user-tie mr-3"></i>
 	                  <p>Profesiones</p>
 	                </a>
 	              </li>
 	               <li class="nav-item">
-	                <a href="#" th:href="@{/planilla/tipo-documento/index}" class="nav-link">
+	                <a href="#" th:href="@{/tipo-documento/index}" class="nav-link">
 	                  <i class="far fa-id-card mr-2"></i>
 	                  <p>Tipos de documentos</p>
 	                </a>
 	              </li>
 	               <li class="nav-item">
-	                <a href="#" th:href="@{/planilla/genero/index}" class="nav-link">
+	                <a href="#" th:href="@{/genero/index}" class="nav-link">
 	                  <i class="fas fa-venus-mars mr-2"></i>
 	                  <p>Generos</p>
 	                </a>
