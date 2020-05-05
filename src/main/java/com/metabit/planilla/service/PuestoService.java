@@ -11,5 +11,6 @@ public interface PuestoService {
 	public abstract Puesto storePuesto(Puesto puesto);
 	public abstract Puesto updatePuesto(Puesto puesto);
 	public abstract void deletePuesto(int idPuesto);
+	public abstract void destroyPuesto(int idPuesto);
 
 }

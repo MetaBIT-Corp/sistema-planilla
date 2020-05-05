@@ -29,7 +29,7 @@ INSERT INTO puestos(id_puesto, descripcion, puesto, salario_maximo, salario_mini
 	   VALUES      (14, 'Descripción del puesto', 'Administrador de Bases de Datos', 1000, 360, 0);
 
 /*PROFESIONES*/
-
+/*
 INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (1, 'Ingeniero en Sistemas Informáticos', 1);
 INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (2, 'Ingeniero en Redes Informáticas', 1);
 INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (3, 'Ingeniero Electricista', 1);
@@ -46,15 +46,15 @@ INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (13, 'Chof
 INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (14, 'Pintor', 0);
 INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (15, 'Licenciado en Psicología', 1);
 INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (16, 'Licenciado en Ciencias Jurídicas', 1);
-
+*/
 /*TIPOS DE DOCUMENTO*/
-
+/*
 INSERT INTO tipos_documento(id_tipo_documento, tipo_documento, formato, tipo_documento_habilitado) VALUES (1, 'DUI','00000000-0',1);
 INSERT INTO tipos_documento(id_tipo_documento, tipo_documento, formato, tipo_documento_habilitado) VALUES (2, 'NIT','0000-000000-000-0',1);
 INSERT INTO tipos_documento(id_tipo_documento, tipo_documento, formato, tipo_documento_habilitado) VALUES (3, 'NUP','000000000000',1);
 INSERT INTO tipos_documento(id_tipo_documento, tipo_documento, formato, tipo_documento_habilitado) VALUES (4, 'ISSS','000000000',1);
 INSERT INTO tipos_documento(id_tipo_documento, tipo_documento, formato, tipo_documento_habilitado) VALUES (5, 'Licencia de Conducir','0000-000000-000-0',1);
-
+*/
 /*----------------------PRIVILEGIOS, RECURSOS, ROLES, USUARIO--------------------------*/
 INSERT ALL INTO PRIVILEGIOS VALUES(1, 'INDEX')
            INTO PRIVILEGIOS VALUES(2, 'EDIT') 
