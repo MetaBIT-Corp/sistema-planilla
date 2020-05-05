@@ -1,6 +1,5 @@
 package com.metabit.planilla.controller;
 
-import java.util.Map;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -94,11 +93,10 @@ public class PuestoController {
 	}
 	
 	@PreAuthorize("hasAuthority('PUESTO_DELETE')")
-	private String destroy(@RequestParam("idPuestoDestroy") int idPuesto) {
-		LOGGER.info("ID PUESTO: " + idPuesto);
-		//eliminar el puesto mediante su id
-		puestoService.deletePuesto(idPuesto);
-		
+	@PostMapping("/destroy")
+	public String destroyPuesto(@RequestParam("idPuestoDestroy") int id) {
+		LOGGER.info("PUESTO: " + id);
+		puestoService.destroyPuesto(id);
 		return "redirect:/planilla/puesto/index?delete_success=true";
 	}
 

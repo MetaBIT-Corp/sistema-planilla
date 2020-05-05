@@ -53,11 +53,11 @@
 							<tbody>
 								<tr th:each="puesto: ${puestos}">
 									<td><span th:text="${puesto.puesto}"></span></td>
-									<td><span th:text="${puesto.descripcion}"></td>
-									<td><span th:text=" '$'+ ${#numbers.formatDecimal(puesto.salarioMinimo, 1, 'COMMA', 2, 'POINT')}"></td>
-									<td><span th:text=" '$'+ ${#numbers.formatDecimal(puesto.salarioMaximo, 1, 'COMMA', 2, 'POINT')}"></td>
-									<td th:if="${puesto.usuarioRequerido}"><span> Requerido </td>
-									<td th:unless="${puesto.usuarioRequerido}"><span>No Requerido</td>
+									<td><span th:text="${puesto.descripcion}"></span></td>
+									<td><span th:text=" '$'+ ${#numbers.formatDecimal(puesto.salarioMinimo, 1, 'COMMA', 2, 'POINT')}"></span></td>
+									<td><span th:text=" '$'+ ${#numbers.formatDecimal(puesto.salarioMaximo, 1, 'COMMA', 2, 'POINT')}"></span></td>
+									<td th:if="${puesto.usuarioRequerido}"><span class="badge badge-success"> Requerido</span> </td>
+									<td th:unless="${puesto.usuarioRequerido}"><span class="badge badge-danger">No Requerido</span></td>
 									<td>					 
 				                        <div class="btn-group">
 				                          <button type="button" class="btn btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown">
@@ -112,7 +112,7 @@
 		          <span aria-hidden="true">&times;</span>
 		        </button>
 		      </div>
-		      <form method="post" action="#"  th:action="@{/planilla/puesto/destroy}">
+		      <form method="post" action="#" th:action="@{/planilla/puesto/destroy}">
 			      <div class="modal-body">
 			        <div class="form-group">
 					    <div id="divMessage"></div>
