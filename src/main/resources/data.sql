@@ -67,6 +67,7 @@ INSERT ALL INTO RECURSOS VALUES(1, 'EMPLEADO')
 		   INTO	RECURSOS VALUES(2, 'EMPRESA')
 		   INTO	RECURSOS VALUES(3, 'GENERO')
 		   INTO	RECURSOS VALUES(4, 'TIPODOCUMENTO')
+		   INTO	RECURSOS VALUES(5, 'PUESTO')
 SELECT * FROM DUAL;
 
 INSERT ALL INTO ROLES VALUES(1, 'ROLE_ADMIN')
@@ -79,10 +80,14 @@ INSERT ALL INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(1,1,1,1)
 		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(2,2,2,1)
 		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(3,3,3,2)
   		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(4,4,4,2)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(5,1,5,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(6,2,5,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(7,3,5,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(8,4,5,1)
 SELECT * FROM DUAL;
 
-INSERT ALL INTO USUARIOS VALUES(1,0,0,1,0,'$2a$10$.wYsFS0/zPkY3.LnN8F/reqimatDtOS71.5Uzh/RzlF718/aFO7oS',1,'admin')
-           INTO USUARIOS VALUES(2,0,0,1,0,'$2a$10$.wYsFS0/zPkY3.LnN8F/reqimatDtOS71.5Uzh/RzlF718/aFO7oS',1,'user')
+INSERT ALL INTO USUARIOS VALUES(1,0,0,1,0,'$2a$10$.wYsFS0/zPkY3.LnN8F/reqimatDtOS71.5Uzh/RzlF718/aFO7oS',0,'admin')
+           INTO USUARIOS VALUES(2,0,0,1,0,'$2a$10$.wYsFS0/zPkY3.LnN8F/reqimatDtOS71.5Uzh/RzlF718/aFO7oS',0,'user')
 SELECT * FROM DUAL;
 
 INSERT ALL INTO USUARIOS_ROLES VALUES(1,1)
@@ -90,7 +95,7 @@ INSERT ALL INTO USUARIOS_ROLES VALUES(1,1)
 SELECT * FROM DUAL;
 
 /*-------------------------------------------------------------------------------------*/
-INSERT INTO GENEROS (ID_GENERO, GENERO) VALUES(1, 'Hombre');
+/*INSERT INTO GENEROS (ID_GENERO, GENERO) VALUES(1, 'Hombre');
 INSERT INTO GENEROS (ID_GENERO, GENERO) VALUES(2, 'Mujer');
 INSERT INTO GENEROS (ID_GENERO, GENERO) VALUES(3, 'Lesbiana');
 INSERT INTO GENEROS (ID_GENERO, GENERO) VALUES(4, 'Gay');
@@ -99,7 +104,7 @@ INSERT INTO GENEROS (ID_GENERO, GENERO) VALUES(6, 'Transexual');
 INSERT INTO GENEROS (ID_GENERO, GENERO) VALUES(7, 'Intersexual');
 INSERT INTO GENEROS (ID_GENERO, GENERO) VALUES(8, 'Queer');
 INSERT INTO GENEROS (ID_GENERO, GENERO) VALUES(9, 'Pansexual');
-INSERT INTO GENEROS (ID_GENERO, GENERO) VALUES(10, 'Asexual');
+INSERT INTO GENEROS (ID_GENERO, GENERO) VALUES(10, 'Asexual');*/
 
 --Direcciones
 insert into departamentos (id_departamento,departamento) values (1, 'San Salvador');
@@ -115,7 +120,7 @@ insert into direcciones (id_direccion,calle,complemento,numero_casa,urbanizacion
 insert into empresas (id_empresa,correo_empresa,empresa,nic_empresa,nit_empresa,page,pagina_empresa,telefono,id_direccion) values(1,'metabit@gmail.com','MetaBIT','000001','000002','@MetaBIT','www.metabit.com','2237-2828',1);
 
 --Empleados de prueba
-insert into empleados values(1,null,'Lopez','Estupinian','EL16002','el16002@ues.edu.sv',1,0,'28-JUN-97',2,'Ricardo','Bladimir',2000,null,null,null);
+insert into empleados values(1,null,'Lopez','Estupinian','EL16002','el16002@ues.edu.sv',1,0,'28-JUN-97',2,'Ricardo','Bladimir',2000,null,null,null,1);
 
-insert into empleados values(2,null,'Lopez','Estupinian','EL14002','el14002@ues.edu.sv',0,0,'17-MAR-95',2,'Estefany','Lizeida',2000,null,null,null);
+insert into empleados values(2,null,'Lopez','Estupinian','EL14002','el14002@ues.edu.sv',0,0,'17-MAR-95',2,'Estefany','Lizeida',2000,null,null,null,1);
 

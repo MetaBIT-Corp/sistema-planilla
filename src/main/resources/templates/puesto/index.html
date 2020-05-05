@@ -1,122 +1,196 @@
 <!DOCTYPE html>
 <html layout:decorate="~{layouts/layout}">
 <head>
-
-  <meta charset="utf-8"/>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<!-- Tell the browser to be responsive to screen width -->
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	
+	<!-- SweetAlert2 -->
+  <link rel="stylesheet" th:href="@{/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css}">
+<!-- Toastr -->
+  <link rel="stylesheet" th:href="@{/plugins/toastr/toastr.min.css}">
 </head>
 <body>
-	
+
 	<h1 class="m-0 text-dark" layout:fragment="titulo_seccion">Puestos</h1>
 
 	<ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
-        <li class="breadcrumb-item"><a href="#" th:href="@{/planilla/index}">Home</a></li>
-        <li class="breadcrumb-item active">Puestos</li>
-    </ol>
-
-	<div layout:fragment="content">
-		<div class="row ml-3 mr-3">
-			
-			<div class="col-md-12 ">
-			 <div class="card">
-	            <div class="card-header">
-                   <a href="#" th:href="@{/planilla/puesto/form-puesto}" type="button" class="btn btn-sm btn-primary">
-                   	<i class="fas fa-plus-circle mr-1 text-white"></i>
-                   	<span class="text-white">Nuevo</span>
-                   </a>
-	            </div>
-	            <!-- /.card-header -->
-	            <div class="card-body">
-	              <table id="example1" class="table table-bordered table-striped">
-	                <thead>
-	                <tr>
-	                  <th>Título</th>
-	                  <th>Descripción</th>
-	                  <th>Salario mínimo</th>
-	                  <th>Salario máximo</th>
-	                  <th>Requiere usuario</th>
-	                  <th>Acciones</th>
-	                </tr>
-	                </thead>
-	                <tbody>
-	                <tr th:each="puesto: ${puestos}">
-	                  <td><span th:text="${puesto.puesto}"></span></td>
-	                  <td><span th:text="${puesto.descripcion}"></td>
-	                  <td><span th:text=" '$'+ ${#numbers.formatDecimal(puesto.salarioMinimo, 1, 'COMMA', 2, 'POINT')}"></td>
-	                  <td><span th:text=" '$'+ ${#numbers.formatDecimal(puesto.salarioMaximo, 1, 'COMMA', 2, 'POINT')}"></td>
-	                  
-	                  <td th:if="${puesto.usuarioRequerido}"><span> Requerido </td>
-	                  <td th:unless="${puesto.usuarioRequerido}"><span >No Requerido</td>
-	                  <td> 
-	                  	
-	                      <div class="btn-group">
-	                        
+		<li class="breadcrumb-item">
+			<a href="#" th:href="@{/planilla/index}">Home</a>
+		</li>
+		<li class="breadcrumb-item active">Puestos</li>
+	</ol>
 	
-	                        <div class="btn-group">
-	                          <button type="button" class="btn btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
-	                          	<span>Acción</span>
-	                          </button>
-	                          <div class="dropdown-menu" style="">
-	                            <a class="dropdown-item" href="#" th:href="@{'/planilla/puesto/form-puesto/'+${puesto.idPuesto}+''}"><i class="far fa-edit mr-3"></i>Editar</a>
-	                            <a class="dropdown-item" href="#"><i class="far fa-trash-alt mr-3"></i> Eliminar</a>
-	                          </div>
-	                        </div>
-	                      </div>
-	                    
-	                  </td>
-	                </tr>              
-	                </tbody>
-	                <tfoot>
-	                <tr>
-	                  <th>Título</th>
-	                  <th>Descripción</th>
-	                  <th>Salario mínimo</th>
-	                  <th>Salario máximo</th>
-	                  <th>Requiere usuario</th>
-	                  <th>Acciones</th>
-	                </tr>
-	                </tfoot>
-	              </table>
-	            </div>
-	            <!-- /.card-body -->
-	          </div>
-	          <!-- /.card -->
-		
+	<div layout:fragment="content">	
+		<input type="hidden" id="store" th:value="${store_success}">
+		<input type="hidden" id="update" th:value="${update_success}">
+		<input type="hidden" id="delete" th:value="${delete_success}">
+		<div class="row ml-3 mr-3">
+			<div class="col-md-12 ">
+				<div class="card">
+				
+					<div class="card-header">
+						<a href="#" th:href="@{/planilla/puesto/form-puesto}"
+							type="button" class="btn btn-sm btn-primary"> 
+							<i class="fas fa-plus-circle mr-1 text-white"></i> 
+							<span class="text-white">Nuevo Puesto</span>
+						</a>
+					</div>
+					
+					<div class="card-body">
+						<table id="example1" class="table table-bordered table-striped">
+							<thead>
+								<tr>
+									<th>Título</th>
+									<th>Descripción</th>
+									<th>Salario mínimo</th>
+									<th>Salario máximo</th>
+									<th>Requiere usuario</th>
+									<th>Acciones</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="puesto: ${puestos}">
+									<td><span th:text="${puesto.puesto}"></span></td>
+									<td><span th:text="${puesto.descripcion}"></td>
+									<td><span th:text=" '$'+ ${#numbers.formatDecimal(puesto.salarioMinimo, 1, 'COMMA', 2, 'POINT')}"></td>
+									<td><span th:text=" '$'+ ${#numbers.formatDecimal(puesto.salarioMaximo, 1, 'COMMA', 2, 'POINT')}"></td>
+									<td th:if="${puesto.usuarioRequerido}"><span> Requerido </td>
+									<td th:unless="${puesto.usuarioRequerido}"><span>No Requerido</td>
+									<td>					 
+				                        <div class="btn-group">
+				                          <button type="button" class="btn btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown">
+				                          	<span>Accion</span>
+				                          </button>
+				                          <div class="dropdown-menu">
+				                            <a class="dropdown-item" href="#" th:href="@{'/planilla/puesto/form-puesto/'+${puesto.idPuesto}+''}">
+												<i class="far fa-edit mr-3"></i>Editar
+											</a>
+				                            
+				                            <button class="dropdown-item" th:attr="data-idPuesto=${puesto.IdPuesto}, data-puesto=${puesto.puesto}" 
+												onclick="activateModalDestroy(this)" title="Eliminar">
+												<i class="far fa-trash-alt mr-3" ></i> Eliminar
+											</button>
+				                          </div>
+				                        </div>
+										
+									</td>
+								</tr>
+								<tr th:if="${#lists.isEmpty(puestos)}">
+				                	<td colspan="6">
+				                		No hay Puestos actualmente.
+				                	</td>
+				                </tr>
+							</tbody>
+							<tfoot>
+								<tr>
+									<th>Título</th>
+									<th>Descripción</th>
+									<th>Salario mínimo</th>
+									<th>Salario máximo</th>
+									<th>Requiere usuario</th>
+									<th>Acciones</th>
+								</tr>
+							</tfoot>
+						</table>
+					</div>
+					<!-- /.card-body -->
+				</div>
+				<!-- /.card -->
 			</div>
 		</div>
+		
+		<!-- MODALS -->
+		<!-- Modal para Confirmar Eliminacion de Puesto -->
+		<div class="modal" id="puestoModalDestroy" tabindex="-1" role="dialog">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title">Eliminar Puesto</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <form method="post" action="#"  th:action="@{/planilla/puesto/destroy}">
+			      <div class="modal-body">
+			        <div class="form-group">
+					    <div id="divMessage"></div>
+					    <input type="hidden" class="form-control" id="idPuestoInputDestroy" name="idPuestoDestroy" value="">				
+					  </div>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="submit" class="btn btn-danger">Confirmar</button>
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+			      </div>
+		      </form>
+		    </div>
+		  </div>
+		</div>
+		<!-- /MODALS -->
 	</div>
-	
-	
+
+	<!-- Scripts-->
 	<section layout:fragment="scripts">
-	
+
 		<!-- DataTables -->
-	  	<script th:src="@{/plugins/datatables/jquery.dataTables.min.js}"></script>
-	  	<script th:src="@{/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
+		<script th:src="@{/plugins/datatables/jquery.dataTables.min.js}"></script>
+		<script th:src="@{/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
 		<script th:src="@{/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
 		<script th:src="@{/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
+		<!-- Toastr -->
+<script th:src="@{/plugins/toastr/toastr.min.js}"></script>
+<!-- SweetAlert2 -->
+			 <script th:src="@{/plugins/sweetalert2/sweetalert2.min.js}"></script>
 		
+		<!-- para uso de modals -->
+		<script th:src="@{/js/puesto/modals.js}"></script>
+
 		<!-- page script -->
 		<script>
-		  $(function () {
-		    $("#example1").DataTable({
-		      "responsive": true,
-		      "autoWidth": false,
-		    });
-		    $('#example2').DataTable({
-		      "paging": true,
-		      "lengthChange": false,
-		      "searching": false,
-		      "ordering": true,
-		      "info": true,
-		      "autoWidth": false,
-		      "responsive": true,
-		    });
-		  });
+			$(function() {
+				$("#example1").DataTable({
+					"responsive" : true,
+					"autoWidth" : false,
+				});
+				$('#example2').DataTable({
+					"paging" : true,
+					"lengthChange" : false,
+					"searching" : false,
+					"ordering" : true,
+					"info" : true,
+					"autoWidth" : false,
+					"responsive" : true,
+				});
+			});	
+			
+			 
+			$(document).ready(function(){
+			  var store = $('#store').val();
+			  var update = $('#update').val();
+			  var delet = $('#delete').val();
+			  
+			 
+			  setTimeout(function() {
+			    $(".alert").fadeOut();           
+			  },3000);
+			  
+			  if(store === 'true'){
+				 toastr.success("Puesto creado con éxito"); 
+			  }
+			  if(update === 'true'){
+				 toastr.success("Puesto editado con éxito"); 
+			  }
+			  if(delet === 'true'){
+				 toastr.error("Puesto eliminado"); 
+			  }
+			  
+			})
+			 
+			 
 		</script>
-	
+		
+		<!-- Scripts-->
 	</section>
 
 </body>

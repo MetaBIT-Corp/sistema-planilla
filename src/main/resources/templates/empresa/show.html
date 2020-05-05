@@ -21,8 +21,11 @@
 
 	<div layout:fragment="content">
 		<!-- Alert de exito al actualizar genero -->
-		<div th:if="${update_success != null}" class="alert alert-info offset-1 col-md-10" role="alert" style="margin-top: 8px">
+		<div th:if="${update_success != null}" class="alert alert-info alert-dismissible fade show offset-1 col-md-10" role="alert" style="margin-top: 8px">
 			Actualizado exitosamente!
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		    	<span aria-hidden="true">&times;</span>
+		    </button>
 		</div>
 		
 		<h1 style="text-align: center;">
