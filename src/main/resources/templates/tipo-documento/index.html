@@ -6,6 +6,12 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" th:href="@{/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css}">
+    <!-- Toastr -->
+    <link rel="stylesheet" th:href="@{/plugins/toastr/toastr.min.css}">
+
     <title>Sistema Planilla | Tipos de Documento</title>
 
 </head>
@@ -19,6 +25,12 @@
 </ol>
 
 <div layout:fragment="content">
+
+    <input type="hidden" id="store" th:value="${store_success}">
+    <input type="hidden" id="update" th:value="${update_success}">
+    <input type="hidden" id="enable" th:value="${enable_success}">
+    <input type="hidden" id="disable" th:value="${disable_success}">
+
     <div class="row ml-3 mr-3">
         <div class="col-md-12">
 
@@ -76,6 +88,13 @@
                                         </div>
                                     </div>
                                 </div>
+                            </td>
+
+                        </tr>
+
+                        <tr th:if="${#lists.isEmpty(tiposDocumento)}">
+                            <td colspan="6">
+                                A&uacute;n no se registran Tipos de Documento en el sistema
                             </td>
 
                         </tr>
@@ -142,6 +161,11 @@
     <script th:src="@{/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
     <script th:src="@{/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
 
+    <!-- Toastr -->
+    <script th:src="@{/plugins/toastr/toastr.min.js}"></script>
+    <!-- SweetAlert2 -->
+    <script th:src="@{/plugins/sweetalert2/sweetalert2.min.js}"></script>
+
     <!-- page script -->
     <script>
         $(function () {
@@ -182,6 +206,31 @@
             $("#idTipoDocumentoInputDisable").val(id_tipo_documento);
             $("#tipoDocumentoModalDisable").modal();
         }
+
+        $(document).ready(function(){
+            var store = $('#store').val();
+            var update = $('#update').val();
+            var enable = $('#enable').val();
+            var disable = $('#disable').val();
+
+
+            setTimeout(function() {
+                $(".alert").fadeOut();
+            },3000);
+
+            if(store === 'true'){
+                toastr.success("Tipo de Documento creado con éxito");
+            }
+            if(update === 'true'){
+                toastr.success("Tipo de Documento editado con éxito");
+            }
+            if(enable === 'true'){
+                toastr.info("Tipo Documento habilitado");
+            }
+            if(disable === 'true'){
+                toastr.error("Tipo Documento deshabilitado");
+            }
+        })
 
     </script>
 

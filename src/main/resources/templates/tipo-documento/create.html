@@ -44,14 +44,12 @@
 
                         <div class="form-group">
                             <label for="tipo_documento">Nombre *</label>
-                            <input type="text" class="form-control" id="tipo_documento" placeholder="Nombre de Tipo de Documento" th:field="*{tipoDocumento}" th:value="${tipoDocumento}">
-                            <p class="mt-2 ml-3" style="color: #ff0000; font-size: 15px;" th:if="${#fields.hasErrors('tipoDocumento')}" th:errors="*{tipoDocumento}">TipoDocumento has errors</p>
+                            <input required type="text" class="form-control" id="tipo_documento" placeholder="Nombre de Tipo de Documento" th:field="*{tipoDocumento}" th:value="${tipoDocumento}">
                         </div>
 
                         <div class="form-group">
                             <label for="formato">Formato *</label>
-                            <input type="text" class="form-control" id="formato" placeholder="Formato de Tipo de Documento" th:field="*{formato}" th:value="${formato}">
-                            <p class="mt-2 ml-3" style="color: #ff0000; font-size: 15px;" th:if="${#fields.hasErrors('formato')}" th:errors="*{formato}">Formato has errors</p>
+                            <input required type="text" class="form-control" id="formato" placeholder="Formato de Tipo de Documento" th:field="*{formato}" th:value="${formato}">
                         </div>
 
                         <div class="alert alert-dismissible alert-info">

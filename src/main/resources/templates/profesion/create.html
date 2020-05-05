@@ -41,15 +41,19 @@
 
                         <div class="card-body">
                             <input type="hidden" class="form-control form-control-user" th:field="*{idProfesion}">
+
                             <div class="form-group">
                                 <label for="profesion">Nombre *</label>
-                                <input type="text" class="form-control" id="profesion" placeholder="Nombre de Profesi&oacute;n u Oficio" th:field="*{profesion}" th:value="${profesion}">
-                                <p class="mt-2 ml-3" style="color: #ff0000; font-size: 15px;" th:if="${#fields.hasErrors('profesion')}" th:errors="*{profesion}">Profesion has errors</p>
+                                <input required type="text" class="form-control" id="profesion" placeholder="Nombre de Profesi&oacute;n u Oficio"
+                                       th:field="*{profesion}"
+                                       th:value="${profesion}">
                             </div>
 
                             <div class="form-group">
                                 <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="esProfesion" th:field="*{esProfesion}" th:value="${esProfesion}">
+                                    <input type="checkbox" class="custom-control-input" id="esProfesion"
+                                           th:field="*{esProfesion}"
+                                           th:value="${esProfesion}">
                                     <label class="custom-control-label" for="esProfesion">¿Es una Profesi&oacute;n?</label>
                                     <small id="emailHelp" class="form-text text-muted">Si se trata de un oficio, dejar sin marcar.</small>
                                 </div>

@@ -46,8 +46,8 @@ INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (14, 'Pint
 INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (15, 'Licenciado en Psicología', 1);
 INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (16, 'Licenciado en Ciencias Jurídicas', 1);
 
-/*TIPOS DE DOCUMENTO*/
 
+/*TIPOS DE DOCUMENTO*/
 INSERT INTO tipos_documento(id_tipo_documento, tipo_documento, formato, tipo_documento_habilitado) VALUES (1, 'DUI','00000000-0',1);
 INSERT INTO tipos_documento(id_tipo_documento, tipo_documento, formato, tipo_documento_habilitado) VALUES (2, 'NIT','0000-000000-000-0',1);
 INSERT INTO tipos_documento(id_tipo_documento, tipo_documento, formato, tipo_documento_habilitado) VALUES (3, 'NUP','000000000000',1);

@@ -8,7 +8,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -29,13 +31,21 @@ public class ProfesionController {
 
     private static final Log LOGGER = LogFactory.getLog(ProfesionController.class);
 
+    @PreAuthorize("hasAuthority('PROFESION_INDEX')")
     @GetMapping("/index")
-    public ModelAndView index() {
+    public ModelAndView index(Model model,
+            @RequestParam(name="store_success", required=false) String store_success,
+            @RequestParam(name="update_success", required=false) String update_success,
+            @RequestParam(name="delete_success", required=false) String delete_success) {
         ModelAndView modelAndView = new ModelAndView(INDEX_VIEW);
         modelAndView.addObject("profesiones", profesionService.getProfesiones());
+        model.addAttribute("store_success", store_success);
+        model.addAttribute("update_success", update_success);
+        model.addAttribute("delete_success", delete_success);
         return modelAndView;
     }
 
+    @PreAuthorize("hasAuthority('PROFESION_CREATE') or hasAuthority('PROFESION_EDIT')")
     @RequestMapping(path = {"/form-profesion","/form-profesion/{id}"})
     public ModelAndView create(@PathVariable("id") Optional<Integer> id){
         ModelAndView modelAndView = new ModelAndView(CREATE_VIEW);
@@ -49,22 +59,29 @@ public class ProfesionController {
         return modelAndView;
     }
 
+    @PreAuthorize("hasAuthority('PROFESION_CREATE') or hasAuthority('PROFESION_EDIT')")
     @PostMapping("/form-post")
     public String createUpdatePost(@Valid @ModelAttribute("profesionEntity") Profesion profesion, BindingResult bindingResult){
         LOGGER.info("PROFESION: " + profesion);
         if(bindingResult.hasErrors()){
-            return "/profesion/create";
+            return CREATE_VIEW;
         }else{
-            profesionService.storeProfesion(profesion);
-            return "redirect:index";
+            if(profesion.getIdProfesion()==0){
+                profesionService.storeProfesion(profesion);
+                return "redirect:/profesion/index?store_success=true";
+            }else{
+                profesionService.updateProfesion(profesion);
+                return "redirect:/profesion/index?update_success=true";
+            }
         }
-
     }
 
+    @PreAuthorize("hasAuthority('PROFESION_DELETE')")
     @PostMapping("/destroy")
-    private String destroy(@RequestParam("idProfesionDestroy") int idProfesion) {
+    public String destroy(@RequestParam("idProfesionDestroy") int idProfesion) {
+        LOGGER.info("PROFESION: "+idProfesion);
         profesionService.deleteProfesion(idProfesion);
-        return "redirect:/profesion/index";
+        return "redirect:/profesion/index?delete_success=true";
     }
 
 }
