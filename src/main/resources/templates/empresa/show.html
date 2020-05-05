@@ -8,6 +8,11 @@
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   
+  <!-- SweetAlert2 -->
+  <link rel="stylesheet" th:href="@{/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css}">
+  <!-- Toastr -->
+  <link rel="stylesheet" th:href="@{/plugins/toastr/toastr.min.css}">
+  
 </head>
 
 <body>
@@ -20,13 +25,14 @@
     </ol>
 
 	<div layout:fragment="content">
+		<input type="hidden" id="update" th:if="${update_success}" value="true">
 		<!-- Alert de exito al actualizar genero -->
-		<div th:if="${update_success != null}" class="alert alert-info alert-dismissible fade show offset-1 col-md-10" role="alert" style="margin-top: 8px">
+		<!--<div th:if="${update_success != null}" class="alert alert-info alert-dismissible fade show offset-1 col-md-10" role="alert" style="margin-top: 8px">
 			Actualizado exitosamente!
 			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 		    	<span aria-hidden="true">&times;</span>
 		    </button>
-		</div>
+		</div>-->
 		
 		<h1 style="text-align: center;">
 			<span th:text="${empresaEntity.empresa}"> Empresa </span>
@@ -104,6 +110,25 @@
 	
 	
 	<section layout:fragment="scripts">
+		<!-- Toastr -->
+		<script th:src="@{/plugins/toastr/toastr.min.js}"></script>
+		<!-- SweetAlert2 -->
+		<script th:src="@{/plugins/sweetalert2/sweetalert2.min.js}"></script>
+		
+		<script type="text/javascript">
+		$(document).ready(function(){
+			  var update = $('#update').val();
+			
+			  setTimeout(function() {
+			    $(".alert").fadeOut();           
+			  },3000);
+			  
+			  if(update === 'true'){
+				 toastr.success("Perfil de Empresa actualizado con éxito"); 
+			  }
+			  
+			});
+		</script>
 	</section>
 
 </body>

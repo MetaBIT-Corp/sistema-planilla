@@ -2,6 +2,7 @@ package com.metabit.planilla.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +27,7 @@ public class GeneroController {
 	@Qualifier("empleadoServiceImpl")
 	private EmpleadoService empleadoService;
 	
+	//@PreAuthorize("hasAuthority('GENERO_INDEX')")
 	@GetMapping("/index")
 	private String index(Model model, @RequestParam(name="store_success", required=false) String store_success, 
 			@RequestParam(name="update_success", required=false) String update_success,

@@ -6,6 +6,7 @@ import com.metabit.planilla.service.EmpleadoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -24,6 +25,7 @@ public class EmpleadoController {
     private static final String INDEX_VIEW = "empleado/index";
     private static final String EDIT_VIEW = "empleado/edit";
     private static final String CREATE_VIEW = "empleado/create";
+    private static final String SHOW_VIEW = "empleado/show";
 
     //List all employees
     @GetMapping("/index")
@@ -71,5 +73,11 @@ public class EmpleadoController {
         }
         empleadoService.updateEmployee(e);
         return "redirect:/planilla/empleado/index";
+    }
+    
+    @GetMapping("/show")
+    public String show(Model model, @RequestParam(value="id", required=true) int id) {
+    	model.addAttribute("empleado", empleadoService.findEmployeeById(id));
+    	return SHOW_VIEW;
     }
 }
