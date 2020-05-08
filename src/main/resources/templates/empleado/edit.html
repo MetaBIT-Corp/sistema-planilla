@@ -13,14 +13,22 @@
 <body>
 <h1 class="m-0 text-dark" layout:fragment="titulo_seccion"></h1>
 <ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
-    <li class="breadcrumb-item"><a th:href="@{/planilla/index}">Home</a></li>
-    <li class="breadcrumb-item"><a th:href="@{/planilla/empleado/index}">Empleados Registrados</a></li>
+    <li class="breadcrumb-item"><a th:href="@{/index}">Home</a></li>
+    <li class="breadcrumb-item"><a th:href="@{/empleado/index}">Empleados Registrados</a></li>
     <li class="breadcrumb-item active">Editar Empleado</li>
 </ol>
 <div layout:fragment="content">
     <div class="card card-primary">
         <div class="card-header">
-            <h3 class="card-title">Editar Empleado</h3>
+           <div class="mt-2 float-left">
+               <h3 class="card-title">Editar Empleado</h3>
+           </div>
+            <div class="btn-toolbar mt-1 mb-1 ml-4 float-right" role="toolbar" >
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <a class="btn btn-light text-dark" th:href="@{/empleado/edit-documentos/{id}(id=${empleado.idEmpleado})}" aria-selected="false">Editar Documentos</a>
+                    <a class="btn btn-light text-dark" th:href="@{/empleado/edit-profesiones/{id}(id=${empleado.idEmpleado})}" aria-selected="false">Editar Profesiones/Oficios </a>
+                </div>
+            </div>
         </div>
         <!-- /.card-header -->
         <!-- form start -->
@@ -46,12 +54,13 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="direccion-tab" data-toggle="tab" href="#direccion" role="tab"
-                           aria-controls="trabajo" aria-selected="false">Direccion de Empleado</a>
+                           aria-controls="direccion" aria-selected="false">Direccion de Empleado</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="trabajo-tab" data-toggle="tab" href="#trabajo" role="tab"
                            aria-controls="trabajo" aria-selected="false">Informacion Profesional</a>
                     </li>
+
                 </ul>
 
                 <div class="tab-content" id="myTabContent">
@@ -219,7 +228,7 @@
             </div>
             <div class="card-footer text-right">
                 <button id="save" type="button" class="btn btn-primary">Guardar Datos</button>
-                <a type="button" class="btn btn-default">Cancelar</a>
+                <a type="button" class="btn btn-default" th:href="@{/empleado/index}">Cancelar</a>
             </div>
         </form>
     </div>
@@ -274,11 +283,12 @@
                 if(data.genero=="Mujer"){
                     $("#divCasada").removeAttr("hidden");
                 }else{
-                    $("#divCasada").attr("hidden","hidden")
+                    $("#lastCName").val("");
+                    $("#divCasada").attr("hidden","hidden");
+
                 }
             });
         });
-
 
 
         $("#save").on("click",function () {
@@ -286,11 +296,11 @@
             $("#save").text("Enviando");
             $.ajax({
                 type: "POST",
-                url:"/planilla/empleado/update",
+                url:"/empleado/update",
                 data:$("#form").serialize(),
                 dataType:"json",
                 success:function (data) {
-                    window.location.href=document.location.origin+"/planilla/empleado/index";
+                    window.location.href=document.location.origin+"/empleado/index";
                 },
                 error:function (data) {
                     $("#error_alert_div").removeAttr("hidden");
@@ -301,6 +311,11 @@
                         m+="<li>"+value+"</li>";
                     });
                     document.getElementById("error_alert").innerHTML=m;
+                    //Para mover al inicio de la pagina el control
+                    $('html, body').animate({
+                        scrollTop: 0
+                    }, 'slow');
+
                     $("#success_alert_div").attr("hidden", "hidden");
                     $("#save").removeAttr("disabled");
                     $("#save").text("Guardar Datos");

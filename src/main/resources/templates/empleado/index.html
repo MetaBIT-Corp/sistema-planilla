@@ -40,7 +40,7 @@
                             <th>Apellidos paterno</th>
                             <th>Apellido materno</th>
                             <th>Fecha de nacimiento</th>
-                            <th>Correo personal</th>
+                            <th>Correo institucional</th>
                             <th>Status</th>
                             <th>Acciones</th>
                         </tr>
@@ -52,7 +52,7 @@
                             <td><span th:text="${e.apellidoPaterno}"></span></td>
                             <td><span th:text="${e.apellidoMaterno}"></span></td>
                             <td><span th:text="${#temporals.format(e.fechaNacimiento)}"></span></td>
-                            <td><span th:text="${e.correoPersonal}"></span></td>
+                            <td><span th:text="${e.correoInstitucional}"></span></td>
                             <td><span th:if="${e.empleadoHabilitado}" class="badge badge-success">Habilitado</span>
                             <span th:unless="${e.empleadoHabilitado}" class="badge badge-danger">Deshabilitado</span ></td>
                             <td>
@@ -62,13 +62,11 @@
                                             <span>Acción</span>
                                         </button>
                                         <div class="dropdown-menu" style="">
-<<<<<<< HEAD
-                                            <a class="dropdown-item" href="#" th:href="@{/planilla/empleado/show?id={id}(id=${e.idEmpleado})}"><i class="far fa-eye mr-3"></i>Ver</a>
-                                            <a class="dropdown-item" th:href="@{/planilla/empleado/edit/{id}(id=${e.idEmpleado})}" ><i class="far fa-edit mr-3"></i>Editar</a>
-=======
+
                                             <a class="dropdown-item" href="#" th:href="@{/empleado/show?id={id}(id=${e.idEmpleado})}"><i class="far fa-eye mr-3"></i>Ver</a>
-                                            <a class="dropdown-item" href="#" ><i class="far fa-edit mr-3"></i>Editar</a>
->>>>>>> 03727cb2682d205d68ea52b308d4c16dd880d872
+                                            <a class="dropdown-item" th:href="@{/empleado/edit/{id}(id=${e.idEmpleado})}" ><i class="far fa-edit mr-3"></i>Editar</a>
+
+
                                             <a th:if="${!e.empleadoHabilitado}" class="disable_enable dropdown-item" href="#" th:attr="data-id=${e.idEmpleado}, data-type=${e.empleadoHabilitado}"><i class="far fa-check-circle mr-3"></i>Habiltar</a>
                                             <a th:unless="${!e.empleadoHabilitado}" class="disable_enable dropdown-item" href="#" th:attr="data-id=${e.idEmpleado}, data-type=${e.empleadoHabilitado}"><i class="far fa-window-close mr-3"></i>Deshabilitar</a>
                                         </div>
@@ -84,7 +82,7 @@
                             <th>Apellidos paterno</th>
                             <th>Apellido materno</th>
                             <th>Fecha de nacimiento</th>
-                            <th>Correo personal</th>
+                            <th>Correo institucional</th>
                             <th>Status</th>
                             <th>Acciones</th>
                         </tr>

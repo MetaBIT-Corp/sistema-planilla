@@ -80,6 +80,8 @@ public class EmpleadoController {
     private static final String EDIT_VIEW = "empleado/edit";
     private static final String CREATE_VIEW = "empleado/create";
     private static final String SHOW_VIEW = "empleado/show";
+    private static final String EDIT_EMP_DOC="empleado/edit_emp_docs";
+    private static final String EDIT_EMP_PROF="empleado/edit_emp_prof";
 
     private static final Log LOGGER = LogFactory.getLog(EmpleadoController.class);
 
@@ -213,6 +215,82 @@ public class EmpleadoController {
         return new ResponseEntity<>(mensajes, HttpStatus.OK);
     }
 
+    //Form to edit employee by Id
+    @PreAuthorize("hasAuthority('EMPLEADO_EDIT')")
+    @GetMapping("/edit/{id}")
+    public ModelAndView edit(@PathVariable(value = "id",required = true) int id) {
+        ModelAndView mav = new ModelAndView(EDIT_VIEW);
+        Empleado e=empleadoService.findEmployeeById(id);
+        mav.addObject("empleado",e);
+        mav.addObject("direccion",e.getDireccion());
+        //mav.addObject("user",)
+        mav.addObject("puestos",puestoService.getPuestos());
+        mav.addObject("estadosCiviles",estadoCivilService.getAllCivilStates());
+        mav.addObject("generos",generoService.getAllGeneros());
+        mav.addObject("municipios", municipioService.getMunicipiosByDepartamento(e.getDireccion().getMunicipio().getDepartamento()));
+        mav.addObject("departamentos", departamentoService.getAllDepartamentos());
+        return mav;
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<?> update(@RequestParam Map<String,String> allParams) {
+        //VALIDACIONES
+        Map<String,String> mensajes = validationEmptyFields(allParams,null);
+
+        //Controlando que errores de datos obligatorios sean resueltos
+        if(mensajes.size()>0){
+            return new ResponseEntity<>(mensajes, HttpStatus.BAD_REQUEST);
+        }
+        //DATOS NECESARIOS PARA REGISTRAR EMPLEADO
+        Municipio municipio=municipioService.getMunicipio(Integer.parseInt(allParams.get("idMunicipio")));
+        EstadoCivil estadoCivil=estadoCivilService.getCivilState(Integer.parseInt(allParams.get("idEstadoCivil")));
+        Genero genero=generoService.getGenero(Integer.parseInt(allParams.get("idGenero")));
+
+
+        Empleado empleado = empleadoService.findEmployeeById(Integer.parseInt(allParams.get("idEmpleado")));
+        empleado.setCodigo(allParams.get("codigo"));
+        empleado.setNombrePrimero(allParams.get("nombrePrimero"));
+        empleado.setNombreSegundo(allParams.get("nombreSegundo"));
+        empleado.setApellidoMaterno(allParams.get("apellidoMaterno"));
+        empleado.setApellidoPaterno(allParams.get("apellidoPaterno"));
+        empleado.setApellidoCasada(allParams.get("apellidoCasada"));
+        empleado.setFechaNacimiento(LocalDate.parse(allParams.get("fechaNacimiento")));
+        empleado.setCorreoPersonal(allParams.get("correoPersonal"));
+        empleado.setCorreoInstitucional(allParams.get("correoInstitucional"));
+        empleado.setSalarioBaseMensual(Double.parseDouble(allParams.get("salarioBaseMensual")));
+        empleado.setHorasTrabajo(Integer.parseInt(allParams.get("horasTrabajo")));
+        empleado.setEstadoCivil(estadoCivil);
+        empleado.setGenero(genero);
+
+        empleadoService.addEmployee(empleado);
+
+        //EDITANDO DIRECCION
+        Direccion direccion=empleado.getDireccion();
+        direccion.setUrbanizacion(allParams.get("urbanizacion"));
+        direccion.setCalle(allParams.get("calle"));
+        direccion.setNumeroCasa(allParams.get("numeroCasa"));
+        direccion.setComplemento(allParams.get("complemento"));
+        direccion.setMunicipio(municipio);
+
+        //REGISTRO DE DIRECCION
+        direccionService.updateDirection(direccion);
+
+        mensajes.put("success","Empleado Registrado correctamente");
+        return new ResponseEntity<>(mensajes, HttpStatus.OK);
+    }
+
+    @GetMapping("/edit-documentos/{id}")
+    public ModelAndView editDocumentos(@PathVariable(value = "id",required = true) int id){
+        ModelAndView mav = new ModelAndView(EDIT_EMP_DOC);
+        return mav;
+    }
+
+    @GetMapping("/edit-profesiones/{id}")
+    public ModelAndView editProfesiones(@PathVariable(value = "id",required = true) int id){
+        ModelAndView mav = new ModelAndView(EDIT_EMP_PROF);
+        return mav;
+    }
+
     private List<String> getPatternByTipoDocumento(List<TipoDocumento> tipoDocumentos){
         //Base de construccion[A-Za-z]{2}[0-9]{3} -->Patron Carnet UES
         String letras="[A-Za-z]";
@@ -297,69 +375,6 @@ public class EmpleadoController {
         return mensajes;
     }
 
-    //Form to edit employee by Id
-    @PreAuthorize("hasAuthority('EMPLEADO_EDIT')")
-    @GetMapping("/edit/{id}")
-    public ModelAndView edit(@PathVariable(value = "id",required = true) int id) {
-        ModelAndView mav = new ModelAndView(EDIT_VIEW);
-        Empleado e=empleadoService.findEmployeeById(id);
-        mav.addObject("empleado",e);
-        mav.addObject("direccion",e.getDireccion());
-        //mav.addObject("user",)
-        mav.addObject("puestos",puestoService.getPuestos());
-        mav.addObject("estadosCiviles",estadoCivilService.getAllCivilStates());
-        mav.addObject("generos",generoService.getAllGeneros());
-        mav.addObject("municipios", municipioService.getMunicipiosByDepartamento(e.getDireccion().getMunicipio().getDepartamento()));
-        mav.addObject("departamentos", departamentoService.getAllDepartamentos());
-        return mav;
-    }
-
-    @PostMapping("/update")
-    public ResponseEntity<?> update(@RequestParam Map<String,String> allParams) {
-        //VALIDACIONES
-        Map<String,String> mensajes = validationEmptyFields(allParams,null);
-
-        //Controlando que errores de datos obligatorios sean resueltos
-        if(mensajes.size()>0){
-            return new ResponseEntity<>(mensajes, HttpStatus.BAD_REQUEST);
-        }
-        //DATOS NECESARIOS PARA REGISTRAR EMPLEADO
-        Municipio municipio=municipioService.getMunicipio(Integer.parseInt(allParams.get("idMunicipio")));
-        EstadoCivil estadoCivil=estadoCivilService.getCivilState(Integer.parseInt(allParams.get("idEstadoCivil")));
-        Genero genero=generoService.getGenero(Integer.parseInt(allParams.get("idGenero")));
-
-
-        Empleado empleado = empleadoService.findEmployeeById(Integer.parseInt(allParams.get("idEmpleado")));
-        empleado.setCodigo(allParams.get("codigo"));
-        empleado.setNombrePrimero(allParams.get("nombrePrimero"));
-        empleado.setNombreSegundo(allParams.get("nombreSegundo"));
-        empleado.setApellidoMaterno(allParams.get("apellidoMaterno"));
-        empleado.setApellidoPaterno(allParams.get("apellidoPaterno"));
-        empleado.setApellidoCasada(allParams.get("apellidoCasada"));
-        empleado.setFechaNacimiento(LocalDate.parse(allParams.get("fechaNacimiento")));
-        empleado.setCorreoPersonal(allParams.get("correoPersonal"));
-        empleado.setCorreoInstitucional(allParams.get("correoInstitucional"));
-        empleado.setSalarioBaseMensual(Double.parseDouble(allParams.get("salarioBaseMensual")));
-        empleado.setHorasTrabajo(Integer.parseInt(allParams.get("horasTrabajo")));
-        empleado.setEstadoCivil(estadoCivil);
-        empleado.setGenero(genero);
-
-        empleadoService.addEmployee(empleado);
-
-        //EDITANDO DIRECCION
-        Direccion direccion=empleado.getDireccion();
-        direccion.setUrbanizacion(allParams.get("urbanizacion"));
-        direccion.setCalle(allParams.get("calle"));
-        direccion.setNumeroCasa(allParams.get("numeroCasa"));
-        direccion.setComplemento(allParams.get("complemento"));
-        direccion.setMunicipio(municipio);
-
-        //REGISTRO DE DIRECCION
-        direccionService.updateDirection(direccion);
-
-        mensajes.put("success","Empleado Registrado correctamente");
-        return new ResponseEntity<>(mensajes, HttpStatus.OK);
-    }
 
     @GetMapping("/status")
     public String disable(@RequestParam("id") int id) {
