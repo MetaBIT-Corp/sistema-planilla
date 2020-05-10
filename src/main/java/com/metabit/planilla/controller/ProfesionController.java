@@ -42,11 +42,13 @@ public class ProfesionController {
         model.addAttribute("store_success", store_success);
         model.addAttribute("update_success", update_success);
         model.addAttribute("delete_success", delete_success);
+        model.addAttribute("profesionEntity", new Profesion());
+
         return modelAndView;
     }
 
-    @PreAuthorize("hasAuthority('PROFESION_CREATE') or hasAuthority('PROFESION_EDIT')")
-    @RequestMapping(path = {"/form-profesion","/form-profesion/{id}"})
+    /*@PreAuthorize("hasAuthority('PROFESION_CREATE') or hasAuthority('PROFESION_EDIT')")
+    @RequestMapping(path = {"/form-profesion/{id}"})
     public ModelAndView create(@PathVariable("id") Optional<Integer> id){
         ModelAndView modelAndView = new ModelAndView(CREATE_VIEW);
         if(id.isPresent()){
@@ -57,9 +59,9 @@ public class ProfesionController {
             modelAndView.addObject("profesionEntity", new Profesion());
         }
         return modelAndView;
-    }
+    }*/
 
-    @PreAuthorize("hasAuthority('PROFESION_CREATE') or hasAuthority('PROFESION_EDIT')")
+    /*@PreAuthorize("hasAuthority('PROFESION_CREATE') or hasAuthority('PROFESION_EDIT')")
     @PostMapping("/form-post")
     public String createUpdatePost(@Valid @ModelAttribute("profesionEntity") Profesion profesion, BindingResult bindingResult){
         LOGGER.info("PROFESION: " + profesion);
@@ -74,7 +76,28 @@ public class ProfesionController {
                 return "redirect:/profesion/index?update_success=true";
             }
         }
+    }*/
+
+    @PreAuthorize("hasAuthority('PROFESION_CREATE')")
+    @PostMapping("/store")
+    public String store(@ModelAttribute(name="profesionEntity") Profesion profesion){
+        if(profesion.getIdProfesion()==0){
+            profesionService.storeProfesion(profesion);
+        }else{
+            profesionService.updateProfesion(profesion);
+            return "redirect:/profesion/index?update_success=true";
+        }
+        return "redirect:/profesion/index?store_success=true";
     }
+
+    @PreAuthorize("hasAuthority('PROFESION_EDIT')")
+    @PostMapping("/update")
+    public String update(@ModelAttribute(name="profesionEntity") Profesion profesion){
+        profesionService.updateProfesion(profesion);
+        return "redirect:/profesion/index?update_success=true";
+    }
+
+
 
     @PreAuthorize("hasAuthority('PROFESION_DELETE')")
     @PostMapping("/destroy")
@@ -83,5 +106,8 @@ public class ProfesionController {
         profesionService.deleteProfesion(idProfesion);
         return "redirect:/profesion/index?delete_success=true";
     }
+
+
+
 
 }

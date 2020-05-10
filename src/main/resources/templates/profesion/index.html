@@ -7,9 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-    <!-- SweetAlert2 -->
     <link rel="stylesheet" th:href="@{/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css}">
-    <!-- Toastr -->
     <link rel="stylesheet" th:href="@{/plugins/toastr/toastr.min.css}">
 
     <title>Sistema Planilla | Profesiones</title>
@@ -18,7 +16,7 @@
 
 <body>
 
-    <h1 class="m-0 text-dark" layout:fragment="titulo_seccion">Profesiones/Oficios</h1>
+    <h1 class="m-0 text-dark" layout:fragment="titulo_seccion">Profesiones y Oficios</h1>
 
     <ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
         <li class="breadcrumb-item">
@@ -38,11 +36,15 @@
                 <div class="card">
 
                     <div class="card-header text-right">
-                        <a href="#" th:href="@{/profesion/form-profesion}" type="button" class="btn btn-sm btn-primary">
+                        <a class="btn btn-primary btn-sm"
+                           href="#"
+                           id="bNuevaProfesion"
+                           data-toggle="modal"
+                           data-target="#profesionModal">
                             <i class="fas fa-plus-circle mr-1 text-white"></i>
-                            <span class="text-white">Nueva Profesi&oacute;n/Oficio</span>
+                            <span class="text-white">Nueva Profesi&oacute;n u Oficio</span>
                         </a>
-                    </div><!-- /.card-header -->
+                    </div>
 
                     <div class="card-body">
                         <table id="example1" class="table table-bordered table-striped">
@@ -51,7 +53,7 @@
                                 <tr>
                                     <th>Nombre</th>
                                     <th>Profesi&oacute;n/Oficio</th>
-                                    <th>Acciones</th>
+                                    <th class="text-center">Acciones</th>
                                 </tr>
                             </thead>
 
@@ -66,26 +68,38 @@
                                     <span th:unless="${profesion.esProfesion}">Oficio</span>
                                 </td>
 
-                                <td>
-                                    <div class="btn-group">
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
-                                                <span>Acci&oacute;n</span>
-                                            </button>
-                                            <div class="dropdown-menu" style="">
-                                                <a class="dropdown-item" href="#" th:href="@{'/profesion/form-profesion/'+${profesion.idProfesion}+''}"><i class="far fa-edit mr-3"></i>Editar</a>
-                                                <a class="dropdown-item"
-                                                   style="cursor:pointer"
-                                                   th:attr="
-                                                        data-idProfesion=${profesion.idProfesion},
-                                                        data-profesion=${profesion.profesion}"
-                                                   onclick="activateModalDestroy(this)">
-                                                    <i class="far fa-trash-alt mr-3"></i>
-                                                    Eliminar
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <td class="text-center">
+                                    <a class="btn btn-primary btn-sm aVerProfesion"
+                                       href="#"
+                                       title="Ver Profesi&oacute;n u Oficio"
+                                       data-toggle="modal"
+                                       data-target="#profesionModal"
+                                       th:attr="
+                                       data-profesion=${profesion.profesion},
+                                       data-es-profesion=${profesion.esProfesion}">
+                                        <i class="fas fa-eye"></i>
+                                    </a>&nbsp;&nbsp;
+                                    <a class="btn btn-primary btn-sm aEditarProfesion"
+                                       href="#"
+                                       title="Editar Profesi&oacute;n u Oficio"
+                                       data-toggle="modal"
+                                       data-target="#profesionModal"
+                                       th:attr="
+                                       data-id-profesion=${profesion.idProfesion},
+                                       data-profesion=${profesion.profesion},
+                                       data-es-profesion=${profesion.esProfesion}">
+                                        <i class="fas fa-pen"></i>
+                                    </a>&nbsp;&nbsp;
+                                    <a class="btn btn-danger btn-sm"
+                                       href="#"
+                                       title="Eliminar Profesi&oacute;n u Oficio"
+                                       data-toggle="modal"
+                                       data-target="#profesionModalDestroy"
+                                       th:attr="
+                                       data-id-profesion=${profesion.idProfesion},
+                                       data-profesion=${profesion.profesion}">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
                                 </td>
 
                             </tr>
@@ -106,113 +120,29 @@
                             </tfoot>
 
                         </table>
-                    </div><!-- /.card-body -->
-
-                </div><!-- /.card -->
-            </div>
-        </div>
-
-        <!-- Modal para Confirmar Eliminacion de Profesion -->
-        <div class="modal" id="profesionModalDestroy" tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-
-                    <div class="modal-header">
-                        <h5 class="modal-title">Eliminar Profesi&oacute;n</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
                     </div>
-
-                    <form method="post"
-                          action="#"
-                          th:action="@{/profesion/destroy}">
-
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <div id="divMessage"></div>
-                                <input type="hidden" class="form-control" id="idProfesionInputDestroy" name="idProfesionDestroy" value="">
-                            </div>
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-danger">Eliminar</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        </div>
-
-                    </form>
 
                 </div>
             </div>
         </div>
 
+        <div th:insert="profesion/profesion-modal :: profesion_modal"></div>
+        <div th:insert="profesion/delete-modal :: delete_modal"></div>
+
     </div>
 
     <section layout:fragment="scripts">
 
-        <!-- DataTables -->
         <script th:src="@{/plugins/datatables/jquery.dataTables.min.js}"></script>
         <script th:src="@{/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
         <script th:src="@{/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
         <script th:src="@{/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
 
-        <!-- Toastr -->
         <script th:src="@{/plugins/toastr/toastr.min.js}"></script>
-        <!-- SweetAlert2 -->
         <script th:src="@{/plugins/sweetalert2/sweetalert2.min.js}"></script>
 
-        <!-- page script -->
-        <script>
-            $(function () {
-                $("#example1").DataTable({
-                    "responsive": true,
-                    "autoWidth": false,
-                });
-                $('#example2').DataTable({
-                    "paging": true,
-                    "lengthChange": false,
-                    "searching": false,
-                    "ordering": true,
-                    "info": true,
-                    "autoWidth": false,
-                    "responsive": true,
-                });
-            });
-
-            function activateModalDestroy(param){
-
-                var id_profesion = $(param).attr("data-idProfesion");
-                var profesion = $(param).attr("data-profesion");
-
-                document.getElementById("divMessage").innerHTML = "<p>¿Esta seguro que desea eliminar la profesi&oacute;n <b>" + profesion + "</b>?</p>";
-                $("#idProfesionInputDestroy").val(id_profesion);
-
-                $("#profesionModalDestroy").modal();
-            }
-
-            $(document).ready(function(){
-                var store = $('#store').val();
-                var update = $('#update').val();
-                var delet = $('#delete').val();
-
-
-                setTimeout(function() {
-                    $(".alert").fadeOut();
-                },3000);
-
-                if(store === 'true'){
-                    toastr.success("Profesión creada con éxito");
-                }
-                if(update === 'true'){
-                    toastr.success("Profesión editado con éxito");
-                }
-                if(delet === 'true'){
-                    toastr.error("Profesión eliminada");
-                }
-
-            })
-
-        </script>
+        <script th:src="@{/js/datatable/datatable.js}"></script>
+        <script th:src="@{/js/profesion/profesion.js}"></script>
 
     </section>
 
