@@ -1,5 +1,6 @@
 package com.metabit.planilla.controller;
 
+import com.metabit.planilla.entity.Profesion;
 import com.metabit.planilla.entity.TipoDocumento;
 import com.metabit.planilla.service.TipoDocumentoService;
 import org.apache.commons.logging.Log;
@@ -41,39 +42,27 @@ public class TipoDocumentoController {
         model.addAttribute("update_success", update_success);
         model.addAttribute("enable_success", enable_success);
         model.addAttribute("disable_success", disable_success);
+        model.addAttribute("tipoDocumentoEntity", new TipoDocumento());
         return modelAndView;
     }
 
-    @PreAuthorize("hasAuthority('TIPODOCUMENTO_CREATE') or hasAuthority('TIPODOCUMENTO_EDIT')")
-    @RequestMapping(path = {"/form-tipo-documento", "/form-tipo-documento/{id}"})
-    public ModelAndView create(@PathVariable("id") Optional<Integer> id){
-        ModelAndView modelAndView = new ModelAndView(CREATE_VIEW);
-        if(id.isPresent()){
-            Integer idTipoDocumento = Integer.valueOf(id.get());
-            TipoDocumento tipoDocumento = tipoDocumentoService.getTipoDocumento(idTipoDocumento);
-            modelAndView.addObject("tipoDocumentoEntity", tipoDocumento);
+    @PreAuthorize("hasAuthority('TIPODOCUMENTO_CREATE')")
+    @PostMapping("/store")
+    public String store(@ModelAttribute(name="tipoDocumentoEntity") TipoDocumento tipoDocumento){
+        if(tipoDocumento.getIdTipoDocumento()==0){
+            tipoDocumentoService.storeTipoDocumento(tipoDocumento);
         }else{
-            modelAndView.addObject("tipoDocumentoEntity", new TipoDocumento());
+            tipoDocumentoService.updateTipoDocumento(tipoDocumento);
+            return "redirect:/tipo-documento/index?update_success=true";
         }
-        return modelAndView;
+        return "redirect:/tipo-documento/index?store_success=true";
     }
 
-    @PreAuthorize("hasAuthority('TIPODOCUMENTO_CREATE') or hasAuthority('TIPODOCUMENTO_EDIT')")
-    @PostMapping("/form-post")
-    public String createUpdatePost(@Valid @ModelAttribute("tipoDocumentoEntity") TipoDocumento tipoDocumento, BindingResult bindingResult){
-        LOGGER.info("TIPO DOCUMENTO: "+ tipoDocumento);
-        if(bindingResult.hasErrors()){
-            return CREATE_VIEW;
-        }else{
-            if(tipoDocumento.getIdTipoDocumento()==0){
-                tipoDocumento.setTipoDocumentoHabilitado(true);
-                tipoDocumentoService.storeTipoDocumento(tipoDocumento);
-                return "redirect:/tipo-documento/index?store_success=true";
-            }else{
-                tipoDocumentoService.updateTipoDocumento(tipoDocumento);
-                return "redirect:/tipo-documento/index?update_success=true";
-            }
-        }
+    @PreAuthorize("hasAuthority('TIPODOCUMENTO_EDIT')")
+    @PostMapping("/update")
+    public String update(@ModelAttribute(name="tipoDocumentoEntity") TipoDocumento tipoDocumento){
+        tipoDocumentoService.updateTipoDocumento(tipoDocumento);
+        return "redirect:/tipo-documento/index?update_success=true";
     }
 
     @PreAuthorize("hasAuthority('TIPODOCUMENTO_DELETE')")

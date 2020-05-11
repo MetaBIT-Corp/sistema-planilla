@@ -24,9 +24,9 @@ $(document).ready(function(){
         }
     });
 
-    $('#bNuevaProfesion').on('click',function () {
+    $('#profesionBtnNueva').on('click',function () {
         var modal = $('#profesionModal');
-        modal.find('.modal-header #modalTitleProfesion').text('Crear Profesión u Oficio');
+        modal.find('.modal-header #profesionModalTitle').text('Crear Profesión u Oficio');
         modal.find('.card-body #idProfesionInput').attr('disabled',true);
         modal.find('.card-body #profesionInput').attr('disabled',false);
         modal.find('.card-body #esProfesionInput').attr('disabled',false);
@@ -35,9 +35,9 @@ $(document).ready(function(){
         modal.find('.card-footer #btnCancelarProfesion').text('Cancelar');
     });
 
-    $('.aEditarProfesion').on('click',function () {
+    $('.profesionBtnEditar').on('click',function () {
         var modal = $('#profesionModal');
-        modal.find('.modal-header #modalTitleProfesion').text('Editar Profesión u Oficio');
+        modal.find('.modal-header #profesionModalTitle').text('Editar Profesión u Oficio');
         modal.find('.card-body #idProfesionInput').attr('disabled',false);
         modal.find('.card-body #profesionInput').attr('disabled',false);
         modal.find('.card-body #esProfesionInput').attr('disabled',false);
@@ -47,7 +47,7 @@ $(document).ready(function(){
 
     });
 
-    $('.aVerProfesion').on('click',function () {
+    $('.profesionBtnVer').on('click',function () {
         var modal = $('#profesionModal');
         modal.find('.card-body #profesionInput').attr('disabled',true);
         modal.find('.card-body #esProfesionInput').attr('disabled',true);
