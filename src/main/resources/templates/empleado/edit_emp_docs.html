@@ -12,19 +12,177 @@
 
 <body>
 
-<h1 class="m-0 text-dark" layout:fragment="titulo_seccion">Planilla Salarial</h1>
+<h1 class="m-0 text-dark" layout:fragment="titulo_seccion"></h1>
 
 <ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
-    <li class="breadcrumb-item"><a href="#">Home</a></li>
-    <li class="breadcrumb-item active">Planilla</li>
+    <li class="breadcrumb-item"><a th:href="@{/empleado/index}">Empleados Registrados</a></li>
+    <li class="breadcrumb-item"><a th:href="@{/empleado/edit/{id}(id=${empleado.idEmpleado})}">Editar Empleado</a></li>
+    <li class="breadcrumb-item active">Documentos Empleado</li>
 </ol>
 
 <div layout:fragment="content">
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">Editar Documentos Agregados</h3>
+        </div>
+        <div class="card-body">
+            <!--Tabla 1-->
+            <div class="container">
+                <div class="card-body">
+
+
+                    <table id="example1" class="table table-bordered table-striped">
+
+                        <thead>
+                        <tr>
+                            <th>Tipo Documento</th>
+                            <th>Formato de Documento</th>
+                            <th>Ingrese Documento</th>
+                            <th>Acciones</th>
+                        </tr>
+
+                        <tbody>
+                        <tr th:each="empleadoDoc: ${documentos_empleado}">
+
+                            <td><span th:text="${empleadoDoc.tipoDocumento.tipoDocumento}"></span></td>
+                            <td><span th:text="${empleadoDoc.tipoDocumento.formato}"></span></td>
+                            <td>
+                                <input type="text" th:name="emp_doc_+${empleadoDoc.idEmpleadoDocumento}" th:id="emp_doc_+${empleadoDoc.idEmpleadoDocumento}"
+                                       class="form-control" th:value="*{empleadoDoc.codigoDocumento}" disabled>
+                            </td>
+                            <td>
+                                <button class="edit_doc btn btn-sm btn-primary text-white" title="Editar" th:attr="data-id=${empleadoDoc.idEmpleadoDocumento}">
+                                    <span><i th:id="icon_doc_+${empleadoDoc.idEmpleadoDocumento}" class="fas fa-pencil-alt"></i></span>
+                                </button>
+
+                                <button class="delete_doc btn btn-sm btn-danger text-white" title="Eliminar">
+                                    <i class="fas fa-window-close"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+
+                        <tfoot>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Formato de Documentos</th>
+                            <th>Ingrese Documentos</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </tfoot>
+
+                    </table>
+                </div>
+            </div>
+            <!--FIN Tabla 1-->
+        </div>
+    </div>
+
+    <!--Inicio de CARD-->
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">Registrar Nuevos Documentos</h3>
+        </div>
+        <div class="card-body">
+            <!--Tabla 2-->
+            <div class="container">
+                <div class="card-body">
+
+
+                    <table id="example2" class="table table-bordered table-striped">
+
+                        <thead>
+                        <tr>
+                            <th>Tipo Documento</th>
+                            <th>Formato de Documento</th>
+                            <th>Ingrese Documento</th>
+                        </tr>
+
+                        <tbody>
+                        <tr th:each="tipoDocumento: ${documentos}">
+
+                            <td><span th:text="${tipoDocumento.tipoDocumento}"></span></td>
+                            <td><span th:text="${tipoDocumento.formato}"></span></td>
+                            <td>
+                                <input type="text" th:name="documento_+${tipoDocumento.idTipoDocumento}"
+                                       class="form-control">
+                            </td>
+                        </tr>
+                        </tbody>
+
+                        <tfoot>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Formato de Documentos</th>
+                            <th>Ingrese Documentos</th>
+                        </tr>
+                        </tfoot>
+
+                    </table>
+                </div>
+            </div>
+            <!--FIN Tabla 2-->
+        </div>
+        <div class="card-footer text-right">
+            <button id="save" type="button" class="btn btn-primary">Agregar Nuevos Documentos</button>
+            <a type="button" class="btn btn-default" th:href="@{/empleado/edit/}">Cancelar</a>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="status_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="titulo_modal"> Eliminar Documento</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="mensaje_modal">
+                    <!--AGREGAR MENSAJE CON JQUERY-->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <a type="button" id="accion_modal" class="text-light"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Fin MODAL-->
 
 </div>
 
 
 <section layout:fragment="scripts">
+    <!-- DataTables -->
+    <script th:src="@{/plugins/datatables/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
+    <script th:src="@{/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
+    <script th:src="@{/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
+
+    <script>
+        $(function () {
+            $("#example1").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+            });
+            $("#example2").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+            });
+        });
+    </script>
+
+    <script>
+        $(".edit_doc").on("click",function () {
+            var id=$(this).data("id");
+            $("#emp_doc_"+id).removeAttr("disabled");
+            $("#icon_doc_"+id).removeClass();
+            $("#icon_doc_"+id).addClass("fas fa-check-circle");
+            $(this).attr("data-accion",1);
+        });
+    </script>
 </section>
 
 </body>

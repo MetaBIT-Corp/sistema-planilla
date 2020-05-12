@@ -282,6 +282,20 @@ public class EmpleadoController {
     @GetMapping("/edit-documentos/{id}")
     public ModelAndView editDocumentos(@PathVariable(value = "id",required = true) int id){
         ModelAndView mav = new ModelAndView(EDIT_EMP_DOC);
+        Empleado e=empleadoService.findEmployeeById(id);
+
+        //List de documentos que pueden ser agregados al empleado
+        List<TipoDocumento> documentos = tipoDocumentoService.getTipoDocHabilitado();
+        List<EmpleadoDocumento> empleadoDocumentos = e.getDocumentosEmpleado();
+        int contador=0;
+
+        for (EmpleadoDocumento ed:empleadoDocumentos) {
+            documentos.remove(ed.getTipoDocumento());
+        }
+
+        mav.addObject("empleado",e);
+        mav.addObject("documentos_empleado",empleadoDocumentos);
+        mav.addObject("documentos",documentos);
         return mav;
     }
 
