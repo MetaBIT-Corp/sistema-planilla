@@ -60,19 +60,17 @@
 								<div class="col-md-6">
 									<div class="form-group">
 										<label for="salariominimo">Salario mínimo *</label> 
-										<input type="number" class="form-control" id="salariominimo" placeholder="Salario minimo" min="300"
+										<input type="number" class="form-control" id="salariominimo" placeholder="Salario minimo" min="300" step="0.01"
 											th:field="*{salarioMinimo}"
 											th:value="${salarioMinimo}">
-										
 									</div>
 								</div>
 								<div class="col-md-6">
 									<div class="form-group">
 										<label for="salariomaximo">Salario Máximo *</label> 
-										<input type="number" class="form-control" id="salariomaximo" placeholder="Salario maximo" min="300"
+										<input type="number" class="form-control" id="salariomaximo" placeholder="Salario maximo" min="300" step="0.01"
 											th:field="*{salarioMaximo}"
-											th:value="${salarioMaximo}">
-										
+											th:value="${salarioMaximo}">	
 									</div>
 								</div>
 							</div>

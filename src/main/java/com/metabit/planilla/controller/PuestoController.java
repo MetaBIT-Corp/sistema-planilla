@@ -92,6 +92,7 @@ public class PuestoController {
 		}
 	}
 	
+	//Eliminar puesto
 	@PreAuthorize("hasAuthority('PUESTO_DELETE')")
 	@PostMapping("/destroy")
 	public String destroyPuesto(@RequestParam("idPuestoDestroy") int id) {
@@ -99,5 +100,4 @@ public class PuestoController {
 		puestoService.destroyPuesto(id);
 		return "redirect:/puesto/index?delete_success=true";
 	}
-
 }
