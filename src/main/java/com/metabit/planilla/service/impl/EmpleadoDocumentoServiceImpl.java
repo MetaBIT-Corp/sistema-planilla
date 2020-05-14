@@ -18,12 +18,17 @@ public class EmpleadoDocumentoServiceImpl implements EmpleadoDocumentoService {
     private EmpleadoDocumentoJpaRepository empleadoDocumentoJpaRepository;
 
     @Override
-    public List<EmpleadoDocumento> getDocumentsByEmployee(Empleado e) {
-        return empleadoDocumentoJpaRepository.findByEmpleado(e);
+    public EmpleadoDocumento getDocumentEmployee(int id) {
+        return empleadoDocumentoJpaRepository.getOne(id);
     }
 
     @Override
     public EmpleadoDocumento createOrUpdateDocumentsEmployee(EmpleadoDocumento ed) {
         return empleadoDocumentoJpaRepository.save(ed);
+    }
+
+    @Override
+    public void deleteDocumentEmployee(int id) {
+        empleadoDocumentoJpaRepository.delete(empleadoDocumentoJpaRepository.getOne(id));
     }
 }
