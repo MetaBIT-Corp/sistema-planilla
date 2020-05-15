@@ -9,4 +9,5 @@ public interface EmpleadoProfesionService {
 
     public abstract List<EmpleadoProfesion> getAllProfessionsEmployee(Empleado e);
     public abstract EmpleadoProfesion createOrUpdateProfessionsEmployee(EmpleadoProfesion ep);
+    public void deleteProfesionEmpleado(int id);
 }

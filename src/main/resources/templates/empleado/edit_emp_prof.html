@@ -15,14 +15,246 @@
 <h1 class="m-0 text-dark" layout:fragment="titulo_seccion"></h1>
 
 <ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
-    <li class="breadcrumb-item"><a href="#">Home</a></li>
-    <li class="breadcrumb-item active">Planilla</li>
+    <li class="breadcrumb-item"><a th:href="@{/empleado/index}">Empleados Registrados</a></li>
+    <li class="breadcrumb-item"><a th:href="@{/empleado/edit/{id}(id=${empleado.idEmpleado})}">Editar Empleado</a></li>
+    <li class="breadcrumb-item active">Profesiones Empleado
+    </li>
 </ol>
 
 <div layout:fragment="content">
+    <div id="error_alert_div" class="alert alert-danger mt-2 mb-2" role="alert" hidden>
+        <strong>Solucionar los siguientes problemas:</strong>
+        <ul id="error_alert">
+
+        </ul>
+    </div>
+    <!--Inicio de CARD-->
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">Eliminar Profesiones/Oficios</h3>
+        </div>
+        <div class="card-body">
+            <!--Tabla 1-->
+            <div class="container">
+                <div class="card-body">
+                    <table id="example1" class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Profesi&oacute;n/Oficio</th>
+                            <th class="text-center">Eliminar</th>
+                        </tr>
+                        <tbody>
+                        <tr th:each="p: ${profesiones_empleado}">
+
+                            <td><span th:text="${p.profesion.profesion}"></span></td>
+
+                            <td>
+                                <span th:if="${p.profesion.esProfesion}">Profesi&oacute;n</span>
+                                <span th:unless="${p.profesion.esProfesion}">Oficio</span>
+                            </td>
+
+                            <td>
+                                <div class="custom-control custom-checkbox text-center">
+                                    <input type="checkbox" name="profesiones_seleccion[]"
+                                           class="custom-control-input"
+                                           th:id="profesion+${p.idProfesionEmpleado}"
+                                           th:value="${p.idProfesionEmpleado}">
+                                    <label class="custom-control-label"
+                                           th:for="profesion+${p.idProfesionEmpleado}"><span></span></label>
+                                </div>
+                            </td>
+
+                        </tr>
+                        </tbody>
+
+                        <tfoot>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Profesi&oacute;n/Oficio</th>
+                            <th class="text-center">Eliminar</th>
+                        </tr>
+                        </tfoot>
+
+                    </table>
+                </div>
+            </div>
+            <!--FIN Tabla 1-->
+        </div>
+        <div class="card-footer text-right">
+            <button id="delete" type="button" class="btn btn-danger">Eliminar</button>
+            <a type="button" class="btn btn-default" th:href="@{/empleado/edit/{id}(id=${empleado.idEmpleado})}">Cancelar</a>
+        </div>
+    </div>
+    <!--FIN de CARD-->
+
+    <!--Inicio de CARD-->
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">Agregar Profesiones/Oficios</h3>
+        </div>
+        <div class="card-body">
+            <input type="text" hidden th:value="${empleado.idEmpleado}" name="idEmpleado" id="idEmpleado">
+
+            <!--Tabla 2-->
+            <div class="container">
+                <div class="card-body">
+                    <table id="example2" class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Profesi&oacute;n/Oficio</th>
+                            <th class="text-center">Seleccionar</th>
+                        </tr>
+                        <tbody>
+                        <tr th:each="p: ${profesiones}">
+
+                            <td><span th:text="${p.profesion}"></span></td>
+
+                            <td>
+                                <span th:if="${p.esProfesion}">Profesi&oacute;n</span>
+                                <span th:unless="${p.esProfesion}">Oficio</span>
+                            </td>
+
+                            <td>
+                                <div class="custom-control custom-checkbox text-center">
+                                    <input type="checkbox" name="profesiones_seleccion[]"
+                                           class="custom-control-input"
+                                           th:id="profesion+${p.idProfesion}"
+                                           th:value="${p.idProfesion}">
+                                    <label class="custom-control-label"
+                                           th:for="profesion+${p.idProfesion}"><span></span></label>
+                                </div>
+                            </td>
+
+                        </tr>
+                        </tbody>
+
+                        <tfoot>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Profesi&oacute;n/Oficio</th>
+                            <th class="text-center">Seleccionar</th>
+                        </tr>
+                        </tfoot>
+
+                    </table>
+                </div>
+            </div>
+            <!--FIN Tabla 2-->
+        </div>
+        <div class="card-footer text-right">
+            <button id="save" type="button" class="btn btn-primary">Agregar</button>
+            <a type="button" class="btn btn-default" th:href="@{/empleado/edit/{id}(id=${empleado.idEmpleado})}">Cancelar</a>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="delete_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="titulo_modal"> Eliminar Profesiones/Oficios</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="mensaje_modal" th:text="'¿Desea eliminar las Profesiones/Oficios del empleado '+${empleado.nombrePrimero}">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <a type="button" id="accion_modal" class="btn btn-danger text-light">Eliminar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Fin MODAL-->
 
 </div>
+
+
 <section layout:fragment="scripts">
+    <!-- DataTables -->
+    <script th:src="@{/plugins/datatables/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
+    <script th:src="@{/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
+    <script th:src="@{/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
+
+    <script>
+        $(function () {
+            var table = $("#example1").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+            });
+            var table2 = $("#example2").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+            });
+        });
+    </script>
+
+    <script>
+        $("#delete").on("click",function () {
+            var id = $(this).data("id");
+            $('#delete_modal').modal("show");
+        });
+        $("#accion_modal").on("click", function () {
+            $('#delete_modal').modal("hide");
+            $("#delete").attr("disabled", "disabled");
+            $("#delete").text("Eliminando");
+
+            var tabla_prof = $("#example1").DataTable();
+            $.ajax({
+                type: "POST",
+                url: "/empleado/delete-profesiones",
+                data: tabla_prof.$('input').serialize()+ "&" + $("#idEmpleado").serialize(),
+                dataType: "json",
+                success: function (data) {
+                    window.location.href = document.location;
+                },
+                error: function (data) {
+                    $("#error_alert_div").removeAttr("hidden");
+                    console.log(data);
+                    var m = "";
+                    $.each(data.responseJSON, function (key, value) {
+                        console.log(value);
+                        m += "<li>" + value + "</li>";
+                    });
+                    document.getElementById("error_alert").innerHTML = m;
+                    //Para mover al inicio de la pagina el control
+                    $('html, body').animate({
+                        scrollTop: 0
+                    }, 'slow');
+
+                    $("#success_alert_div").attr("hidden", "hidden");
+                    $("#delete").removeAttr("disabled");
+                    $("#delete").text("Eliminar");
+                }
+            });
+        });
+
+
+        $("#save").on("click", function () {
+            $("#save").attr("disabled", "disabled");
+            $("#save").text("Enviando");
+
+            var tabla_prof = $("#example2").DataTable();
+            $.ajax({
+                type: "POST",
+                url: "/empleado/add-profesiones",
+                data: tabla_prof.$('input').serialize()+ "&" + $("#idEmpleado").serialize(),
+                dataType: "json",
+                success: function (data) {
+                    window.location.href = document.location;
+                },
+                error: function (data) {
+                    $("#success_alert_div").attr("hidden", "hidden");
+                    $("#save").removeAttr("disabled");
+                    $("#save").text("Agregar");
+                }
+            });
+        });
+    </script>
 </section>
 
 </body>

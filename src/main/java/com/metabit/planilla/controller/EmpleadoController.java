@@ -15,6 +15,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.*;
@@ -73,6 +75,7 @@ public class EmpleadoController {
     @Autowired
     @Qualifier("empleadoDocumentoServiceImpl")
     private EmpleadoDocumentoService empleadoDocumentoService;
+
 
     private static final String INDEX_VIEW = "empleado/index";
     private static final String EDIT_VIEW = "empleado/edit";
@@ -282,7 +285,6 @@ public class EmpleadoController {
         //List de documentos que pueden ser agregados al empleado
         List<TipoDocumento> documentos = tipoDocumentoService.getTipoDocHabilitado();
         List<EmpleadoDocumento> empleadoDocumentos = e.getDocumentosEmpleado();
-        int contador = 0;
         for (EmpleadoDocumento ed : empleadoDocumentos) {
             documentos.remove(ed.getTipoDocumento());
         }
@@ -295,7 +297,6 @@ public class EmpleadoController {
     @PostMapping("/update-documentos")
     public ResponseEntity<?> updateDocumentos(@RequestParam Map<String, String> allParams) {
         Map<String, String> mensajes = new HashMap<String, String>();
-        LOGGER.info(allParams);
 
         //VALIDACION DE CAMPOS REQUERIDO DE DOCUMENTOS DE EMPLEADO
         List<EmpleadoDocumento> empDoc = new ArrayList<>();
@@ -400,11 +401,69 @@ public class EmpleadoController {
         return new ResponseEntity<>(mensajes, HttpStatus.OK);
     }
 
-
     @GetMapping("/edit-profesiones/{id}")
     public ModelAndView editProfesiones(@PathVariable(value = "id", required = true) int id) {
         ModelAndView mav = new ModelAndView(EDIT_EMP_PROF);
+        Empleado e = empleadoService.findEmployeeById(id);
+
+        //List de profesiones que pueden ser agregados al empleado
+        List<Profesion> profesiones = profesionService.getProfesiones();
+        List<EmpleadoProfesion> empleadoProfesiones = e.getProfesionesEmpleado();
+        int contador = 0;
+        for (EmpleadoProfesion ep : empleadoProfesiones) {
+            profesiones.remove(ep.getProfesion());
+        }
+        mav.addObject("empleado", e);
+        mav.addObject("profesiones_empleado", empleadoProfesiones);
+        mav.addObject("profesiones", profesiones);
         return mav;
+    }
+
+    @PostMapping("/delete-profesiones")
+    public ResponseEntity<?> deleteProfesiones(@RequestParam(name = "profesiones_seleccion[]", required = false, defaultValue = "0") List<Integer> profesiones,@RequestParam(name = "idEmpleado") int idEmpleado) {
+        //VALIDACIONES
+        Map<String, String> mensajes = new HashMap<String,String>();
+        if(profesiones.size()==1){
+            mensajes.put("success", "No se elimino ninguna profesion/oficio.");
+            return new ResponseEntity<>(mensajes, HttpStatus.OK);
+        }
+
+        //VALIDANDO QUE NO ELIMINE TODAS LAS PROFESIONES DEL EMPLEADO
+        Empleado e = empleadoService.findEmployeeById(idEmpleado);
+        if(profesiones.size()==e.getProfesionesEmpleado().size()){
+            mensajes.put("error", "No se pueden eliminar todos, al menos debe de quedar una profesion/oficio.");
+            return new ResponseEntity<>(mensajes, HttpStatus.BAD_REQUEST);
+        }
+
+        //ELIMINAR EMPLEADO_PROFESION
+        for (Integer i : profesiones) {
+            empleadoProfesionService.deleteProfesionEmpleado(i);
+        }
+        mensajes.put("success", "Se ha eliminado correctamente.");
+        return new ResponseEntity<>(mensajes, HttpStatus.OK);
+    }
+
+    @PostMapping("/add-profesiones")
+    public ResponseEntity<?> addProfesiones(@RequestParam(name = "profesiones_seleccion[]", required = false, defaultValue = "0") List<Integer> profesiones,@RequestParam(name = "idEmpleado") int idEmpleado) {
+        //VALIDACIONES
+        Map<String, String> mensajes = new HashMap<String,String>();
+        if(profesiones.size()==1){
+            mensajes.put("success", "No se agrego ninguna profesion/oficio.");
+            return new ResponseEntity<>(mensajes, HttpStatus.OK);
+        }
+
+        Empleado e = empleadoService.findEmployeeById(idEmpleado);
+
+        //AGREGAR EMPLEADO_PROFESION
+        for (Integer i : profesiones) {
+            EmpleadoProfesion ep = new EmpleadoProfesion(
+                    e,
+                    profesionService.getProfesion(i)
+            );
+            empleadoProfesionService.createOrUpdateProfessionsEmployee(ep);
+        }
+        mensajes.put("success", "Se ha agregaron correctamente.");
+        return new ResponseEntity<>(mensajes, HttpStatus.OK);
     }
 
     private List<String> getPatternByTipoDocumento(List<TipoDocumento> tipoDocumentos) {
