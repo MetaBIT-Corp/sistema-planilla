@@ -17,16 +17,18 @@
 <ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
     <li class="breadcrumb-item"><a th:href="@{/empleado/index}">Empleados Registrados</a></li>
     <li class="breadcrumb-item"><a th:href="@{/empleado/edit/{id}(id=${empleado.idEmpleado})}">Editar Empleado</a></li>
-    <li class="breadcrumb-item active" id="Empleado" th:attr="data-emp=${empleado.nombrePrimero}">Documentos Empleado</li>
+    <li class="breadcrumb-item active" id="Empleado" th:attr="data-emp=${empleado.nombrePrimero}">Documentos Empleado
+    </li>
 </ol>
 
 <div layout:fragment="content">
-    <div  id="error_alert_div" class="alert alert-danger mt-2 mb-2" role="alert" hidden>
+    <div id="error_alert_div" class="alert alert-danger mt-2 mb-2" role="alert" hidden>
         <strong>Seleccionar los siguientes problemas:</strong>
         <ul id="error_alert">
 
         </ul>
     </div>
+    <!--Inicio de CARD-->
     <div class="card card-primary">
         <div class="card-header">
             <h3 class="card-title">Editar Documentos Agregados</h3>
@@ -51,15 +53,19 @@
                             <td><span th:text="${empleadoDoc.tipoDocumento.tipoDocumento}"></span></td>
                             <td><span th:text="${empleadoDoc.tipoDocumento.formato}"></span></td>
                             <td>
-                                <input type="text" th:name="empDoc_+${empleadoDoc.idEmpleadoDocumento}" th:id="emp_doc_+${empleadoDoc.idEmpleadoDocumento}"
+                                <input type="text" th:name="empDoc_+${empleadoDoc.idEmpleadoDocumento}"
+                                       th:id="emp_doc_+${empleadoDoc.idEmpleadoDocumento}"
                                        class="form-control" th:value="*{empleadoDoc.codigoDocumento}" disabled>
                             </td>
                             <td>
-                                <button class="edit_doc btn btn-sm btn-primary text-white" title="Editar" th:attr="data-id=${empleadoDoc.idEmpleadoDocumento}">
-                                    <span><i th:id="icon_doc_+${empleadoDoc.idEmpleadoDocumento}" class="fas fa-pencil-alt"></i></span>
+                                <button class="edit_doc btn btn-sm btn-primary text-white" title="Editar"
+                                        th:attr="data-id=${empleadoDoc.idEmpleadoDocumento}">
+                                    <span><i th:id="icon_doc_+${empleadoDoc.idEmpleadoDocumento}"
+                                             class="fas fa-pencil-alt"></i></span>
                                 </button>
 
-                                <button class="delete_doc btn btn-sm btn-danger text-white" title="Eliminar" th:attr="data-id=${empleadoDoc.idEmpleadoDocumento}, data-name=${empleadoDoc.tipoDocumento.tipoDocumento}">
+                                <button class="delete_doc btn btn-sm btn-danger text-white" title="Eliminar"
+                                        th:attr="data-id=${empleadoDoc.idEmpleadoDocumento}, data-name=${empleadoDoc.tipoDocumento.tipoDocumento}">
                                     <i class="fas fa-window-close"></i>
                                 </button>
                             </td>
@@ -81,6 +87,7 @@
             <!--FIN Tabla 1-->
         </div>
     </div>
+    <!--FIN de CARD-->
 
     <!--Inicio de CARD-->
     <div class="card card-primary">
@@ -88,11 +95,11 @@
             <h3 class="card-title">Registrar Nuevos Documentos</h3>
         </div>
         <div class="card-body">
+            <input type="text" hidden th:value="${empleado.idEmpleado}" name="idEmpleado" id="idEmpleado">
+
             <!--Tabla 2-->
             <div class="container">
                 <div class="card-body">
-
-
                     <table id="example2" class="table table-bordered table-striped">
 
                         <thead>
@@ -129,12 +136,12 @@
         </div>
         <div class="card-footer text-right">
             <button id="save" type="button" class="btn btn-primary">Agregar Nuevos Documentos</button>
-            <a type="button" class="btn btn-default" th:href="@{/empleado/edit/}">Cancelar</a>
+            <a type="button" class="btn btn-default" th:href="@{/empleado/edit/{id}(id=${empleado.idEmpleado})}">Cancelar</a>
         </div>
     </div>
-
     <!-- Modal -->
-    <div class="modal fade" id="delete_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal fade" id="delete_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -172,20 +179,27 @@
                 "responsive": true,
                 "autoWidth": false,
             });
-            if(table.rows().count()==1){
-                $(".delete_doc").attr("disabled","disabled");
-            }else{
+            if (table.rows().count() == 1) {
+                $(".delete_doc").attr("disabled", "disabled");
+            } else {
                 $(".delete_doc").removeAttr("disabled");
             }
-            $("#example2").DataTable({
+            var table2 = $("#example2").DataTable({
                 "responsive": true,
                 "autoWidth": false,
             });
+
+            if (table2.rows().count() == 0) {
+                $("#save").attr("disabled", "disabled");
+            } else {
+                $("#save").removeAttr("disabled");
+            }
         });
     </script>
 
     <script>
-        $(".edit_doc").on("click",function () {
+        //EDITAR TIPO DOCUMENTO
+        $(".edit_doc").on("click", function () {
             var id = $(this).data("id");
             var input = $("#emp_doc_" + id);
             $("#icon_doc_" + id)
@@ -224,27 +238,62 @@
             }
         });
 
+        //ELIMINAR TIPO DOCUMENTO
         $(".delete_doc").on("click", function () {
             var id = $(this).data("id");
             var nombreTipoDoc = $(this).data("name");
             var nombreEmp = $(this).data("name");
-            $('#titulo_modal').text("Eliminar "+nombreTipoDoc);
-            $('#mensaje_modal').text("¿Desea eliminar "+nombreTipoDoc+" del empleado/a "+ $("#Empleado").data("emp")+" ?");
+            $('#titulo_modal').text("Eliminar " + nombreTipoDoc);
+            $('#mensaje_modal').text("¿Desea eliminar " + nombreTipoDoc + " del empleado/a " + $("#Empleado").data("emp") + " ?");
             $("#id-doc-emp").val(id);
             $('#delete_modal').modal("show");
         });
-
-        $("#accion_modal").on("click",function () {
+        $("#accion_modal").on("click", function () {
             $.ajax({
                 type: "POST",
-                url:"/empleado/delete-documentos",
+                url: "/empleado/delete-documentos",
                 data: $("#id-doc-emp").serialize(),
-                dataType:"json",
-                success:function (data) {
+                dataType: "json",
+                success: function (data) {
                     window.location.href = document.location;
                 },
-                error:function (data) {
+                error: function (data) {
                     console.log(data);
+                }
+            });
+        });
+
+        //AGREGAR NUEVO TIPO DOCUMENTO
+        $("#save").on("click", function () {
+            $("#save").attr("disabled", "disabled");
+            $("#save").text("Enviando");
+            var tabla_docs = $("#example2").DataTable();
+
+            $.ajax({
+                type: "POST",
+                url: "/empleado/add-documentos",
+                data: tabla_docs.$('input').serialize()+ "&" +$("#idEmpleado").serialize(),
+                dataType: "json",
+                success: function (data) {
+                    window.location.href = document.location;
+                },
+                error: function (data) {
+                    $("#error_alert_div").removeAttr("hidden");
+                    console.log(data);
+                    var m = "";
+                    $.each(data.responseJSON, function (key, value) {
+                        console.log(value);
+                        m += "<li>" + value + "</li>";
+                    });
+                    document.getElementById("error_alert").innerHTML = m;
+                    //Para mover al inicio de la pagina el control
+                    $('html, body').animate({
+                        scrollTop: 0
+                    }, 'slow');
+
+                    $("#success_alert_div").attr("hidden", "hidden");
+                    $("#save").removeAttr("disabled");
+                    $("#save").text("Agregar Nuevos Documentos");
                 }
             });
         });

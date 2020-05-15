@@ -16,9 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -349,6 +347,59 @@ public class EmpleadoController {
         mensajes.put("success", "Se elimino el documento correctamente");
         return new ResponseEntity<>(mensajes,HttpStatus.OK);
     }
+
+    @PostMapping("/add-documentos")
+    public ResponseEntity<?> addDocumentos(@RequestParam(name="idEmpleado")int idEmpleado,@RequestParam Map<String, String> allParams) {
+        //VALIDACIONES
+        Map<String, String> mensajes = new HashMap<String, String>();
+
+        //VALIDACION DE CAMPOS REQUERIDO DE DOCUMENTOS DE EMPLEADO
+        List<TipoDocumento> tipoDocumentos = new ArrayList<>();
+        List<String> datoDocumentos = new ArrayList<>();
+        for (String key : allParams.keySet()) {
+            if (!allParams.get(key).isEmpty() && key.split("_")[0].equals("documento")) {
+                tipoDocumentos.add(tipoDocumentoService.getTipoDocumento(Integer.parseInt(key.split("_")[1])));
+                datoDocumentos.add(allParams.get(key));
+            }
+        }
+
+        if(tipoDocumentos.size()==0){
+            mensajes.put("success", "Ningun documentos agregado");
+            return new ResponseEntity<>(mensajes, HttpStatus.OK);
+        }
+
+        //VALIDACION DE DOCUMENTOS DE EMPLEADO
+        List<String> patronesTipoDocumentos = getPatternByTipoDocumento(tipoDocumentos);
+        for (int i = 0; i < datoDocumentos.size(); i++) {
+            Pattern patron = Pattern.compile(patronesTipoDocumentos.get(i));
+            Matcher matcher = patron.matcher(datoDocumentos.get(i));
+            //Validando si se cumple el patron
+            if (!matcher.matches()) {
+                mensajes.put("error" + tipoDocumentos.get(i).getTipoDocumento(), "Error de formato en documento " + tipoDocumentos.get(i).getTipoDocumento());
+            }
+        }
+
+        //Controlando que errores sean resueltos en su totalidad
+        if(mensajes.size() > 0) {
+            return new ResponseEntity<>(mensajes, HttpStatus.BAD_REQUEST);
+        }
+
+        Empleado empleado = empleadoService.findEmployeeById(idEmpleado);
+
+        //REGISTRAR EMPLEADO_DOCUMENTO
+        for (int i = 0; i < tipoDocumentos.size(); i++) {
+            EmpleadoDocumento ed = new EmpleadoDocumento(
+                    empleado,
+                    tipoDocumentos.get(i),
+                    datoDocumentos.get(i)
+            );
+            empleadoDocumentoService.createOrUpdateDocumentsEmployee(ed);
+        }
+
+        mensajes.put("success", "Documentos agregados correctamente");
+        return new ResponseEntity<>(mensajes, HttpStatus.OK);
+    }
+
 
     @GetMapping("/edit-profesiones/{id}")
     public ModelAndView editProfesiones(@PathVariable(value = "id", required = true) int id) {
