@@ -31,4 +31,9 @@ public class EmpleadoDocumentoServiceImpl implements EmpleadoDocumentoService {
     public void deleteDocumentEmployee(int id) {
         empleadoDocumentoJpaRepository.delete(empleadoDocumentoJpaRepository.getOne(id));
     }
+
+	@Override
+	public List<EmpleadoDocumento> findByEmpleado(Empleado e) {
+		return empleadoDocumentoJpaRepository.findByEmpleado(e);
+	}
 }

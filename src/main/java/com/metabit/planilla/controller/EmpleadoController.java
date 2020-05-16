@@ -569,7 +569,10 @@ public class EmpleadoController {
     @PreAuthorize("hasAuthority('EMPLEADO_SHOW')")
     @GetMapping("/show")
     public String show(Model model, @RequestParam(value = "id", required = true) int id) {
-        model.addAttribute("empleado", empleadoService.findEmployeeById(id));
+    	Empleado e = empleadoService.findEmployeeById(id);
+    	model.addAttribute("documents", empleadoDocumentoService.findByEmpleado(e));
+    	model.addAttribute("professions", empleadoProfesionService.getAllProfessionsEmployee(e));
+        model.addAttribute("empleado", e);
         return SHOW_VIEW;
     }
 }
