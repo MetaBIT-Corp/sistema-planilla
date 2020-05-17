@@ -68,6 +68,7 @@ INSERT ALL INTO RECURSOS VALUES(1, 'EMPLEADO')
 		   INTO	RECURSOS VALUES(4, 'TIPODOCUMENTO')
 		   INTO	RECURSOS VALUES(5, 'PUESTO')
 		   INTO	RECURSOS VALUES(6, 'PROFESION')
+		   INTO	RECURSOS VALUES(7, 'TIPOMOVIMIENTO')
 SELECT * FROM DUAL;
 
 INSERT ALL INTO ROLES VALUES(1, 'ROLE_ADMIN')
@@ -114,6 +115,21 @@ INSERT ALL INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(1,1,1,1)
   		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(34,1,4,5)
   		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(35,1,5,5)
   		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(36,1,6,5)
+  		   
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(37,1,7,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(38,2,7,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(39,3,7,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(40,4,7,1)
+  		   
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(41,1,7,2)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(42,2,7,2)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(43,3,7,2)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(44,4,7,2)
+  		   
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(45,1,7,3)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(46,2,7,3)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(47,3,7,3)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(48,4,7,3)
 SELECT * FROM DUAL;
 
 INSERT ALL INTO USUARIOS VALUES(1,0,0,1,0,'$2a$10$.wYsFS0/zPkY3.LnN8F/reqimatDtOS71.5Uzh/RzlF718/aFO7oS',1,'admin')
@@ -195,12 +211,12 @@ insert into empleados_puestos_unidades	(id_empleado_puesto_unidad, id_empleado, 
 										
 --Tipos Movimiento
 insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, monto_base, movimiento, porcentaje_movimiento, tipo_movimiento_habilitado)
-						values	(1, 1, 1, null, 'Impuesto sobre la Renta', null, 1);
+						values	(1, 1, 1, 0.00, 'Impuesto sobre la Renta', 0, 1);
 insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, monto_base, movimiento, porcentaje_movimiento, tipo_movimiento_habilitado)
-						values	(2, 1, 1, null, 'ISSS', 7.25 , 1);
+						values	(2, 1, 1, 0.00, 'ISSS', 7.25 , 1);
 insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, monto_base, movimiento, porcentaje_movimiento, tipo_movimiento_habilitado)
-						values	(3, 1, 1, null, 'AFP', 3 , 1);
+						values	(3, 1, 1, 0.00, 'AFP', 3 , 1);
 insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, monto_base, movimiento, porcentaje_movimiento, tipo_movimiento_habilitado)
-						values	(4, 0, 0, null, 'Aguinaldo', 70 , 1);
+						values	(4, 0, 0, 0.00, 'Aguinaldo', 70 , 1);
 insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, monto_base, movimiento, porcentaje_movimiento, tipo_movimiento_habilitado)
-						values	(5, 0, 0, 500 , 'Bono', null, 1);
+						values	(5, 0, 0, 500.00 , 'Bono', 0, 1);

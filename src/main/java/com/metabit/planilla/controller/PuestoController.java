@@ -97,7 +97,14 @@ public class PuestoController {
 	@PostMapping("/destroy")
 	public String destroyPuesto(@RequestParam("idPuestoDestroy") int id) {
 		LOGGER.info("PUESTO: " + id);
-		puestoService.destroyPuesto(id);
-		return "redirect:/puesto/index?delete_success=true";
+		//obtenemos el puesto para verificar que no este asignado a ningun empleado
+		Puesto puesto = puestoService.getPuesto(id);
+		if(puesto.getEpu().size() > 0) {
+			return "redirect:/puesto/index?delete_success=false";
+		}else {
+			puestoService.destroyPuesto(id);
+			return "redirect:/puesto/index?delete_success=true";
+		}
 	}
+	
 }

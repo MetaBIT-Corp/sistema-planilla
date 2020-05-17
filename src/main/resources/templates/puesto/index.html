@@ -23,14 +23,16 @@
 	</ol>
 	
 	<div layout:fragment="content">	
+	
 		<input type="hidden" id="store" th:value="${store_success}">
 		<input type="hidden" id="update" th:value="${update_success}">
 		<input type="hidden" id="delete" th:value="${delete_success}">
+		
 		<div class="row ml-3 mr-3">
 			<div class="col-md-12 ">
 				<div class="card">
 				
-					<div class="card-header">
+					<div class="card-header text-right">
 						<a href="#" th:href="@{/puesto/form-puesto}"
 							type="button" class="btn btn-sm btn-primary"> 
 							<i class="fas fa-plus-circle mr-1 text-white"></i> 
@@ -71,7 +73,7 @@
 												<i class="far fa-edit mr-3"></i>Editar
 											</a>
 				                            
-				                            <button class="dropdown-item" th:attr="data-idPuesto=${puesto.IdPuesto}, data-puesto=${puesto.puesto}" 
+				                            <button class="dropdown-item" th:attr="data-idPuesto=${puesto.IdPuesto}, data-puesto=${puesto.puesto}, data-epu=${puesto.epu.size()}" 
 												onclick="activateModalDestroy(this)" title="Eliminar">
 												<i class="far fa-trash-alt mr-3" ></i> Eliminar
 											</button>
@@ -121,10 +123,16 @@
 			        <div class="form-group">
 					    <div id="divMessage"></div>
 					    <input type="hidden" class="form-control" id="idPuestoInputDestroy" name="idPuestoDestroy" value="">				
-					  </div>
+					</div>
+					<div class="callout callout-warning" id="validacionEliminacion" style="display:none;">
+	                  <small id="emailHelp" class="form-text text-muted">
+	                  	<i class="fas fa-exclamation-circle mr-2"></i> 
+	                  	No puede eliminar este puesto, debido a que ha sido asignado a uno o más empleados.
+	                  </small>
+	                </div>
 			      </div>
 			      <div class="modal-footer">
-			        <button type="submit" class="btn btn-danger">Confirmar</button>
+			        <button type="submit" id="submitEliminacion" class="btn btn-danger">Confirmar</button>
 			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
 			      </div>
 		      </form>
@@ -149,6 +157,8 @@
 		
 		<!-- para uso de modals -->
 		<script th:src="@{/js/puesto/modals.js}"></script>
+		<!-- mensajes de store, update y delete -->
+		<script th:src="@{/js/puesto/mensajes.js}"></script>
 
 		<!-- page script -->
 		<script>
@@ -157,43 +167,8 @@
 					"responsive" : true,
 					"autoWidth" : false,
 				});
-				$('#example2').DataTable({
-					"paging" : true,
-					"lengthChange" : false,
-					"searching" : false,
-					"ordering" : true,
-					"info" : true,
-					"autoWidth" : false,
-					"responsive" : true,
-				});
 			});	
-			
-			 
-			$(document).ready(function(){
-			  var store = $('#store').val();
-			  var update = $('#update').val();
-			  var delet = $('#delete').val();
-			  
-			 
-			  setTimeout(function() {
-			    $(".alert").fadeOut();           
-			  },3000);
-			  
-			  if(store === 'true'){
-				 toastr.success("Puesto creado con éxito"); 
-			  }
-			  if(update === 'true'){
-				 toastr.success("Puesto editado con éxito"); 
-			  }
-			  if(delet === 'true'){
-				 toastr.error("Puesto eliminado"); 
-			  }
-			  
-			})
-			 
-			 
 		</script>
-		
 		<!-- Scripts-->
 	</section>
 

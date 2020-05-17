@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layouts/layout}">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<!-- Tell the browser to be responsive to screen width -->
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	
+	<!-- SweetAlert2 -->
+	<link rel="stylesheet" th:href="@{/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css}">
+	<!-- Toastr -->
+	<link rel="stylesheet" th:href="@{/plugins/toastr/toastr.min.css}">
+</head>
+<body>
+
+	<h1 class="m-0 text-dark" layout:fragment="titulo_seccion">Tipos de Movimiento</h1>
+
+	<ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
+		<li class="breadcrumb-item">
+			<a href="#" th:href="@{/index}">Home</a>
+		</li>
+		<li class="breadcrumb-item active">Tipos de Movimiento</li>
+	</ol>
+	
+	<div layout:fragment="content">	
+	
+		<input type="hidden" id="store" th:value="${store_success}">
+		<input type="hidden" id="update" th:value="${update_success}">
+		<input type="hidden" id="delete" th:value="${delete_success}">
+		
+		<div class="row ml-3 mr-3">
+			<div class="col-md-12 ">
+				<div class="card">
+				
+					<div class="card-header text-right">
+						<a href="#"
+							type="button" class="btn btn-sm btn-primary"> 
+							<i class="fas fa-plus-circle mr-1 text-white"></i> 
+							<span class="text-white">Nuevo Tipo de Movimiento</span>
+						</a>
+					</div>
+					
+					<div class="card-body">
+						<table id="example1" class="table table-bordered table-striped">
+							<thead>
+								<tr>
+									<th>Movimiento</th>
+									<th>Ingreso/Descuento</th>
+									<th>Fijo/No Fijo</th>
+									<th>Monto Base</th>
+									<th>Porcentaje</th>
+									<th>Habilitado/deshabilitado</th>
+									<th>Acciones</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="tipoMovimiento: ${tiposMovimiento}">
+									<td><span th:text="${tipoMovimiento.movimiento}"></span></td>									
+									<td th:if="${tipoMovimiento.esDescuento}"> Descuento </td>
+									<td th:unless="${tipoMovimiento.esDescuento}">Ingreso </td>
+									<td th:if="${tipoMovimiento.esFijo}"> Fijo </td>
+									<td th:unless="${tipoMovimiento.esFijo}">No fijo</td>
+									<td><span th:text=" '$'+ ${#numbers.formatDecimal(tipoMovimiento.montoBase, 1, 'COMMA', 2, 'POINT')}"></span></td>
+									<td th:text="${tipoMovimiento.porcentajeMovimiento} + '%'"></td>
+									<td th:if="${tipoMovimiento.tipoMovimientoHabilitado}"> Habilitado </td>
+									<td th:unless="${tipoMovimiento.tipoMovimientoHabilitado}">Deshabilitado </td>
+									<td>	
+												 
+				                        <div class="btn-group">
+				                          <button type="button" class="btn btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown">
+				                          	<span>Accion</span>
+				                          </button>
+				                          <div class="dropdown-menu">
+				                          
+				                            <a class="dropdown-item" href="#">
+												<i class="far fa-edit mr-3"></i>Editar
+											</a>
+				                            
+				                            <button class="dropdown-item"  
+												 title="Eliminar">
+												<i class="far fa-trash-alt mr-3" ></i> Eliminar
+											</button>
+				                          </div>
+				                        </div>
+										
+									</td>
+								</tr>
+								<tr th:if="${#lists.isEmpty(tiposMovimiento)}">
+				                	<td colspan="6">
+				                		No hay Tipos de Movimiento actualmente.
+				                	</td>
+				                </tr>
+							</tbody>
+							<tfoot>
+								<tr>
+									<th>Movimiento</th>
+									<th>Ingreso/Descuento</th>
+									<th>Fijo/No Fijo</th>
+									<th>Monto Base</th>
+									<th>Porcentaje</th>
+									<th>Habilitado/deshabilitado</th>
+									<th>Acciones</th>
+								</tr>
+							</tfoot>
+						</table>
+					</div>
+					<!-- /.card-body -->
+				</div>
+				<!-- /.card -->
+			</div>
+		</div>
+	</div>
+
+	<!-- Scripts-->
+	<section layout:fragment="scripts">
+
+		<!-- DataTables -->
+		<script th:src="@{/plugins/datatables/jquery.dataTables.min.js}"></script>
+		<script th:src="@{/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
+		<script th:src="@{/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
+		<script th:src="@{/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
+		<!-- Toastr -->
+		<script th:src="@{/plugins/toastr/toastr.min.js}"></script>
+		<!-- SweetAlert2 -->
+		<script th:src="@{/plugins/sweetalert2/sweetalert2.min.js}"></script>
+
+		<!-- page script -->
+		<script>
+			$(function() {
+				$("#example1").DataTable({
+					"responsive" : true,
+					"autoWidth" : false,
+				});
+			});	
+		</script>
+		<!-- Scripts-->
+	</section>
+
+</body>
+</html>

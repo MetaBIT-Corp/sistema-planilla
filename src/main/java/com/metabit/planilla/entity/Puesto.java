@@ -1,13 +1,20 @@
 package com.metabit.planilla.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "puestos")
@@ -42,6 +49,11 @@ public class Puesto {
 	
 	@Column(name = "es_administrativo")
 	private boolean esAdministrativo;
+	
+	//Relación que permite obtener los registros de la tabla empleados_puestos_unidades, donde el puesto ha sido asignado
+	@OneToMany(mappedBy = "puesto", fetch = FetchType.EAGER)
+	@JsonIgnore
+    private List<EmpleadosPuestosUnidades> epu =  new ArrayList<>();
 	
 	public Puesto() {
 		super();
@@ -128,6 +140,14 @@ public class Puesto {
 
 	public void setEsAdministrativo(boolean esAdministrativo) {
 		this.esAdministrativo = esAdministrativo;
+	}
+
+	public List<EmpleadosPuestosUnidades> getEpu() {
+		return epu;
+	}
+
+	public void setEpu(List<EmpleadosPuestosUnidades> epu) {
+		this.epu = epu;
 	}
 
 	@Override

@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "tipos_movimiento")
-public class TiposMovimiento {
+public class TipoMovimiento {
 	
 	@Id
 	@GeneratedValue
@@ -23,12 +23,10 @@ public class TiposMovimiento {
 	@Column(name = "movimiento", nullable = false)
 	private String movimiento;
 	
-	@Min(1)
-	@Column(name = "porcentaje_movimiento", nullable = true)
+	@Column(name = "porcentaje_movimiento", columnDefinition="Decimal(5,2) default '0.00'")
 	private double porcentajeMovimiento;
 	
-	@Min(1)
-	@Column(name = "monto_base", nullable = true)
+	@Column(name = "monto_base", columnDefinition="Decimal(10,2) default '0.00'")
 	private double montoBase;
 	
 	@Column(name = "tipo_movimiento_habilitado", nullable = false)
@@ -40,14 +38,15 @@ public class TiposMovimiento {
 	@Column(name = "es_fijo", nullable = false)
 	private boolean esFijo;
 
-	public TiposMovimiento() {
+	public TipoMovimiento() {
 		super();
 	}
 
-	public TiposMovimiento(
+	
+	public TipoMovimiento(
 			@NotNull @Size(min = 1, max = 250, message = "El título de movimiento es obligatorio (máximo de 250 caracteres)") String movimiento,
-			@Min(1) double porcentajeMovimiento, @Min(1) double montoBase, boolean tipoMovimientoHabilitado,
-			boolean esDescuento, boolean esFijo) {
+			Short porcentajeMovimiento, Short montoBase, boolean tipoMovimientoHabilitado, boolean esDescuento,
+			boolean esFijo) {
 		super();
 		this.movimiento = movimiento;
 		this.porcentajeMovimiento = porcentajeMovimiento;
@@ -57,10 +56,12 @@ public class TiposMovimiento {
 		this.esFijo = esFijo;
 	}
 
-	public TiposMovimiento(int idMovimiento,
+	
+
+	public TipoMovimiento(int idMovimiento,
 			@NotNull @Size(min = 1, max = 250, message = "El título de movimiento es obligatorio (máximo de 250 caracteres)") String movimiento,
-			@Min(1) double porcentajeMovimiento, @Min(1) double montoBase, boolean tipoMovimientoHabilitado,
-			boolean esDescuento, boolean esFijo) {
+			Short porcentajeMovimiento, Short montoBase, boolean tipoMovimientoHabilitado, boolean esDescuento,
+			boolean esFijo) {
 		super();
 		this.idMovimiento = idMovimiento;
 		this.movimiento = movimiento;
@@ -70,6 +71,7 @@ public class TiposMovimiento {
 		this.esDescuento = esDescuento;
 		this.esFijo = esFijo;
 	}
+
 
 	public int getIdMovimiento() {
 		return idMovimiento;
@@ -91,7 +93,7 @@ public class TiposMovimiento {
 		return porcentajeMovimiento;
 	}
 
-	public void setPorcentajeMovimiento(double porcentajeMovimiento) {
+	public void setPorcentajeMovimiento(Short porcentajeMovimiento) {
 		this.porcentajeMovimiento = porcentajeMovimiento;
 	}
 
@@ -99,7 +101,7 @@ public class TiposMovimiento {
 		return montoBase;
 	}
 
-	public void setMontoBase(double montoBase) {
+	public void setMontoBase(Short montoBase) {
 		this.montoBase = montoBase;
 	}
 
