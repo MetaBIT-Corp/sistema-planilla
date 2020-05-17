@@ -82,6 +82,18 @@
 										th:field="*{usuarioRequerido}"
 										th:value="${usuarioRequerido}"> 
 									<label class="custom-control-label" for="usuariorequerido">Usuario requerido</label>
+									<small id="emailHelp" class="form-text text-muted">(Seleccione para indicar que el puesto requiere un usuario del sistema).</small>
+									
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" id="esadministrativo" 
+										th:field="*{esAdministrativo}"
+										th:value="${esAdministrativo}"> 
+									<label class="custom-control-label" for="esadministrativo">Puesto administrativo</label>
+									<small id="emailHelp" class="form-text text-muted">(Seleccione para indicar que es un puesto administratico).</small>
 								</div>
 							</div>
 							

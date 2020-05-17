@@ -40,26 +40,30 @@ public class Puesto {
 	@Column(name = "usuario_requerido")
 	private boolean usuarioRequerido;
 	
+	@Column(name = "es_administrativo")
+	private boolean esAdministrativo;
+	
 	public Puesto() {
 		super();
 	}
-	
-	
 
-	public Puesto(@NotNull String puesto, @NotNull double salarioMinimo, @NotNull double salarioMaximo,
-			String descripcion, @NotNull boolean usuarioRequerido) {
+	public Puesto(
+			@NotNull @Size(min = 1, max = 250, message = "El titulo es obligatorio* (máximo de 250 caracteres)") String puesto,
+			@NotNull @Min(300) double salarioMinimo, @NotNull @Min(300) double salarioMaximo,
+			@Size(min = 0, max = 250) String descripcion, boolean usuarioRequerido, boolean esAdministrativo) {
 		super();
 		this.puesto = puesto;
 		this.salarioMinimo = salarioMinimo;
 		this.salarioMaximo = salarioMaximo;
 		this.descripcion = descripcion;
 		this.usuarioRequerido = usuarioRequerido;
+		this.esAdministrativo = esAdministrativo;
 	}
 
-
-
-	public Puesto(int idPuesto, String puesto, double salarioMinimo, double salarioMaximo, String descripcion,
-			boolean usuarioRequerido) {
+	public Puesto(int idPuesto,
+			@NotNull @Size(min = 1, max = 250, message = "El titulo es obligatorio* (máximo de 250 caracteres)") String puesto,
+			@NotNull @Min(300) double salarioMinimo, @NotNull @Min(300) double salarioMaximo,
+			@Size(min = 0, max = 250) String descripcion, boolean usuarioRequerido, boolean esAdministrativo) {
 		super();
 		this.idPuesto = idPuesto;
 		this.puesto = puesto;
@@ -67,9 +71,9 @@ public class Puesto {
 		this.salarioMaximo = salarioMaximo;
 		this.descripcion = descripcion;
 		this.usuarioRequerido = usuarioRequerido;
+		this.esAdministrativo = esAdministrativo;
 	}
-	
-	
+
 	public int getIdPuesto() {
 		return idPuesto;
 	}
@@ -118,14 +122,19 @@ public class Puesto {
 		this.usuarioRequerido = usuarioRequerido;
 	}
 
+	public boolean isEsAdministrativo() {
+		return esAdministrativo;
+	}
+
+	public void setEsAdministrativo(boolean esAdministrativo) {
+		this.esAdministrativo = esAdministrativo;
+	}
+
 	@Override
 	public String toString() {
 		return "Puesto [idPuesto=" + idPuesto + ", puesto=" + puesto + ", salarioMinimo=" + salarioMinimo
 				+ ", salarioMaximo=" + salarioMaximo + ", descripcion=" + descripcion + ", usuarioRequerido="
-				+ usuarioRequerido + "]";
+				+ usuarioRequerido + ", esAdministrativo=" + esAdministrativo + "]";
 	}
-
 	
-	
-
 }
