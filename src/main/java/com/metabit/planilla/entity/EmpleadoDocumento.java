@@ -28,7 +28,7 @@ public class EmpleadoDocumento {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="id_empleado")
 	Empleado empleado;
-	
+
 	
 	@NotNull
 	@Column(name="codigo_documento", nullable = false)
@@ -60,5 +60,20 @@ public class EmpleadoDocumento {
 	public void setCodigoDocumento(String codigoDocumento) {
 		this.codigoDocumento = codigoDocumento;
 	}
-		
+
+	public TipoDocumento getTipoDocumento() {
+		return tipoDocumento;
+	}
+
+	public void setTipoDocumento(TipoDocumento tipoDocumento) {
+		this.tipoDocumento = tipoDocumento;
+	}
+
+	public Empleado getEmpleado() {
+		return empleado;
+	}
+
+	public void setEmpleado(Empleado empleado) {
+		this.empleado = empleado;
+	}
 }

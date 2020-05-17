@@ -6,6 +6,8 @@ import com.metabit.planilla.entity.EmpleadoDocumento;
 import java.util.List;
 
 public interface EmpleadoDocumentoService {
-    public abstract List<EmpleadoDocumento> getDocumentsByEmployee(Empleado e);
+    public abstract EmpleadoDocumento getDocumentEmployee(int id);
     public abstract EmpleadoDocumento createOrUpdateDocumentsEmployee(EmpleadoDocumento ed);
+    public abstract void deleteDocumentEmployee(int id);
+    public abstract List<EmpleadoDocumento> findByEmpleado(Empleado e);
 }
