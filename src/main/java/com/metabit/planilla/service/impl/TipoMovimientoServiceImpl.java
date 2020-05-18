@@ -35,4 +35,16 @@ public class TipoMovimientoServiceImpl implements TipoMovimientoService {
 		return tipoMovimientoJpaRepository.save(tipoMovimiento);
 	}
 
+	@Override
+	public TipoMovimiento updateTipoMovimiento(TipoMovimiento tipoMovimiento) {
+		// TODO Auto-generated method stub
+		return tipoMovimientoJpaRepository.save(tipoMovimiento);
+	}
+
+	@Override
+	public void destroyTipoMovimiento(int id) {
+		// TODO Auto-generated method stub
+		tipoMovimientoJpaRepository.deleteById(id);
+	}
+
 }

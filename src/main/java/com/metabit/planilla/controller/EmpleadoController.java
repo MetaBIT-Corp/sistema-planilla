@@ -86,9 +86,15 @@ public class EmpleadoController {
     //List all employees
     @PreAuthorize("hasAuthority('EMPLEADO_INDEX')")
     @GetMapping("/index")
-    public ModelAndView index() {
+    public ModelAndView index(Model model,
+			@RequestParam(name="lock_success", required=false) String lock_success, 
+			@RequestParam(name="unlock_success", required=false) String unlock_success) {
         ModelAndView mav = new ModelAndView(INDEX_VIEW);
         mav.addObject("empleados", empleadoService.getAllEmployees());
+        
+        model.addAttribute("lock_success", lock_success);
+		model.addAttribute("unlock_success", unlock_success);
+		
         return mav;
     }
 
@@ -619,4 +625,45 @@ public class EmpleadoController {
         model.addAttribute("empleado", e);
         return SHOW_VIEW;
     }
+    
+   
+ 	/**
+ 	 * Metodo que permite bloquear el usuario del empleado seleccionado
+ 	 * @author Edwin Palacios
+ 	 * @param id: id del empleado
+ 	 * @return String
+ 	 */
+    
+    @PostMapping("/lock-user")
+    public String lockUser(@RequestParam("idEmpleado") int id) {
+    	Empleado empleado = empleadoService.findEmployeeById(id);
+    	if(empleado.getUsuario() != null) {
+    		Usuario usuario = empleado.getUsuario();
+    		usuario.setEnabled(false);
+    		userJpaRepository.save(usuario);
+    	}else {
+    		return "redirect:/empleado/index?lock_success=false";
+    	}
+    	return "redirect:/empleado/index?lock_success=true";
+    }
+    
+    /**
+ 	 * Metodo que permite desbloquear el usuario del empleado seleccionado
+ 	 * @author Edwin Palacios
+ 	 * @param id: id del empleado
+ 	 * @return String
+ 	 */
+   
+    @PostMapping("/unlock-user")
+    public String unlockUser(@RequestParam("idEmpleado") int id) {
+    	Empleado empleado = empleadoService.findEmployeeById(id);
+    	if(empleado.getUsuario() != null) {
+    		Usuario usuario = empleado.getUsuario();
+    		usuario.setEnabled(true);
+    		userJpaRepository.save(usuario);
+    	}else {
+    		return "redirect:/empleado/index?unlock_success=false";
+    	}
+    	return "redirect:/empleado/index?unlock_success=true";
+    }   
 }

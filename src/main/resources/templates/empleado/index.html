@@ -7,6 +7,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    
+    <!-- SweetAlert2 -->
+	  <link rel="stylesheet" th:href="@{/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css}">
+	<!-- Toastr -->
+	  <link rel="stylesheet" th:href="@{/plugins/toastr/toastr.min.css}">
 
 </head>
 
@@ -21,7 +26,9 @@
 
 <div layout:fragment="content">
     <div class="row ml-3 mr-3">
-
+		<input type="hidden" id="lock_success" th:value="${lock_success}">
+		<input type="hidden" id="unlock_success" th:value="${unlock_success}">
+		
         <div class="col-md-12 ">
             <div class="card">
                 <div class="card-header text-right">
@@ -69,6 +76,21 @@
 
                                             <a th:if="${!e.empleadoHabilitado}" class="disable_enable dropdown-item" href="#" th:attr="data-id=${e.idEmpleado}, data-type=${e.empleadoHabilitado}"><i class="far fa-check-circle mr-3"></i>Habiltar</a>
                                             <a th:unless="${!e.empleadoHabilitado}" class="disable_enable dropdown-item" href="#" th:attr="data-id=${e.idEmpleado}, data-type=${e.empleadoHabilitado}"><i class="far fa-window-close mr-3"></i>Deshabilitar</a>
+                                            
+                                            <div th:if="${e.usuario}">
+                                            	<button th:if="${e.usuario.enabled}" class="dropdown-item" title="Bloquear Usuario"
+                                            		th:attr="data-idEmpleado=${e.idEmpleado}, data-empleado= ${e.codigo}" 
+                                            		onclick="activateModalLock(this)">
+												<i class="fas fa-user-lock mr-2"></i> Bloquear 
+												</button>
+												
+												<button th:unless="${e.usuario.enabled}" class="dropdown-item" title="Desbloquear Usuario"
+													th:attr="data-idEmpleado=${e.idEmpleado}, data-empleado= ${e.codigo}" 
+                                            		onclick="activateModalUnlock(this)">
+													<i class="fas fa-lock-open mr-2"></i> Desbloquear
+												</button>
+                                            </div>
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -117,6 +139,60 @@
         </div>
     </div>
     <!--Fin MODAL-->
+    
+    <!-- Modal para Confirmar el bloqueo de usuario -->
+	<div class="modal" id="usuarioModalLock" tabindex="-1" role="dialog">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title">Bloquear Usuario</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <form method="post" action="#" th:action="@{/empleado/lock-user}">
+		      <div class="modal-body">
+		        <div class="form-group">
+				    <div id="divMessageLock"></div>
+				    <input type="hidden" class="form-control" id="idEmpleadoLock" name="idEmpleado" value="">				
+				</div>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="submit" id="submitBloqueo" class="btn btn-danger">Confirmar</button>
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+		      </div>
+	      </form>
+	    </div>
+	  </div>
+	</div>
+	
+	<!-- Modal para Confirmar el desbloqueo de usuario -->
+	<div class="modal" id="usuarioModalUnlock" tabindex="-1" role="dialog">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title">Desbloquear Usuario</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <form method="post" action="#" th:action="@{/empleado/unlock-user}">
+		      <div class="modal-body">
+		        <div class="form-group">
+				    <div id="divMessageUnlock"></div>
+				    <input type="hidden" class="form-control" id="idEmpleadoUnlock" name="idEmpleado" value="">				
+				</div>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="submit" id="submitEliminacion" class="btn btn-info">Confirmar</button>
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+		      </div>
+	      </form>
+	    </div>
+	  </div>
+	</div>
+    
+    
 </div>
 
 
@@ -127,6 +203,14 @@
     <script th:src="@{/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
     <script th:src="@{/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
     <script th:src="@{/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
+    <!-- Toastr -->
+	<script th:src="@{/plugins/toastr/toastr.min.js}"></script>
+	<!-- SweetAlert2 -->
+	<script th:src="@{/plugins/sweetalert2/sweetalert2.min.js}"></script>
+    <!-- mensajes de lock y unlock -->
+	<script th:src="@{/js/empleado/mensajes.js}"></script>
+	<!-- para uso de modals -->
+	<script th:src="@{/js/empleado/modals.js}"></script>
 
     <!-- page script -->
     <script>
