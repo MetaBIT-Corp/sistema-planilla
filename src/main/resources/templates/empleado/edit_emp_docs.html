@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layouts/layout}">
+
+<head>
+
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+</head>
+
+<body>
+
+<h1 class="m-0 text-dark" layout:fragment="titulo_seccion"></h1>
+
+<ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
+    <li class="breadcrumb-item"><a th:href="@{/empleado/index}">Empleados Registrados</a></li>
+    <li class="breadcrumb-item"><a th:href="@{/empleado/edit/{id}(id=${empleado.idEmpleado})}">Editar Empleado</a></li>
+    <li class="breadcrumb-item active" id="Empleado" th:attr="data-emp=${empleado.nombrePrimero}">Documentos Empleado
+    </li>
+</ol>
+
+<div layout:fragment="content">
+    <div id="error_alert_div" class="alert alert-danger mt-2 mb-2" role="alert" hidden>
+        <strong>Solucionar los siguientes problemas:</strong>
+        <ul id="error_alert">
+
+        </ul>
+    </div>
+    <!--Inicio de CARD-->
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">Editar Documentos Agregados</h3>
+        </div>
+        <div class="card-body">
+            <!--Tabla 1-->
+            <div class="container">
+                <div class="card-body">
+                    <table id="example1" class="table table-bordered table-striped">
+
+                        <thead>
+                        <tr>
+                            <th>Tipo Documento</th>
+                            <th>Formato de Documento</th>
+                            <th>Ingrese Documento</th>
+                            <th>Acciones</th>
+                        </tr>
+
+                        <tbody>
+                        <tr th:each="empleadoDoc: ${documentos_empleado}">
+
+                            <td><span th:text="${empleadoDoc.tipoDocumento.tipoDocumento}"></span></td>
+                            <td><span th:text="${empleadoDoc.tipoDocumento.formato}"></span></td>
+                            <td>
+                                <input type="text" th:name="empDoc_+${empleadoDoc.idEmpleadoDocumento}"
+                                       th:id="emp_doc_+${empleadoDoc.idEmpleadoDocumento}"
+                                       class="form-control" th:value="*{empleadoDoc.codigoDocumento}" disabled>
+                            </td>
+                            <td>
+                                <button class="edit_doc btn btn-sm btn-primary text-white" title="Editar"
+                                        th:attr="data-id=${empleadoDoc.idEmpleadoDocumento}">
+                                    <span><i th:id="icon_doc_+${empleadoDoc.idEmpleadoDocumento}"
+                                             class="fas fa-pencil-alt"></i></span>
+                                </button>
+
+                                <button class="delete_doc btn btn-sm btn-danger text-white" title="Eliminar"
+                                        th:attr="data-id=${empleadoDoc.idEmpleadoDocumento}, data-name=${empleadoDoc.tipoDocumento.tipoDocumento}">
+                                    <i class="fas fa-window-close"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+
+                        <tfoot>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Formato de Documentos</th>
+                            <th>Ingrese Documentos</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </tfoot>
+
+                    </table>
+                </div>
+            </div>
+            <!--FIN Tabla 1-->
+        </div>
+    </div>
+    <!--FIN de CARD-->
+
+    <!--Inicio de CARD-->
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">Registrar Nuevos Documentos</h3>
+        </div>
+        <div class="card-body">
+            <input type="text" hidden th:value="${empleado.idEmpleado}" name="idEmpleado" id="idEmpleado">
+
+            <!--Tabla 2-->
+            <div class="container">
+                <div class="card-body">
+                    <table id="example2" class="table table-bordered table-striped">
+
+                        <thead>
+                        <tr>
+                            <th>Tipo Documento</th>
+                            <th>Formato de Documento</th>
+                            <th>Ingrese Documento</th>
+                        </tr>
+
+                        <tbody>
+                        <tr th:each="tipoDocumento: ${documentos}">
+
+                            <td><span th:text="${tipoDocumento.tipoDocumento}"></span></td>
+                            <td><span th:text="${tipoDocumento.formato}"></span></td>
+                            <td>
+                                <input type="text" th:name="documento_+${tipoDocumento.idTipoDocumento}"
+                                       class="form-control">
+                            </td>
+                        </tr>
+                        </tbody>
+
+                        <tfoot>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Formato de Documentos</th>
+                            <th>Ingrese Documentos</th>
+                        </tr>
+                        </tfoot>
+
+                    </table>
+                </div>
+            </div>
+            <!--FIN Tabla 2-->
+        </div>
+        <div class="card-footer text-right">
+            <button id="save" type="button" class="btn btn-primary">Agregar Nuevos Documentos</button>
+            <a type="button" class="btn btn-default" th:href="@{/empleado/edit/{id}(id=${empleado.idEmpleado})}">Cancelar</a>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="delete_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="titulo_modal"> Eliminar Documento Asignado</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="mensaje_modal">
+                    <!--AGREGAR MENSAJE CON JQUERY-->
+                </div>
+                <div class="modal-footer">
+                    <input type="text" name="id" id="id-doc-emp" hidden>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <a type="button" id="accion_modal" class="btn btn-danger text-light">Eliminar Documento</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Fin MODAL-->
+
+</div>
+
+
+<section layout:fragment="scripts">
+    <!-- DataTables -->
+    <script th:src="@{/plugins/datatables/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
+    <script th:src="@{/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
+    <script th:src="@{/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
+
+    <script>
+        $(function () {
+            var table = $("#example1").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+            });
+            if (table.rows().count() == 1) {
+                $(".delete_doc").attr("disabled", "disabled");
+            } else {
+                $(".delete_doc").removeAttr("disabled");
+            }
+            var table2 = $("#example2").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+            });
+
+            if (table2.rows().count() == 0) {
+                $("#save").attr("disabled", "disabled");
+            } else {
+                $("#save").removeAttr("disabled");
+            }
+        });
+    </script>
+
+    <script>
+        //EDITAR TIPO DOCUMENTO
+        $(".edit_doc").on("click", function () {
+            var id = $(this).data("id");
+            var input = $("#emp_doc_" + id);
+            $("#icon_doc_" + id)
+            var icon = $("#icon_doc_" + id);
+            if ($(this).data("accion") != 1) {
+                input.removeAttr("disabled");
+                icon.removeClass();
+                icon.addClass("fas fa-check-circle");
+                $(this).attr("data-accion", 1);
+            } else {
+                console.log(input.serialize());
+                $.ajax({
+                    type: "POST",
+                    url: "/empleado/update-documentos",
+                    data: input.serialize(),
+                    dataType: "json",
+                    success: function (data) {
+                        window.location.href = document.location;
+                    },
+                    error: function (data) {
+                        $("#error_alert_div").removeAttr("hidden");
+                        console.log(data);
+                        var m = "";
+                        $.each(data.responseJSON, function (key, value) {
+                            console.log(value);
+                            m += "<li>" + value + "</li>";
+                        });
+                        document.getElementById("error_alert").innerHTML = m;
+                        //Para mover al inicio de la pagina el control
+                        $('html, body').animate({
+                            scrollTop: 0
+                        }, 'slow');
+                        $("#success_alert_div").attr("hidden", "hidden");
+                    }
+                });
+            }
+        });
+
+        //ELIMINAR TIPO DOCUMENTO
+        $(".delete_doc").on("click", function () {
+            var id = $(this).data("id");
+            var nombreTipoDoc = $(this).data("name");
+            var nombreEmp = $(this).data("name");
+            $('#titulo_modal').text("Eliminar " + nombreTipoDoc);
+            $('#mensaje_modal').text("¿Desea eliminar " + nombreTipoDoc + " del empleado/a " + $("#Empleado").data("emp") + " ?");
+            $("#id-doc-emp").val(id);
+            $('#delete_modal').modal("show");
+        });
+        $("#accion_modal").on("click", function () {
+            $.ajax({
+                type: "POST",
+                url: "/empleado/delete-documentos",
+                data: $("#id-doc-emp").serialize(),
+                dataType: "json",
+                success: function (data) {
+                    window.location.href = document.location;
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        });
+
+        //AGREGAR NUEVO TIPO DOCUMENTO
+        $("#save").on("click", function () {
+            $("#save").attr("disabled", "disabled");
+            $("#save").text("Enviando");
+            var tabla_docs = $("#example2").DataTable();
+
+            $.ajax({
+                type: "POST",
+                url: "/empleado/add-documentos",
+                data: tabla_docs.$('input').serialize()+ "&" +$("#idEmpleado").serialize(),
+                dataType: "json",
+                success: function (data) {
+                    window.location.href = document.location;
+                },
+                error: function (data) {
+                    $("#error_alert_div").removeAttr("hidden");
+                    console.log(data);
+                    var m = "";
+                    $.each(data.responseJSON, function (key, value) {
+                        console.log(value);
+                        m += "<li>" + value + "</li>";
+                    });
+                    document.getElementById("error_alert").innerHTML = m;
+                    //Para mover al inicio de la pagina el control
+                    $('html, body').animate({
+                        scrollTop: 0
+                    }, 'slow');
+
+                    $("#success_alert_div").attr("hidden", "hidden");
+                    $("#save").removeAttr("disabled");
+                    $("#save").text("Agregar Nuevos Documentos");
+                }
+            });
+        });
+    </script>
+</section>
+
+</body>
+</html>

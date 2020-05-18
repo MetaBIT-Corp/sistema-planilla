@@ -24,8 +24,8 @@
         </div>
         <!-- /.card-header -->
         <!-- form start -->
-        <div  id="error_alert_div" class="alert alert-danger mt-2 mb-2 mr-2 ml-2" role="alert" hidden>
-            <strong>Seleccionar los siguientes problemas:</strong>
+        <div id="error_alert_div" class="alert alert-danger mt-2 mb-2 mr-2 ml-2" role="alert" hidden>
+            <strong>Solucionar los siguientes problemas:</strong>
             <ul id="error_alert">
 
             </ul>
@@ -36,54 +36,56 @@
             </ul>
         </div>
 
+        <div class="card-body">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="personales-tab" data-toggle="tab" href="#personales" role="tab"
+                       aria-controls="personales" aria-selected="true">Informacion Personal</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="documento-tab" data-toggle="tab" href="#documento" role="tab"
+                       aria-controls="documentos" aria-selected="false">Documentos de Empleado</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="direccion-tab" data-toggle="tab" href="#direccion" role="tab"
+                       aria-controls="trabajo" aria-selected="false">Direccion de Empleado</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="trabajo-tab" data-toggle="tab" href="#trabajo" role="tab"
+                       aria-controls="trabajo" aria-selected="false">Informacion Profesional</a>
+                </li>
 
-        <form role="form" class="user" id="form" method="POST">
-            <div class="card-body">
-                <ul class="nav nav-tabs" id="myTab" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link active" id="personales-tab" data-toggle="tab" href="#personales" role="tab"
-                           aria-controls="personales" aria-selected="true">Informacion Personal</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="documento-tab" data-toggle="tab" href="#documento" role="tab"
-                           aria-controls="documentos" aria-selected="false">Documentos de Empleado</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="direccion-tab" data-toggle="tab" href="#direccion" role="tab"
-                           aria-controls="trabajo" aria-selected="false">Direccion de Empleado</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="trabajo-tab" data-toggle="tab" href="#trabajo" role="tab"
-                           aria-controls="trabajo" aria-selected="false">Informacion Profesional</a>
-                    </li>
-                    <!--
-                    <li class="nav-item">
-                        <a class="nav-link" id="usuario-tab" data-toggle="tab" href="#usuario" role="tab"
-                           aria-controls="usuario" aria-selected="false">Usuario de Empleado</a>
-                    </li>
-                    -->
-                </ul>
-
-                <div class="tab-content" id="myTabContent">
-                    <!--DATOS PERSONALES-->
-                    <div class="tab-pane fade show active" id="personales" role="tabpanel"
-                         aria-labelledby="personales-tab">
-                        <div class="container">
-                            <div class="card-body">
-                                <!--PRIMER COLUMNA-->
+                <!--
+                <li class="nav-item">
+                    <a class="nav-link" id="usuario-tab" data-toggle="tab" href="#usuario" role="tab"
+                       aria-controls="usuario" aria-selected="false">Usuario de Empleado</a>
+                </li>
+                -->
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                <!--DATOS PERSONALES-->
+                <div class="tab-pane fade show active" id="personales" role="tabpanel"
+                     aria-labelledby="personales-tab">
+                    <div class="container">
+                        <div class="card-body">
+                            <!--PRIMER COLUMNA-->
+                            <form id="form1">
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <label for="firstName">Primer Nombre *</label>
-                                            <input th:field="*{empleado.nombrePrimero}" type="text" class="form-control" placeholder="Primer Nombre">
+                                            <label>Primer Nombre *</label>
+                                            <input th:field="*{empleado.nombrePrimero}" type="text" class="form-control"
+                                                   placeholder="Primer Nombre">
                                         </div>
                                         <div class="form-group">
                                             <label for="secondName">Segundo Nombre *</label>
-                                            <input th:field="*{empleado.nombreSegundo}" type="text" class="form-control" id="secondName" placeholder="Segundo Nombre">
+                                            <input th:field="*{empleado.nombreSegundo}" type="text" class="form-control"
+                                                   id="secondName" placeholder="Segundo Nombre">
                                         </div>
                                         <div class="form-group">
                                             <label for="bornDate">Fecha de Nacimiento * </label>
-                                            <input th:field="*{empleado.fechaNacimiento}" type="date" class="form-control" id="bornDate">
+                                            <input th:field="*{empleado.fechaNacimiento}" type="date"
+                                                   class="form-control" id="bornDate">
                                         </div>
                                         <div class="form-group">
                                             <label>Genero</label>
@@ -99,11 +101,13 @@
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label for="lastMName">Apellido Materno *</label>
-                                            <input th:field="*{empleado.apellidoMaterno}" type="text" class="form-control" id="lastMName" placeholder="Apellido Materno">
+                                            <input th:field="*{empleado.apellidoMaterno}" type="text"
+                                                   class="form-control" id="lastMName" placeholder="Apellido Materno">
                                         </div>
                                         <div class="form-group">
                                             <label for="lastPName">Apellido Paterno</label>
-                                            <input th:field="*{empleado.apellidoPaterno}" type="text" class="form-control" id="lastPName" placeholder="Apellido Paterno">
+                                            <input th:field="*{empleado.apellidoPaterno}" type="text"
+                                                   class="form-control" id="lastPName" placeholder="Apellido Paterno">
                                         </div>
                                         <div class="form-group">
                                             <label>Estado Civil</label>
@@ -116,57 +120,61 @@
                                         <!--Only Woman-->
                                         <div class="form-group" id="divCasada" hidden>
                                             <label for="lastCName">Apellido Casada</label>
-                                            <input th:field="*{empleado.apellidoCasada}" type="text" class="form-control" id="lastCName" placeholder="Apellido Casada">
+                                            <input th:field="*{empleado.apellidoCasada}" type="text"
+                                                   class="form-control" id="lastCName" placeholder="Apellido Casada">
                                         </div>
                                     </div>
                                     <!--FIN SEGUNDA COLUMNA-->
                                 </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
+                </div>
 
-                    <!--DOCUMENTOS DE EMPLEADO-->
-                    <div class="tab-pane fade show" id="documento" role="tabpanel"
-                         aria-labelledby="personales-tab">
-                        <div class="container">
-                            <div class="card-body">
-                                <table id="example1" class="table table-bordered table-striped">
+                <!--DOCUMENTOS DE EMPLEADO-->
+                <div class="tab-pane fade" id="documento" role="tabpanel"
+                     aria-labelledby="personales-tab">
+                    <div class="container">
+                        <div class="card-body">
+                            <table id="example1" class="table table-bordered table-striped">
 
-                                    <thead>
-                                    <tr>
-                                        <th>Tipo Documento</th>
-                                        <th>Formato de Documento</th>
-                                        <th>Ingrese Documento</th>
-                                    </tr>
+                                <thead>
+                                <tr>
+                                    <th>Tipo Documento</th>
+                                    <th>Formato de Documento</th>
+                                    <th>Ingrese Documento</th>
+                                </tr>
 
-                                    <tbody>
-                                    <tr th:each="tipoDocumento: ${documentos}">
+                                <tbody>
+                                <tr th:each="tipoDocumento: ${documentos}">
 
-                                        <td><span th:text="${tipoDocumento.tipoDocumento}"></span></td>
-                                        <td><span th:text="${tipoDocumento.formato}"></span></td>
-                                        <td>
-                                            <input type="text" th:name="documento_+${tipoDocumento.idTipoDocumento}" class="form-control">
-                                        </td>
-                                    </tr>
-                                    </tbody>
+                                    <td><span th:text="${tipoDocumento.tipoDocumento}"></span></td>
+                                    <td><span th:text="${tipoDocumento.formato}"></span></td>
+                                    <td>
+                                        <input type="text" th:name="documento_+${tipoDocumento.idTipoDocumento}"
+                                               class="form-control">
+                                    </td>
+                                </tr>
+                                </tbody>
 
-                                    <tfoot>
-                                    <tr>
-                                        <th>Nombre</th>
-                                        <th>Formato de Documentos</th>
-                                        <th>Ingrese Documentos</th>
-                                    </tr>
-                                    </tfoot>
+                                <tfoot>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Formato de Documentos</th>
+                                    <th>Ingrese Documentos</th>
+                                </tr>
+                                </tfoot>
 
-                                </table>
-                            </div>
+                            </table>
                         </div>
                     </div>
+                </div>
 
-                    <!--DIRECCION DE EMPLEADO-->
-                    <div class="tab-pane fade" id="direccion" role="tabpanel" aria-labelledby="profile-tab">
-                        <div class="container-fluid">
-                            <div class="card-body">
+                <!--DIRECCION DE EMPLEADO-->
+                <div class="tab-pane fade" id="direccion" role="tabpanel" aria-labelledby="profile-tab">
+                    <div class="container-fluid">
+                        <div class="card-body">
+                            <form action="" id="form2">
                                 <div class="row">
                                     <!--PRIMER COLUMNA-->
                                     <div class="col-lg-6">
@@ -212,28 +220,33 @@
                                     </div>
                                     <!--FIN SEGUNDA COLUMNA-->
                                 </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
+                </div>
 
-                    <!--INFORMACION PROFESIONAL-->
-                    <div class="tab-pane fade" id="trabajo" role="tabpanel" aria-labelledby="profile-tab">
-                        <div class="container-fluid">
-                            <div class="card-body">
+                <!--INFORMACION PROFESIONAL-->
+                <div class="tab-pane fade" id="trabajo" role="tabpanel" aria-labelledby="profile-tab">
+                    <div class="container-fluid">
+                        <div class="card-body">
+                            <form id="form3">
                                 <div class="row">
                                     <!--PRIMER COLUMNA-->
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label>Codigo de Empleado *</label>
-                                            <input type="text" th:field="*{empleado.codigo}" class="form-control" placeholder="Codigo">
+                                            <input type="text" th:field="*{empleado.codigo}" class="form-control"
+                                                   placeholder="Codigo">
                                         </div>
                                         <div class="form-group">
                                             <label>Correo Institucional *</label>
-                                            <input type="text" th:field="*{empleado.correoInstitucional}"  placeholder="Correo institucional" class="form-control">
+                                            <input type="text" th:field="*{empleado.correoInstitucional}"
+                                                   placeholder="Correo institucional" class="form-control">
                                         </div>
                                         <div class="form-group">
                                             <label>Correo Personal</label>
-                                            <input type="text" th:field="*{empleado.correoPersonal}"  placeholder="Correo personal" class="form-control">
+                                            <input type="text" th:field="*{empleado.correoPersonal}"
+                                                   placeholder="Correo personal" class="form-control">
                                         </div>
 
                                         <!--<div class="form-group">
@@ -255,11 +268,13 @@
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label>Salario Base Mensual ($) *</label>
-                                            <input type="number" th:field="*{empleado.salarioBaseMensual}" class="form-control">
+                                            <input type="number" th:field="*{empleado.salarioBaseMensual}"
+                                                   class="form-control">
                                         </div>
                                         <div class="form-group">
                                             <label>Horas de Trabajo *</label>
-                                            <input type="number" th:field="*{empleado.horasTrabajo}" class="form-control">
+                                            <input type="number" th:field="*{empleado.horasTrabajo}"
+                                                   class="form-control">
                                         </div>
                                         <div class="form-group">
                                             <label>Puesto de Trabajo</label>
@@ -272,69 +287,73 @@
                                     </div>
                                     <!--FIN SEGUNDA COLUMNA-->
                                 </div>
-                                <div class="row mt-4">
-                                    <div class="col-12">
-                                        <div class="form-group">
-                                            <label>Seleccione Profesion/Oficio *</label>
-                                            <hr>
-                                            <table id="example2" class="table table-bordered table-striped">
-                                                <thead>
-                                                <tr>
-                                                    <th>Nombre</th>
-                                                    <th>Profesi&oacute;n/Oficio</th>
-                                                    <th class="text-center">Seleccionar</th>
-                                                </tr>
-                                                <tbody>
-                                                <tr th:each="p: ${profesiones}">
+                            </form>
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label>Seleccione Profesion/Oficio *</label>
+                                        <hr>
+                                        <table id="example2" class="table table-bordered table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th>Nombre</th>
+                                                <th>Profesi&oacute;n/Oficio</th>
+                                                <th class="text-center">Seleccionar</th>
+                                            </tr>
+                                            <tbody>
+                                            <tr th:each="p: ${profesiones}">
 
-                                                    <td><span th:text="${p.profesion}"></span></td>
+                                                <td><span th:text="${p.profesion}"></span></td>
 
-                                                    <td>
-                                                        <span th:if="${p.esProfesion}">Profesi&oacute;n</span>
-                                                        <span th:unless="${p.esProfesion}">Oficio</span>
-                                                    </td>
+                                                <td>
+                                                    <span th:if="${p.esProfesion}">Profesi&oacute;n</span>
+                                                    <span th:unless="${p.esProfesion}">Oficio</span>
+                                                </td>
 
-                                                    <td>
-                                                        <div class="custom-control custom-checkbox text-center">
-                                                            <input type="checkbox" name="profesiones_seleccion[]" class="custom-control-input" th:id="profesion+${p.idProfesion}" th:value="${p.idProfesion}">
-                                                            <label class="custom-control-label" th:for="profesion+${p.idProfesion}"><span></span></label>
-                                                        </div>
-                                                    </td>
+                                                <td>
+                                                    <div class="custom-control custom-checkbox text-center">
+                                                        <input type="checkbox" name="profesiones_seleccion[]"
+                                                               class="custom-control-input"
+                                                               th:id="profesion+${p.idProfesion}"
+                                                               th:value="${p.idProfesion}">
+                                                        <label class="custom-control-label"
+                                                               th:for="profesion+${p.idProfesion}"><span></span></label>
+                                                    </div>
+                                                </td>
 
-                                                </tr>
-                                                </tbody>
+                                            </tr>
+                                            </tbody>
 
-                                                <tfoot>
-                                                <tr>
-                                                    <th>Nombre</th>
-                                                    <th>Profesi&oacute;n/Oficio</th>
-                                                    <th>Acciones</th>
-                                                </tr>
-                                                </tfoot>
+                                            <tfoot>
+                                            <tr>
+                                                <th>Nombre</th>
+                                                <th>Profesi&oacute;n/Oficio</th>
+                                                <th class="text-center">Seleccionar</th>
+                                            </tr>
+                                            </tfoot>
 
-                                            </table>
-                                        </div>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <!--USUARIO DE EMPLEADO-->
-                    <!--
-                    <div class="tab-pane fade" id="usuario" role="tabpanel" aria-labelledby="contact-tab">
-                        <div class="container-fluid">
-                            Usuario
-                        </div>
-                    </div>
-                    -->
                 </div>
+
+                <!--USUARIO DE EMPLEADO-->
+                <!--
+                <div class="tab-pane fade" id="usuario" role="tabpanel" aria-labelledby="contact-tab">
+                    <div class="container-fluid">
+                        Usuario
+                    </div>
+                </div>
+                -->
             </div>
-            <div class="card-footer text-right">
-                <button id="save" type="button" class="btn btn-primary">Guardar Datos</button>
-                <a type="button" class="btn btn-default">Cancelar</a>
-            </div>
-        </form>
+        </div>
+        <div class="card-footer text-right">
+            <button id="save" type="button" class="btn btn-primary">Guardar Datos</button>
+            <a type="button" class="btn btn-default" th:href="@{/empleado/index}">Cancelar</a>
+        </div>
     </div>
 </div>
 
@@ -349,6 +368,10 @@
     <script>
         $(function () {
             $("#example1").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+            });
+            $("#example2").DataTable({
                 "responsive": true,
                 "autoWidth": false,
             });
@@ -374,34 +397,47 @@
         $("#genero_select").on('change', function () {
             var idGenero = $(this).val();
             $.get('/api/genero/' + idGenero, function (data) {
-                if(data.genero=="Mujer"){
+                if (data.genero == "Mujer") {
                     $("#divCasada").removeAttr("hidden");
-                }else{
-                    $("#divCasada").attr("hidden","hidden")
+                } else {
+                    $("#lastCName").val("");
+                    $("#divCasada").attr("hidden", "hidden")
                 }
             });
         });
 
-        $("#save").on("click",function () {
-            $("#save").attr("disabled","disabled");
+        $("#save").on("click", function () {
+            $("#save").attr("disabled", "disabled");
             $("#save").text("Enviando");
+            var tabla_prof = $("#example2").DataTable();
+            var tabla_docs = $("#example1").DataTable();
+            var data_prof = tabla_prof.$('input').serialize();
+            var data_docs = tabla_docs.$('input').serialize();
+
             $.ajax({
                 type: "POST",
-                url:"/empleado/store",
-                data:$("#form").serialize(),
-                dataType:"json",
-                success:function (data) {
-                    window.location.href=document.location.origin+"/empleado/index";
+                url: "/empleado/store",
+                data: $("#form1").serialize() + "&" + $("#form2").serialize()+ "&" + $("#form3").serialize() + "&" + data_prof + "&" + data_docs,
+                dataType: "json",
+                success: function (data) {
+                    window.location.href = document.location.origin + "/empleado/index";
                 },
-                error:function (data) {
-                    $("#error_alert_div").removeAttr("hidden");
+                error: function (data) {
+                    var error_div= $("#error_alert_div");
+                    error_div.removeAttr("hidden");
                     console.log(data);
-                    var m="";
-                    $.each(data.responseJSON,function (key,value) {
+                    var m = "";
+                    $.each(data.responseJSON, function (key, value) {
                         console.log(value);
-                        m+="<li>"+value+"</li>";
+                        m += "<li>" + value + "</li>";
                     });
-                    document.getElementById("error_alert").innerHTML=m;
+
+                    document.getElementById("error_alert").innerHTML = m;
+                    //Para mover al inicio de la pagina el control
+                    $('html, body').animate({
+                        scrollTop: 0
+                    }, 'slow');
+
                     $("#success_alert_div").attr("hidden", "hidden");
                     $("#save").removeAttr("disabled");
                     $("#save").text("Guardar Datos");
@@ -409,7 +445,6 @@
             })
         });
         /*Funcion para activar zona de usuario segun puesto*/
-
 
 
     </script>

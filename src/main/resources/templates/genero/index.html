@@ -22,10 +22,12 @@
 
 	<div layout:fragment="content">
 	
-		<input type="hidden" id="store" th:if="${store_success}" value="true">
-		<input type="hidden" id="update" th:if="${update_success}" value="true">
-		<input type="hidden" id="delete_success" th:if="${delete_success}" value="true">
-		<input type="hidden" id="delete_restricted" th:if="${delete_restricted}" value="true">
+		<input type="hidden" id="store" th:if="${store_success != null}" value="true">
+		<input type="hidden" id="update" th:if="${update_success != null}" value="true">
+		<input type="hidden" id="delete_success" th:if="${delete_success != null}" value="true">
+		<input type="hidden" id="delete_restricted" th:if="${delete_restricted != null}" value="true">
+		<input type="hidden" id="update_restricted" th:if="${update_restricted != null}" value="true">
+		<input type="hidden" id="store_restricted" th:if="${store_restricted != null}" value="true">
 		
 		<!-- Modal para Agregar Genero -->
 		<div class="modal" id="generoModal" tabindex="-1" role="dialog">
@@ -41,7 +43,7 @@
 			      <div class="modal-body">
 			        <div class="form-group">
 					    <label for="generoInput">Genero:</label>
-					    <input type="text" th:field="*{genero}" class="form-control" id="generoInput" placeholder="Ingrese el titulo del genero...">
+					    <input type="text" th:field="*{genero}" class="form-control" id="generoInput" placeholder="Ingrese el titulo del genero..." required="required">
 					  </div>
 			      </div>
 			      <div class="modal-footer">
@@ -111,7 +113,7 @@
 	                  <td><span th:text="${genero.genero}"></span></td>
 						<td>						
 							<button class="btn btn-sm btn-primary" th:attr="data-idGenero=${genero.idGenero}, data-genero=${genero.genero}" 
-									onclick="activateModalEdit(this)" style="text-decoration: none; color: white;"
+									onclick="activateModalEdit(this);" style="text-decoration: none; color: white;"
 									title="Editar">
 									
 								<span><i class="fas fa-pencil-alt"></i></span>
@@ -119,7 +121,7 @@
 							</button>
 							
 							<button class="btn btn-sm btn-danger" th:attr="data-idGenero=${genero.idGenero}, data-genero=${genero.genero}" 
-									onclick="activateModalDestroy(this)" title="Eliminar"
+									onclick="activateModalDestroy(this);" title="Eliminar"
 									style="text-decoration: none; color: white;">
 									
 								<i class="fas fa-lock "></i>
@@ -165,7 +167,7 @@
 			        <div class="form-group">
 					    <label for="generoInput">Genero:</label>
 					    <input type="hidden" class="form-control" id="idGeneroInputEdit" name="idGenero" value="">
-					    <input type="text" class="form-control" id="generoInputEdit"  name="genero" value="">
+					    <input type="text" class="form-control" id="generoInputEdit"  name="genero" value="" required="required">
 					  </div>
 			      </div>
 			      <div class="modal-footer">
@@ -217,35 +219,19 @@
 		<!-- SweetAlert2 -->
 		<script th:src="@{/plugins/sweetalert2/sweetalert2.min.js}"></script>
 		
-		<script>
-		  $(function () {
-		    $("#example2").DataTable({
-		      "responsive": true,
-		      "autoWidth": false,
-		    });
-		    $('#example1').DataTable({
-		      "paging": true,
-		      "lengthChange": false,
-		      "searching": true,
-		      "ordering": true,
-		      "info": true,
-		      "autoWidth": false,
-		      "responsive": true,
-		      "pageLength": 5,
-		    });
-		  });
-		  
-		  function activateModalEdit(param){
+		<script type="text/javascript">
+		
+		function activateModalEdit(param){
 			  
-			  	var id_genero = $(param).attr("data-idGenero");
-			  	var genero = $(param).attr("data-genero");
-			  	
-			  	$("#idGeneroInputEdit").val(id_genero);
-			  	$("#generoInputEdit").val(genero);
-				
-			  	$("#generoModalEdit").modal();
-			}
-		  
+		  	var id_genero = $(param).attr("data-idGenero");
+		  	var genero = $(param).attr("data-genero");
+		  	
+		  	$("#idGeneroInputEdit").val(id_genero);
+		  	$("#generoInputEdit").val(genero);
+			
+		  	$("#generoModalEdit").modal();
+		}
+	  
 		  function activateModalDestroy(param){
 			  
 			  var id_genero = $(param).attr("data-idGenero");
@@ -256,12 +242,35 @@
 			  $("#generoModalDestroy").modal();
 		  }
 		  
-		  $(document).ready(function(){
+		  $(function () {
+			    $("#example2").DataTable({
+			      "responsive": true,
+			      "autoWidth": false,
+			    });
+			    $('#example1').DataTable({
+			      "paging": true,
+			      "lengthChange": false,
+			      "searching": true,
+			      "ordering": true,
+			      "info": true,
+			      "autoWidth": false,
+			      "responsive": true,
+			      "pageLength": 5,
+			    });
+			  });
+		  
+		  
+		
+		</script>
+		<script type="text/javascript"> 
+		
+		$(document).ready(function(){
 			  var store = $('#store').val();
 			  var update = $('#update').val();
+			  var update_restricted = $('#update_restricted').val();
 			  var delete_success = $('#delete_success').val();
 			  var delete_restricted = $('#delete_restricted').val();
-			  
+			  var store_restricted = $('#store_restricted').val();
 			 
 			  setTimeout(function() {
 			    $(".alert").fadeOut();           
@@ -279,8 +288,14 @@
 			  if(delete_restricted === 'true'){
 				 toastr.warning("No es posible eliminar el Genero, ya que hay Empleados que lo poseen!"); 
 			  }
-			  
+			  if (update_restricted === 'true' || store_restricted === 'true'){
+				 toastr.warning("Genero no puede quedar vacio");  
+			  }
+			
 			});
+		  
+		  
+		  
 		</script>
 	</section>
 

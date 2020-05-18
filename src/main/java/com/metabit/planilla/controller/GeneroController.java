@@ -56,8 +56,13 @@ public class GeneroController {
 		return "genero/index";
 	}
 	
+	@PreAuthorize("hasAuthority('GENERO_CREATE')")
 	@PostMapping("/store")
 	public String store(@ModelAttribute(name="generoEntity") Genero genero) {
+		
+		//Validamos que el genero no sea espacios en blanco
+		if (!(genero.getGenero().trim().length() > 0))
+			return "redirect:/genero/index?store_restricted";
 		
 		//Obteniendo el objeto de Genero del formulario para creacion de Genero
 		generoService.addGenero(genero);
@@ -69,6 +74,9 @@ public class GeneroController {
 	@PreAuthorize("hasAuthority('GENERO_EDIT')")
 	@PostMapping("/update")
 	public String update(@RequestParam("idGenero") int idGenero, @RequestParam("genero") String genero) {
+		//Validamos que el genero no sea espacios en blanco
+		if (!(genero.trim().length() > 0))
+			return "redirect:/genero/index?update_restricted";
 		
 		//Obteniendo el Genero a ser actualizado
 		Genero generoSelected = generoService.getGenero(idGenero);
