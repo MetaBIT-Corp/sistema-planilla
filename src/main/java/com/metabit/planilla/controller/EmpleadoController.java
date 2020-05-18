@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -423,13 +424,15 @@ public class EmpleadoController {
     public ResponseEntity<?> deleteProfesiones(@RequestParam(name = "profesiones_seleccion[]", required = false, defaultValue = "0") List<Integer> profesiones,@RequestParam(name = "idEmpleado") int idEmpleado) {
         //VALIDACIONES
         Map<String, String> mensajes = new HashMap<String,String>();
-        if(profesiones.size()==1){
+        if(profesiones.size()==1&&profesiones.get(0)==0){
             mensajes.put("success", "No se elimino ninguna profesion/oficio.");
             return new ResponseEntity<>(mensajes, HttpStatus.OK);
         }
 
         //VALIDANDO QUE NO ELIMINE TODAS LAS PROFESIONES DEL EMPLEADO
         Empleado e = empleadoService.findEmployeeById(idEmpleado);
+        LOGGER.info("ONE"+profesiones.size());
+        LOGGER.info("TWO"+e.getProfesionesEmpleado().size());
         if(profesiones.size()==e.getProfesionesEmpleado().size()){
             mensajes.put("error", "No se pueden eliminar todos, al menos debe de quedar una profesion/oficio.");
             return new ResponseEntity<>(mensajes, HttpStatus.BAD_REQUEST);

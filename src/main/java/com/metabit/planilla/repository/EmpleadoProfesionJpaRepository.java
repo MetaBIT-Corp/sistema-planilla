@@ -12,5 +12,4 @@ import java.util.List;
 @Repository("empleadoProfesionJpaRepository")
 public interface EmpleadoProfesionJpaRepository extends JpaRepository<EmpleadoProfesion, Serializable> {
     public abstract List<EmpleadoProfesion> findByEmpleado(Empleado e);
-    public abstract void deleteByIdProfesionEmpleado(int id);
 }
