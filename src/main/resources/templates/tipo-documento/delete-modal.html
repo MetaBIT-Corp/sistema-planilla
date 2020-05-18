@@ -6,6 +6,7 @@
 </head>
 <body>
 <div th:fragment="delete_modal">
+
     <!-- Modal para Confirmar Deshabilitación de Tipo de Documento -->
     <div class="modal" id="tipoDocumentoModalDisable" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
@@ -24,13 +25,49 @@
 
                     <div class="modal-body">
                         <div class="form-group">
-                            <span id="message"></span>
+                            <strong><span id="disableMessage"></span></strong><br>
+                            <span id="disableMessageInfo"></span>
                             <input type="hidden" class="form-control" id="idTipoDocumentoInputDisable" name="idTipoDocumentoDisable">
                         </div>
                     </div>
 
                     <div class="modal-footer">
                         <button type="submit" id="tipoDocumentoBtnSubmitDeshabilitar"></button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Confirmar Eliminación del Tipo de Documento -->
+    <div class="modal" id="tipoDocumentoModalDestroy" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="destroyModalTitle">Eliminar Tipo de Documento</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <form method="post"
+                      action="#"
+                      th:action="@{/tipo-documento/destroy}">
+
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <strong><span id="destroyMessage"></span></strong><br>
+                            <span id="destroyMessageInfo"></span>
+                            <input type="hidden" class="form-control" id="idTipoDocumentoInputDestroy" name="idTipoDocumentoDestroy">
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" id="tipoDocumentoBtnSubmitDestroy"></button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     </div>
 

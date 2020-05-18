@@ -28,6 +28,7 @@
     <input type="hidden" id="update" th:value="${update_success}">
     <input type="hidden" id="enable" th:value="${enable_success}">
     <input type="hidden" id="disable" th:value="${disable_success}">
+    <input type="hidden" id="delete" th:value="${delete_success}">
 
     <div class="row ml-3 mr-3">
         <div class="col-md-12">
@@ -103,8 +104,17 @@
                                    data-tipo-documento=${tipoDocumento.tipoDocumento},
                                    data-tipo-documento-habilitado=${tipoDocumento.tipoDocumentoHabilitado}">
                                     <span th:if="${tipoDocumento.tipoDocumentoHabilitado}"><i class="fas fa-lock"></i></span>
-                                    <span th:unless="${tipoDocumento.tipoDocumentoHabilitado}"><i class="fas fa-lock-open"></i></span>
-
+                                    <span th:unless="${tipoDocumento.tipoDocumentoHabilitado}"><i class="fas fa-unlock"></i></span>
+                                </a>&nbsp;&nbsp;
+                                <a class="btn btn-danger btn-sm"
+                                   href="#"
+                                   title="Eliminar Tipo de Documento"
+                                   data-toggle="modal"
+                                   data-target="#tipoDocumentoModalDestroy"
+                                   th:attr="
+                                   data-id-tipo-documento=${tipoDocumento.idTipoDocumento},
+                                   data-tipo-documento=${tipoDocumento.tipoDocumento}">
+                                    <i class="far fa-trash-alt"></i>
                                 </a>
                             </td>
 

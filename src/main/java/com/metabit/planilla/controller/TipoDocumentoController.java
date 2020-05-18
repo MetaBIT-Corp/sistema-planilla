@@ -2,6 +2,7 @@ package com.metabit.planilla.controller;
 
 import com.metabit.planilla.domain.JsonResponse;
 import com.metabit.planilla.entity.TipoDocumento;
+import com.metabit.planilla.service.EmpleadoDocumentoService;
 import com.metabit.planilla.service.TipoDocumentoService;
 
 import org.apache.commons.logging.Log;
@@ -25,6 +26,10 @@ public class TipoDocumentoController {
     @Qualifier("tipoDocumentoServiceImpl")
     private TipoDocumentoService tipoDocumentoService;
 
+    @Autowired
+    @Qualifier("empleadoDocumentoServiceImpl")
+    private EmpleadoDocumentoService empleadoDocumentoService;
+
     private static final String INDEX_VIEW = "tipo-documento/index";
     private static final Log LOGGER = LogFactory.getLog(TipoDocumentoController.class);
 
@@ -33,13 +38,15 @@ public class TipoDocumentoController {
                               @RequestParam(name="store_success", required=false) String store_success,
                               @RequestParam(name="update_success", required=false) String update_success,
                               @RequestParam(name="enable_success", required=false) String enable_success,
-                              @RequestParam(name="disable_success", required=false) String disable_success){
+                              @RequestParam(name="disable_success", required=false) String disable_success,
+                              @RequestParam(name="delete_success", required=false) String delete_success){
         ModelAndView modelAndView = new ModelAndView(INDEX_VIEW);
         modelAndView.addObject("tiposDocumento",tipoDocumentoService.getTiposDocumento());
         model.addAttribute("store_success", store_success);
         model.addAttribute("update_success", update_success);
         model.addAttribute("enable_success", enable_success);
         model.addAttribute("disable_success", disable_success);
+        model.addAttribute("delete_success", delete_success);
         model.addAttribute("tipoDocumentoEntity", new TipoDocumento());
         return modelAndView;
     }
@@ -87,6 +94,23 @@ public class TipoDocumentoController {
             tipoDocumentoService.updateTipoDocumento(tipoDocumento);
             return "redirect:/"+INDEX_VIEW+"?enable_success=true";
         }
+    }
+
+    @PreAuthorize("hasAuthority('TIPODOCUMENTO_DELETE')")
+    @PostMapping("/destroy")
+    public String destroy(@RequestParam("idTipoDocumentoDestroy") int idTipoDocumento) {
+
+        TipoDocumento tipoDocumento = tipoDocumentoService.getTipoDocumento(idTipoDocumento);
+
+        int asignaciones = empleadoDocumentoService.findByTipoDocumento(tipoDocumento).size();
+
+        if (asignaciones>0){
+            return "redirect:/"+INDEX_VIEW+"?delete_success=false";
+        }else{
+            tipoDocumentoService.deleteTipoDocumento(tipoDocumento.getIdTipoDocumento());
+            return "redirect:/"+INDEX_VIEW+"?delete_success=true";
+        }
+
     }
 
 }

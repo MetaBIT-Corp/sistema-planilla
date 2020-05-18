@@ -80,30 +80,6 @@ $(document).ready(function(){
 
     });
 
-    $('#tipoDocumentoModalDisable').on('show.bs.modal', function(event){
-
-        var modal = $(this);
-        var link = $(event.relatedTarget);
-
-        var idTipoDocumento = link.data('id-tipo-documento');
-        var tipoDocumento = link.data('tipo-documento');
-        var tipoDocumentoHabilitado = link.data('tipo-documento-habilitado');
-
-        modal.find('.modal-body #idTipoDocumentoInputDisable').val(idTipoDocumento);
-
-        if(tipoDocumentoHabilitado==1){
-            modal.find('.modal-header #disableModalTitle').text('Deshabilitar Tipo de Documento');
-            modal.find('.modal-body #message').text('¿Está seguro que desea deshabilitar el Tipo de Documento '+tipoDocumento+'?');
-            modal.find('.modal-footer #tipoDocumentoBtnSubmitDeshabilitar').text('Deshabilitar');
-            modal.find('.modal-footer #tipoDocumentoBtnSubmitDeshabilitar').attr('class','btn btn-danger')
-        }else{
-            modal.find('.modal-header #disableModalTitle').text('Habilitar Tipo de Documento');
-            modal.find('.modal-body #message').text('¿Está seguro que desea habilitar el Tipo de Documento '+tipoDocumento+'?');
-            modal.find('.modal-footer #tipoDocumentoBtnSubmitDeshabilitar').text('Habilitar');
-            modal.find('.modal-footer #tipoDocumentoBtnSubmitDeshabilitar').attr('class','btn btn-info')
-        }
-    });
-
     $('#tipoDocumentoBtnSubmit').click(function (e) {
 
         e.preventDefault();
@@ -159,6 +135,56 @@ $(document).ready(function(){
         });
     });
 
+    $('#tipoDocumentoModalDisable').on('show.bs.modal', function(event){
+
+        var modal = $(this);
+        var link = $(event.relatedTarget);
+
+        var idTipoDocumento = link.data('id-tipo-documento');
+        var tipoDocumento = link.data('tipo-documento');
+        var tipoDocumentoHabilitado = link.data('tipo-documento-habilitado');
+
+        modal.find('.modal-body #idTipoDocumentoInputDisable').val(idTipoDocumento);
+
+        if(tipoDocumentoHabilitado==1){
+            modal.find('.modal-header #disableModalTitle').text('Deshabilitar Tipo de Documento');
+            modal.find('.modal-body #disableMessage').text("¿Está seguro que desea deshabilitar el Tipo de Documento '"+tipoDocumento+"'?");
+            modal.find('.modal-body #disableMessageInfo').text(
+                'Esta acción no eliminará el tipo de documento, pero no será posible asignarlo a más empleados. ' +
+                'Sin embargo, aquellos empleados a quienes ya se les asigno este tipo de documento no sufriran ningún cambio.'
+            );
+            modal.find('.modal-footer #tipoDocumentoBtnSubmitDeshabilitar').text('Deshabilitar');
+            modal.find('.modal-footer #tipoDocumentoBtnSubmitDeshabilitar').attr('class','btn btn-danger');
+        }else{
+            modal.find('.modal-header #disableModalTitle').text('Habilitar Tipo de Documento');
+            modal.find('.modal-body #disableMessage').text("¿Está seguro que desea habilitar el Tipo de Documento '"+tipoDocumento+"'?");
+            modal.find('.modal-body #disableMessageInfo').text('Esta acción permitirá que sea posible asignar el tipo documento a los empleados.');
+            modal.find('.modal-footer #tipoDocumentoBtnSubmitDeshabilitar').text('Habilitar');
+            modal.find('.modal-footer #tipoDocumentoBtnSubmitDeshabilitar').attr('class','btn btn-info');
+        }
+    });
+
+    $('#tipoDocumentoModalDestroy').on('show.bs.modal', function(event){
+
+        var modal = $(this);
+        var link = $(event.relatedTarget);
+
+        var idTipoDocumento = link.data('id-tipo-documento');
+        var tipoDocumento = link.data('tipo-documento');
+
+        modal.find('.modal-body #idTipoDocumentoInputDestroy').val(idTipoDocumento);
+
+        modal.find('.modal-body #destroyMessage').text("¿Está seguro que desea eliminar el Tipo de Documento '"+tipoDocumento+"'?");
+        modal.find('.modal-body #destroyMessageInfo').text(
+            'Esta acción eliminará el tipo de documento si aún no ha sido asignado a uno o más empleados. ' +
+            'Si ya fue asignado, su eliminación no será posible.'
+        );
+
+        modal.find('.modal-footer #tipoDocumentoBtnSubmitDestroy').text('Eliminar');
+        modal.find('.modal-footer #tipoDocumentoBtnSubmitDestroy').attr('class','btn btn-danger');
+
+    });
+
     function setInputFilter(textbox, inputFilter) {
         ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function(event) {
             textbox.addEventListener(event, function() {
@@ -182,6 +208,7 @@ $(document).ready(function(){
     var update = $('#update').val();
     var enable = $('#enable').val();
     var disable = $('#disable').val();
+    var delet = $('#delete').val();
 
     setTimeout(function() {$(".alert").fadeOut();},3000);
 
@@ -196,6 +223,13 @@ $(document).ready(function(){
     }
     if(disable === 'true'){
         toastr.error("Tipo Documento deshabilitado");
+    }
+    if(delet === 'true'){
+        toastr.error("Tipo Documento eliminado");
+    }
+
+    if(delet === 'false'){
+        toastr.warning("Tipo Documento no se puede eliminar. Ya ha sido asignado a uno o más empleados");
     }
 
 });

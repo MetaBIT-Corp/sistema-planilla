@@ -2,6 +2,7 @@ package com.metabit.planilla.service.impl;
 
 import com.metabit.planilla.entity.Empleado;
 import com.metabit.planilla.entity.EmpleadoDocumento;
+import com.metabit.planilla.entity.TipoDocumento;
 import com.metabit.planilla.repository.EmpleadoDocumentoJpaRepository;
 import com.metabit.planilla.service.EmpleadoDocumentoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,4 +37,9 @@ public class EmpleadoDocumentoServiceImpl implements EmpleadoDocumentoService {
 	public List<EmpleadoDocumento> findByEmpleado(Empleado e) {
 		return empleadoDocumentoJpaRepository.findByEmpleado(e);
 	}
+
+    @Override
+    public List<EmpleadoDocumento> findByTipoDocumento(TipoDocumento tipoDocumento) {
+        return empleadoDocumentoJpaRepository.findByTipoDocumento(tipoDocumento);
+    }
 }
