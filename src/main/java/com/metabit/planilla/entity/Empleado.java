@@ -53,10 +53,10 @@ public class Empleado {
 	@Column(name = "fecha_nacimiento", nullable = false, columnDefinition="DATE")
 	private LocalDate fechaNacimiento;
 
-	@Column(name = "correo_personal")
+	@Column(name = "correo_personal", unique = true)
 	private String correoPersonal;
 
-	@Column(name = "correo_institucional", nullable = false)
+	@Column(name = "correo_institucional", nullable = false, unique = true)
 	private String correoInstitucional;
 	
 	@NotNull(message = "Debe especificar el salario base.")

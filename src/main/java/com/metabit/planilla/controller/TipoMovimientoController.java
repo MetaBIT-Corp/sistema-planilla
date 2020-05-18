@@ -91,5 +91,13 @@ public class TipoMovimientoController {
 			
 		}
 	}
+	
+	//Eliminar tipo de movimiento
+	@PreAuthorize("hasAuthority('TIPOMOVIMIENTO_DELETE')")
+	@PostMapping("/destroy")
+	public String destroyPuesto(@RequestParam("idTipoMovimientoDestroy") int id) {
+		tipoMovimientoService.destroyTipoMovimiento(id);
+		return "redirect:/tipo-movimiento/index?delete_success=true";
+	}
 
 }

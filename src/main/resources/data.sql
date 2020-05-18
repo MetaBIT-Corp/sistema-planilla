@@ -30,7 +30,7 @@ INSERT INTO puestos(id_puesto, descripcion, es_administrativo, puesto, salario_m
 
 /*PROFESIONES*/
 INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (1, 'Ingeniero en Sistemas Informáticos', 1);
-/*INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (2, 'Ingeniero en Redes Informáticas', 1);
+INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (2, 'Ingeniero en Redes Informáticas', 1);
 INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (3, 'Ingeniero Electricista', 1);
 INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (4, 'Ingeniero Industrial', 1);
 INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (5, 'Licenciado en Administración de Empresas', 1);
@@ -45,15 +45,15 @@ INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (13, 'Chof
 INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (14, 'Pintor', 0);
 INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (15, 'Licenciado en Psicología', 1);
 INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (16, 'Licenciado en Ciencias Jurídicas', 1);
-*/
+
 
 /*TIPOS DE DOCUMENTO*/
 INSERT INTO tipos_documento(id_tipo_documento, tipo_documento, formato, tipo_documento_habilitado) VALUES (1, 'DUI','00000000-0',1);
-/*INSERT INTO tipos_documento(id_tipo_documento, tipo_documento, formato, tipo_documento_habilitado) VALUES (2, 'NIT','0000-000000-000-0',1);
+INSERT INTO tipos_documento(id_tipo_documento, tipo_documento, formato, tipo_documento_habilitado) VALUES (2, 'NIT','0000-000000-000-0',1);
 INSERT INTO tipos_documento(id_tipo_documento, tipo_documento, formato, tipo_documento_habilitado) VALUES (3, 'NUP','000000000000',1);
 INSERT INTO tipos_documento(id_tipo_documento, tipo_documento, formato, tipo_documento_habilitado) VALUES (4, 'ISSS','000000000',1);
 INSERT INTO tipos_documento(id_tipo_documento, tipo_documento, formato, tipo_documento_habilitado) VALUES (5, 'Licencia de Conducir','0000-000000-000-0',1);
-*/
+
 /*----------------------PRIVILEGIOS, RECURSOS, ROLES, USUARIO--------------------------*/
 INSERT ALL INTO PRIVILEGIOS VALUES(1, 'INDEX')
            INTO PRIVILEGIOS VALUES(2, 'EDIT') 
@@ -181,16 +181,21 @@ insert into estados_civiles values(5,'Union Libre');
 
 
 --Empleados
+<<<<<<< HEAD
 /* 
 insert into empleados values(1,null,'Lopez','Estupinian','EL16002','el16002@ues.edu.sv', 'el16002@gmail.com' ,1,0,'28-JUN-97',2,'Ricardo','Bladimir',2000,null,null,null,null);
 insert into empleados values(2,null,'Lopez','Estupinian','EL14002','el14002@ues.edu.sv', 'el16002@gmail.com' ,0,0,'17-MAR-95',2,'Estefany','Lizeida',2000,null,null,null,null);
 */
 
-insert into empleados(ID_EMPLEADO,APELLIDO_CASADA,APELLIDO_MATERNO,APELLIDO_PATERNO,CODIGO,CORREO_INSTITUCIONAL,CORREO_PERSONAL,EMPLEADO_HABILITADO,ES_ADMINISTRATIVO,FECHA_NACIMIENTO,HORAS_TRABAJO,NOMBRE_PRIMERO,NOMBRE_SEGUNDO,SALARIO_BASE_MENSUAL,ID_DIRECCION,ID_ESTADO_CIVIL,ID_GENERO,ID_USUARIO) 
+/*insert into empleados(ID_EMPLEADO,APELLIDO_CASADA,APELLIDO_MATERNO,APELLIDO_PATERNO,CODIGO,CORREO_INSTITUCIONAL,CORREO_PERSONAL,EMPLEADO_HABILITADO,ES_ADMINISTRATIVO,FECHA_NACIMIENTO,HORAS_TRABAJO,NOMBRE_PRIMERO,NOMBRE_SEGUNDO,SALARIO_BASE_MENSUAL,ID_DIRECCION,ID_ESTADO_CIVIL,ID_GENERO,ID_USUARIO)
 values(1,null,'Lopez','Estupinian','EL16002','el16002@ues.edu.sv','el16002@gmail.com',1,0,'28-JUN-97',20,'Ricardo','Bladimir',2000,78,1,1,null);
+=======
+insert into empleados(ID_EMPLEADO,APELLIDO_CASADA,APELLIDO_MATERNO,APELLIDO_PATERNO,CODIGO,CORREO_INSTITUCIONAL,CORREO_PERSONAL,EMPLEADO_HABILITADO,ES_ADMINISTRATIVO,FECHA_NACIMIENTO,HORAS_TRABAJO,NOMBRE_PRIMERO,NOMBRE_SEGUNDO,SALARIO_BASE_MENSUAL,ID_DIRECCION,ID_ESTADO_CIVIL,ID_GENERO,ID_USUARIO) 
+values(1,null,'Lopez','Estupinian','EL16002','el16002@ues.edu.sv','el16002@gmail.com',1,0,'28-JUN-97',20,'Ricardo','Bladimir',2000,78,1,1,5);
+>>>>>>> 68e02bc7c81e564f3c5874df2b2191d4c68b05f5
 
 insert into empleados(ID_EMPLEADO,APELLIDO_CASADA,APELLIDO_MATERNO,APELLIDO_PATERNO,CODIGO,CORREO_INSTITUCIONAL,CORREO_PERSONAL,EMPLEADO_HABILITADO,ES_ADMINISTRATIVO,FECHA_NACIMIENTO,HORAS_TRABAJO,NOMBRE_PRIMERO,NOMBRE_SEGUNDO,SALARIO_BASE_MENSUAL,ID_DIRECCION,ID_ESTADO_CIVIL,ID_GENERO,ID_USUARIO) 
-values(2,null,'Lopez','Estupinian','EP16002','el16002@ues.edu.sv','el16002@gmail.com',1,0,'28-JUN-97',20,'Ricardo','Bladimir',2000,78,1,1,null);
+values(2,null,'Lopez','Estupinian','EP16002','el16007@ues.edu.sv','el16007@gmail.com',1,0,'28-JUN-97',20,'Ricardo','Bladimir',2000,78,1,1,null);
 
 insert into empleados_documentos(ID_EMPLEADO_DOCUMENTO, CODIGO_DOCUMENTO, ID_EMPLEADO, ID_TIPO_DOCUMENTO) values (1,'15840523-1',1,1);
 insert into empleados_documentos(ID_EMPLEADO_DOCUMENTO, CODIGO_DOCUMENTO, ID_EMPLEADO, ID_TIPO_DOCUMENTO) values (2,'0810-123321-100-4',1,2);
@@ -220,3 +225,4 @@ insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, monto_base, 
 						values	(4, 0, 0, 0.00, 'Aguinaldo', 70 , 1);
 insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, monto_base, movimiento, porcentaje_movimiento, tipo_movimiento_habilitado)
 						values	(5, 0, 0, 500.00 , 'Bono', 0, 1);
+*/
