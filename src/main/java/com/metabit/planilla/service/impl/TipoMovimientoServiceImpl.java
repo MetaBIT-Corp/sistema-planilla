@@ -26,13 +26,13 @@ public class TipoMovimientoServiceImpl implements TipoMovimientoService {
 	@Override
 	public TipoMovimiento getTipoMovimiento(int id) {
 		// TODO Auto-generated method stub
-		return null;
+		return tipoMovimientoJpaRepository.findById(id).get();
 	}
 
 	@Override
 	public TipoMovimiento storeTipoMovimiento(TipoMovimiento tipoMovimiento) {
 		// TODO Auto-generated method stub
-		return null;
+		return tipoMovimientoJpaRepository.save(tipoMovimiento);
 	}
 
 }

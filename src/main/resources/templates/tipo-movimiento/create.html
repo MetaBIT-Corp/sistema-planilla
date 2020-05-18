@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layouts/layout}">
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<!-- Tell the browser to be responsive to screen width -->
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+</head>
+<body>
+
+	<h1 class="m-0 text-dark" layout:fragment="titulo_seccion"></h1>
+
+	<ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
+		<li class="breadcrumb-item"><a href="#" th:href="@{/index}">Home</a>
+		</li>
+		<li class="breadcrumb-item"><a href="#"
+			th:href="@{/tipo-movimiento/index}">Tipos de Movimiento</a></li>
+		<li class="breadcrumb-item active">Formulario</li>
+	</ol>
+
+	<div layout:fragment="content">
+
+		<div class="row">
+			<!-- left column -->
+			<div class="col-md-2"></div>
+			<div class="col-md-7">
+				<!-- general form elements -->
+				<div class="card card-primary">
+					<div class="card-header">
+						<h3 class="card-title">Formulario Tipo de Movimiento</h3>
+					</div>
+
+					<form role="form" class="user" action="#" method="POST"
+						th:action="@{/tipo-movimiento/form-post}"
+						th:object="${tipoMovimientoEntity}">
+						<div class="card-body">
+							<input type="hidden" th:field="*{idMovimiento}" id="idMovimientoHidden">
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label for="movimiento">Movimiento *</label> 
+										<input type="text" class="form-control" id="movimiento" placeholder="Ingrese el nombre del movimiento"
+										th:field="*{movimiento}"
+										th:value="${movimiento}">
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label for="esdescuento">Ingreso/Descuento *</label> 
+										<select class="custom-select" id="esdescuento" 
+											th:field="*{esDescuento}">
+											<option th:value="0" th:text="Ingreso"></option>
+											<option th:value="1" th:text="Descuento"></option>
+										</select>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label for="modalidad">Modalidad *</label> 
+										<select
+											class="custom-select" th:required="true" id="modalidad" >
+											<option selected="true" disabled="disabled">Seleccione</option>
+											<option value="0">Monto fijo</option>
+											<option value="1">Base a porcentaje</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-md-6" style="display: none" id="divmonto">
+									<div class="form-group" >
+										<label for="montobase">Monto Fijo *</label> 
+										<input type="number" class="form-control" id="montobase" min="0.00" step="0.01" value= "0.00"
+										th:field="*{montoBase}"
+										th:value="${montoBase}"
+										>
+									</div>
+								</div>
+								<div class="col-md-6" style="display: none" id="divpm">
+									<div class="form-group">
+										<label for="porcentajemovimiento">Porcentaje *</label> 
+										<input type="number" class="form-control" id="porcentajemovimiento"  min="0.00" step="0.01"  value="0.00"
+										th:field="*{porcentajeMovimiento}"
+										th:value="${porcentajeMovimiento}"	>
+									</div>
+								</div>
+							</div>
+
+							<!-- En el caso de los checkbox, si es true thymeleaf agrega el checked. Sorprendente  -->
+							<div class="form-group">
+								<div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" id="esfijo"
+										th:field="*{esFijo}"
+										th:value="${esFijo}">
+									<label class="custom-control-label" for="esfijo">Movimiento
+										Fijo</label> <small id="emailHelp" class="form-text text-muted">Seleccione
+										para indicar que el movimiento se aplica a todos los
+										empleados, durante todos los periodos.</small>
+								</div>
+							</div>
+							
+							<div  class="callout callout-danger" th:if="${ #fields.hasErrors('movimiento') }">
+								<p th:if="${#fields.hasErrors('movimiento')}">
+									<i class="icon fas fa-ban mr-2" style="color:red;"></i><span th:errors="*{movimiento}"> </span>
+								</p>
+							</div>
+							
+						</div>
+						<!-- /.card-body -->
+						<div class="card-footer">
+							<button type="submit" id="enviar" class="btn btn-primary">Enviar</button>
+							<a type="button" class="btn btn-default" href="#"
+								th:href="@{/tipo-movimiento/index}">Cancelar</a>
+						</div>
+					</form>
+				</div>
+				<!-- /.card -->
+			</div>
+		</div>
+	</div>
+	<section layout:fragment="scripts">
+		<script th:src="@{/js/tipo-movimiento/validacion-modalidad.js}"></script>
+	</section>
+</body>
+</html>

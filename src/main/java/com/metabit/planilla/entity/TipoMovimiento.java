@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -42,10 +41,9 @@ public class TipoMovimiento {
 		super();
 	}
 
-	
 	public TipoMovimiento(
 			@NotNull @Size(min = 1, max = 250, message = "El título de movimiento es obligatorio (máximo de 250 caracteres)") String movimiento,
-			Short porcentajeMovimiento, Short montoBase, boolean tipoMovimientoHabilitado, boolean esDescuento,
+			double porcentajeMovimiento, double montoBase, boolean tipoMovimientoHabilitado, boolean esDescuento,
 			boolean esFijo) {
 		super();
 		this.movimiento = movimiento;
@@ -56,11 +54,9 @@ public class TipoMovimiento {
 		this.esFijo = esFijo;
 	}
 
-	
-
 	public TipoMovimiento(int idMovimiento,
 			@NotNull @Size(min = 1, max = 250, message = "El título de movimiento es obligatorio (máximo de 250 caracteres)") String movimiento,
-			Short porcentajeMovimiento, Short montoBase, boolean tipoMovimientoHabilitado, boolean esDescuento,
+			double porcentajeMovimiento, double montoBase, boolean tipoMovimientoHabilitado, boolean esDescuento,
 			boolean esFijo) {
 		super();
 		this.idMovimiento = idMovimiento;
@@ -71,7 +67,6 @@ public class TipoMovimiento {
 		this.esDescuento = esDescuento;
 		this.esFijo = esFijo;
 	}
-
 
 	public int getIdMovimiento() {
 		return idMovimiento;
@@ -93,7 +88,7 @@ public class TipoMovimiento {
 		return porcentajeMovimiento;
 	}
 
-	public void setPorcentajeMovimiento(Short porcentajeMovimiento) {
+	public void setPorcentajeMovimiento(double porcentajeMovimiento) {
 		this.porcentajeMovimiento = porcentajeMovimiento;
 	}
 
@@ -101,7 +96,7 @@ public class TipoMovimiento {
 		return montoBase;
 	}
 
-	public void setMontoBase(Short montoBase) {
+	public void setMontoBase(double montoBase) {
 		this.montoBase = montoBase;
 	}
 
@@ -131,10 +126,9 @@ public class TipoMovimiento {
 
 	@Override
 	public String toString() {
-		return "TiposMovimiento [idMovimiento=" + idMovimiento + ", movimiento=" + movimiento
-				+ ", porcentajeMovimiento=" + porcentajeMovimiento + ", montoBase=" + montoBase
-				+ ", tipoMovimientoHabilitado=" + tipoMovimientoHabilitado + ", esDescuento=" + esDescuento
-				+ ", esFijo=" + esFijo + "]";
+		return "TipoMovimiento [idMovimiento=" + idMovimiento + ", movimiento=" + movimiento + ", porcentajeMovimiento="
+				+ porcentajeMovimiento + ", montoBase=" + montoBase + ", tipoMovimientoHabilitado="
+				+ tipoMovimientoHabilitado + ", esDescuento=" + esDescuento + ", esFijo=" + esFijo + "]";
 	}
-
+	
 }

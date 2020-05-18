@@ -33,7 +33,7 @@
 				<div class="card">
 				
 					<div class="card-header text-right">
-						<a href="#"
+						<a href="#" th:href="@{/tipo-movimiento/form-tipo-movimiento}"
 							type="button" class="btn btn-sm btn-primary"> 
 							<i class="fas fa-plus-circle mr-1 text-white"></i> 
 							<span class="text-white">Nuevo Tipo de Movimiento</span>
@@ -72,7 +72,7 @@
 				                          </button>
 				                          <div class="dropdown-menu">
 				                          
-				                            <a class="dropdown-item" href="#">
+				                            <a class="dropdown-item" href="#" th:href="@{'/tipo-movimiento/form-tipo-movimiento/'+${tipoMovimiento.idMovimiento} + ''}">
 												<i class="far fa-edit mr-3"></i>Editar
 											</a>
 				                            
