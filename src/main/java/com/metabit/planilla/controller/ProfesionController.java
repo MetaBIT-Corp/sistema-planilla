@@ -1,22 +1,18 @@
 package com.metabit.planilla.controller;
 
-import java.util.Optional;
-
-import javax.validation.Valid;
+import com.metabit.planilla.entity.Profesion;
+import com.metabit.planilla.service.ProfesionService;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
-import com.metabit.planilla.entity.Profesion;
-import com.metabit.planilla.service.ProfesionService;
 
 @Controller
 @RequestMapping("/profesion")
@@ -27,8 +23,6 @@ public class ProfesionController {
     private ProfesionService profesionService;
 
     private static final String INDEX_VIEW = "profesion/index";
-    private static final String CREATE_VIEW = "profesion/create";
-
     private static final Log LOGGER = LogFactory.getLog(ProfesionController.class);
 
     @PreAuthorize("hasAuthority('PROFESION_INDEX')")
@@ -50,12 +44,7 @@ public class ProfesionController {
     @PreAuthorize("hasAuthority('PROFESION_CREATE')")
     @PostMapping("/store")
     public String store(@ModelAttribute(name="profesionEntity") Profesion profesion){
-        if(profesion.getIdProfesion()==0){
-            profesionService.storeProfesion(profesion);
-        }else{
-            profesionService.updateProfesion(profesion);
-            return "redirect:/profesion/index?update_success=true";
-        }
+        profesionService.storeProfesion(profesion);
         return "redirect:/profesion/index?store_success=true";
     }
 
@@ -73,8 +62,5 @@ public class ProfesionController {
         profesionService.deleteProfesion(idProfesion);
         return "redirect:/profesion/index?delete_success=true";
     }
-
-
-
 
 }

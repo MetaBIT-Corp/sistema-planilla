@@ -52,7 +52,7 @@
                         <tr>
                             <th>Nombre</th>
                             <th>Formato</th>
-                            <th>Habilitado/Deshabilitado</th>
+                            <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
 
@@ -62,8 +62,12 @@
                             <td><span th:text="${tipoDocumento.tipoDocumento}"></span></td>
                             <td><span th:text="${tipoDocumento.formato}"></span></td>
                             <td>
-                                <span th:if="${tipoDocumento.tipoDocumentoHabilitado}">Habilitado</span>
-                                <span th:unless="${tipoDocumento.tipoDocumentoHabilitado}">Deshabilitado</span>
+                                <span th:if="${tipoDocumento.tipoDocumentoHabilitado}">
+                                    <span class="badge badge-success">Habilitado</span>
+                                </span>
+                                <span th:unless="${tipoDocumento.tipoDocumentoHabilitado}">
+                                    <span class="badge badge-danger">Deshabilitado</span>
+                                </span>
                             </td>
 
                             <td class="text-center">
@@ -118,7 +122,7 @@
                         <tr>
                             <th>Nombre</th>
                             <th>Formato</th>
-                            <th>Habilitado/Deshabilitado</th>
+                            <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
                         </tfoot>
