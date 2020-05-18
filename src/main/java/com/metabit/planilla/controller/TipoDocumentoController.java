@@ -1,5 +1,6 @@
 package com.metabit.planilla.controller;
 
+import com.metabit.planilla.domain.JsonResponse;
 import com.metabit.planilla.entity.TipoDocumento;
 import com.metabit.planilla.service.TipoDocumentoService;
 
@@ -11,6 +12,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ValidationUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -43,10 +46,25 @@ public class TipoDocumentoController {
 
     @PreAuthorize("hasAuthority('TIPODOCUMENTO_CREATE')")
     @PostMapping("/store")
-    public String store(@ModelAttribute(name="tipoDocumentoEntity") TipoDocumento tipoDocumento){
-        tipoDocumento.setTipoDocumentoHabilitado(true);
-        tipoDocumentoService.storeTipoDocumento(tipoDocumento);
-        return "redirect:/"+INDEX_VIEW+"?store_success=true";
+    public @ResponseBody JsonResponse store(@ModelAttribute(name="tipoDocumentoEntity") TipoDocumento tipoDocumento, BindingResult bindingResult){
+
+        JsonResponse jsonResponse = new JsonResponse();
+
+        ValidationUtils.rejectIfEmpty(bindingResult, "tipoDocumento", "Ingrese el nombre del tipo de documento.");
+        ValidationUtils.rejectIfEmpty(bindingResult, "formato", "Ingrese el formato del tipo de documento.");
+
+        if(!bindingResult.hasErrors()){
+            tipoDocumento.setTipoDocumentoHabilitado(true);
+            tipoDocumentoService.storeTipoDocumento(tipoDocumento);
+            jsonResponse.setStatus("SUCCESS");
+            jsonResponse.setResult(tipoDocumento);
+        }else{
+            jsonResponse.setStatus("FAIL");
+            jsonResponse.setResult(bindingResult.getAllErrors());
+        }
+
+        return jsonResponse;
+
     }
 
     @PreAuthorize("hasAuthority('TIPODOCUMENTO_EDIT')")

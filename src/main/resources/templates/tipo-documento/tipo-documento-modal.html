@@ -8,8 +8,8 @@
 
 <div th:fragment="tipo_documento_modal">
     <!-- Modal para Gestión de los Tipos de Documento -->
-    <div class="modal" id="tipoDocumentoModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+    <div id="tipoDocumentoModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
 
                 <div class="modal-header">
@@ -19,26 +19,52 @@
                     </button>
                 </div>
 
-                <form method="post" action="#" th:action="@{/tipo-documento/store}" th:object="${tipoDocumentoEntity}">
+                <form class="h-100" method="post" th:action="@{/tipo-documento/store}" th:object="${tipoDocumentoEntity}">
 
-                    <div class="card-body">
-                        <div class="form-group d-none">
-                            <label for="idTipoDocumentoInput">ID</label>
-                            <input type="text" th:field="*{idTipoDocumento}" class="form-control" id="idTipoDocumentoInput" placeholder="ID de Tipo de Documento">
-                        </div>
-                        <div class="form-group">
-                            <label for="tipoDocumentoInput">Nombre *</label>
-                            <input type="text" class="form-control" id="tipoDocumentoInput" placeholder="Nombre de Tipo de Documento" th:field="*{tipoDocumento}">
-                        </div>
-                        <div class="form-group">
-                            <label for="formatoInput">Formato *</label>
-                            <input type="text" class="form-control" id="formatoInput" placeholder="Formato de Tipo de Documento" th:field="*{formato}">
-                        </div>
-                    </div>
+                    <div class="card-body row h-100">
 
-                    <div class="card-footer text-right">
-                        <button type="submit" id="tipoDocumentoBtnSubmit" class="btn btn-primary">Editar</button>
-                        <button type="button" id="tipoDocumentoBtnCancelar" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <div class="col-6 h-100 position-relative">
+
+                            <div class="form-group d-none">
+                                <label for="idTipoDocumentoInput">ID</label>
+                                <input type="text" th:field="*{idTipoDocumento}" class="form-control" id="idTipoDocumentoInput" placeholder="ID de Tipo de Documento">
+                            </div>
+                            <div class="form-group">
+                                <label for="tipoDocumentoInput">Nombre *</label>
+                                <input type="text" class="form-control" id="tipoDocumentoInput" placeholder="Nombre de Tipo de Documento" th:field="*{tipoDocumento}">
+                            </div>
+                            <div class="form-group">
+                                <label for="formatoInput">Formato *</label>
+                                <input type="text" class="form-control" id="formatoInput" placeholder="Formato de Tipo de Documento" th:field="*{formato}">
+                            </div>
+
+                            <div id="divError" class="card text-white bg-danger p-3">
+                                <p class="my-0"><strong>Por favor, corregir los siguientes errores:</strong></p>
+                                <ul id="ulError" class="mb-0">
+                                </ul>
+                            </div>
+
+                            <div class="card-footer bg-light text-right">
+                                <button type="submit" id="tipoDocumentoBtnSubmit" class="btn btn-primary">Editar</button>
+                                <button type="button" id="tipoDocumentoBtnCancelar" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            </div>
+
+                        </div>
+
+                        <div class="col-6 card bg-info p-3">
+                            <strong>Información sobre el formato</strong>
+                            <ul>
+                                <li>Utilice un cero (0) para indicar la posici&oacute;n donde deber&iacute;a ir un n&uacute;mero.</li>
+                                <li>Utilice una letra 'a' para indicar la posici&oacute;n donde deber&iacute;a ir una letra.</li>
+                                <li>Utilice un gui&oacute;n para indicar la posici&oacute;n donde deber&iacute;a ir un gui&oacute;n.</li>
+                            </ul>
+                            <p>
+                                <strong>Ejemplos:</strong><br>
+                                DUI: 00000000-0<br>
+                                NIT: 0000-000000-000-0
+                            </p>
+                        </div>
+
                     </div>
 
                 </form>

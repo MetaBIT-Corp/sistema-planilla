@@ -2,6 +2,8 @@ $(document).ready(function(){
 
     $('#tipoDocumentoModal').on('show.bs.modal', function(event){
 
+        $('#divError').hide();
+
         var modal = $(this);
         var link = $(event.relatedTarget);
 
@@ -100,6 +102,80 @@ $(document).ready(function(){
             modal.find('.modal-footer #tipoDocumentoBtnSubmitDeshabilitar').text('Habilitar');
             modal.find('.modal-footer #tipoDocumentoBtnSubmitDeshabilitar').attr('class','btn btn-info')
         }
+    });
+
+    $('#tipoDocumentoBtnSubmit').click(function (e) {
+
+        e.preventDefault();
+
+        var form = $(this).parents('form');
+        var url = form.attr('action');
+
+        $.ajax({
+
+            type: 'POST',
+            url: url,
+            data: form.serialize(),
+
+            success: function (response) {
+
+                if (response.status=="SUCCESS"){
+
+                    $('#tipoDocumentoBtnSubmit').attr('disabled',true);
+                    $('#divError').hide();
+
+                    if($('#idTipoDocumentoInput').val()!=''){
+                        window.location.href = document.location.origin + "/tipo-documento/index?update_success=true";
+
+                    }else{
+                        window.location.href = document.location.origin + "/tipo-documento/index?store_success=true";
+                    }
+
+                }else{
+
+                    $('#divError').show();
+                    var child = document.getElementById("ulError").lastElementChild;
+
+                    while (child) {
+                        document.getElementById("ulError").removeChild(child);
+                        child = document.getElementById("ulError").lastElementChild;
+                    }
+
+                    for(i=0;i<response.result.length;i++){
+                        var li = document.createElement('li');
+                        var liContent = document.createTextNode(response.result[i].code);
+                        li.appendChild(liContent);
+                        document.getElementById("ulError").appendChild(li);
+                    }
+
+                }
+
+            },
+
+            error: function (e) {
+                alert('Error: '+e);
+            }
+
+        });
+    });
+
+    function setInputFilter(textbox, inputFilter) {
+        ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function(event) {
+            textbox.addEventListener(event, function() {
+                if (inputFilter(this.value)) {
+                    this.oldValue = this.value;
+                    this.oldSelectionStart = this.selectionStart;
+                    this.oldSelectionEnd = this.selectionEnd;
+                } else if (this.hasOwnProperty("oldValue")) {
+                    this.value = this.oldValue;
+                    this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+                }
+            });
+        });
+    }
+
+    setInputFilter(document.getElementById("formatoInput"), function(value) {
+        return /^[0a-]*$/.test(value);
     });
 
     var store = $('#store').val();

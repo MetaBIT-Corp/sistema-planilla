@@ -1,5 +1,6 @@
 package com.metabit.planilla.controller;
 
+import com.metabit.planilla.domain.JsonResponse;
 import com.metabit.planilla.entity.Profesion;
 import com.metabit.planilla.service.ProfesionService;
 
@@ -11,6 +12,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ValidationUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -43,9 +46,27 @@ public class ProfesionController {
 
     @PreAuthorize("hasAuthority('PROFESION_CREATE')")
     @PostMapping("/store")
-    public String store(@ModelAttribute(name="profesionEntity") Profesion profesion){
-        profesionService.storeProfesion(profesion);
-        return "redirect:/profesion/index?store_success=true";
+    public @ResponseBody JsonResponse store(@ModelAttribute(name="profesionEntity") Profesion profesion, BindingResult bindingResult){
+
+        JsonResponse jsonResponse = new JsonResponse();
+
+        if(profesion.getEsProfesion()){
+            ValidationUtils.rejectIfEmpty(bindingResult,"profesion","Ingrese el nombre de la profesión.");
+        }else{
+            ValidationUtils.rejectIfEmpty(bindingResult,"profesion","Ingrese el nombre del oficio.");
+        }
+
+        if(!bindingResult.hasErrors()){
+            profesionService.storeProfesion(profesion);
+            jsonResponse.setStatus("SUCCESS");
+            jsonResponse.setResult(profesion);
+        }else{
+            jsonResponse.setStatus("FAIL");
+            jsonResponse.setResult(bindingResult.getAllErrors());
+        }
+
+        return jsonResponse;
+
     }
 
     @PreAuthorize("hasAuthority('PROFESION_EDIT')")
