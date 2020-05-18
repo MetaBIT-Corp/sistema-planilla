@@ -8,4 +8,6 @@ public interface TipoMovimientoService {
 	public abstract List<TipoMovimiento> getTiposMovimiento();
 	public abstract TipoMovimiento getTipoMovimiento(int id);
 	public abstract TipoMovimiento storeTipoMovimiento(TipoMovimiento tipoMovimiento);
+	public abstract TipoMovimiento updateTipoMovimiento(TipoMovimiento tipoMovimiento);
+	public abstract void destroyTipoMovimiento(int id);
 }

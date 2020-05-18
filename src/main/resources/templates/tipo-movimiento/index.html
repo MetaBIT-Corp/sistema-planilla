@@ -76,8 +76,9 @@
 												<i class="far fa-edit mr-3"></i>Editar
 											</a>
 				                            
-				                            <button class="dropdown-item"  
-												 title="Eliminar">
+				                            <button class="dropdown-item" title="Eliminar"
+				                             th:attr="data-idTipoMovimiento=${tipoMovimiento.IdMovimiento}, data-movimiento=${tipoMovimiento.movimiento}" 
+												onclick="activateModalDestroy(this)">
 												<i class="far fa-trash-alt mr-3" ></i> Eliminar
 											</button>
 				                          </div>
@@ -109,6 +110,41 @@
 				<!-- /.card -->
 			</div>
 		</div>
+		
+		<!-- MODALS -->
+		<!-- Modal para Confirmar Eliminacion de Puesto -->
+		<div class="modal" id="tipoMovimientoModalDestroy" tabindex="-1" role="dialog">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title">Eliminar tipo de movimiento</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <form method="post" action="#" th:action="@{/tipo-movimiento/destroy}">
+			      <div class="modal-body">
+			        <div class="form-group">
+					    <div id="divMessage"></div>
+					    <input type="hidden" class="form-control" id="idTipoMovimientoInputDestroy" name="idTipoMovimientoDestroy" value="">				
+					</div>
+					<div class="callout callout-warning" id="validacionEliminacion" style="display:none;">
+	                  <small id="emailHelp" class="form-text text-muted">
+	                  	<i class="fas fa-exclamation-circle mr-2"></i> 
+	                  	No puede eliminar este tipo movimiento, debido a que ha sido asignado a uno o más movimientos.
+	                  </small>
+	                </div>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="submit" id="submitEliminacion" class="btn btn-danger">Confirmar</button>
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+			      </div>
+		      </form>
+		    </div>
+		  </div>
+		</div>
+		<!-- /MODALS -->
+		
 	</div>
 
 	<!-- Scripts-->
@@ -123,7 +159,11 @@
 		<script th:src="@{/plugins/toastr/toastr.min.js}"></script>
 		<!-- SweetAlert2 -->
 		<script th:src="@{/plugins/sweetalert2/sweetalert2.min.js}"></script>
-
+		
+		<!-- para uso de modals -->
+		<script th:src="@{/js/tipo-movimiento/modals.js}"></script>
+		<!-- mensajes de store, update y delete -->
+		<script th:src="@{/js/tipo-movimiento/mensajes.js}"></script>
 		<!-- page script -->
 		<script>
 			$(function() {
