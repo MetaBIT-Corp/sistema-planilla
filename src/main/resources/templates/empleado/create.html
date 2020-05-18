@@ -269,12 +269,12 @@
                                         <div class="form-group">
                                             <label>Salario Base Mensual ($) *</label>
                                             <input type="number" th:field="*{empleado.salarioBaseMensual}"
-                                                   class="form-control">
+                                                   class="form-control" min="1">
                                         </div>
                                         <div class="form-group">
                                             <label>Horas de Trabajo *</label>
                                             <input type="number" th:field="*{empleado.horasTrabajo}"
-                                                   class="form-control">
+                                                   class="form-control" min="1" value="1">
                                         </div>
                                         <div class="form-group">
                                             <label>Puesto de Trabajo</label>

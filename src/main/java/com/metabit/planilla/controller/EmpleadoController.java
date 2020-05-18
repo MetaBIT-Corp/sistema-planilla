@@ -11,13 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.*;
@@ -544,15 +540,60 @@ public class EmpleadoController {
             if (allParams.get("codigo").isEmpty() || allParams.get("correoInstitucional").isEmpty() || allParams.get("salarioBaseMensual").isEmpty() || allParams.get("horasTrabajo").isEmpty() || profesiones.get(0) == 0) {
                 mensajes.put("error_sec3", "Error en la seccion Informacion Profesional. Llenar todos los campos requeridos.");
             }
+            //Otras validaciones
+            mensajes= validacionUniqueAndOthers(allParams,mensajes,0);
         } else {
             //VALIDACION DE CAMPOS REQUERIDOS PARA SECCION INFORMACION PROFESIONAL
             if (allParams.get("codigo").isEmpty() || allParams.get("correoInstitucional").isEmpty() || allParams.get("salarioBaseMensual").isEmpty() || allParams.get("horasTrabajo").isEmpty()) {
                 mensajes.put("error_sec3", "Error en la seccion Informacion Profesional. Llenar todos los campos requeridos.");
+            }else{
+                mensajes= validacionUniqueAndOthers(allParams,mensajes,Integer.parseInt(allParams.get("idEmpleado")));
             }
         }
         return mensajes;
     }
 
+    private  Map<String, String> validacionUniqueAndOthers(Map<String, String> allParams, Map<String, String> mensajes,int idEmp){
+        if(empleadoService.existEmployeeCode(allParams.get("codigo"),idEmp)){
+            mensajes.put("error_unique_code", "Codigo de empleado ya existe. Debe de ser unico.");
+        }
+        Pattern pat1 = Pattern.compile("([a-z0-9]+(\\.?[a-z0-9])*)+@(([a-z]+)\\.([a-z]+))+");
+        Pattern pat2 = Pattern.compile("([a-z0-9]+(\\.?[a-z0-9])*)+@metabit.tech.sv");
+        Matcher matcher1 = pat1.matcher(allParams.get("correoPersonal"));
+        Matcher matcher2 = pat2.matcher(allParams.get("correoInstitucional"));
+
+        //Validacion de correos en registro
+        if(!matcher2.matches()){
+            mensajes.put("error_correo_ins", "Correo institucional, mal formado (todo en minusculas). Dominio debe ser @metabit.tech.sv");
+        }else{
+            if(empleadoService.existInstitucionalEmail(allParams.get("correoInstitucional"),idEmp)){
+                mensajes.put("error_unique_email_inst", "Correo institucional ya existe. Debe de ser unico.");
+            }
+        }
+        if(!allParams.get("correoPersonal").isEmpty()&&!matcher1.matches()){
+            mensajes.put("error_correo_per", "Correo personal, mal formado (todo en minusculas).Verifique.");
+        }else{
+            if(empleadoService.existPersonalEmail(allParams.get("correoPersonal"),idEmp)){
+                mensajes.put("error_unique_email_pers", "Correo personal ya existe. Debe de ser unico.");
+            }
+        }
+        if(Double.parseDouble(allParams.get("salarioBaseMensual"))<300){
+            mensajes.put("error_min_salary", "El salario debe de ser mayor al minimo ( $300.00 ).");
+        }
+        if(Double.parseDouble(allParams.get("horasTrabajo"))<1){
+            mensajes.put("error_horas", "Horas de trabajo deben de ser mayor que cero.");
+        }
+
+        //Fecha de nacimiento
+        if(LocalDate.parse(allParams.get("fechaNacimiento")).isAfter(LocalDate.now())){
+            mensajes.put("error_fecha_mayor", "Error en fecha de nacimiento. La fecha debe de ser menor a la actual.");
+        }else{
+            if((LocalDate.now().getYear()-LocalDate.parse(allParams.get("fechaNacimiento")).getYear())<18){
+                mensajes.put("error_fecha_nacimiento", "Error en fecha de nacimiento.El empleado debe de ser MAYOR DE EDAD.");
+            }
+        }
+        return mensajes;
+    }
     @GetMapping("/status")
     public String disable(@RequestParam("id") int id) {
         Empleado e = empleadoService.findEmployeeById(id);

@@ -13,4 +13,7 @@ import com.metabit.planilla.entity.Genero;
 public interface EmpleadoJpaRepository extends JpaRepository<Empleado,Serializable>{
 
 	public abstract List<Empleado> findByGenero(Genero genero);
+	public abstract Empleado findByCodigo(String codigo);
+	public abstract Empleado findByCorreoInstitucional(String correo);
+	public abstract Empleado findByCorreoPersonal(String correo);
 }

@@ -41,4 +41,44 @@ public class EmpleadoServiceImpl implements EmpleadoService {
 	public List<Empleado> findByGenero(Genero genero) {
 		return empleadoJpaRepository.findByGenero(genero);
 	}
+
+    @Override
+    public Boolean existEmployeeCode(String codigo, int idEmp) {
+        if(idEmp==0){
+            return (empleadoJpaRepository.findByCodigo(codigo)!=null)?true:false;
+        }else{
+            if(idEmp==empleadoJpaRepository.findByCodigo(codigo).getIdEmpleado()){
+                return false;
+            }else{
+                return true;
+            }
+        }
+
+    }
+
+    @Override
+    public Boolean existInstitucionalEmail(String correo, int idEmp) {
+        if(idEmp==0){
+            return (empleadoJpaRepository.findByCorreoInstitucional(correo)!=null)?true:false;
+        }else{
+            if(idEmp==empleadoJpaRepository.findByCorreoInstitucional(correo).getIdEmpleado()){
+                return false;
+            }else{
+                return true;
+            }
+        }
+    }
+
+    @Override
+    public Boolean existPersonalEmail(String correo, int idEmp) {
+        if (idEmp==0){
+            return (empleadoJpaRepository.findByCorreoPersonal(correo)!=null)?true:false;
+        }else{
+            if(idEmp==empleadoJpaRepository.findByCorreoPersonal(correo).getIdEmpleado()){
+                return false;
+            }else{
+                return true;
+            }
+        }
+    }
 }

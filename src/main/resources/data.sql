@@ -186,11 +186,11 @@ insert into empleados values(1,null,'Lopez','Estupinian','EL16002','el16002@ues.
 insert into empleados values(2,null,'Lopez','Estupinian','EL14002','el14002@ues.edu.sv', 'el16002@gmail.com' ,0,0,'17-MAR-95',2,'Estefany','Lizeida',2000,null,null,null,null);
 */
 
-insert into empleados(ID_EMPLEADO,APELLIDO_CASADA,APELLIDO_MATERNO,APELLIDO_PATERNO,CODIGO,CORREO_INSTITUCIONAL,CORREO_PERSONAL,EMPLEADO_HABILITADO,ES_ADMINISTRATIVO,FECHA_NACIMIENTO,HORAS_TRABAJO,NOMBRE_PRIMERO,NOMBRE_SEGUNDO,SALARIO_BASE_MENSUAL,ID_DIRECCION,ID_ESTADO_CIVIL,ID_GENERO,ID_USUARIO) 
+/*insert into empleados(ID_EMPLEADO,APELLIDO_CASADA,APELLIDO_MATERNO,APELLIDO_PATERNO,CODIGO,CORREO_INSTITUCIONAL,CORREO_PERSONAL,EMPLEADO_HABILITADO,ES_ADMINISTRATIVO,FECHA_NACIMIENTO,HORAS_TRABAJO,NOMBRE_PRIMERO,NOMBRE_SEGUNDO,SALARIO_BASE_MENSUAL,ID_DIRECCION,ID_ESTADO_CIVIL,ID_GENERO,ID_USUARIO)
 values(1,null,'Lopez','Estupinian','EL16002','el16002@ues.edu.sv','el16002@gmail.com',1,0,'28-JUN-97',20,'Ricardo','Bladimir',2000,78,1,1,null);
 
 insert into empleados(ID_EMPLEADO,APELLIDO_CASADA,APELLIDO_MATERNO,APELLIDO_PATERNO,CODIGO,CORREO_INSTITUCIONAL,CORREO_PERSONAL,EMPLEADO_HABILITADO,ES_ADMINISTRATIVO,FECHA_NACIMIENTO,HORAS_TRABAJO,NOMBRE_PRIMERO,NOMBRE_SEGUNDO,SALARIO_BASE_MENSUAL,ID_DIRECCION,ID_ESTADO_CIVIL,ID_GENERO,ID_USUARIO) 
-values(2,null,'Lopez','Estupinian','EP16002','el16002@ues.edu.sv','el16002@gmail.com',1,0,'28-JUN-97',20,'Ricardo','Bladimir',2000,78,1,1,null);
+values(2,null,'Lopez','Estupinian','EP16002','el16007@ues.edu.sv','el16007@gmail.com',1,0,'28-JUN-97',20,'Ricardo','Bladimir',2000,78,1,1,null);
 
 insert into empleados_documentos(ID_EMPLEADO_DOCUMENTO, CODIGO_DOCUMENTO, ID_EMPLEADO, ID_TIPO_DOCUMENTO) values (1,'15840523-1',1,1);
 insert into empleados_documentos(ID_EMPLEADO_DOCUMENTO, CODIGO_DOCUMENTO, ID_EMPLEADO, ID_TIPO_DOCUMENTO) values (2,'0810-123321-100-4',1,2);
@@ -220,3 +220,4 @@ insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, monto_base, 
 						values	(4, 0, 0, 0.00, 'Aguinaldo', 70 , 1);
 insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, monto_base, movimiento, porcentaje_movimiento, tipo_movimiento_habilitado)
 						values	(5, 0, 0, 500.00 , 'Bono', 0, 1);
+*/

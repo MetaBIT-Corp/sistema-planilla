@@ -12,4 +12,7 @@ public interface EmpleadoService {
     public abstract Empleado updateEmployee(Empleado e);
     public abstract Empleado  findEmployeeById(int id);
     public abstract List<Empleado> findByGenero(Genero genero);
+    public abstract Boolean existEmployeeCode(String codigo,int idEmp);
+    public abstract Boolean existInstitucionalEmail(String correo,int idEmp);
+    public abstract Boolean existPersonalEmail(String correo,int idEmp);
 }
