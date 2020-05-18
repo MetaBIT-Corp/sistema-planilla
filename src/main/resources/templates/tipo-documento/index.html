@@ -7,9 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-    <!-- SweetAlert2 -->
     <link rel="stylesheet" th:href="@{/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css}">
-    <!-- Toastr -->
     <link rel="stylesheet" th:href="@{/plugins/toastr/toastr.min.css}">
 
     <title>Sistema Planilla | Tipos de Documento</title>
@@ -37,12 +35,15 @@
             <div class="card">
 
                 <div class="card-header text-right">
-                    <a href="#" th:href="@{/tipo-documento/form-tipo-documento}" type="button" class="btn btn-sm btn-primary">
+                    <a class="btn btn-primary btn-sm"
+                       href="#"
+                       id="tipoDocumentoBtnNuevo"
+                       data-toggle="modal"
+                       data-target="#tipoDocumentoModal">
                         <i class="fas fa-plus-circle mr-1 text-white"></i>
                         <span class="text-white">Nuevo Tipo de Documento</span>
                     </a>
                 </div>
-                <!-- /.card-header -->
 
                 <div class="card-body">
                     <table id="example1" class="table table-bordered table-striped">
@@ -51,7 +52,7 @@
                         <tr>
                             <th>Nombre</th>
                             <th>Formato</th>
-                            <th>Habilitado/Deshabilitado</th>
+                            <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
 
@@ -61,33 +62,50 @@
                             <td><span th:text="${tipoDocumento.tipoDocumento}"></span></td>
                             <td><span th:text="${tipoDocumento.formato}"></span></td>
                             <td>
-                                <span th:if="${tipoDocumento.tipoDocumentoHabilitado}">Habilitado</span>
-                                <span th:unless="${tipoDocumento.tipoDocumentoHabilitado}">Deshabilitado</span>
+                                <span th:if="${tipoDocumento.tipoDocumentoHabilitado}">
+                                    <span class="badge badge-success">Habilitado</span>
+                                </span>
+                                <span th:unless="${tipoDocumento.tipoDocumentoHabilitado}">
+                                    <span class="badge badge-danger">Deshabilitado</span>
+                                </span>
                             </td>
 
-                            <td>
-                                <div class="btn-group">
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
-                                            <span>Acci&oacute;n</span>
-                                        </button>
-                                        <div class="dropdown-menu" style="">
-                                            <a class="dropdown-item" href="#" th:href="@{'/tipo-documento/form-tipo-documento/'+${tipoDocumento.idTipoDocumento}+''}"><i class="far fa-edit mr-3"></i>Editar</a>
-                                            <a class="dropdown-item"
-                                               style="cursor:pointer"
-                                               th:attr="
-                                                        data-id-tipo-documento=${tipoDocumento.idTipoDocumento},
-                                                        data-tipo-documento=${tipoDocumento.tipoDocumento},
-                                                        data-tipo-documento-habilitado=${tipoDocumento.tipoDocumentoHabilitado}"
-                                               onclick="activateModalDisable(this)">
+                            <td class="text-center">
+                                <a class="btn btn-info btn-sm tipoDocumentoBtnVer"
+                                   href="#"
+                                   title="Ver Tipo de Documento"
+                                   data-toggle="modal"
+                                   data-target="#tipoDocumentoModal"
+                                   th:attr="
+                                   data-id-tipo-documento=${tipoDocumento.idTipoDocumento},
+                                   data-tipo-documento=${tipoDocumento.tipoDocumento},
+                                   data-formato=${tipoDocumento.formato}">
+                                    <i class="fas fa-eye"></i>
+                                </a>&nbsp;&nbsp;
+                                <a class="btn btn-primary btn-sm tipoDocumentoBtnEditar"
+                                   href="#"
+                                   title="Editar Tipo de Documento"
+                                   data-toggle="modal"
+                                   data-target="#tipoDocumentoModal"
+                                   th:attr="
+                                   data-id-tipo-documento=${tipoDocumento.idTipoDocumento},
+                                   data-tipo-documento=${tipoDocumento.tipoDocumento},
+                                   data-formato=${tipoDocumento.formato}">
+                                    <i class="fas fa-pen"></i>
+                                </a>&nbsp;&nbsp;
+                                <a th:class="${tipoDocumento.tipoDocumentoHabilitado} ? 'btn btn-danger btn-sm' : 'btn btn-success btn-sm'"
+                                   href="#"
+                                   th:title="${tipoDocumento.tipoDocumentoHabilitado} ? 'Deshabilitar Tipo de Documento' : 'Habilitar Tipo de Documento'"
+                                   data-toggle="modal"
+                                   data-target="#tipoDocumentoModalDisable"
+                                   th:attr="
+                                   data-id-tipo-documento=${tipoDocumento.idTipoDocumento},
+                                   data-tipo-documento=${tipoDocumento.tipoDocumento},
+                                   data-tipo-documento-habilitado=${tipoDocumento.tipoDocumentoHabilitado}">
+                                    <span th:if="${tipoDocumento.tipoDocumentoHabilitado}"><i class="fas fa-lock"></i></span>
+                                    <span th:unless="${tipoDocumento.tipoDocumentoHabilitado}"><i class="fas fa-lock-open"></i></span>
 
-                                                <span th:if="${tipoDocumento.tipoDocumentoHabilitado}"><i class="far fa-trash-alt mr-3"></i> Deshabilitar</span>
-                                                <span th:unless="${tipoDocumento.tipoDocumentoHabilitado}"><i class="fas fa-undo-alt mr-3"></i> Habilitar</span>
-
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
+                                </a>
                             </td>
 
                         </tr>
@@ -104,7 +122,7 @@
                         <tr>
                             <th>Nombre</th>
                             <th>Formato</th>
-                            <th>Habilitado/Deshabilitado</th>
+                            <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
                         </tfoot>
@@ -118,39 +136,11 @@
 
         </div>
     </div>
-    <!-- Modal para Confirmar Deshabilitación de Tipo de Documento -->
-    <div class="modal" id="tipoDocumentoModalDisable" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
 
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-tittle-disable"></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
+    <div th:insert="tipo-documento/tipo-documento-modal :: tipo_documento_modal"></div>
+    <div th:insert="tipo-documento/delete-modal :: delete_modal"></div>
 
-                <form method="post"
-                      action="#"
-                      th:action="@{/tipo-documento/disable}">
 
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <div id="divMessage"></div>
-                            <input type="hidden" class="form-control" id="idTipoDocumentoInputDisable" name="idTipoDocumentoDisable" value="">
-                        </div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="submit" id="btn_deshabilitar"></button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    </div>
-
-                </form>
-
-            </div>
-        </div>
-    </div>
 </div>
 
 <section layout:fragment="scripts">
@@ -166,73 +156,8 @@
     <!-- SweetAlert2 -->
     <script th:src="@{/plugins/sweetalert2/sweetalert2.min.js}"></script>
 
-    <!-- page script -->
-    <script>
-        $(function () {
-            $("#example1").DataTable({
-                "responsive": true,
-                "autoWidth": false,
-            });
-            $('#example2').DataTable({
-                "paging": true,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": true,
-                "info": true,
-                "autoWidth": false,
-                "responsive": true,
-            });
-        });
-
-        function activateModalDisable(param){
-
-            var id_tipo_documento = $(param).attr("data-id-tipo-documento");
-            var tipo_documento = $(param).attr("data-tipo-documento");
-            var tipo_documento_habilitado = $(param).attr("data-tipo-documento-habilitado");
-
-            if(tipo_documento_habilitado=="true"){
-                document.getElementById("divMessage").innerHTML = "<p>¿Est&aacute; seguro que desea deshabilitar el Tipo de Documento <b>" + tipo_documento + "</b>?</p>";
-                $('#modal-tittle-disable').text("Deshabilitar Tipo de Documento")
-                $('#btn_deshabilitar').html("Deshabilitar")
-                $('#btn_deshabilitar').attr('class','btn btn-danger')
-
-            }else{
-                document.getElementById("divMessage").innerHTML = "<p>¿Est&aacute; seguro que desea habilitar el Tipo de Documento <b>" + tipo_documento + "</b>?</p>";
-                $('#modal-tittle-disable').text("Habilitar Tipo de Documento")
-                $('#btn_deshabilitar').html("Habilitar")
-                $('#btn_deshabilitar').attr('class','btn btn-info')
-            }
-
-            $("#idTipoDocumentoInputDisable").val(id_tipo_documento);
-            $("#tipoDocumentoModalDisable").modal();
-        }
-
-        $(document).ready(function(){
-            var store = $('#store').val();
-            var update = $('#update').val();
-            var enable = $('#enable').val();
-            var disable = $('#disable').val();
-
-
-            setTimeout(function() {
-                $(".alert").fadeOut();
-            },3000);
-
-            if(store === 'true'){
-                toastr.success("Tipo de Documento creado con éxito");
-            }
-            if(update === 'true'){
-                toastr.success("Tipo de Documento editado con éxito");
-            }
-            if(enable === 'true'){
-                toastr.info("Tipo Documento habilitado");
-            }
-            if(disable === 'true'){
-                toastr.error("Tipo Documento deshabilitado");
-            }
-        })
-
-    </script>
+    <script th:src="@{/js/datatable/datatable.js}"></script>
+    <script th:src="@{/js/tipo-documento/tipo-documento.js}"></script>
 
 </section>
 

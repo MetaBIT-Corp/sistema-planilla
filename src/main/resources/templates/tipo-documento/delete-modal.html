@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="delete_modal">
+    <!-- Modal para Confirmar Deshabilitación de Tipo de Documento -->
+    <div class="modal" id="tipoDocumentoModalDisable" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="disableModalTitle"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <form method="post"
+                      action="#"
+                      th:action="@{/tipo-documento/disable}">
+
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <span id="message"></span>
+                            <input type="hidden" class="form-control" id="idTipoDocumentoInputDisable" name="idTipoDocumentoDisable">
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" id="tipoDocumentoBtnSubmitDeshabilitar"></button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
