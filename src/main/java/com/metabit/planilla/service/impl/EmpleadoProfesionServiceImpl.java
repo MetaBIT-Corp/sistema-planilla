@@ -2,6 +2,7 @@ package com.metabit.planilla.service.impl;
 
 import com.metabit.planilla.entity.Empleado;
 import com.metabit.planilla.entity.EmpleadoProfesion;
+import com.metabit.planilla.entity.Profesion;
 import com.metabit.planilla.repository.EmpleadoProfesionJpaRepository;
 import com.metabit.planilla.service.EmpleadoProfesionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,4 +47,8 @@ public class EmpleadoProfesionServiceImpl implements EmpleadoProfesionService {
         em.close();
     }
 
+    @Override
+    public List<EmpleadoProfesion> findByProfesion(Profesion profesion) {
+        return empleadoProfesionJpaRepository.findByProfesion(profesion);
+    }
 }

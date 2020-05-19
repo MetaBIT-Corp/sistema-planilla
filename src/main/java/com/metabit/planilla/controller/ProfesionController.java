@@ -1,7 +1,9 @@
 package com.metabit.planilla.controller;
 
 import com.metabit.planilla.domain.JsonResponse;
+import com.metabit.planilla.entity.EmpleadoProfesion;
 import com.metabit.planilla.entity.Profesion;
+import com.metabit.planilla.service.EmpleadoProfesionService;
 import com.metabit.planilla.service.ProfesionService;
 
 import org.apache.commons.logging.Log;
@@ -25,19 +27,27 @@ public class ProfesionController {
     @Qualifier("profesionServiceImpl")
     private ProfesionService profesionService;
 
+    @Autowired
+    @Qualifier("empleadoProfesionServiceImpl")
+    private EmpleadoProfesionService empleadoProfesionService;
+
     private static final String INDEX_VIEW = "profesion/index";
     private static final Log LOGGER = LogFactory.getLog(ProfesionController.class);
 
     @PreAuthorize("hasAuthority('PROFESION_INDEX')")
     @GetMapping("/index")
     public ModelAndView index(Model model,
-            @RequestParam(name="store_success", required=false) String store_success,
-            @RequestParam(name="update_success", required=false) String update_success,
-            @RequestParam(name="delete_success", required=false) String delete_success) {
+                              @RequestParam(name="store_success", required=false) String store_success,
+                              @RequestParam(name="update_success", required=false) String update_success,
+                              @RequestParam(name="enable_success", required=false) String enable_success,
+                              @RequestParam(name="disable_success", required=false) String disable_success,
+                              @RequestParam(name="delete_success", required=false) String delete_success) {
         ModelAndView modelAndView = new ModelAndView(INDEX_VIEW);
         modelAndView.addObject("profesiones", profesionService.getProfesiones());
         model.addAttribute("store_success", store_success);
         model.addAttribute("update_success", update_success);
+        model.addAttribute("enable_success", enable_success);
+        model.addAttribute("disable_success", disable_success);
         model.addAttribute("delete_success", delete_success);
         model.addAttribute("profesionEntity", new Profesion());
 
@@ -57,7 +67,12 @@ public class ProfesionController {
         }
 
         if(!bindingResult.hasErrors()){
-            profesionService.storeProfesion(profesion);
+            if(profesion.getIdProfesion() == 0) {
+                profesion.setProfesionHabilitada(true);
+                profesionService.storeProfesion(profesion);
+            }else{
+                profesionService.updateProfesion(profesion);
+            }
             jsonResponse.setStatus("SUCCESS");
             jsonResponse.setResult(profesion);
         }else{
@@ -77,11 +92,33 @@ public class ProfesionController {
     }
 
     @PreAuthorize("hasAuthority('PROFESION_DELETE')")
+    @PostMapping("/disable")
+    public String disable(@RequestParam("idProfesionDisable") int idProfesion){
+        Profesion profesion = profesionService.getProfesion(idProfesion);
+        if(profesion.getProfesionHabilitada()){
+            profesion.setProfesionHabilitada(false);
+            profesionService.updateProfesion(profesion);
+            return "redirect:/"+INDEX_VIEW+"?disable_success=true";
+        }else{
+            profesion.setProfesionHabilitada(true);
+            profesionService.updateProfesion(profesion);
+            return "redirect:/"+INDEX_VIEW+"?enable_success=true";
+        }
+    }
+
+    @PreAuthorize("hasAuthority('PROFESION_DELETE')")
     @PostMapping("/destroy")
     public String destroy(@RequestParam("idProfesionDestroy") int idProfesion) {
-        LOGGER.info("PROFESION: "+idProfesion);
-        profesionService.deleteProfesion(idProfesion);
-        return "redirect:/profesion/index?delete_success=true";
+
+        Profesion profesion = profesionService.getProfesion(idProfesion);
+
+        int asignaciones = empleadoProfesionService.findByProfesion(profesion).size();
+        if (asignaciones>0){
+            return "redirect:/"+INDEX_VIEW+"?delete_success=false";
+        }else{
+            profesionService.deleteProfesion(profesion.getIdProfesion());
+            return "redirect:/"+INDEX_VIEW+"?delete_success=true";
+        }
     }
 
 }

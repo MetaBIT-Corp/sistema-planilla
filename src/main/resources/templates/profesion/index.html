@@ -30,6 +30,8 @@
         <input type="hidden" id="store" th:value="${store_success}">
         <input type="hidden" id="update" th:value="${update_success}">
         <input type="hidden" id="delete" th:value="${delete_success}">
+        <input type="hidden" id="enable" th:value="${enable_success}">
+        <input type="hidden" id="disable" th:value="${disable_success}">
 
         <div class="row ml-3 mr-3">
             <div class="col-md-12">
@@ -53,6 +55,7 @@
                                 <tr>
                                     <th>Nombre</th>
                                     <th>Profesi&oacute;n/Oficio</th>
+                                    <th>Estado</th>
                                     <th class="text-center">Acciones</th>
                                 </tr>
                             </thead>
@@ -66,6 +69,15 @@
                                 <td>
                                     <span th:if="${profesion.esProfesion}">Profesi&oacute;n</span>
                                     <span th:unless="${profesion.esProfesion}">Oficio</span>
+                                </td>
+
+                                <td>
+                                    <span th:if="${profesion.profesionHabilitada}">
+                                        <span class="badge badge-success">Habilitada</span>
+                                    </span>
+                                    <span th:unless="${profesion.profesionHabilitada}">
+                                        <span class="badge badge-danger">Deshabilitada</span>
+                                    </span>
                                 </td>
 
                                 <td class="text-center">
@@ -87,8 +99,21 @@
                                        th:attr="
                                        data-id-profesion=${profesion.idProfesion},
                                        data-profesion=${profesion.profesion},
-                                       data-es-profesion=${profesion.esProfesion}">
+                                       data-es-profesion=${profesion.esProfesion},
+                                       data-profesion-habilitada=${profesion.profesionHabilitada}">
                                         <i class="fas fa-pen"></i>
+                                    </a>&nbsp;&nbsp;
+                                    <a th:class="${profesion.profesionHabilitada} ? 'btn btn-danger btn-sm' : 'btn btn-success btn-sm'"
+                                       href="#"
+                                       th:title="${profesion.profesionHabilitada} ? 'Deshabilitar Profesi&oacute;n' : 'Habilitar Profesi&oacute;n'"
+                                       data-toggle="modal"
+                                       data-target="#profesionModalDisable"
+                                       th:attr="
+                                       data-id-profesion=${profesion.idProfesion},
+                                       data-profesion=${profesion.profesion},
+                                       data-profesion-habilitada=${profesion.profesionHabilitada}">
+                                        <span th:if="${profesion.profesionHabilitada}"><i class="fas fa-lock"></i></span>
+                                        <span th:unless="${profesion.profesionHabilitada}"><i class="fas fa-unlock"></i></span>
                                     </a>&nbsp;&nbsp;
                                     <a class="btn btn-danger btn-sm"
                                        href="#"
@@ -115,6 +140,7 @@
                             <tr>
                                 <th>Nombre</th>
                                 <th>Profesi&oacute;n/Oficio</th>
+                                <th>Estado</th>
                                 <th>Acciones</th>
                             </tr>
                             </tfoot>

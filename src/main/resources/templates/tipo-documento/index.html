@@ -91,7 +91,8 @@
                                    th:attr="
                                    data-id-tipo-documento=${tipoDocumento.idTipoDocumento},
                                    data-tipo-documento=${tipoDocumento.tipoDocumento},
-                                   data-formato=${tipoDocumento.formato}">
+                                   data-formato=${tipoDocumento.formato},
+                                   data-tipo-documento-habilitado=${tipoDocumento.tipoDocumentoHabilitado}">
                                     <i class="fas fa-pen"></i>
                                 </a>&nbsp;&nbsp;
                                 <a th:class="${tipoDocumento.tipoDocumentoHabilitado} ? 'btn btn-danger btn-sm' : 'btn btn-success btn-sm'"

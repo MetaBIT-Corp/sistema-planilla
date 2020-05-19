@@ -28,6 +28,8 @@
                             <div class="form-group d-none">
                                 <label for="idTipoDocumentoInput">ID</label>
                                 <input type="text" th:field="*{idTipoDocumento}" class="form-control" id="idTipoDocumentoInput" placeholder="ID de Tipo de Documento">
+                                <label for="tipoDocumentoHabilitadoInput">Habilitado</label>
+                                <input type="checkbox" th:field="*{tipoDocumentoHabilitado}" class="form-control" id="tipoDocumentoHabilitadoInput">
                             </div>
                             <div class="form-group">
                                 <label for="tipoDocumentoInput">Nombre *</label>
@@ -38,8 +40,8 @@
                                 <input type="text" class="form-control" id="formatoInput" placeholder="Formato de Tipo de Documento" th:field="*{formato}">
                             </div>
 
-                            <div id="divError" class="card text-white bg-danger p-3">
-                                <p class="my-0"><strong>Por favor, corregir los siguientes errores:</strong></p>
+                            <div id="divError" class="callout callout-danger">
+                                <p class="my-0"><i class="fas fa-exclamation-circle mr-2"></i><strong>Por favor, corregir los siguientes errores:</strong></p>
                                 <ul id="ulError" class="mb-0">
                                 </ul>
                             </div>
@@ -51,8 +53,8 @@
 
                         </div>
 
-                        <div class="col-6 card bg-info p-3">
-                            <strong>Información sobre el formato</strong>
+                        <div class="col-6 callout callout-info p-3">
+                            <p><i class="fas fa-info-circle mr-2"></i><strong>Información sobre el formato</strong></p>
                             <ul>
                                 <li>Utilice un cero (0) para indicar la posici&oacute;n donde deber&iacute;a ir un n&uacute;mero.</li>
                                 <li>Utilice una letra 'a' para indicar la posici&oacute;n donde deber&iacute;a ir una letra.</li>

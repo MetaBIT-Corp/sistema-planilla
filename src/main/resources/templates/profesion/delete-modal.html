@@ -6,6 +6,7 @@
 </head>
 <body>
 <div th:fragment="delete_modal">
+
     <!-- Modal para Confirmar Eliminacion de Profesion -->
     <div class="modal" id="profesionModalDestroy" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
@@ -39,6 +40,42 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal para Confirmar Deshabilitación de Profesión -->
+    <div class="modal" id="profesionModalDisable" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="disableModalTitle"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <form method="post"
+                      action="#"
+                      th:action="@{/profesion/disable}">
+
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <strong><span id="disableMessage"></span></strong><br>
+                            <span id="disableMessageInfo"></span>
+                            <input type="hidden" class="form-control" id="idProfesionInputDisable" name="idProfesionDisable">
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" id="profesionBtnSubmitDeshabilitar"></button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
 </div>
 </body>
 </html>

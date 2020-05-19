@@ -29,22 +29,22 @@ INSERT INTO puestos(id_puesto, descripcion, es_administrativo, puesto, salario_m
 	   VALUES      (14, 'Descripción del puesto', 1 , 'Administrador de Bases de Datos', 1000, 360, 0);
 
 /*PROFESIONES*/
-INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (1, 'Ingeniero en Sistemas Informáticos', 1);
-INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (2, 'Ingeniero en Redes Informáticas', 1);
-INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (3, 'Ingeniero Electricista', 1);
-INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (4, 'Ingeniero Industrial', 1);
-INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (5, 'Licenciado en Administración de Empresas', 1);
-INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (6, 'Licenciado en Contaduría Pública', 1);
-INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (7, 'Licenciado en Economía', 1);
-INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (8, 'Técnico en Sistemas Informáticos', 1);
-INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (9, 'Técnico en Base de Datos', 1);
-INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (10, 'Técnico en Redes Computacionales', 1);
-INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (11, 'Técnico en Hardware Computacional', 1);
-INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (12, 'Plomero', 0);
-INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (13, 'Chofer', 0);
-INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (14, 'Pintor', 0);
-INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (15, 'Licenciado en Psicología', 1);
-INSERT INTO profesiones(id_profesion, profesion, es_profesion) VALUES (16, 'Licenciado en Ciencias Jurídicas', 1);
+INSERT INTO profesiones(id_profesion, profesion, es_profesion, profesion_habilitada) VALUES (1, 'Ingeniero en Sistemas Informáticos', 1, 1);
+INSERT INTO profesiones(id_profesion, profesion, es_profesion, profesion_habilitada) VALUES (2, 'Ingeniero en Redes Informáticas', 1, 1);
+INSERT INTO profesiones(id_profesion, profesion, es_profesion, profesion_habilitada) VALUES (3, 'Ingeniero Electricista', 1, 1);
+INSERT INTO profesiones(id_profesion, profesion, es_profesion, profesion_habilitada) VALUES (4, 'Ingeniero Industrial', 1, 0);
+INSERT INTO profesiones(id_profesion, profesion, es_profesion, profesion_habilitada) VALUES (5, 'Licenciado en Administración de Empresas', 1, 1);
+INSERT INTO profesiones(id_profesion, profesion, es_profesion, profesion_habilitada) VALUES (6, 'Licenciado en Contaduría Pública', 1, 1);
+INSERT INTO profesiones(id_profesion, profesion, es_profesion, profesion_habilitada) VALUES (7, 'Licenciado en Economía', 1, 1);
+INSERT INTO profesiones(id_profesion, profesion, es_profesion, profesion_habilitada) VALUES (8, 'Técnico en Sistemas Informáticos', 1, 1);
+INSERT INTO profesiones(id_profesion, profesion, es_profesion, profesion_habilitada) VALUES (9, 'Técnico en Base de Datos', 1, 1);
+INSERT INTO profesiones(id_profesion, profesion, es_profesion, profesion_habilitada) VALUES (10, 'Técnico en Redes Computacionales', 1, 1);
+INSERT INTO profesiones(id_profesion, profesion, es_profesion, profesion_habilitada) VALUES (11, 'Técnico en Hardware Computacional', 1, 1);
+INSERT INTO profesiones(id_profesion, profesion, es_profesion, profesion_habilitada) VALUES (12, 'Plomero', 0, 1);
+INSERT INTO profesiones(id_profesion, profesion, es_profesion, profesion_habilitada) VALUES (13, 'Chofer', 0, 1);
+INSERT INTO profesiones(id_profesion, profesion, es_profesion, profesion_habilitada) VALUES (14, 'Pintor', 0, 1);
+INSERT INTO profesiones(id_profesion, profesion, es_profesion, profesion_habilitada) VALUES (15, 'Licenciado en Psicología', 1, 1);
+INSERT INTO profesiones(id_profesion, profesion, es_profesion, profesion_habilitada) VALUES (16, 'Licenciado en Ciencias Jurídicas', 1, 1);
 
 
 /*TIPOS DE DOCUMENTO*/

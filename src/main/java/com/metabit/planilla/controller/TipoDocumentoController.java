@@ -61,8 +61,12 @@ public class TipoDocumentoController {
         ValidationUtils.rejectIfEmpty(bindingResult, "formato", "Ingrese el formato del tipo de documento.");
 
         if(!bindingResult.hasErrors()){
-            tipoDocumento.setTipoDocumentoHabilitado(true);
-            tipoDocumentoService.storeTipoDocumento(tipoDocumento);
+            if(tipoDocumento.getIdTipoDocumento()==0){
+                tipoDocumento.setTipoDocumentoHabilitado(true);
+                tipoDocumentoService.storeTipoDocumento(tipoDocumento);
+            }else{
+                tipoDocumentoService.updateTipoDocumento(tipoDocumento);
+            }
             jsonResponse.setStatus("SUCCESS");
             jsonResponse.setResult(tipoDocumento);
         }else{

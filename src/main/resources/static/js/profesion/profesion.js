@@ -1,14 +1,5 @@
 $(document).ready(function(){
 
-    $('#profesionModalDestroy').on('show.bs.modal', function(event){
-        var modal = $(this);
-        var link = $(event.relatedTarget);
-        var idProfesion = link.data('id-profesion');
-        var profesion = link.data('profesion');
-        modal.find('.modal-body #idProfesionInputDestroy').val(idProfesion);
-        modal.find('.modal-body #message').text("¿Está seguro que desea eliminar la profesión de "+String(profesion)+"?");
-    });
-
     $('#profesionModal').on('show.bs.modal', function(event){
 
         $('#divError').hide();
@@ -19,6 +10,7 @@ $(document).ready(function(){
         var idProfesion = link.data('id-profesion');
         var profesion = link.data('profesion');
         var esProfesion = link.data('es-profesion');
+        var profesionHabilitada = link.data('profesion-habilitada');
 
         modal.find('.card-body #idProfesionInput').val(idProfesion);
         modal.find('.card-body #profesionInput').val(profesion);
@@ -26,6 +18,11 @@ $(document).ready(function(){
             modal.find('.card-body #esProfesionInput').prop("checked",true);
         }else{
             modal.find('.card-body #esProfesionInput').prop("checked",false);
+        }
+        if(profesionHabilitada==1){
+            modal.find('.card-body #profesionHabilitadaInput').prop("checked",true);
+        }else{
+            modal.find('.card-body #profesionHabilitadaInput').prop("checked",false);
         }
 
     });
@@ -117,8 +114,48 @@ $(document).ready(function(){
         });
     });
 
+    $('#profesionModalDisable').on('show.bs.modal', function(event){
+
+        var modal = $(this);
+        var link = $(event.relatedTarget);
+
+        var idProfesion = link.data('id-profesion');
+        var profesion = link.data('profesion');
+        var profesionHabilitada = link.data('profesion-habilitada');
+
+        modal.find('.modal-body #idProfesionInputDisable').val(idProfesion);
+
+        if(profesionHabilitada==1){
+            modal.find('.modal-header #disableModalTitle').text('Deshabilitar Profesión');
+            modal.find('.modal-body #disableMessage').text("¿Está seguro que desea deshabilitar la profesión '"+profesion+"'?");
+            modal.find('.modal-body #disableMessageInfo').text(
+                'Esta acción no eliminará la profesión, pero no será posible asignarla a más empleados. ' +
+                'Sin embargo, aquellos empleados a quienes ya se les asigno esta profesión no sufriran ningún cambio.'
+            );
+            modal.find('.modal-footer #profesionBtnSubmitDeshabilitar').text('Deshabilitar');
+            modal.find('.modal-footer #profesionBtnSubmitDeshabilitar').attr('class','btn btn-danger');
+        }else{
+            modal.find('.modal-header #disableModalTitle').text('Habilitar Profesión');
+            modal.find('.modal-body #disableMessage').text("¿Está seguro que desea habilitar la profesión '"+profesion+"'?");
+            modal.find('.modal-body #disableMessageInfo').text('Esta acción permitirá que sea posible asignar la profesión a los empleados.');
+            modal.find('.modal-footer #profesionBtnSubmitDeshabilitar').text('Habilitar');
+            modal.find('.modal-footer #profesionBtnSubmitDeshabilitar').attr('class','btn btn-info');
+        }
+    });
+
+    $('#profesionModalDestroy').on('show.bs.modal', function(event){
+        var modal = $(this);
+        var link = $(event.relatedTarget);
+        var idProfesion = link.data('id-profesion');
+        var profesion = link.data('profesion');
+        modal.find('.modal-body #idProfesionInputDestroy').val(idProfesion);
+        modal.find('.modal-body #message').text("¿Está seguro que desea eliminar la profesión de "+String(profesion)+"?");
+    });
+
     var store = $('#store').val();
     var update = $('#update').val();
+    var enable = $('#enable').val();
+    var disable = $('#disable').val();
     var delet = $('#delete').val();
 
     setTimeout(function() {$(".alert").fadeOut();},3000);
@@ -129,8 +166,17 @@ $(document).ready(function(){
     if(update === 'true'){
         toastr.success("Profesión editada con éxito");
     }
+    if(enable === 'true'){
+        toastr.info("Profesión habilitada");
+    }
+    if(disable === 'true'){
+        toastr.error("Profesión deshabilitada");
+    }
     if(delet === 'true'){
         toastr.error("Profesión eliminada con éxito");
+    }
+    if(delet === 'false'){
+        toastr.warning("Profesión no se puede eliminar. Ya ha sido asignada a uno o más empleados");
     }
 
 });

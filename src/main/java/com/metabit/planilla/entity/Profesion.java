@@ -23,19 +23,24 @@ public class Profesion {
 	@NotNull
 	@Column(name = "es_profesion")
 	private boolean esProfesion;
+
+	@NotNull
+	@Column(name = "profesion_habilitada")
+	private boolean profesionHabilitada;
 	
 	public Profesion() {
 		super();
 	}
 
-	public Profesion(int idProfesion, String profesion, boolean esProfesion) {
+	public Profesion(int idProfesion, String profesion, boolean esProfesion, boolean profesionHabilitada) {
 		super();
 		this.idProfesion = idProfesion;
 		this.profesion = profesion;
 		this.esProfesion = esProfesion;
+		this.profesionHabilitada = profesionHabilitada;
 	}
-	
-	
+
+
 	public int getIdProfesion() {
 		return idProfesion;
 	}
@@ -60,9 +65,17 @@ public class Profesion {
 		this.esProfesion = esProfesion;
 	}
 
+	public boolean getProfesionHabilitada() {
+		return profesionHabilitada;
+	}
+
+	public void setProfesionHabilitada(boolean profesionHabilitada) {
+		this.profesionHabilitada = profesionHabilitada;
+	}
+
 	@Override
 	public String toString() {
-		return "Profesion [idProfesion=" + idProfesion + ", profesion=" + profesion + ", esProfesion=" + esProfesion + "]";
+		return "Profesion [idProfesion=" + idProfesion + ", profesion=" + profesion + ", esProfesion=" + esProfesion + ", profesionHabilitada="+profesionHabilitada+"]";
 	}	
 
 }

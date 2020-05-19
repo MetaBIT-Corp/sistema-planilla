@@ -10,11 +10,16 @@ $(document).ready(function(){
         var idTipoDocumento = link.data('id-tipo-documento');
         var tipoDocumento = link.data('tipo-documento');
         var formato = link.data('formato');
+        var tipoDocumentoHabilitado = link.data('tipo-documento-habilitado');
 
         modal.find('.card-body #idTipoDocumentoInput').val(idTipoDocumento);
+        if(tipoDocumentoHabilitado==1){
+            modal.find('.card-body #tipoDocumentoHabilitadoInput').prop('checked',true);
+        }else{
+            modal.find('.card-body #tipoDocumentoHabilitadoInput').prop('checked',false);
+        }
         modal.find('.card-body #tipoDocumentoInput').val(tipoDocumento);
         modal.find('.card-body #formatoInput').val(formato);
-
 
     });
 
