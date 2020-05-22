@@ -216,4 +216,3 @@ insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, monto_base, 
 						values	(4, 0, 0, 0.00, 'Aguinaldo', 70 , 1);
 insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, monto_base, movimiento, porcentaje_movimiento, tipo_movimiento_habilitado)
 						values	(5, 0, 0, 500.00 , 'Bono', 0, 1);
-*/

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layouts/layout}">
+
+<head>
+
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" th:href="@{/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css}">
+    <!-- Toastr -->
+    <link rel="stylesheet" th:href="@{/plugins/toastr/toastr.min.css}">
+
+</head>
+
+<body>
+
+<h1 class="ml-4 text-dark" layout:fragment="titulo_seccion"></h1>
+
+<ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
+    <li class="breadcrumb-item"><a th:href="@{/index}">Home</a></li>
+</ol>
+
+<div layout:fragment="content">
+
+</div>
+
+<section layout:fragment="scripts">
+    <!-- Toastr -->
+    <script th:src="@{/plugins/toastr/toastr.min.js}"></script>
+    <!-- SweetAlert2 -->
+    <script th:src="@{/plugins/sweetalert2/sweetalert2.min.js}"></script>
+    <!-- mensajes de lock y unlock -->
+    <script th:src="@{/js/empleado/mensajes.js}"></script>
+    <!-- para uso de modals -->
+    <script th:src="@{/js/empleado/modals.js}"></script>
+</section>
+</body>
+</html>
