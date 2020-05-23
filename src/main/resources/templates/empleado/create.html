@@ -248,20 +248,14 @@
                                             <input type="text" th:field="*{empleado.correoPersonal}"
                                                    placeholder="Correo personal" class="form-control">
                                         </div>
-
-                                        <!--<div class="form-group">
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="esAdministrativo" th:field="*{empleado.esAdministrativo}">
-                                                <label class="custom-control-label" for="esAdministrativo">¿Es Empleado Administrativo?</label>
-                                            </div>
-                                        </div>
                                         <div class="form-group">
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="habilitado" th:field="*{empleado.empleadoHabilitado}">
-                                                <label class="custom-control-label" for="habilitado">Habilitar Empleado</label>
-                                            </div>
-                                        </div>-->
-
+                                            <label>Unidad Organizacional</label>
+                                            <select id="unidadSelect" name="idUnidadOrganizacional" class="form-control">mt-4
+                                                <option th:each="uo: ${unidades}" th:value="${uo.idUnidadOrganizacional}">
+                                                    <span th:text="${uo.unidadOrganizacional}"></span>
+                                                </option>
+                                            </select>
+                                        </div>
                                     </div>
                                     <!--FIN PRIMER COLUMNA-->
                                     <!--SEGUNDA COLUMNA-->

@@ -183,28 +183,22 @@ insert into estados_civiles values(5,'Union Libre');
 --Empleados
 
 insert into empleados(ID_EMPLEADO,APELLIDO_CASADA,APELLIDO_MATERNO,APELLIDO_PATERNO,CODIGO,CORREO_INSTITUCIONAL,CORREO_PERSONAL,EMPLEADO_HABILITADO,ES_ADMINISTRATIVO,FECHA_NACIMIENTO,HORAS_TRABAJO,NOMBRE_PRIMERO,NOMBRE_SEGUNDO,SALARIO_BASE_MENSUAL,ID_DIRECCION,ID_ESTADO_CIVIL,ID_GENERO,ID_USUARIO) 
-values(1,null,'Lopez','Estupinian','EL16002','el16002@ues.edu.sv','el16002@gmail.com',1,0,'28-JUN-97',20,'Ricardo','Bladimir',2000,78,1,1,5);
+values(300,null,'Lopez','Estupinian','EL16002','el16002@ues.edu.sv','el16002@gmail.com',1,0,'28-JUN-97',20,'Ricardo','Bladimir',2000,78,1,1,5);
 
 insert into empleados(ID_EMPLEADO,APELLIDO_CASADA,APELLIDO_MATERNO,APELLIDO_PATERNO,CODIGO,CORREO_INSTITUCIONAL,CORREO_PERSONAL,EMPLEADO_HABILITADO,ES_ADMINISTRATIVO,FECHA_NACIMIENTO,HORAS_TRABAJO,NOMBRE_PRIMERO,NOMBRE_SEGUNDO,SALARIO_BASE_MENSUAL,ID_DIRECCION,ID_ESTADO_CIVIL,ID_GENERO,ID_USUARIO) 
-values(2,null,'Lopez','Estupinian','EP16002','el16007@ues.edu.sv','el16007@gmail.com',1,0,'28-JUN-97',20,'Ricardo','Bladimir',2000,78,1,1,null);
+values(301,null,'Lopez','Estupinian','EP16002','el16007@ues.edu.sv','el16007@gmail.com',1,0,'28-JUN-97',20,'Ricardo','Bladimir',2000,78,1,1,null);
 
-insert into empleados_documentos(ID_EMPLEADO_DOCUMENTO, CODIGO_DOCUMENTO, ID_EMPLEADO, ID_TIPO_DOCUMENTO) values (1,'15840523-1',1,1);
-insert into empleados_documentos(ID_EMPLEADO_DOCUMENTO, CODIGO_DOCUMENTO, ID_EMPLEADO, ID_TIPO_DOCUMENTO) values (2,'0810-123321-100-4',1,2);
+insert into empleados_documentos(ID_EMPLEADO_DOCUMENTO, CODIGO_DOCUMENTO, ID_EMPLEADO, ID_TIPO_DOCUMENTO) values (1,'15840523-1',300,1);
+insert into empleados_documentos(ID_EMPLEADO_DOCUMENTO, CODIGO_DOCUMENTO, ID_EMPLEADO, ID_TIPO_DOCUMENTO) values (2,'0810-123321-100-4',301,2);
 
-insert into empleados_profesiones(ID_EMPLEADO_PROFESION, ID_EMPLEADO, ID_PROFESION)values(1,1,1);
-insert into empleados_profesiones(ID_EMPLEADO_PROFESION, ID_EMPLEADO, ID_PROFESION)values(2,1,4);
-insert into empleados_profesiones(ID_EMPLEADO_PROFESION, ID_EMPLEADO, ID_PROFESION)values(3,1,6);
-insert into empleados_profesiones(ID_EMPLEADO_PROFESION, ID_EMPLEADO, ID_PROFESION)values(4,1,7);
-insert into empleados_profesiones(ID_EMPLEADO_PROFESION, ID_EMPLEADO, ID_PROFESION)values(5,1,10);
+insert into empleados_profesiones(ID_EMPLEADO_PROFESION, ID_EMPLEADO, ID_PROFESION)values(1,300,1);
+insert into empleados_profesiones(ID_EMPLEADO_PROFESION, ID_EMPLEADO, ID_PROFESION)values(2,300,4);
+insert into empleados_profesiones(ID_EMPLEADO_PROFESION, ID_EMPLEADO, ID_PROFESION)values(3,300,6);
+insert into empleados_profesiones(ID_EMPLEADO_PROFESION, ID_EMPLEADO, ID_PROFESION)values(4,301,7);
+insert into empleados_profesiones(ID_EMPLEADO_PROFESION, ID_EMPLEADO, ID_PROFESION)values(5,301,10);
 
 --insert into empleados values(2,null,'Lopez','Estupinian','EL14002','el14002@ues.edu.sv',0,0,'17-MAR-95',2,'Estefany','Lizeida',2000,null,null,null);
 
---Empleado Puesto Unidad
-insert into empleados_puestos_unidades	(id_empleado_puesto_unidad, id_empleado, id_puesto) 
-								 values (1, 1, 1);
-insert into empleados_puestos_unidades	(id_empleado_puesto_unidad, id_empleado, id_puesto) 
-								 values (2, 2, 2);
-										
 --Tipos Movimiento
 insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, monto_base, movimiento, porcentaje_movimiento, tipo_movimiento_habilitado)
 						values	(1, 1, 1, 0.00, 'Impuesto sobre la Renta', 0, 1);
@@ -216,3 +210,23 @@ insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, monto_base, 
 						values	(4, 0, 0, 0.00, 'Aguinaldo', 70 , 1);
 insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, monto_base, movimiento, porcentaje_movimiento, tipo_movimiento_habilitado)
 						values	(5, 0, 0, 500.00 , 'Bono', 0, 1);
+
+--Unidades organizacionales
+insert into unidades_organizacionales values(500,100,'Gerencia General',null);
+insert into unidades_organizacionales values(501,101,'Departamento de RRHH',500);
+insert into unidades_organizacionales values(502,101,'Departamento de Ventas',500);
+insert into unidades_organizacionales values(503,101,'Departamento de Informatica',500);
+insert into unidades_organizacionales values(504,101,'Departamento de Administrativo',500);
+insert into unidades_organizacionales values(505,101,'Departamento Financiero',500);
+insert into unidades_organizacionales values(506,102,'Area de Tecnologias de Informacion',503);
+insert into unidades_organizacionales values(507,102,'Area de Desarrollo de Software',503);
+insert into unidades_organizacionales values(508,102,'Area de Redes Informaticas',503);
+insert into unidades_organizacionales values(509,103,'Seccion de Testing/QA',507);
+insert into unidades_organizacionales values(510,103,'Seccion de Desarrolladores Backend',507);
+insert into unidades_organizacionales values(511,103,'Seccion de Desarrolladores Frontend',507);
+
+--Empleado Puesto Unidad
+insert into empleados_puestos_unidades	(id_empleado_puesto_unidad, id_empleado, id_puesto,id_unidad_organizacional)
+								 values (100, 300, 1,501);
+insert into empleados_puestos_unidades	(id_empleado_puesto_unidad, id_empleado, id_puesto,id_unidad_organizacional)
+								 values (101, 301, 2,502);

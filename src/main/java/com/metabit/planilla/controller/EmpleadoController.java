@@ -73,6 +73,10 @@ public class EmpleadoController {
     @Qualifier("empleadoDocumentoServiceImpl")
     private EmpleadoDocumentoService empleadoDocumentoService;
 
+    @Autowired
+    @Qualifier("unidadOrganizacionalServiceImpl")
+    private UnidadOrganizacionalService unidadOrganizacionalService;
+
 
     private static final String INDEX_VIEW = "empleado/index";
     private static final String EDIT_VIEW = "empleado/edit";
@@ -107,6 +111,7 @@ public class EmpleadoController {
         mav.addObject("direccion", new Direccion());
         //mav.addObject("user",)
         mav.addObject("puestos", puestoService.getPuestos());
+        mav.addObject("unidades",unidadOrganizacionalService.getAllUnidadesOrganizacionales());
         mav.addObject("estadosCiviles", estadoCivilService.getAllCivilStates());
         mav.addObject("profesiones", profesionService.getProfesiones());
         mav.addObject("documentos", tipoDocumentoService.getTipoDocHabilitado());
@@ -211,6 +216,11 @@ public class EmpleadoController {
             );
             empleadoDocumentoService.createOrUpdateDocumentsEmployee(ed);
         }
+
+        //Recuperando Puesto y Unidad organizacional seleccionada
+        Puesto puesto = puestoService.getPuesto(Integer.parseInt(allParams.get("idPuesto")));
+        UnidadOrganizacional unidadOrganizacional = unidadOrganizacionalService.getOneUnidadOrganizacional(Integer.parseInt(allParams.get("idUnidadOrganizacional")));
+
 
         mensajes.put("success", "Empleado Registrado correctamente");
         return new ResponseEntity<>(mensajes, HttpStatus.OK);

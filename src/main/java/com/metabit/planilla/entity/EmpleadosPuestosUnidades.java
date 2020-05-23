@@ -29,14 +29,19 @@ public class EmpleadosPuestosUnidades {
 	@JoinColumn(name = "id_puesto", nullable = false)
 	private Puesto puesto;
 
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_unidad_organizacional", nullable = false)
+	private UnidadOrganizacional unidadOrganizacional;
+
 	public EmpleadosPuestosUnidades() {
 		super();
 	}
 
-	public EmpleadosPuestosUnidades(@NotNull Empleado empleado, @NotNull Puesto puesto) {
+	public EmpleadosPuestosUnidades(@NotNull Empleado empleado, @NotNull Puesto puesto, @NotNull UnidadOrganizacional unidadOrganizacional) {
 		super();
 		this.empleado = empleado;
 		this.puesto = puesto;
+		this.unidadOrganizacional = unidadOrganizacional;
 	}
 
 	public EmpleadosPuestosUnidades(int idEmpleadoPuestoUnidad, @NotNull Empleado empleado, @NotNull Puesto puesto) {

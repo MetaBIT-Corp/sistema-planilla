@@ -1,7 +1,10 @@
 package com.metabit.planilla.controller;
 
+import com.metabit.planilla.service.UnidadOrganizacionalService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,9 +18,13 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/unidades-organizacionales")
 public class UnidadOrganizacionalController {
 
+    @Autowired
+    @Qualifier("unidadOrganizacionalServiceImpl")
+    private UnidadOrganizacionalService unidadOrganizacionalService;
+
     private static final String INDEX_VIEW = "unidad-organizacional/index";
     private static final String EDIT_VIEW = "unidad-organizacional/edit";
-    private static final String CREATE_VIEW = "unidad-orgnizacional/create";
+    private static final String CREATE_VIEW = "unidad-organizacional/create";
     private static final String SHOW_VIEW = "unidad-organizacional/show";
     private static final Log LOGGER = LogFactory.getLog(UnidadOrganizacionalController.class);
 
@@ -26,6 +33,7 @@ public class UnidadOrganizacionalController {
     @GetMapping("/index")
     public ModelAndView index(Model model){
         ModelAndView mav = new ModelAndView(INDEX_VIEW);
+        mav.addObject("unidades",unidadOrganizacionalService.getAllUnidadesOrganizacionales());
         return mav;
     }
 

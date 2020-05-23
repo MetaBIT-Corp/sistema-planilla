@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service("unidadOrganiacionalServiceImpl")
+@Service("unidadOrganizacionalServiceImpl")
 public class UnidadOrganizacionalServiceImpl implements UnidadOrganizacionalService {
 
     @Autowired
