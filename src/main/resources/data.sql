@@ -183,21 +183,20 @@ insert into estados_civiles values(5,'Union Libre');
 --Empleados
 
 insert into empleados(ID_EMPLEADO,APELLIDO_CASADA,APELLIDO_MATERNO,APELLIDO_PATERNO,CODIGO,CORREO_INSTITUCIONAL,CORREO_PERSONAL,EMPLEADO_HABILITADO,ES_ADMINISTRATIVO,FECHA_NACIMIENTO,HORAS_TRABAJO,NOMBRE_PRIMERO,NOMBRE_SEGUNDO,SALARIO_BASE_MENSUAL,ID_DIRECCION,ID_ESTADO_CIVIL,ID_GENERO,ID_USUARIO) 
-values(300,null,'Lopez','Estupinian','EL16002','el16002@ues.edu.sv','el16002@gmail.com',1,0,'28-JUN-97',20,'Ricardo','Bladimir',2000,78,1,1,5);
+values(300,null,'Lopez','Estupinian','EL16002','el16002@metabit.tech.sv','el16002@gmail.com',1,0,'28-JUN-97',20,'Ricardo','Bladimir',2000,78,1,1,5);
 
 insert into empleados(ID_EMPLEADO,APELLIDO_CASADA,APELLIDO_MATERNO,APELLIDO_PATERNO,CODIGO,CORREO_INSTITUCIONAL,CORREO_PERSONAL,EMPLEADO_HABILITADO,ES_ADMINISTRATIVO,FECHA_NACIMIENTO,HORAS_TRABAJO,NOMBRE_PRIMERO,NOMBRE_SEGUNDO,SALARIO_BASE_MENSUAL,ID_DIRECCION,ID_ESTADO_CIVIL,ID_GENERO,ID_USUARIO) 
-values(301,null,'Lopez','Estupinian','EP16002','el16007@ues.edu.sv','el16007@gmail.com',1,0,'28-JUN-97',20,'Ricardo','Bladimir',2000,78,1,1,null);
+values(301,null,'Palacios','Amaya','EP16014','el16007@metabit.tech.sv','el16007@hotmail.com',1,0,'28-JUN-97',20,'Edwin','Joel',2000,78,1,1,null);
 
-insert into empleados_documentos(ID_EMPLEADO_DOCUMENTO, CODIGO_DOCUMENTO, ID_EMPLEADO, ID_TIPO_DOCUMENTO) values (1,'15840523-1',300,1);
-insert into empleados_documentos(ID_EMPLEADO_DOCUMENTO, CODIGO_DOCUMENTO, ID_EMPLEADO, ID_TIPO_DOCUMENTO) values (2,'0810-123321-100-4',301,2);
+insert into empleados_documentos(ID_EMPLEADO_DOCUMENTO, CODIGO_DOCUMENTO, ID_EMPLEADO, ID_TIPO_DOCUMENTO) values (101,'15840523-1',300,1);
+insert into empleados_documentos(ID_EMPLEADO_DOCUMENTO, CODIGO_DOCUMENTO, ID_EMPLEADO, ID_TIPO_DOCUMENTO) values (102,'0810-123321-100-4',301,2);
 
-insert into empleados_profesiones(ID_EMPLEADO_PROFESION, ID_EMPLEADO, ID_PROFESION)values(1,300,1);
-insert into empleados_profesiones(ID_EMPLEADO_PROFESION, ID_EMPLEADO, ID_PROFESION)values(2,300,4);
-insert into empleados_profesiones(ID_EMPLEADO_PROFESION, ID_EMPLEADO, ID_PROFESION)values(3,300,6);
-insert into empleados_profesiones(ID_EMPLEADO_PROFESION, ID_EMPLEADO, ID_PROFESION)values(4,301,7);
-insert into empleados_profesiones(ID_EMPLEADO_PROFESION, ID_EMPLEADO, ID_PROFESION)values(5,301,10);
+insert into empleados_profesiones(ID_EMPLEADO_PROFESION, ID_EMPLEADO, ID_PROFESION)values(101,300,1);
+insert into empleados_profesiones(ID_EMPLEADO_PROFESION, ID_EMPLEADO, ID_PROFESION)values(102,300,4);
+insert into empleados_profesiones(ID_EMPLEADO_PROFESION, ID_EMPLEADO, ID_PROFESION)values(103,300,6);
+insert into empleados_profesiones(ID_EMPLEADO_PROFESION, ID_EMPLEADO, ID_PROFESION)values(104,301,7);
+insert into empleados_profesiones(ID_EMPLEADO_PROFESION, ID_EMPLEADO, ID_PROFESION)values(105,301,10);
 
---insert into empleados values(2,null,'Lopez','Estupinian','EL14002','el14002@ues.edu.sv',0,0,'17-MAR-95',2,'Estefany','Lizeida',2000,null,null,null);
 
 --Tipos Movimiento
 insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, monto_base, movimiento, porcentaje_movimiento, tipo_movimiento_habilitado)

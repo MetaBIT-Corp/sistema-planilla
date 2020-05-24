@@ -77,6 +77,10 @@ public class EmpleadoController {
     @Qualifier("unidadOrganizacionalServiceImpl")
     private UnidadOrganizacionalService unidadOrganizacionalService;
 
+    @Autowired
+    @Qualifier("empleadosPuestosUnidadesServiceImpl")
+    private EmpleadosPuestosUnidadesService empleadosPuestosUnidadesService;
+
 
     private static final String INDEX_VIEW = "empleado/index";
     private static final String EDIT_VIEW = "empleado/edit";
@@ -221,6 +225,13 @@ public class EmpleadoController {
         Puesto puesto = puestoService.getPuesto(Integer.parseInt(allParams.get("idPuesto")));
         UnidadOrganizacional unidadOrganizacional = unidadOrganizacionalService.getOneUnidadOrganizacional(Integer.parseInt(allParams.get("idUnidadOrganizacional")));
 
+        //Creado Empleado puesto unidad
+        EmpleadosPuestosUnidades epu = new EmpleadosPuestosUnidades(
+                empleado,
+                puesto,
+                unidadOrganizacional
+        );
+        empleadosPuestosUnidadesService.createOrUpdate(epu);
 
         mensajes.put("success", "Empleado Registrado correctamente");
         return new ResponseEntity<>(mensajes, HttpStatus.OK);
@@ -235,6 +246,7 @@ public class EmpleadoController {
         mav.addObject("empleado", e);
         mav.addObject("direccion", e.getDireccion());
         //mav.addObject("user",)
+        mav.addObject("unidades",unidadOrganizacionalService.getAllUnidadesOrganizacionales());
         mav.addObject("puestos", puestoService.getPuestos());
         mav.addObject("estadosCiviles", estadoCivilService.getAllCivilStates());
         mav.addObject("generos", generoService.getAllGeneros());
@@ -283,8 +295,14 @@ public class EmpleadoController {
         direccion.setComplemento(allParams.get("complemento"));
         direccion.setMunicipio(municipio);
 
-        //REGISTRO DE DIRECCION
+        //ACTUALIZANDO DE DIRECCION
         direccionService.updateDirection(direccion);
+
+        //ACTUALIZANDO PUESTO UNIDAD EMPLEADO
+        EmpleadosPuestosUnidades epu = empleado.getEmpleadosPuestosUnidades();
+        epu.setPuesto(puestoService.getPuesto(Integer.parseInt(allParams.get("idPuesto"))));
+        epu.setUnidadOrganizacional(unidadOrganizacionalService.getOneUnidadOrganizacional(Integer.parseInt(allParams.get("idUnidadOrganizacional"))));
+        empleadosPuestosUnidadesService.createOrUpdate(epu);
 
         mensajes.put("success", "Empleado Registrado correctamente");
         return new ResponseEntity<>(mensajes, HttpStatus.OK);

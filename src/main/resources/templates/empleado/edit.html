@@ -198,6 +198,14 @@
                                             <label>Correo Personal</label>
                                             <input type="text" th:field="*{empleado.correoPersonal}"  placeholder="Correo personal" class="form-control">
                                         </div>
+                                        <div class="form-group">
+                                            <label>Unidad Organizacional</label>
+                                            <select id="unidadSelect" name="idUnidadOrganizacional" class="form-control">mt-4
+                                                <option th:each="uo: ${unidades}" th:selected="*{empleado.empleadosPuestosUnidades.unidadOrganizacional.idUnidadOrganizacional} == ${uo.idUnidadOrganizacional}" th:value="${uo.idUnidadOrganizacional}">
+                                                    <span th:text="${uo.unidadOrganizacional}"></span>
+                                                </option>
+                                            </select>
+                                        </div>
                                     </div>
                                     <!--FIN PRIMER COLUMNA-->
                                     <!--SEGUNDA COLUMNA-->
@@ -213,7 +221,7 @@
                                         <div class="form-group">
                                             <label>Puesto de Trabajo</label>
                                             <select id="puestos_select" name="idPuesto" class="form-control">mt-4
-                                                <option th:each="p: ${puestos}" th:value="${p.idPuesto}">
+                                                <option th:each="p: ${puestos}" th:selected="*{empleado.empleadosPuestosUnidades.puesto.idPuesto} == ${p.idPuesto}" th:value="${p.idPuesto}">
                                                     <span th:text="${p.puesto}"></span>
                                                 </option>
                                             </select>
