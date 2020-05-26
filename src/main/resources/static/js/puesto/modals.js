@@ -20,3 +20,21 @@ function restablecer(){
     $("#validacionEliminacion").hide();
 	$("#submitEliminacion").show();
 }
+
+function activateModalEnable(param){  
+  var id_puesto = $(param).attr("data-idPuesto");
+  var puesto = $(param).attr("data-puesto");
+   
+  document.getElementById("divMessageEnable").innerHTML = "<p>Esta seguro que desea habilitar el puesto: <b>" + puesto + "</b>?</p>";
+  $("#idPuestoInputEnable").val(id_puesto); 
+  $("#puestoModalEnable").modal();
+}
+
+function activateModalDisable(param){  
+	var id_puesto = $(param).attr("data-idPuesto");
+	var puesto = $(param).attr("data-puesto");
+   
+  document.getElementById("divMessageDisable").innerHTML = "<p>Esta seguro que desea deshabilitar el puesto: <b>" + puesto + "</b>?</p>";
+  $("#idPuestoInputDisable").val(id_puesto); 
+  $("#puestoModalDisable").modal();
+}

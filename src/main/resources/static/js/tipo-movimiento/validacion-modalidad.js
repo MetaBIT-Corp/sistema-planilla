@@ -3,7 +3,9 @@ $(document).ready(function() {
 	var porcentajemovimiento = $("#porcentajemovimiento").val();
 	var idMovimientoHidden = $("#idMovimientoHidden").val();
 				
-	//si el id es diferente de cero es porque se está en modo de edicion, por lo ques se cargara la caja de text que tenga valor diferente de cero
+	/* si el id es diferente de cero es porque se está en modo de edicion, 
+	 * por lo que se cargara la caja de text que tenga valor diferente de cero
+	 */
 	if(idMovimientoHidden != 0){
 		
 		if(montobase !=0){
