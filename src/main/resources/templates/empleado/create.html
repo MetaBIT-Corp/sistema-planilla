@@ -55,12 +55,12 @@
                        aria-controls="trabajo" aria-selected="false">Informacion Profesional</a>
                 </li>
 
-                <!--
-                <li class="nav-item">
-                    <a class="nav-link" id="usuario-tab" data-toggle="tab" href="#usuario" role="tab"
+
+                <li class="nav-item" id="usuario-tab" hidden>
+                    <a class="nav-link" data-toggle="tab" href="#usuario" role="tab"
                        aria-controls="usuario" aria-selected="false">Usuario de Empleado</a>
                 </li>
-                -->
+
             </ul>
             <div class="tab-content" id="myTabContent">
                 <!--DATOS PERSONALES-->
@@ -250,8 +250,10 @@
                                         </div>
                                         <div class="form-group">
                                             <label>Unidad Organizacional</label>
-                                            <select id="unidadSelect" name="idUnidadOrganizacional" class="form-control">mt-4
-                                                <option th:each="uo: ${unidades}" th:value="${uo.idUnidadOrganizacional}">
+                                            <select id="unidadSelect" name="idUnidadOrganizacional"
+                                                    class="form-control">mt-4
+                                                <option th:each="uo: ${unidades}"
+                                                        th:value="${uo.idUnidadOrganizacional}">
                                                     <span th:text="${uo.unidadOrganizacional}"></span>
                                                 </option>
                                             </select>
@@ -335,13 +337,45 @@
                 </div>
 
                 <!--USUARIO DE EMPLEADO-->
-                <!--
                 <div class="tab-pane fade" id="usuario" role="tabpanel" aria-labelledby="contact-tab">
                     <div class="container-fluid">
-                        Usuario
+                        <div class="container">
+                            <div class="card-body">
+                                <!--PRIMER COLUMNA-->
+                                <form id="form4">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label>Nombre de usuario *</label>
+                                                <input th:field="*{user.username}" type="text" class="form-control"
+                                                       placeholder="Nombre Usuario (Unico)">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" id="blockEmployee" th:field="*{user.enabled}">
+                                                    <label class="custom-control-label" for="blockEmployee">Deshabilitar Usuario</label>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <!--FIN PRIMER COLUMNA-->
+                                        <!--SEGUNDA COLUMNA-->
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label for="secondName">Constraseña *</label>
+                                                <input th:field="*{user.password}" type="password" class="form-control"
+                                                       placeholder="Constraseña">
+                                            </div>
+                                        </div>
+                                        <!--FIN SEGUNDA COLUMNA-->
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                -->
+
             </div>
         </div>
         <div class="card-footer text-right">
@@ -368,6 +402,25 @@
             $("#example2").DataTable({
                 "responsive": true,
                 "autoWidth": false,
+            });
+        });
+        $(document).ready(function () {
+            var idGenero = $("#genero_select").val();
+            var idPuesto = $("#puestos_select").val();
+            $.get('/api/genero/' + idGenero, function (data) {
+                if (data.genero == "Mujer") {
+                    $("#divCasada").removeAttr("hidden");
+                } else {
+                    $("#divCasada").attr("hidden", "hidden")
+                }
+            });
+            $.get('/api/required-user/' + idPuesto, function (data) {
+                if (data == true) {
+                    $("#usuario-tab").removeAttr("hidden");
+                } else {
+                    $("#usuario-tab").val("");
+                    $("#usuario-tab").attr("hidden", "hidden")
+                }
             });
         });
     </script>
@@ -398,6 +451,17 @@
                     $("#divCasada").attr("hidden", "hidden")
                 }
             });
+        });/*Funcion para activar zona de usuario segun puesto*/
+        $("#puestos_select").on('change', function () {
+            var idPuesto = $(this).val();
+            $.get('/api/required-user/' + idPuesto, function (data) {
+                if (data == true) {
+                    $("#usuario-tab").removeAttr("hidden");
+                } else {
+                    $("#usuario-tab").val("");
+                    $("#usuario-tab").attr("hidden", "hidden")
+                }
+            });
         });
 
         $("#save").on("click", function () {
@@ -411,13 +475,13 @@
             $.ajax({
                 type: "POST",
                 url: "/empleado/store",
-                data: $("#form1").serialize() + "&" + $("#form2").serialize()+ "&" + $("#form3").serialize() + "&" + data_prof + "&" + data_docs,
+                data: $("#form1").serialize() + "&" + $("#form2").serialize() + "&" + $("#form3").serialize() + "&" + $("#form4").serialize()+ "&" + data_prof + "&" + data_docs,
                 dataType: "json",
                 success: function (data) {
                     window.location.href = document.location.origin + "/empleado/index";
                 },
                 error: function (data) {
-                    var error_div= $("#error_alert_div");
+                    var error_div = $("#error_alert_div");
                     error_div.removeAttr("hidden");
                     console.log(data);
                     var m = "";
@@ -438,9 +502,6 @@
                 }
             })
         });
-        /*Funcion para activar zona de usuario segun puesto*/
-
-
     </script>
 </section>
 
