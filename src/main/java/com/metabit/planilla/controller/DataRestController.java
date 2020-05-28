@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.metabit.planilla.entity.Departamento;
 import com.metabit.planilla.entity.Municipio;
+import com.metabit.planilla.entity.Rol;
 import com.metabit.planilla.service.DepartamentoService;
 import com.metabit.planilla.service.MunicipioService;
+import com.metabit.planilla.service.RolService;
 
 @RestController
 @RequestMapping("/api")
@@ -29,6 +31,10 @@ public class DataRestController {
 	@Autowired
 	@Qualifier("municipioServiceImpl")
 	private MunicipioService municipioService;
+	
+	@Autowired
+	@Qualifier("rolServiceImpl")
+	private RolService rolService;
 
 	@Autowired
 	@Qualifier("generoServiceImpl")
@@ -42,5 +48,10 @@ public class DataRestController {
 	@GetMapping("/genero/{id}")
 	public Genero getGenero(@PathVariable("id") int idGenero){
 		return generoService.getGenero(idGenero);
+	}
+	
+	@GetMapping("/roles")
+	public List<Rol> getRoles(){
+		return rolService.getAllRoles();
 	}
 }
