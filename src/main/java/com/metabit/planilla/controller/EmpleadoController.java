@@ -23,6 +23,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
+@SuppressWarnings("ALL")
 @Controller
 @RequestMapping("/empleado")
 public class EmpleadoController {
@@ -82,7 +83,7 @@ public class EmpleadoController {
     @Autowired
     @Qualifier("empleadosPuestosUnidadesServiceImpl")
     private EmpleadosPuestosUnidadesService empleadosPuestosUnidadesService;
-    
+
     @Autowired
 	@Qualifier("rolServiceImpl")
 	private RolService rolService;
@@ -128,7 +129,7 @@ public class EmpleadoController {
         mav.addObject("generos", generoService.getAllGeneros());
         mav.addObject("municipios", departamentoService.getAllDepartamentos().get(0).getMunicipios());
         mav.addObject("departamentos", departamentoService.getAllDepartamentos());
-        
+
         /*-------------------------CÓDIGO PARA AGREGAR ROLES AL EMPLEADO-------------------*/
         mav.addObject("roles", rolService.getAllRoles());
         /*------------------FIN DEL CÓDIGO PARA AGREGAR ROLES AL EMPLEADO-------------------*/
@@ -137,7 +138,7 @@ public class EmpleadoController {
     }
 
     @PostMapping("/store")
-    public ResponseEntity<?> store(@RequestParam(name = "profesiones_seleccion[]", required = false, defaultValue = "0") List<Integer> profesiones, @RequestParam Map<String, String> allParams, @RequestParam(name = "roles[]") List<Integer> roles) throws ParseException {
+    public ResponseEntity<?> store(@RequestParam(name = "profesiones_seleccion[]", required = false, defaultValue = "0") List<Integer> profesiones, @RequestParam Map<String, String> allParams, @RequestParam(name = "roles[]",required = false) List<Integer> roles) throws ParseException {
         //VALIDACIONES
         Map<String, String> mensajes = validationEmptyFields(allParams, profesiones);
 
@@ -174,7 +175,11 @@ public class EmpleadoController {
         Puesto puesto = puestoService.getPuesto(Integer.parseInt(allParams.get("idPuesto")));
         if (puesto.isUsuarioRequerido()) {
             if (allParams.get("username").isEmpty() || allParams.get("password").isEmpty()) {
-                mensajes.put("error_sec5", "Error en la seccion Usuario de Empleado. Llenar campos requeridos.");
+                mensajes.put("error_user", "Error en la seccion Usuario de Empleado. Llenar campos requeridos.");
+            }else{
+                if(userJpaRepository.findByUsername(allParams.get("username"))!=null){
+                    mensajes.put("error_user", "Error en la seccion Usuario de Empleado. Usuario ya EXISTE.");
+                }
             }
         }
 
@@ -257,14 +262,14 @@ public class EmpleadoController {
             Usuario usuario = new Usuario(
                     allParams.get("username"),
                     pe.encode(allParams.get("password")),
-                    Boolean.parseBoolean(allParams.get("enable")) ? false : true,
+                    Boolean.parseBoolean(allParams.get("enabled")) ? false : true,
                     false,
                     false,
                     false,
                     0,
                     null
             );
-            
+
             /*-------------------------CÓDIGO PARA AGREGAR ROLES AL EMPLEADO-------------------*/
         	List<Rol> rolesList = new ArrayList<Rol>();
             for (int idRol: roles) {
@@ -273,14 +278,12 @@ public class EmpleadoController {
             }
             usuario.setRoles(rolesList);
             /*------------------FIN DEL CÓDIGO PARA AGREGAR ROLES AL EMPLEADO-------------------*/
-            
+
             userJpaRepository.save(usuario);
 
             //Relacionando usuario con Empleado
             empleado.setUsuario(usuario);
             empleadoService.updateEmployee(empleado);
-
-            //Asignacion de Roles
         }
 
         mensajes.put("success", "Empleado Registrado correctamente");
@@ -293,37 +296,59 @@ public class EmpleadoController {
     public ModelAndView edit(@PathVariable(value = "id", required = true) int id) {
         ModelAndView mav = new ModelAndView(EDIT_VIEW);
         Empleado e = empleadoService.findEmployeeById(id);
-        
+
         /*-------------------------CÓDIGO PARA AGREGAR ROLES AL EMPLEADO-------------------*/
         List<Rol> user_roles = new ArrayList();
         List<Rol> available_roles = new ArrayList();
-        
-        user_roles = rolService.getUserRoles(e.getUsuario().getIdUsuario());
-        available_roles = rolService.getAvailableRoles(e.getUsuario().getIdUsuario());
+
+
         /*------------------FIN DEL CÓDIGO PARA AGREGAR ROLES AL EMPLEADO-------------------*/
-        
+
+        //Si tiene usuario cargarlo sino crear uno por si el puesto lo requiere
+        if(e.getUsuario()!=null){
+            mav.addObject("user",e.getUsuario());
+            /*---------------------------------Codigo KIKE-------------------------------------*/
+            user_roles = rolService.getUserRoles(e.getUsuario().getIdUsuario());
+            available_roles = rolService.getAvailableRoles(e.getUsuario().getIdUsuario());
+        }else{
+            mav.addObject("user",new Usuario());
+        }
+
         mav.addObject("empleado", e);
         mav.addObject("direccion", e.getDireccion());
-        //mav.addObject("user",)
         mav.addObject("unidades", unidadOrganizacionalService.getAllUnidadesOrganizacionales());
         mav.addObject("puestos", puestoService.getPuestos());
         mav.addObject("estadosCiviles", estadoCivilService.getAllCivilStates());
         mav.addObject("generos", generoService.getAllGeneros());
         mav.addObject("municipios", municipioService.getMunicipiosByDepartamento(e.getDireccion().getMunicipio().getDepartamento()));
         mav.addObject("departamentos", departamentoService.getAllDepartamentos());
-        
+
         /*-------------------------CÓDIGO PARA AGREGAR ROLES AL EMPLEADO-------------------*/
         mav.addObject("available_roles", available_roles);
         mav.addObject("user_roles", user_roles);
         /*------------------FIN DEL CÓDIGO PARA AGREGAR ROLES AL EMPLEADO-------------------*/
-        
+
         return mav;
     }
 
     @PostMapping("/update")
-    public ResponseEntity<?> update(@RequestParam Map<String, String> allParams, @RequestParam(name = "roles[]") List<Integer> roles) {
+    public ResponseEntity<?> update(@RequestParam Map<String, String> allParams, @RequestParam(name = "roles[]", required = false) List<Integer> roles) {
         //VALIDACIONES
         Map<String, String> mensajes = validationEmptyFields(allParams, null);
+
+        Puesto puesto = puestoService.getPuesto(Integer.parseInt(allParams.get("idPuesto")));
+        Empleado empleado = empleadoService.findEmployeeById(Integer.parseInt(allParams.get("idEmpleado")));//Validacion de usuario campos requeridos
+
+        //Validacion de usuario campos requeridos por si no posee usuario
+        if(puesto.isUsuarioRequerido()) {
+            if (allParams.get("username").isEmpty() || allParams.get("password").isEmpty()) {
+                mensajes.put("error_user", "Error en la seccion Usuario de Empleado. Llenar campos requeridos.");
+            }else{
+                if(userJpaRepository.findByUsername(allParams.get("username"))!=null){
+                    mensajes.put("error_user", "Error en la seccion Usuario de Empleado. Usuario ya EXISTE.");
+                }
+            }
+        }
 
         //Controlando que errores de datos obligatorios sean resueltos
         if (mensajes.size() > 0) {
@@ -334,7 +359,6 @@ public class EmpleadoController {
         EstadoCivil estadoCivil = estadoCivilService.getCivilState(Integer.parseInt(allParams.get("idEstadoCivil")));
         Genero genero = generoService.getGenero(Integer.parseInt(allParams.get("idGenero")));
 
-        Empleado empleado = empleadoService.findEmployeeById(Integer.parseInt(allParams.get("idEmpleado")));
         empleado.setCodigo(allParams.get("codigo"));
         empleado.setNombrePrimero(allParams.get("nombrePrimero"));
         empleado.setNombreSegundo(allParams.get("nombreSegundo"));
@@ -349,8 +373,6 @@ public class EmpleadoController {
         empleado.setEstadoCivil(estadoCivil);
         empleado.setGenero(genero);
 
-        empleadoService.addEmployee(empleado);
-
         //EDITANDO DIRECCION
         Direccion direccion = empleado.getDireccion();
         direccion.setUrbanizacion(allParams.get("urbanizacion"));
@@ -360,28 +382,51 @@ public class EmpleadoController {
         direccion.setMunicipio(municipio);
 
         //ACTUALIZANDO DE DIRECCION
-        direccionService.updateDirection(direccion);
+        empleado.setDireccion(direccion);
 
         //ACTUALIZANDO PUESTO UNIDAD EMPLEADO
         EmpleadosPuestosUnidades epu = empleado.getEmpleadosPuestosUnidades();
-        epu.setPuesto(puestoService.getPuesto(Integer.parseInt(allParams.get("idPuesto"))));
+        epu.setPuesto(puesto);
         epu.setUnidadOrganizacional(unidadOrganizacionalService.getOneUnidadOrganizacional(Integer.parseInt(allParams.get("idUnidadOrganizacional"))));
-        empleadosPuestosUnidadesService.createOrUpdate(epu);
+        empleado.setEmpleadosPuestosUnidades(epu);
+
+        //Actualizando usuario
+        if(puesto.isUsuarioRequerido()){
+            if(empleado.getUsuario()==null){
+                BCryptPasswordEncoder pe = new BCryptPasswordEncoder();
+                Usuario usuario = new Usuario(
+                        allParams.get("username"),
+                        pe.encode(allParams.get("password")),
+                        Boolean.parseBoolean(allParams.get("enabled")) ? false : true,
+                        false,
+                        false,
+                        false,
+                        0,
+                        null
+                );
+                usuario = userJpaRepository.save(usuario);
+                empleado.setUsuario(usuario);
+            }else{
+                empleado.getUsuario().setEnabled(Boolean.parseBoolean(allParams.get("enabled")) ? false : true);
+            }
+        }
+
+        //Si el empleado tien ya un usuario y lo cambian a un puesto sin usuario requerido solo se deshabilita
+        if(!puesto.isUsuarioRequerido()&&empleado.getUsuario()!=null){
+            empleado.getUsuario().setEnabled(false);
+        }
 
         /*-------------------------CÓDIGO PARA AGREGAR ROLES AL EMPLEADO-------------------*/
-        Usuario usuario = empleado.getUsuario();
-    	List<Rol> rolesList = new ArrayList<Rol>();
+    	/*List<Rol> rolesList = new ArrayList<Rol>();
         for (int idRol: roles) {
         	Rol rol = rolService.getByIdRol(idRol);
         	rolesList.add(rol);
-        }
-        usuario.setRoles(rolesList);
+        }*/
         /*------------------FIN DEL CÓDIGO PARA AGREGAR ROLES AL EMPLEADO-------------------*/
-        
-        userJpaRepository.save(usuario);
-        
-        
-        mensajes.put("success", "Empleado Registrado correctamente");
+
+        empleadoService.updateEmployee(empleado);
+
+        mensajes.put("success", "Editado Registrado correctamente");
         return new ResponseEntity<>(mensajes, HttpStatus.OK);
     }
 
@@ -538,8 +583,6 @@ public class EmpleadoController {
 
         //VALIDANDO QUE NO ELIMINE TODAS LAS PROFESIONES DEL EMPLEADO
         Empleado e = empleadoService.findEmployeeById(idEmpleado);
-        LOGGER.info("ONE" + profesiones.size());
-        LOGGER.info("TWO" + e.getProfesionesEmpleado().size());
         if (profesiones.size() == e.getProfesionesEmpleado().size()) {
             mensajes.put("error", "No se pueden eliminar todos, al menos debe de quedar una profesion/oficio.");
             return new ResponseEntity<>(mensajes, HttpStatus.BAD_REQUEST);
@@ -639,6 +682,15 @@ public class EmpleadoController {
         Map<String, String> mensajes = new HashMap<String, String>();
         if (allParams.get("nombrePrimero").isEmpty() || allParams.get("nombreSegundo").isEmpty() || allParams.get("fechaNacimiento").isEmpty() || allParams.get("apellidoMaterno").isEmpty()) {
             mensajes.put("error_sec1", "Error en la seccion Informacion Personal. Llenar todos los campos requeridos.");
+        }else{
+            //Fecha de nacimiento
+            if (LocalDate.parse(allParams.get("fechaNacimiento")).isAfter(LocalDate.now())) {
+                mensajes.put("error_fecha_mayor", "Error en fecha de nacimiento. La fecha debe de ser menor a la actual.");
+            } else {
+                if ((LocalDate.now().getYear() - LocalDate.parse(allParams.get("fechaNacimiento")).getYear()) < 18) {
+                    mensajes.put("error_fecha_nacimiento", "Error en fecha de nacimiento.El empleado debe de ser MAYOR DE EDAD.");
+                }
+            }
         }
 
         //VALIDACION DE CAMPOS REQUERIDOS PARA SECCION DIRECCION EMPLEADO
@@ -695,26 +747,23 @@ public class EmpleadoController {
             mensajes.put("error_horas", "Horas de trabajo deben de ser mayor que cero.");
         }
 
-        //Fecha de nacimiento
-        if (LocalDate.parse(allParams.get("fechaNacimiento")).isAfter(LocalDate.now())) {
-            mensajes.put("error_fecha_mayor", "Error en fecha de nacimiento. La fecha debe de ser menor a la actual.");
-        } else {
-            if ((LocalDate.now().getYear() - LocalDate.parse(allParams.get("fechaNacimiento")).getYear()) < 18) {
-                mensajes.put("error_fecha_nacimiento", "Error en fecha de nacimiento.El empleado debe de ser MAYOR DE EDAD.");
-            }
-        }
         return mensajes;
     }
 
     @GetMapping("/status")
     public String disable(@RequestParam("id") int id) {
         Empleado e = empleadoService.findEmployeeById(id);
-        String cadena = "habilito";
 
         //FALTA HABILITAR O INHABILITAR USUARIO
         if (e.getEmpleadoHabilitado()) {
             e.setEmpleadoHabilitado(false);
-            cadena = "deshabilito";
+
+            if (e.getUsuario() != null) {
+                Usuario usuario = e.getUsuario();
+                usuario.setEnabled(false);
+                userJpaRepository.save(usuario);
+            }
+
         } else {
             e.setEmpleadoHabilitado(true);
         }
@@ -774,7 +823,7 @@ public class EmpleadoController {
         }
         return "redirect:/empleado/index?unlock_success=true";
     }
-    
+
     @PostMapping("/test")
     public String rolTest(@RequestParam(name = "roles[]") List<Integer> roles) {
     	List<Rol> rolesList = new ArrayList<Rol>();
@@ -784,9 +833,9 @@ public class EmpleadoController {
         	rolesList.add(rol);
         }
         usuario.setRoles(rolesList);
-        
+
         userJpaRepository.save(usuario);
-        
+
         return "redirect:/index";
     }
 }

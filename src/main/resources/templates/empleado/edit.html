@@ -60,6 +60,10 @@
                         <a class="nav-link" id="trabajo-tab" data-toggle="tab" href="#trabajo" role="tab"
                            aria-controls="trabajo" aria-selected="false">Informacion Profesional</a>
                     </li>
+                    <li class="nav-item" id="usuario-tab" hidden>
+                        <a class="nav-link" data-toggle="tab" href="#usuario" role="tab"
+                           aria-controls="usuario" aria-selected="false">Usuario de Empleado</a>
+                    </li>
 
                 </ul>
 
@@ -264,6 +268,94 @@
                                         </div>
                                     </div>
                                     <!--FIN SEGUNDA COLUMNA-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--USUARIO DE EMPLEADO-->
+                    <div class="tab-pane fade" id="usuario" role="tabpanel" aria-labelledby="contact-tab">
+                        <div class="container-fluid">
+                            <div class="container">
+                                <div class="card-body">
+                                    <!--PRIMER COLUMNA-->
+                                    <form th:if="*{empleado.usuario != null}" id="form4">
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label>Nombre de usuario *</label>
+                                                    <input th:value="*{user.username}" type="text" class="form-control"
+                                                           placeholder="Nombre Usuario (Unico)" disabled>
+                                                </div>
+                                                <div class="form-group mt-4 ml-2">
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input th:checked="*{!user.enabled}" th:value="*{user.enabled}"  type="checkbox" class="custom-control-input" id="blockEmployee">
+                                                        <label class="custom-control-label" for="blockEmployee">Deshabilitar Usuario</label>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <!--FIN PRIMER COLUMNA-->
+                                        </div>
+                                    </form>
+                                    <form th:if="*{empleado.usuario == null}" id="form4">
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label>Nombre de usuario *</label>
+                                                    <input th:field="*{user.username}" type="text" class="form-control"
+                                                           placeholder="Nombre Usuario (Unico)">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="blockEmployee" th:field="*{user.enabled}">
+                                                        <label class="custom-control-label" for="blockEmployee">Deshabilitar Usuario</label>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <!--FIN PRIMER COLUMNA-->
+                                            <!--SEGUNDA COLUMNA-->
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label for="secondName">Constraseña *</label>
+                                                    <input th:field="*{user.password}" type="password" class="form-control"
+                                                           placeholder="Constraseña">
+                                                </div>
+                                            </div>
+                                            <!--FIN SEGUNDA COLUMNA-->
+                                        </div>
+
+                                        <!----------------CÓDIGO PARA LA ASIGNACIÓN DE ROLES---------------------
+                                        <br>
+                                        <div class="card card-default">
+                                            <div class="card-header">
+                                                <h3 class="card-title">Asignación de Roles</h3>
+
+                                                <div class="card-tools">
+                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                                                </div>
+                                            </div>
+                                            /.card-header
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="form-group">
+                                                            <label>De clic sobre los roles que le desea asignar al usuario</label>
+                                                            <select class="duallistbox" multiple="multiple" name="roles[]">
+                                                                <div th:each="r : ${roles}">
+                                                                    <option th:value="${r.idRol}" th:text="${r.authority}">No hay roles</option>
+                                                                </div>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        ----------------FIN COÓDIGO PARA LA ASIGNACIÓN DE ROLES--------------------->
+
+                                    </form>
                                 </div>
                             </div>
                         </div>
