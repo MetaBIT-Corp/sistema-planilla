@@ -59,8 +59,19 @@ public class Usuario {
 	public Usuario() {
 	}
 
+	public Usuario(String username, String password, boolean enabled, boolean accountExperired, boolean accountLocked, boolean passwordExpired, int intentos, List<Rol> roles) {
+		this.username = username;
+		this.password = password;
+		this.enabled = enabled;
+		this.accountExperired = accountExperired;
+		this.accountLocked = accountLocked;
+		this.passwordExpired = passwordExpired;
+		this.intentos = intentos;
+		this.roles = roles;
+	}
+
 	public Usuario(int idUser, String username, String password, boolean enabled, boolean accountExperired,
-			boolean accountLocked, boolean passwordExpired, int intentos) {
+				   boolean accountLocked, boolean passwordExpired, int intentos) {
 		super();
 		this.idUsuario = idUser;
 		this.username = username;
@@ -158,5 +169,4 @@ public class Usuario {
 		this.roles = roles;
 	}
 
-	
 }

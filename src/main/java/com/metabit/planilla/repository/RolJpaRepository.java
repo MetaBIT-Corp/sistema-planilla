@@ -9,5 +9,6 @@ import com.metabit.planilla.entity.Rol;
 
 @Repository("rolJpaRepository")
 public interface RolJpaRepository extends JpaRepository<Rol, Serializable>{
+	public abstract Rol findByIdRol(Integer idRol);
 
 }

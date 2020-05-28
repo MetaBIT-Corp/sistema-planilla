@@ -7,4 +7,5 @@ import com.metabit.planilla.entity.Rol;
 public interface RolService {
 	
 	public abstract List<Rol> getAllRoles();
+	public abstract Rol getByIdRol(Integer idRol);
 }
