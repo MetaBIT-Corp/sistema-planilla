@@ -38,23 +38,38 @@ public class PuestoController {
 	private static final Log LOGGER = LogFactory.getLog(PuestoController.class);
 
 	
-	//listar puestos
+	/**
+	 * Método para listar los puestos
+	 * @author Edwin Palacios
+	 * @param Model model: permite enviar variables al contexto, 
+	 * @param String *_success: permite mostrar los toast-mensajes según la accion ejecutada anteriormente 
+	 * @return ModelAndView
+	 */
 	@PreAuthorize("hasAuthority('PUESTO_INDEX')")
 	@GetMapping("/index")
 	public ModelAndView index(Model model,
 			@RequestParam(name="store_success", required=false) String store_success, 
 			@RequestParam(name="update_success", required=false) String update_success,
-			@RequestParam(name="delete_success", required=false) String delete_success
+			@RequestParam(name="delete_success", required=false) String delete_success,
+			@RequestParam(name="enable_success", required=false) String enable_success,
+			@RequestParam(name="disable_success", required=false) String disable_success
 			) {
 		ModelAndView mav = new ModelAndView(INDEX_VIEW); 
 		mav.addObject("puestos", puestoService.getPuestos());
 		model.addAttribute("store_success", store_success);
 		model.addAttribute("update_success", update_success);
 		model.addAttribute("delete_success", delete_success);
+		model.addAttribute("enable_success", enable_success);
+		model.addAttribute("disable_success", disable_success);
 		return mav;
 	}
-
-	//Desplegar formulario de Crear y editar
+	
+	/**
+ 	 * Método para Desplegar formulario de Crear y editar
+ 	 * @author Edwin Palacios
+ 	 * @param Optional<Integer> id: id del objeto puesto a editar
+ 	 * @return ModelAndView
+ 	 */
 	@PreAuthorize("hasAuthority('PUESTO_CREATE') or hasAuthority('PUESTO_EDIT')")
 	@RequestMapping(path = {"/form-puesto", "/form-puesto/{id}"})
 	public ModelAndView create(@PathVariable("id") Optional<Integer> id) {
@@ -71,7 +86,13 @@ public class PuestoController {
 		return mav;
 	}
 	
-	// método para recibir el post del formulario de crear/editar puesto
+	/**
+ 	 * Método para recibir el post del formulario de crear/editar puesto
+ 	 * @author Edwin Palacios
+ 	 * @param ModelAttributte: objeto puesto vinculado al formulario
+ 	 * @param BindingResult: validaciones aplicadas al objeto
+ 	 * @return String
+ 	 */
 	@PreAuthorize("hasAuthority('PUESTO_CREATE') or hasAuthority('PUESTO_EDIT')")
 	@PostMapping("/form-post")
 	public String createUpdatePost(@Valid @ModelAttribute("puestoEntity") Puesto puesto, BindingResult bindingResult) {
@@ -92,7 +113,12 @@ public class PuestoController {
 		}
 	}
 	
-	//Eliminar puesto
+	/**
+ 	 * Metodo que permite eliminar un puesto
+ 	 * @author Edwin Palacios
+ 	 * @param int id: id del puesto
+ 	 * @return String
+ 	 */
 	@PreAuthorize("hasAuthority('PUESTO_DELETE')")
 	@PostMapping("/destroy")
 	public String destroyPuesto(@RequestParam("idPuestoDestroy") int id) {
@@ -106,5 +132,37 @@ public class PuestoController {
 			return "redirect:/puesto/index?delete_success=true";
 		}
 	}
+	
+	
+	/**
+ 	 * Metodo que permite habilitar un puesto
+ 	 * @author Edwin Palacios
+ 	 * @param int id: id del puesto
+ 	 * @return String
+ 	 */
+	@PreAuthorize("permitAll()")
+	@PostMapping("/enable")
+	public String enablePuesto(@RequestParam("idPuestoEnable") int id) {
+		Puesto puesto = puestoService.getPuesto(id);
+		puesto.setPuestoHabilitado(true);
+		puestoService.updatePuesto(puesto);
+		return "redirect:/puesto/index?enable_success=true";
+	}
+	
+	/**
+ 	 * Metodo que permite deshabilitar un puesto
+ 	 * @author Edwin Palacios
+ 	 * @param int id: id del puesto
+ 	 * @return String
+ 	 */
+	@PreAuthorize("permitAll()")
+	@PostMapping("/disable")
+	public String disablePuesto(@RequestParam("idPuestoDisable") int id) {
+		Puesto puesto = puestoService.getPuesto(id);
+		puesto.setPuestoHabilitado(false);
+		puestoService.updatePuesto(puesto);
+		return "redirect:/puesto/index?disable_success=true";
+	}
+	
 	
 }

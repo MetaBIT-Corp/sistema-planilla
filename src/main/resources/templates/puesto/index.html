@@ -27,6 +27,8 @@
 		<input type="hidden" id="store" th:value="${store_success}">
 		<input type="hidden" id="update" th:value="${update_success}">
 		<input type="hidden" id="delete" th:value="${delete_success}">
+		<input type="hidden" id="enable" th:value="${enable_success}">
+		<input type="hidden" id="disable" th:value="${disable_success}">
 		
 		<div class="row ml-3 mr-3">
 			<div class="col-md-12 ">
@@ -74,9 +76,22 @@
 											</a>
 				                            
 				                            <button class="dropdown-item" th:attr="data-idPuesto=${puesto.IdPuesto}, data-puesto=${puesto.puesto}, data-epu=${puesto.epu.size()}" 
-												onclick="activateModalDestroy(this)" title="Eliminar">
+												onclick="activateModalDestroy(this)" title="Eliminar Puesto">
 												<i class="far fa-trash-alt mr-3" ></i> Eliminar
 											</button>
+											
+											<button th:if="${puesto.puestoHabilitado}" class="dropdown-item" title="Deshabilitar Puesto"
+                                           		th:attr="data-idPuesto=${puesto.IdPuesto}, data-puesto=${puesto.puesto}"
+                                           		onclick="activateModalDisable(this)">
+											<i class="fas fa-lock mr-3"></i> Deshabilitar
+											</button>
+											
+											<button th:unless="${puesto.puestoHabilitado}" class="dropdown-item" title="Habilitar Puesto"
+												th:attr="data-idPuesto=${puesto.IdPuesto}, data-puesto=${puesto.puesto}"
+                                           		onclick="activateModalEnable(this)">
+												<i class="fas fa-unlock mr-3"></i> Habilitar
+											</button>
+											
 				                          </div>
 				                        </div>
 										
@@ -133,6 +148,58 @@
 			      </div>
 			      <div class="modal-footer">
 			        <button type="submit" id="submitEliminacion" class="btn btn-danger">Confirmar</button>
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+			      </div>
+		      </form>
+		    </div>
+		  </div>
+		</div>
+		
+		<!-- Modal para Confirmar Habilitar Puesto -->
+		<div class="modal" id="puestoModalEnable" tabindex="-1" role="dialog">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title">Habilitar puesto</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <form method="post" action="#" th:action="@{/puesto/enable}">
+			      <div class="modal-body">
+			        <div class="form-group">
+					    <div id="divMessageEnable"></div>
+					    <input type="hidden" class="form-control" id="idPuestoInputEnable" name="idPuestoEnable" value="">				
+					</div>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="submit" id="submitEnable" class="btn btn-info">Confirmar</button>
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+			      </div>
+		      </form>
+		    </div>
+		  </div>
+		</div>
+		
+		<!-- Modal para Confirmar Desabilitar Puesto -->
+		<div class="modal" id="puestoModalDisable" tabindex="-1" role="dialog">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title">Deshabilitar puesto</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <form method="post" action="#" th:action="@{/puesto/disable}">
+			      <div class="modal-body">
+			        <div class="form-group">
+					    <div id="divMessageDisable"></div>
+					    <input type="hidden" class="form-control" id="idPuestoInputDisable" name="idPuestoDisable" value="">				
+					</div>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="submit" id="submitDisable" class="btn btn-danger">Confirmar</button>
 			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
 			      </div>
 		      </form>

@@ -1,32 +1,32 @@
 /* PUESTOS */
-INSERT INTO puestos(id_puesto, descripcion, es_administrativo, puesto, salario_maximo, salario_minimo, usuario_requerido)
-	   VALUES      (1, 'Descripción del puesto', 1 , 'Administrador Presupuestario', 5000, 1200, 1);
-INSERT INTO puestos(id_puesto, descripcion, es_administrativo, puesto, salario_maximo, salario_minimo, usuario_requerido)
-	   VALUES      (2, 'Descripción del puesto', 1 , 'Gerente de Departamento', 4000, 800, 1);
-INSERT INTO puestos(id_puesto, descripcion, es_administrativo, puesto, salario_maximo, salario_minimo, usuario_requerido)
-	   VALUES      (3, 'Descripción del puesto', 1 , 'Jefe de planilla', 1000, 360, 1);
-INSERT INTO puestos(id_puesto, descripcion, es_administrativo, puesto, salario_maximo, salario_minimo, usuario_requerido)
-	   VALUES      (4, 'Descripción del puesto', 1 , 'Analista Financiero', 1000, 360, 0);
-INSERT INTO puestos(id_puesto, descripcion, es_administrativo, puesto, salario_maximo, salario_minimo, usuario_requerido)
-	   VALUES      (5, 'Descripción del puesto', 0 , 'Analista de Sistemas', 1000, 360, 0);
-INSERT INTO puestos(id_puesto, descripcion, es_administrativo, puesto, salario_maximo, salario_minimo, usuario_requerido)
-	   VALUES      (6, 'Descripción del puesto', 1 , 'Auxiliar de planilla', 1000, 360, 1);
-INSERT INTO puestos(id_puesto, descripcion, es_administrativo, puesto, salario_maximo, salario_minimo, usuario_requerido)
-	   VALUES      (7, 'Descripción del puesto', 0 , 'Asesor Legal', 1000, 360, 0);
-INSERT INTO puestos(id_puesto, descripcion, es_administrativo, puesto, salario_maximo, salario_minimo, usuario_requerido)
-	   VALUES      (8, 'Descripción del puesto', 1 , 'Contador', 1000, 360, 0);
-INSERT INTO puestos(id_puesto, descripcion, es_administrativo, puesto, salario_maximo, salario_minimo, usuario_requerido)
-	   VALUES      (9, 'Descripción del puesto', 1 , 'Auxiliar Contable', 1000, 360, 0);
-INSERT INTO puestos(id_puesto, descripcion, es_administrativo, puesto, salario_maximo, salario_minimo, usuario_requerido)
-	   VALUES      (10, 'Descripción del puesto', 1 , 'Secretaria', 1000, 360, 0);
-INSERT INTO puestos(id_puesto, descripcion, es_administrativo, puesto, salario_maximo, salario_minimo, usuario_requerido)
-	   VALUES      (11, 'Descripción del puesto', 0 , 'Programador', 1000, 360, 0);
-INSERT INTO puestos(id_puesto, descripcion, es_administrativo, puesto, salario_maximo, salario_minimo, usuario_requerido)
-	   VALUES      (12, 'Descripción del puesto', 1 , 'Soporte técnico', 1000, 360, 0);
-INSERT INTO puestos(id_puesto, descripcion, es_administrativo, puesto, salario_maximo, salario_minimo, usuario_requerido)
-	   VALUES      (13, 'Descripción del puesto', 1 , 'Técnico de Redes', 1000, 360, 0);
-INSERT INTO puestos(id_puesto, descripcion, es_administrativo, puesto, salario_maximo, salario_minimo, usuario_requerido)
-	   VALUES      (14, 'Descripción del puesto', 1 , 'Administrador de Bases de Datos', 1000, 360, 0);
+INSERT INTO puestos(id_puesto, descripcion, es_administrativo, puesto, puesto_habilitado, salario_maximo, salario_minimo, usuario_requerido)
+	   VALUES      (1, 'Descripción del puesto', 1 , 'Administrador Presupuestario', 1, 5000, 1200, 1);
+INSERT INTO puestos(id_puesto, descripcion, es_administrativo, puesto, puesto_habilitado, salario_maximo, salario_minimo, usuario_requerido)
+	   VALUES      (2, 'Descripción del puesto', 1 , 'Gerente de Departamento', 1 , 4000, 800, 1);
+INSERT INTO puestos(id_puesto, descripcion, es_administrativo, puesto, puesto_habilitado, salario_maximo, salario_minimo, usuario_requerido)
+	   VALUES      (3, 'Descripción del puesto', 1 , 'Jefe de planilla', 1 , 1000, 360, 1);
+INSERT INTO puestos(id_puesto, descripcion, es_administrativo, puesto, puesto_habilitado, salario_maximo, salario_minimo, usuario_requerido)
+	   VALUES      (4, 'Descripción del puesto', 1 , 'Analista Financiero', 0 , 1000, 360, 0);
+INSERT INTO puestos(id_puesto, descripcion, es_administrativo, puesto, puesto_habilitado, salario_maximo, salario_minimo, usuario_requerido)
+	   VALUES      (5, 'Descripción del puesto', 0 , 'Analista de Sistemas', 1 , 1000, 360, 0);
+INSERT INTO puestos(id_puesto, descripcion, es_administrativo, puesto, puesto_habilitado, salario_maximo, salario_minimo, usuario_requerido)
+	   VALUES      (6, 'Descripción del puesto', 1 , 'Auxiliar de planilla', 1 , 1000, 360, 1);
+INSERT INTO puestos(id_puesto, descripcion, es_administrativo, puesto, puesto_habilitado, salario_maximo, salario_minimo, usuario_requerido)
+	   VALUES      (7, 'Descripción del puesto', 0 , 'Asesor Legal', 0 , 1000, 360, 0);
+INSERT INTO puestos(id_puesto, descripcion, es_administrativo, puesto, puesto_habilitado, salario_maximo, salario_minimo, usuario_requerido)
+	   VALUES      (8, 'Descripción del puesto', 1 , 'Contador', 1 , 1000, 360, 0);
+INSERT INTO puestos(id_puesto, descripcion, es_administrativo, puesto, puesto_habilitado, salario_maximo, salario_minimo, usuario_requerido)
+	   VALUES      (9, 'Descripción del puesto', 1 , 'Auxiliar Contable', 1 , 1000, 360, 0);
+INSERT INTO puestos(id_puesto, descripcion, es_administrativo, puesto, puesto_habilitado, salario_maximo, salario_minimo, usuario_requerido)
+	   VALUES      (10, 'Descripción del puesto', 1 , 'Secretaria', 1 , 1000, 360, 0);
+INSERT INTO puestos(id_puesto, descripcion, es_administrativo, puesto, puesto_habilitado, salario_maximo, salario_minimo, usuario_requerido)
+	   VALUES      (11, 'Descripción del puesto', 0 , 'Programador', 1 , 1000, 360, 0);
+INSERT INTO puestos(id_puesto, descripcion, es_administrativo, puesto, puesto_habilitado, salario_maximo, salario_minimo, usuario_requerido)
+	   VALUES      (12, 'Descripción del puesto', 1 , 'Soporte técnico', 1 , 1000, 360, 0);
+INSERT INTO puestos(id_puesto, descripcion, es_administrativo, puesto, puesto_habilitado, salario_maximo, salario_minimo, usuario_requerido)
+	   VALUES      (13, 'Descripción del puesto', 1 , 'Técnico de Redes', 1 , 1000, 360, 0);
+INSERT INTO puestos(id_puesto, descripcion, es_administrativo, puesto, puesto_habilitado, salario_maximo, salario_minimo, usuario_requerido)
+	   VALUES      (14, 'Descripción del puesto', 1 , 'Administrador de Bases de Datos', 1 , 1000, 360, 0);
 
 /*PROFESIONES*/
 INSERT INTO profesiones(id_profesion, profesion, es_profesion, profesion_habilitada) VALUES (1, 'Ingeniero en Sistemas Informáticos', 1, 1);

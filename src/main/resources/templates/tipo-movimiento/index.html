@@ -27,6 +27,8 @@
 		<input type="hidden" id="store" th:value="${store_success}">
 		<input type="hidden" id="update" th:value="${update_success}">
 		<input type="hidden" id="delete" th:value="${delete_success}">
+		<input type="hidden" id="enable" th:value="${enable_success}">
+		<input type="hidden" id="disable" th:value="${disable_success}">
 		
 		<div class="row ml-3 mr-3">
 			<div class="col-md-12 ">
@@ -67,20 +69,34 @@
 									<td>	
 												 
 				                        <div class="btn-group">
-				                          <button type="button" class="btn btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown">
+				                          <button type="button" class="btn btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown" title="Click para ver opciones">
 				                          	<span>Accion</span>
 				                          </button>
 				                          <div class="dropdown-menu">
 				                          
-				                            <a class="dropdown-item" href="#" th:href="@{'/tipo-movimiento/form-tipo-movimiento/'+${tipoMovimiento.idMovimiento} + ''}">
+				                            <a class="dropdown-item" href="#" title="Editar Tipo de Movimiento"
+				                            	th:href="@{'/tipo-movimiento/form-tipo-movimiento/'+${tipoMovimiento.idMovimiento} + ''}">
 												<i class="far fa-edit mr-3"></i>Editar
 											</a>
 				                            
-				                            <button class="dropdown-item" title="Eliminar"
+				                            <button class="dropdown-item" title="Eliminar Tipo de Movimiento"
 				                             th:attr="data-idTipoMovimiento=${tipoMovimiento.IdMovimiento}, data-movimiento=${tipoMovimiento.movimiento}" 
 												onclick="activateModalDestroy(this)">
 												<i class="far fa-trash-alt mr-3" ></i> Eliminar
 											</button>
+											
+											<button th:if="${tipoMovimiento.tipoMovimientoHabilitado}" class="dropdown-item" title="Deshabilitar Tipo de Movimiento"
+                                           		th:attr="data-idTipoMovimiento=${tipoMovimiento.idMovimiento}, data-movimiento=${tipoMovimiento.movimiento}" 
+                                           		onclick="activateModalDisable(this)">
+											<i class="fas fa-lock mr-3"></i> Deshabilitar
+											</button>
+											
+											<button th:unless="${tipoMovimiento.tipoMovimientoHabilitado}" class="dropdown-item" title="Habilitar Tipo de Movimiento"
+												th:attr="data-idTipoMovimiento=${tipoMovimiento.idMovimiento}, data-movimiento=${tipoMovimiento.movimiento}"
+                                           		onclick="activateModalEnable(this)">
+												<i class="fas fa-unlock mr-3"></i> Habilitar
+											</button>
+											
 				                          </div>
 				                        </div>
 										
@@ -112,7 +128,7 @@
 		</div>
 		
 		<!-- MODALS -->
-		<!-- Modal para Confirmar Eliminacion de Puesto -->
+		<!-- Modal para Confirmar Eliminacion de Tipo de Movimiento -->
 		<div class="modal" id="tipoMovimientoModalDestroy" tabindex="-1" role="dialog">
 		  <div class="modal-dialog" role="document">
 		    <div class="modal-content">
@@ -137,6 +153,58 @@
 			      </div>
 			      <div class="modal-footer">
 			        <button type="submit" id="submitEliminacion" class="btn btn-danger">Confirmar</button>
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+			      </div>
+		      </form>
+		    </div>
+		  </div>
+		</div>
+		
+		<!-- Modal para Confirmar Habilitar Tipo de Movimiento -->
+		<div class="modal" id="tipoMovimientoModalEnable" tabindex="-1" role="dialog">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title">Habilitar tipo de movimiento</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <form method="post" action="#" th:action="@{/tipo-movimiento/enable}">
+			      <div class="modal-body">
+			        <div class="form-group">
+					    <div id="divMessageEnable"></div>
+					    <input type="hidden" class="form-control" id="idTipoMovimientoInputEnable" name="idTipoMovimientoEnable" value="">				
+					</div>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="submit" id="submitEnable" class="btn btn-info">Confirmar</button>
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+			      </div>
+		      </form>
+		    </div>
+		  </div>
+		</div>
+		
+		<!-- Modal para Confirmar Desabilitar Tipo de Movimiento -->
+		<div class="modal" id="tipoMovimientoModalDisable" tabindex="-1" role="dialog">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title">Deshabilitar tipo de movimiento</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <form method="post" action="#" th:action="@{/tipo-movimiento/disable}">
+			      <div class="modal-body">
+			        <div class="form-group">
+					    <div id="divMessageDisable"></div>
+					    <input type="hidden" class="form-control" id="idTipoMovimientoInputDisable" name="idTipoMovimientoDisable" value="">				
+					</div>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="submit" id="submitDisable" class="btn btn-danger">Confirmar</button>
 			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
 			      </div>
 		      </form>
