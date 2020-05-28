@@ -296,10 +296,10 @@ public class EmpleadoController {
         
         /*-------------------------CÓDIGO PARA AGREGAR ROLES AL EMPLEADO-------------------*/
         List<Rol> user_roles = new ArrayList();
-        List<Rol> available_roles = rolService.getAllRoles();
-        Set<Rol> user_roles_hash= new HashSet<Rol>();
-        user_roles_hash.addAll(e.getUsuario().getRoles());
-        user_roles.addAll(user_roles_hash);
+        List<Rol> available_roles = new ArrayList();
+        
+        user_roles = rolService.getUserRoles(e.getUsuario().getIdUsuario());
+        available_roles = rolService.getAvailableRoles(e.getUsuario().getIdUsuario());
         /*------------------FIN DEL CÓDIGO PARA AGREGAR ROLES AL EMPLEADO-------------------*/
         
         mav.addObject("empleado", e);
@@ -314,7 +314,7 @@ public class EmpleadoController {
         
         /*-------------------------CÓDIGO PARA AGREGAR ROLES AL EMPLEADO-------------------*/
         mav.addObject("available_roles", available_roles);
-        //mav.addObject("user_roles", user_roles.retainAll(rolService.getAllRoles())); //removeAll(user_roles));
+        mav.addObject("user_roles", user_roles);
         /*------------------FIN DEL CÓDIGO PARA AGREGAR ROLES AL EMPLEADO-------------------*/
         
         return mav;

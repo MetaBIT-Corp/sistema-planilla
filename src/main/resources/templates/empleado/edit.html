@@ -126,7 +126,7 @@
                                 <br>
                                 <div class="card card-default">
                                   <div class="card-header">
-                                    <h3 class="card-title">Roles Disponibles</h3>
+                                    <h3 class="card-title">Asignación de Roles</h3>
 
                                     <div class="card-tools">
                                       <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
@@ -141,6 +141,9 @@
                                           <select class="duallistbox" multiple="multiple" name="roles[]">
                                             <div th:each="ar : ${available_roles}">
                                                 <option th:value="${ar.idRol}" th:text="${ar.authority}">No hay roles</option>
+                                            </div>
+                                            <div th:each="ur : ${user_roles}">
+                                                <option th:value="${ur.idRol}" th:text="${ur.authority}" selected>No hay roles</option>
                                             </div>
                                           </select>
                                         </div>

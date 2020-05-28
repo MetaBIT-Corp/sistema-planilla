@@ -8,4 +8,6 @@ public interface RolService {
 	
 	public abstract List<Rol> getAllRoles();
 	public abstract Rol getByIdRol(Integer idRol);
+	public abstract List<Rol> getAvailableRoles(int id_usuario);
+	public abstract List<Rol> getUserRoles(int id_usuario);
 }

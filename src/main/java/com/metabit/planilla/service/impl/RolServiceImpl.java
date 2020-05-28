@@ -28,9 +28,17 @@ public class RolServiceImpl implements RolService{
 		// TODO Auto-generated method stub
 		return rolJpaRepository.findByIdRol(idRol);
 	}
-	
-	
-	
-	
+
+	@Override
+	public List<Rol> getAvailableRoles(int id_usuario) {
+		// TODO Auto-generated method stub
+		return rolJpaRepository.findAvailableRoles(id_usuario);
+	}
+
+	@Override
+	public List<Rol> getUserRoles(int id_usuario) {
+		// TODO Auto-generated method stub
+		return rolJpaRepository.findUserRoles(id_usuario);
+	}
 	
 }

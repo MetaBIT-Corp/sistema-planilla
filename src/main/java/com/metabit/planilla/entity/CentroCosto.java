@@ -24,9 +24,9 @@ public class CentroCosto {
     @JoinColumn(name="id_unidad_organizacional")
     private UnidadOrganizacional unidadOrganizacional;
 
-    /*@ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="id_anios_laborales")
-    private AñoLaboral añoLaboral;*/
+    private AnioLaboral anioLaboral;
 
     public CentroCosto(){}
     public CentroCosto(int id_centro_costo, double presupuestoAsignado, double presupuestoDevengado, double presupuestoAnterior, UnidadOrganizacional unidadOrganizacional) {
@@ -76,4 +76,12 @@ public class CentroCosto {
     public void setUnidadOrganizacional(UnidadOrganizacional unidadOrganizacional) {
         this.unidadOrganizacional = unidadOrganizacional;
     }
+	public AnioLaboral getAnioLaboral() {
+		return anioLaboral;
+	}
+	public void setAnioLaboral(AnioLaboral anioLaboral) {
+		this.anioLaboral = anioLaboral;
+	}
+    
+    
 }
