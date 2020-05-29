@@ -29,13 +29,9 @@ public class UnidadOrganizacional {
     @JoinColumn(name="id_sub_unidad_organizacional")
     private UnidadOrganizacional unidadPadre;
 
-    //Eliminar cuando ya este la otra entidad
-    @Column(name = "id_tipo_unidad_organizacional",nullable = true)
-    private int tipoUnidadOrganizacional;
-
-    /*@ManyToOne
+    @ManyToOne
     @JoinColumn(name="id_tipo_unidad_organizacional")
-    private TipoUnidadOrganizacional tipoUnidadOrganizacional;*/
+    private TipoUnidadOrganizacional tipoUnidadOrganizacional;
 
     public UnidadOrganizacional(){}
     public UnidadOrganizacional(int idUnidadOrganizacional, String unidadOrganizacional, List<UnidadOrganizacional> subunidades, List<CentroCosto> centroCostos, UnidadOrganizacional unidadPadre) {
@@ -46,11 +42,11 @@ public class UnidadOrganizacional {
         this.unidadPadre = unidadPadre;
     }
 
-    public int getTipoUnidadOrganizacional() {
+    public TipoUnidadOrganizacional getTipoUnidadOrganizacional() {
         return tipoUnidadOrganizacional;
     }
 
-    public void setTipoUnidadOrganizacional(int tipoUnidadOrganizacional) {
+    public void setTipoUnidadOrganizacional(TipoUnidadOrganizacional tipoUnidadOrganizacional) {
         this.tipoUnidadOrganizacional = tipoUnidadOrganizacional;
     }
 

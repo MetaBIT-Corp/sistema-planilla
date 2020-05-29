@@ -487,7 +487,8 @@
                     $("#divCasada").attr("hidden", "hidden")
                 }
             });
-        });/*Funcion para activar zona de usuario segun puesto*/
+        });
+        /*Funcion para activar zona de usuario segun puesto*/
         $("#puestos_select").on('change', function () {
             var idPuesto = $(this).val();
             $.get('/api/required-user/' + idPuesto, function (data) {

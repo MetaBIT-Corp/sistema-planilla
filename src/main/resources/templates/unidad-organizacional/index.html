@@ -49,8 +49,8 @@
                         <tr th:each="uo: ${unidades}">
                             <td><span th:text="${uo.unidadOrganizacional}"></span></td>
                             <td><span th:text="${uo.unidadPadre==null} ? 'Ninguna' : ${uo.unidadPadre.unidadOrganizacional}"></span></td>
-                            <!--<td><span th:text="${uo.tipoUnidadOrganizacional.tipoUnidadOrganizacional}"></span></td>-->
-                            <td><span th:text="${'Tipo Unidad '+uo.tipoUnidadOrganizacional}"></span></td>
+                            <td><span th:text="${uo.tipoUnidadOrganizacional.tipoUnidadOrganizacional}"></span></td>
+
                             <td class="text-center text-white">
                                 <a class="btn btn-info btn-sm" title="Ver Unidad Organizacional">
                                     <i class="fas fa-eye"></i>

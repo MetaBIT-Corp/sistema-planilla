@@ -209,22 +209,28 @@ insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, monto_base, 
 insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, monto_base, movimiento, porcentaje_movimiento, tipo_movimiento_habilitado)
 						values	(5, 0, 0, 500.00 , 'Bono', 0, 1);
 
+--TIPO UNIDAD
+insert into tipos_unidad_organizacional values(500,1,'Gerencias',1);
+insert into tipos_unidad_organizacional values(501,2,'Departamentos',1);
+insert into tipos_unidad_organizacional values(502,3,'Areas',1);
+insert into tipos_unidad_organizacional values(503,4,'Seciones',1);
+
 --Unidades organizacionales
-insert into unidades_organizacionales values(500,100,'Gerencia General',null);
-insert into unidades_organizacionales values(501,101,'Departamento de RRHH',500);
-insert into unidades_organizacionales values(502,101,'Departamento de Ventas',500);
-insert into unidades_organizacionales values(503,101,'Departamento de Informatica',500);
-insert into unidades_organizacionales values(504,101,'Departamento de Administrativo',500);
-insert into unidades_organizacionales values(505,101,'Departamento Financiero',500);
-insert into unidades_organizacionales values(506,102,'Area de Tecnologias de Informacion',503);
-insert into unidades_organizacionales values(507,102,'Area de Desarrollo de Software',503);
-insert into unidades_organizacionales values(508,102,'Area de Redes Informaticas',503);
-insert into unidades_organizacionales values(509,103,'Seccion de Testing/QA',507);
-insert into unidades_organizacionales values(510,103,'Seccion de Desarrolladores Backend',507);
-insert into unidades_organizacionales values(511,103,'Seccion de Desarrolladores Frontend',507);*/
+insert into unidades_organizacionales values(500,'Gerencia General',500,null);
+insert into unidades_organizacionales values(501,'Departamento de RRHH',501,500);
+insert into unidades_organizacionales values(502,'Departamento de Ventas',501,500);
+insert into unidades_organizacionales values(503,'Departamento de Informatica',501,500);
+insert into unidades_organizacionales values(504,'Departamento de Administrativo',501,500);
+insert into unidades_organizacionales values(505,'Departamento Financiero',501,500);
+insert into unidades_organizacionales values(506,'Area de Tecnologias de Informacion',502,503);
+insert into unidades_organizacionales values(507,'Area de Desarrollo de Software',502,503);
+insert into unidades_organizacionales values(508,'Area de Redes Informaticas',502,503);
+insert into unidades_organizacionales values(509,'Seccion de Testing/QA',503,507);
+insert into unidades_organizacionales values(510,'Seccion de Desarrolladores Backend',503,507);
+insert into unidades_organizacionales values(511,'Seccion de Desarrolladores Frontend',503,507);
 
 --Empleado Puesto Unidad
-/*insert into empleados_puestos_unidades	(id_empleado_puesto_unidad, id_empleado, id_puesto,id_unidad_organizacional)
+insert into empleados_puestos_unidades	(id_empleado_puesto_unidad, id_empleado, id_puesto,id_unidad_organizacional)
 								 values (100, 300, 1,501);
 insert into empleados_puestos_unidades	(id_empleado_puesto_unidad, id_empleado, id_puesto,id_unidad_organizacional)
 								 values (101, 301, 2,502);
