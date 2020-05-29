@@ -181,7 +181,6 @@ insert into estados_civiles values(5,'Union Libre');
 
 
 --Empleados
-
 insert into empleados(ID_EMPLEADO,APELLIDO_CASADA,APELLIDO_MATERNO,APELLIDO_PATERNO,CODIGO,CORREO_INSTITUCIONAL,CORREO_PERSONAL,EMPLEADO_HABILITADO,ES_ADMINISTRATIVO,FECHA_NACIMIENTO,HORAS_TRABAJO,NOMBRE_PRIMERO,NOMBRE_SEGUNDO,SALARIO_BASE_MENSUAL,ID_DIRECCION,ID_ESTADO_CIVIL,ID_GENERO,ID_USUARIO) 
 values(300,null,'Lopez','Estupinian','EL16002','el16002@metabit.tech.sv','el16002@gmail.com',1,0,'28-JUN-97',20,'Ricardo','Bladimir',2000,78,1,1,5);
 
@@ -222,10 +221,74 @@ insert into unidades_organizacionales values(507,102,'Area de Desarrollo de Soft
 insert into unidades_organizacionales values(508,102,'Area de Redes Informaticas',503);
 insert into unidades_organizacionales values(509,103,'Seccion de Testing/QA',507);
 insert into unidades_organizacionales values(510,103,'Seccion de Desarrolladores Backend',507);
-insert into unidades_organizacionales values(511,103,'Seccion de Desarrolladores Frontend',507);
+insert into unidades_organizacionales values(511,103,'Seccion de Desarrolladores Frontend',507);*/
 
 --Empleado Puesto Unidad
-insert into empleados_puestos_unidades	(id_empleado_puesto_unidad, id_empleado, id_puesto,id_unidad_organizacional)
+/*insert into empleados_puestos_unidades	(id_empleado_puesto_unidad, id_empleado, id_puesto,id_unidad_organizacional)
 								 values (100, 300, 1,501);
 insert into empleados_puestos_unidades	(id_empleado_puesto_unidad, id_empleado, id_puesto,id_unidad_organizacional)
 								 values (101, 301, 2,502);
+
+/*---------------------TIPO UNIDAD ORGANIZACIONAL------------------*/
+INSERT ALL
+  INTO TIPOS_UNIDAD_ORGANIZACIONAL VALUES(100, 1, 'Departamento', 1)
+  INTO TIPOS_UNIDAD_ORGANIZACIONAL VALUES(101, 2, 'Área', 1)
+  INTO TIPOS_UNIDAD_ORGANIZACIONAL VALUES(102, 3, 'Sección', 1)
+SELECT * FROM DUAL;
+
+/*----------------------ANIO LABORAL----------------------*/
+INSERT INTO anios_laborales VALUES(100, 2020, 30);
+
+/*----------------------PERIODO----------------------*/
+INSERT ALL 
+  INTO PERIODOS VALUES(100, 0, '01/01/20', '30/01/20', 100)
+  INTO PERIODOS VALUES(101, 0, '01/02/20', '28/02/20', 100)
+  INTO PERIODOS VALUES(102, 0, '01/03/20', '30/03/20', 100)
+  INTO PERIODOS VALUES(103, 0, '01/04/20', '30/04/20', 100)
+  INTO PERIODOS VALUES(104, 0, '01/05/20', '30/05/20', 100)
+  INTO PERIODOS VALUES(105, 1, '01/06/20', '30/06/20', 100)
+  INTO PERIODOS VALUES(106, 0, '01/07/20', '30/07/20', 100)
+  INTO PERIODOS VALUES(107, 0, '01/08/20', '30/08/20', 100)
+  INTO PERIODOS VALUES(108, 0, '01/09/20', '30/09/20', 100)
+  INTO PERIODOS VALUES(109, 0, '01/10/20', '30/10/20', 100)
+  INTO PERIODOS VALUES(110, 0, '01/11/20', '30/11/20', 100)
+  INTO PERIODOS VALUES(111, 0, '01/12/20', '30/12/20', 100)
+SELECT * FROM DUAL;
+
+/*----------------------PLANILLA----------------------*/
+INSERT ALL
+  INTO PLANILLAS VALUES(100, '20/06/20', 2, 3, 100, 100, 100, 100, 900, 100, 100, 300, 105)
+  INTO PLANILLAS VALUES(101, '20/06/20', 2, 3, 100, 100, 100, 100, 900, 100, 100, 301, 105)
+SELECT * FROM DUAL;
+
+/*----------------------PLANILLA MOVIMIENTOS----------------------*/
+INSERT ALL
+  INTO PLANILLA_MOVIMIENTOS VALUES(100, 100, 1)
+  INTO PLANILLA_MOVIMIENTOS VALUES(101, 100, 2)
+  INTO PLANILLA_MOVIMIENTOS VALUES(102, 100, 3)
+  INTO PLANILLA_MOVIMIENTOS VALUES(103, 100, 4)
+  INTO PLANILLA_MOVIMIENTOS VALUES(104, 100, 5)
+  INTO PLANILLA_MOVIMIENTOS VALUES(105, 100, 1)
+  INTO PLANILLA_MOVIMIENTOS VALUES(106, 100, 2)
+  INTO PLANILLA_MOVIMIENTOS VALUES(107, 100, 3)
+  INTO PLANILLA_MOVIMIENTOS VALUES(108, 100, 4)
+  INTO PLANILLA_MOVIMIENTOS VALUES(109, 100, 5)
+SELECT * FROM DUAL;
+
+/*----------------------RANGOS RENTA----------------------*/
+INSERT ALL
+  INTO RANGOS_RENTA VALUES(100, 0, 0, 30, 0, 1, 0.01, 472.00)
+  INTO RANGOS_RENTA VALUES(101, 17.67, 472.00, 30, 10, 1, 472.01, 895.24)
+  INTO RANGOS_RENTA VALUES(102, 60.00, 895.24, 30, 20, 1, 895.25, 2038.10)
+  INTO RANGOS_RENTA VALUES(103, 288.57, 2038.10, 30, 30, 1, 2038.11, 100000)
+
+  INTO RANGOS_RENTA VALUES(104, 0, 0, 15, 0, 1, 0.01, 236.00)
+  INTO RANGOS_RENTA VALUES(105, 8.83, 236, 15, 10, 1, 236.01, 447.62)
+  INTO RANGOS_RENTA VALUES(106, 30.00, 446.62, 15, 20, 1, 447.63, 1019.05)
+  INTO RANGOS_RENTA VALUES(107, 144.28, 1019.05, 15, 30, 1, 1019.06, 100000)
+
+  INTO RANGOS_RENTA VALUES(108, 0, 0, 7, 0, 1, 0.01, 118.00)
+  INTO RANGOS_RENTA VALUES(109, 4.42, 118.00, 7, 10, 1, 118.01, 223.81)
+  INTO RANGOS_RENTA VALUES(110, 15.00, 223.81, 7, 20, 1, 223.82, 509.52)
+  INTO RANGOS_RENTA VALUES(111, 72.14, 509.52, 7, 30, 1, 509.52, 100000)
+SELECT * FROM DUAL;

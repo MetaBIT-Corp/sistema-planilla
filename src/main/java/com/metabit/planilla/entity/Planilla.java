@@ -39,6 +39,9 @@ public class Planilla {
 	@Column(name = "monto_comision")
 	private float montoComision;
 	
+	@Column(name = "total_ingresos")
+	private float totalIngresos;
+	
 	@Column(name = "total_descuentos")
 	private float totalDescuentos;
 	
@@ -73,14 +76,15 @@ public class Planilla {
 	public Planilla() {
 	}
 
-	public Planilla(int idPlanilla, Date fechaEmision, float montoVentas, float montoComision, float totalDescuentos,
-			float renta, float salarioNeto, int horasExtraDiurnas, int horasExtraNocturnas, float montoHorasExtra,
-			Empleado empleado, Periodo periodo, List<PlanillaMovimiento> planillaMovimientos) {
+	public Planilla(int idPlanilla, Date fechaEmision, float montoVentas, float montoComision, float totalIngresos,
+			float totalDescuentos, float renta, float salarioNeto, int horasExtraDiurnas, int horasExtraNocturnas,
+			float montoHorasExtra, Empleado empleado, Periodo periodo, List<PlanillaMovimiento> planillaMovimientos) {
 		super();
 		this.idPlanilla = idPlanilla;
 		this.fechaEmision = fechaEmision;
 		this.montoVentas = montoVentas;
 		this.montoComision = montoComision;
+		this.totalIngresos = totalIngresos;
 		this.totalDescuentos = totalDescuentos;
 		this.renta = renta;
 		this.salarioNeto = salarioNeto;
@@ -122,6 +126,14 @@ public class Planilla {
 
 	public void setMontoComision(float montoComision) {
 		this.montoComision = montoComision;
+	}
+
+	public float getTotalIngresos() {
+		return totalIngresos;
+	}
+
+	public void setTotalIngresos(float totalIngresos) {
+		this.totalIngresos = totalIngresos;
 	}
 
 	public float getTotalDescuentos() {

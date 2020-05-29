@@ -1,5 +1,6 @@
 package com.metabit.planilla.entity;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -28,11 +29,14 @@ public class Periodo {
 	
 	@Column(name = "fecha_inicio", nullable = false)
 	@JsonFormat(pattern="dd/MM/yy")
-	private Date fechaInicio;
+	private LocalDate fechaInicio;
 	
 	@Column(name = "fecha_final", nullable = false)
 	@JsonFormat(pattern="dd/MM/yy")
-	private Date fechaFinal;
+	private LocalDate fechaFinal;
+	
+	@Column(name = "activo", nullable = false)
+	private boolean activo;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_anio_laboral", nullable = false)
@@ -45,12 +49,13 @@ public class Periodo {
 	public Periodo() {
 	}
 
-	public Periodo(int idPeriodo, Date fechaInicio, Date fechaFinal, AnioLaboral anioLaboral,
+	public Periodo(int idPeriodo, LocalDate fechaInicio, LocalDate fechaFinal, boolean activo, AnioLaboral anioLaboral,
 			List<Planilla> planillas) {
 		super();
 		this.idPeriodo = idPeriodo;
 		this.fechaInicio = fechaInicio;
 		this.fechaFinal = fechaFinal;
+		this.activo = activo;
 		this.anioLaboral = anioLaboral;
 		this.planillas = planillas;
 	}
@@ -63,20 +68,28 @@ public class Periodo {
 		this.idPeriodo = idPeriodo;
 	}
 
-	public Date getFechaInicio() {
+	public LocalDate getFechaInicio() {
 		return fechaInicio;
 	}
 
-	public void setFechaInicio(Date fechaInicio) {
+	public void setFechaInicio(LocalDate fechaInicio) {
 		this.fechaInicio = fechaInicio;
 	}
 
-	public Date getFechaFinal() {
+	public LocalDate getFechaFinal() {
 		return fechaFinal;
 	}
 
-	public void setFechaFinal(Date fechaFinal) {
+	public void setFechaFinal(LocalDate fechaFinal) {
 		this.fechaFinal = fechaFinal;
+	}
+
+	public boolean isActivo() {
+		return activo;
+	}
+
+	public void setActivo(boolean activo) {
+		this.activo = activo;
 	}
 
 	public AnioLaboral getAnioLaboral() {
