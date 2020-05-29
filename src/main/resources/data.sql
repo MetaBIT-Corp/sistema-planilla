@@ -216,7 +216,7 @@ insert into tipos_unidad_organizacional values(502,3,'Areas',1);
 insert into tipos_unidad_organizacional values(503,4,'Seciones',1);
 
 --Unidades organizacionales
-insert into unidades_organizacionales values(500,'Gerencia General',500,null);
+insert into unidades_organizacionales(id_unidad_organizacional, unidad_organizacional, id_tipo_unidad_organizacional) values(500, 'Gerencia General', 500);
 insert into unidades_organizacionales values(501,'Departamento de RRHH',501,500);
 insert into unidades_organizacionales values(502,'Departamento de Ventas',501,500);
 insert into unidades_organizacionales values(503,'Departamento de Informatica',501,500);
@@ -234,13 +234,6 @@ insert into empleados_puestos_unidades	(id_empleado_puesto_unidad, id_empleado, 
 								 values (100, 300, 1,501);
 insert into empleados_puestos_unidades	(id_empleado_puesto_unidad, id_empleado, id_puesto,id_unidad_organizacional)
 								 values (101, 301, 2,502);
-
-/*---------------------TIPO UNIDAD ORGANIZACIONAL------------------*/
-INSERT ALL
-  INTO TIPOS_UNIDAD_ORGANIZACIONAL VALUES(100, 1, 'Departamento', 1)
-  INTO TIPOS_UNIDAD_ORGANIZACIONAL VALUES(101, 2, 'Área', 1)
-  INTO TIPOS_UNIDAD_ORGANIZACIONAL VALUES(102, 3, 'Sección', 1)
-SELECT * FROM DUAL;
 
 /*----------------------ANIO LABORAL----------------------*/
 INSERT INTO anios_laborales VALUES(100, 2020, 30);
@@ -263,8 +256,8 @@ SELECT * FROM DUAL;
 
 /*----------------------PLANILLA----------------------*/
 INSERT ALL
-  INTO PLANILLAS VALUES(100, '20/06/20', 2, 3, 100, 100, 100, 100, 900, 100, 100, 300, 105)
-  INTO PLANILLAS VALUES(101, '20/06/20', 2, 3, 100, 100, 100, 100, 900, 100, 100, 301, 105)
+  INTO PLANILLAS(ID_PLANILLA, TOTAL_DESCUENTOS, TOTAL_INGRESOS, ID_EMPLEADO, ID_PERIODO) VALUES(100, 90, 150, 300, 105)
+  INTO PLANILLAS(ID_PLANILLA, TOTAL_DESCUENTOS, TOTAL_INGRESOS, ID_EMPLEADO, ID_PERIODO) VALUES(101, 75, 225, 301, 105)
 SELECT * FROM DUAL;
 
 /*----------------------PLANILLA MOVIMIENTOS----------------------*/

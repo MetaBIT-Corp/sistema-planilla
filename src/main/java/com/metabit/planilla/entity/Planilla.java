@@ -29,7 +29,7 @@ public class Planilla {
 	@Column(name = "id_planilla", unique = true, nullable = false)
 	private int idPlanilla;
 	
-	@Column(name = "fecha_emision", nullable = false)
+	@Column(name = "fecha_emision")
 	@JsonFormat(pattern="dd/MM/yy")
 	private Date fechaEmision;
 	
