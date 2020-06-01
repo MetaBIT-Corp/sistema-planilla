@@ -291,3 +291,11 @@ INSERT ALL
   INTO RANGOS_RENTA VALUES(110, 15.00, 223.81, 7, 20, 1, 223.82, 509.52)
   INTO RANGOS_RENTA VALUES(111, 72.14, 509.52, 7, 30, 1, 509.52, 100000)
 SELECT * FROM DUAL;
+
+/*------------------RANGOS COMISION----------------------------*/
+
+INSERT INTO RANGOS_COMISION (id_rango_comision, venta_min, venta_max, tasa_comision, rango_comision_habilitado) VALUES (1,500.00,1000.00,0.15,1);
+INSERT INTO RANGOS_COMISION (id_rango_comision, venta_min, venta_max, tasa_comision, rango_comision_habilitado) VALUES (2,1500.00,2000.00,0.25,1);
+INSERT INTO RANGOS_COMISION (id_rango_comision, venta_min, venta_max, tasa_comision, rango_comision_habilitado) VALUES (3,2500.00,3000.00,0.35,1);
+
+
