@@ -8,4 +8,6 @@ import java.io.Serializable;
 
 @Repository("unidadOrganizacionalJpaRepository")
 public interface UnidadOrganizacionalJpaRepository extends JpaRepository<UnidadOrganizacional, Serializable> {
+
+    public abstract UnidadOrganizacional findByIdUnidadOrganizacional(int id);
 }

@@ -29,7 +29,7 @@
         <div class="col-md-12 ">
             <div class="card">
                 <div class="card-header text-right">
-                    <a th:href="@{/unidades-organizacionales/create}" type="button" class="btn btn-sm btn-primary">
+                    <a type="button" class="btn btn-sm btn-primary" id="crear_unidad_btn">
                         <i class="fas fa-plus-circle mr-1 text-white"></i>
                         <span class="text-white">Nueva Unidad Organizacional</span>
                     </a>
@@ -55,7 +55,7 @@
                                 <a class="btn btn-info btn-sm" title="Ver Unidad Organizacional">
                                     <i class="fas fa-eye"></i>
                                 </a>&nbsp;&nbsp;
-                                <a class="btn btn-primary btn-sm" title="Editar Unidad Organizacional">
+                                <a class="btn btn-primary btn-sm edit-unidad" title="Editar Unidad Organizacional" th:attr="data-id=${uo.idUnidadOrganizacional}">
                                     <i class="fas fa-pen"></i>
                                 </a>&nbsp;&nbsp;
                                 <a class="btn btn-danger btn-sm" title="Eliminar Unidad Organizacional">
@@ -79,6 +79,13 @@
             <!-- /.card -->
         </div>
     </div>
+
+    <!-- MODAL CREAR UNIDAD -->
+    <div th:insert="unidad-organizacional/create :: create_unidad"></div>
+
+    <!-- MODAL EDITAR UNIDAD -->
+    <div th:insert="unidad-organizacional/edit :: edit_unidad"></div>
+
 </div>
 
 
@@ -93,6 +100,75 @@
     <script th:src="@{/plugins/toastr/toastr.min.js}"></script>
     <!-- SweetAlert2 -->
     <script th:src="@{/plugins/sweetalert2/sweetalert2.min.js}"></script>
+
+    <script>
+        $("#crear_unidad_btn").on("click",function () {
+            $("#error").attr("hidden","hidden");
+            $("#create_modal").modal("show");
+        });
+
+        $("#btn_registrar").on("click", function () {
+
+            $.ajax({
+                type: "POST",
+                url: "/unidades-organizacionales/store",
+                data: $("#create_form").serialize(),
+                success: function (data) {
+                    $("#error").attr("hidden","hidden");
+                    $("#create_modal").modal("hide");
+                    toastr.success(data);
+                    setTimeout(function() {
+                        location.reload();
+                    },3000);
+                },
+                error: function (data){
+                    console.log(data.responseText);
+                    $("#error").removeAttr("hidden");
+                    $("#error").text(data.responseText);
+                }
+            });
+        });
+
+        $(".edit-unidad").on("click",function () {
+            var idUnidad = $(this).data("id");
+            $("#idUnidadOrganizacional").val(idUnidad);
+            $.get('/unidades-organizacionales/edit/' + idUnidad, function (data) {
+                $("#edit_nombreUnidad").val(data.result.unidadOrganizacional+"");
+                $( "#edit_tipo_unidad option:selected" ).removeAttr("selected");
+                $( "#edit_tipo_unidad option[value="+data.result.tipoUnidadOrganizacional.idTipoUnidadOrganizacional+"]").attr("selected","selected");
+                $( "#edit_unidadPadre option:selected" ).removeAttr("selected");
+                if(data.result.unidadPadre != null){
+                    $( "#edit_unidadPadre option[value="+data.result.unidadPadre.idUnidadOrganizacional+"]").attr("selected","selected");
+                }else{
+                    $( "#edit_unidadPadre option[value='-1']").attr("selected","selected");
+                }
+            });
+            $("#error_edit").attr("hidden","hidden");
+            $("#edit_unidad").modal("show");
+        });
+
+        $("#btn_actualizar").on("click", function () {
+
+            $.ajax({
+                type: "POST",
+                url: "/unidades-organizacionales/update",
+                data: $("#update_form").serialize(),
+                success: function (data) {
+                    $("#error").attr("hidden","hidden");
+                    $("#edit_unidad").modal("hide");
+                    toastr.success(data);
+                    setTimeout(function() {
+                        location.reload();
+                    },3000);
+                },
+                error: function (data){
+                    $("#error_edit").removeAttr("hidden");
+                    $("#error_edit").text(data.responseText);
+                }
+            });
+        });
+
+    </script>
 </section>
 </body>
 </html>

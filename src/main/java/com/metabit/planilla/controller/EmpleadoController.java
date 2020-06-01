@@ -754,7 +754,6 @@ public class EmpleadoController {
     public String disable(@RequestParam("id") int id) {
         Empleado e = empleadoService.findEmployeeById(id);
 
-        //FALTA HABILITAR O INHABILITAR USUARIO
         if (e.getEmpleadoHabilitado()) {
             e.setEmpleadoHabilitado(false);
 

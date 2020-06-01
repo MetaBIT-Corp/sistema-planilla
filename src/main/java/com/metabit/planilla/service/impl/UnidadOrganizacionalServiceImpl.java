@@ -23,7 +23,7 @@ public class UnidadOrganizacionalServiceImpl implements UnidadOrganizacionalServ
 
     @Override
     public UnidadOrganizacional getOneUnidadOrganizacional(int id) {
-        return unidadOrganizacionalJpaRepository.getOne(id);
+        return unidadOrganizacionalJpaRepository.findByIdUnidadOrganizacional(id);
     }
 
     @Override

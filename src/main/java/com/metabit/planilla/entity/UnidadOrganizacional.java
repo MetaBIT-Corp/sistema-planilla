@@ -1,5 +1,7 @@
 package com.metabit.planilla.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -18,18 +20,20 @@ public class UnidadOrganizacional {
     private String unidadOrganizacional;
 
     //Sub Unidades
+    @JsonIgnore
     @OneToMany(mappedBy="unidadPadre",cascade=CascadeType.ALL)
     private List<UnidadOrganizacional> subunidades=new ArrayList<>();
 
     //Centros de costos
+    @JsonIgnore
     @OneToMany(mappedBy="unidadOrganizacional",cascade=CascadeType.ALL)
     private List<CentroCosto> centroCostos=new ArrayList<>();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="id_sub_unidad_organizacional")
     private UnidadOrganizacional unidadPadre;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="id_tipo_unidad_organizacional")
     private TipoUnidadOrganizacional tipoUnidadOrganizacional;
 
