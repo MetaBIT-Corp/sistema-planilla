@@ -3,6 +3,7 @@ package com.metabit.planilla.repository;
 import java.io.Serializable;
 import java.util.List;
 
+import com.metabit.planilla.entity.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,4 +17,5 @@ public interface EmpleadoJpaRepository extends JpaRepository<Empleado,Serializab
 	public abstract Empleado findByCodigo(String codigo);
 	public abstract Empleado findByCorreoInstitucional(String correo);
 	public abstract Empleado findByCorreoPersonal(String correo);
+	public abstract Empleado findByUsuario(Usuario usuario);
 }
