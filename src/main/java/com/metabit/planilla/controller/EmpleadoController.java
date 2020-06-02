@@ -340,7 +340,7 @@ public class EmpleadoController {
         Empleado empleado = empleadoService.findEmployeeById(Integer.parseInt(allParams.get("idEmpleado")));//Validacion de usuario campos requeridos
 
         //Validacion de usuario campos requeridos por si no posee usuario
-        if(puesto.isUsuarioRequerido()) {
+        if(puesto.isUsuarioRequerido() && empleado.getUsuario() == null) {
             if (allParams.get("username").isEmpty() || allParams.get("password").isEmpty()) {
                 mensajes.put("error_user", "Error en la seccion Usuario de Empleado. Llenar campos requeridos.");
             }else{
@@ -407,7 +407,7 @@ public class EmpleadoController {
                 usuario = userJpaRepository.save(usuario);
                 empleado.setUsuario(usuario);
             }else{
-                empleado.getUsuario().setEnabled(Boolean.parseBoolean(allParams.get("enabled")) ? false : true);
+                empleado.getUsuario().setEnabled(Boolean.parseBoolean(allParams.get("enabled")) ? true : false);
             }
         }
 
