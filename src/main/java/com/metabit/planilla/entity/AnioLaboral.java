@@ -28,7 +28,7 @@ public class AnioLaboral {
 	@Column(name = "anio_laboral", unique = true, nullable = false)
 	private int anioLaboral;
 	
-	@Column(name = "periodicidad", unique = true, nullable = false)
+	@Column(name = "periodicidad", nullable = false)
 	private int periodicidad;
 	
 	@OneToMany(mappedBy = "anioLaboral", fetch = FetchType.EAGER)

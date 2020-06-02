@@ -2,7 +2,6 @@ package com.metabit.planilla.entity;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -42,7 +41,7 @@ public class Periodo {
 	@JoinColumn(name = "id_anio_laboral", nullable = false)
 	private AnioLaboral anioLaboral;
 	
-	@OneToMany(mappedBy = "periodo", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "periodo", fetch = FetchType.LAZY)
 	@JsonIgnore
     private List<Planilla> planillas =  new ArrayList<>();
 
