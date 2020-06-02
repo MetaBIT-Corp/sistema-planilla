@@ -58,7 +58,7 @@
                                 <a class="btn btn-primary btn-sm edit-unidad" title="Editar Unidad Organizacional" th:attr="data-id=${uo.idUnidadOrganizacional}">
                                     <i class="fas fa-pen"></i>
                                 </a>&nbsp;
-                                <a class="btn btn-danger btn-sm" title="Eliminar Unidad Organizacional">
+                                <a class="btn btn-danger btn-sm delete_btn" title="Eliminar Unidad Organizacional" th:attr="data-id=${uo.idUnidadOrganizacional}">
                                     <i class="far fa-trash-alt"></i>
                                 </a>&nbsp;
                                 <a class="btn btn-warning btn-sm text-dark" title="Asignar Presupuesto" th:if="${rolPresupuesto == true}">
@@ -94,6 +94,29 @@
     <!-- MODAL EDITAR UNIDAD -->
     <div th:insert="unidad-organizacional/edit :: edit_unidad"></div>
 
+    <!-- MODAL ELIMINAR UNIDAD -->
+    <div class="modal" id="delete_modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Eliminar Unidad Organizacional</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                    <div class="modal-body">
+                        <form id="delete_form">
+                            <input type="text" name="id_unidad_delete" hidden id="id_unidad_delete">
+                        </form>
+                        ¿Desea eliminar la unidad organizacional seleccionada? Si la unidad posee subunidades la eliminacion no sera posible.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="delete" class="btn btn-danger">Eliminar</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 
@@ -127,7 +150,7 @@
                     toastr.success(data);
                     setTimeout(function() {
                         location.reload();
-                    },3000);
+                    },2000);
                 },
                 error: function (data){
                     console.log(data.responseText);
@@ -167,7 +190,7 @@
                     toastr.success(data);
                     setTimeout(function() {
                         location.reload();
-                    },3000);
+                    },2000);
                 },
                 error: function (data){
                     $("#error_edit").removeAttr("hidden");
@@ -176,6 +199,32 @@
             });
         });
 
+        $(".delete_btn").on("click", function () {
+            var id = $(this).data("id");
+            $("#id_unidad_delete").val(id);
+            $("#delete_modal").modal("show");
+            $("#delete").on("click", function () {
+                $.ajax({
+                    type: "POST",
+                    url: "/unidades-organizacionales/delete",
+                    data: $("#delete_form").serialize(),
+                    success: function (data) {
+                        $("#delete_modal").modal("hide");
+                        toastr.success(data);
+                        setTimeout(function() {
+                            location.reload();
+                        },2000);
+                    },
+                    error: function (data){
+                        $("#delete_modal").modal("hide");
+                        toastr.error(data.responseText);
+                        setTimeout(function() {
+                            location.reload();
+                        },2000);
+                    }
+                });
+            });
+        });
     </script>
 </section>
 </body>
