@@ -19,7 +19,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.metabit.planilla.entity.Rol;
-import com.metabit.planilla.entity.RolesRecursosPrivilegios;
+import com.metabit.planilla.entity.RolRecursoPrivilegio;
 import com.metabit.planilla.entity.Usuario;
 import com.metabit.planilla.repository.UserJpaRepository;
 
@@ -47,9 +47,9 @@ public class UserServiceImpl implements UserDetailsService{
 		List<GrantedAuthority>  auths = new ArrayList<GrantedAuthority>();
 		
 		for(Rol r:roles) {
-			List<RolesRecursosPrivilegios> rolesRecursosPrivilegios = r.getRolesRecursosPrivilegios();
+			List<RolRecursoPrivilegio> rolesRecursosPrivilegios = r.getRolesRecursosPrivilegios();
 			String authority="";
-			for(RolesRecursosPrivilegios rrp:rolesRecursosPrivilegios) {
+			for(RolRecursoPrivilegio rrp:rolesRecursosPrivilegios) {
 				authority=rrp.getRecurso().getRecurso()+"_"+rrp.getPrivilegio().getPrivilegio();
 				auths.add(new SimpleGrantedAuthority(authority));
 			}

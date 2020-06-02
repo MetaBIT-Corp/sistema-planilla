@@ -11,7 +11,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "roles_recursos_privilegios")
-public class RolesRecursosPrivilegios {
+public class RolRecursoPrivilegio {
 	
 	@Id
 	@GeneratedValue
@@ -30,9 +30,9 @@ public class RolesRecursosPrivilegios {
 	@JoinColumn(name="id_rol", nullable = false)
 	private Rol rol;
 	
-	public RolesRecursosPrivilegios() {}
+	public RolRecursoPrivilegio() {}
 
-	public RolesRecursosPrivilegios(Integer idRolRecursoPrivilegio, Privilegio privilegio, Recurso recurso, Rol rol) {
+	public RolRecursoPrivilegio(Integer idRolRecursoPrivilegio, Privilegio privilegio, Recurso recurso, Rol rol) {
 		super();
 		this.idRolRecursoPrivilegio = idRolRecursoPrivilegio;
 		this.privilegio = privilegio;
