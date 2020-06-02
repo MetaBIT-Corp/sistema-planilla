@@ -37,8 +37,12 @@ public class Rol {
 	
 	public Rol() {}
 
-	public Rol(Integer idRol, String authority, Set<Usuario> usuarios,
-			List<RolesRecursosPrivilegios> rolesRecursosPrivilegios) {
+	public Rol(Integer idRol, String authority) {
+		this.idRol = idRol;
+		this.authority = authority;
+	}
+
+	public Rol(Integer idRol, String authority, Set<Usuario> usuarios, List<RolesRecursosPrivilegios> rolesRecursosPrivilegios) {
 		super();
 		this.idRol = idRol;
 		this.authority = authority;

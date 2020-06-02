@@ -31,8 +31,12 @@ public class Privilegio {
 	
 	public Privilegio() {}
 
-	public Privilegio(Integer idPrivilegio, String privilegio,
-			List<RolesRecursosPrivilegios> rolesRecursosPrivilegios) {
+	public Privilegio(Integer idPrivilegio, String privilegio) {
+		this.idPrivilegio = idPrivilegio;
+		this.privilegio = privilegio;
+	}
+
+	public Privilegio(Integer idPrivilegio, String privilegio, List<RolesRecursosPrivilegios> rolesRecursosPrivilegios) {
 		super();
 		this.idPrivilegio = idPrivilegio;
 		this.privilegio = privilegio;
