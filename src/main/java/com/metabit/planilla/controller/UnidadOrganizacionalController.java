@@ -57,7 +57,6 @@ public class UnidadOrganizacionalController {
     //@PreAuthorize("hasAuthority('UNIDAD_INDEX')")
     @GetMapping("/index")
     public ModelAndView index(Model model) {
-
         ModelAndView mav = new ModelAndView(INDEX_VIEW);
         Usuario usuario = getUserLogueado();
 
@@ -81,9 +80,7 @@ public class UnidadOrganizacionalController {
         if (rolGerente) {
             Empleado empleado = empleadoService.findByUsuario(usuario);
             mav.addObject("unidades",
-                    unidadOrganizacionalService.getAllHijas(
-                            empleado.getEmpleadosPuestosUnidades().getUnidadOrganizacional()
-                    )
+                    empleado.getEmpleadosPuestosUnidades().getUnidadOrganizacional().getSubunidades()
             );
         } else {
             mav.addObject("unidades", unidadOrganizacionalService.getAllUnidadesOrganizacionales());
@@ -207,4 +204,16 @@ public class UnidadOrganizacionalController {
         Usuario usuario = userJpaRepository.findByUsername(userDetail.getUsername());
         return usuario;
     }
+
+    @PostMapping("/delete")
+    public ResponseEntity<?> delete(@RequestParam(name = "id_unidad_delete", required = true) int id) {
+        UnidadOrganizacional uo = unidadOrganizacionalService.getOneUnidadOrganizacional(id);
+        if(uo.getSubunidades().size()!=0){
+           return  new ResponseEntity<>("No puede ser eliminada, posee SUBUNIDADES.",HttpStatus.BAD_REQUEST);
+        }else{
+            unidadOrganizacionalService.deleteUnidad(uo);
+        }
+        return new ResponseEntity<>("Se elimino la unidad correctamente.", HttpStatus.OK);
+    }
+
 }
