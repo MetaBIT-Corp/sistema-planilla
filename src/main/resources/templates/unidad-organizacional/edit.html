@@ -24,7 +24,7 @@
                                 <input type="text" name="unidadOrganizacional" class="form-control" id="edit_nombreUnidad" placeholder="Nombre unidad organizacional">
                             </div>
                         </div>
-                        <div class="form-group row" th:if="${rolAdmin==true}">
+                        <div class="form-group row" th:if="${jefeUnidad==false}">
                             <label for="edit_unidadPadre" class="col-sm-4 col-form-label"><strong>Unidad padre</strong></label>
                             <div class="col-sm-8">
                                 <select id="edit_unidadPadre" class="form-control" name="idUnidadPadre">
