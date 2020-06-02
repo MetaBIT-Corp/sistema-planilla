@@ -2,6 +2,7 @@ package com.metabit.planilla.service;
 
 import com.metabit.planilla.entity.Empleado;
 import com.metabit.planilla.entity.Genero;
+import com.metabit.planilla.entity.Usuario;
 
 import java.util.List;
 
@@ -15,4 +16,5 @@ public interface EmpleadoService {
     public abstract Boolean existEmployeeCode(String codigo,int idEmp);
     public abstract Boolean existInstitucionalEmail(String correo,int idEmp);
     public abstract Boolean existPersonalEmail(String correo,int idEmp);
+    public abstract Empleado findByUsuario (Usuario usuario);
 }

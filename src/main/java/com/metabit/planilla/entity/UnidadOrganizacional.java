@@ -3,7 +3,6 @@ package com.metabit.planilla.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +29,7 @@ public class UnidadOrganizacional {
     private List<CentroCosto> centroCostos=new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="id_sub_unidad_organizacional")
+    @JoinColumn(name="id_unidad_organizacional_padre")
     private UnidadOrganizacional unidadPadre;
 
     @ManyToOne(fetch = FetchType.EAGER)

@@ -51,15 +51,23 @@
                             <td><span th:text="${uo.unidadPadre==null} ? 'Ninguna' : ${uo.unidadPadre.unidadOrganizacional}"></span></td>
                             <td><span th:text="${uo.tipoUnidadOrganizacional.tipoUnidadOrganizacional}"></span></td>
 
-                            <td class="text-center text-white">
+                            <td class="text-center text-white" th:if="${rolGerente == true or rolAdmin == true}">
                                 <a class="btn btn-info btn-sm" title="Ver Unidad Organizacional">
                                     <i class="fas fa-eye"></i>
-                                </a>&nbsp;&nbsp;
+                                </a>&nbsp;
                                 <a class="btn btn-primary btn-sm edit-unidad" title="Editar Unidad Organizacional" th:attr="data-id=${uo.idUnidadOrganizacional}">
                                     <i class="fas fa-pen"></i>
-                                </a>&nbsp;&nbsp;
+                                </a>&nbsp;
                                 <a class="btn btn-danger btn-sm" title="Eliminar Unidad Organizacional">
                                     <i class="far fa-trash-alt"></i>
+                                </a>&nbsp;
+                                <a class="btn btn-warning btn-sm text-dark" title="Asignar Presupuesto" th:if="${rolPresupuesto == true}">
+                                    <i class="far fa-dollar-sign"></i>
+                                </a>
+                            </td>
+                            <td class="text-center text-white" th:if="${rolPresupuesto == true and rolAdmin ==false and rolGerente == false}">
+                                <a class="btn btn-warning btn-sm text-dark" title="Asignar Presupuesto">
+                                    <i class="fas fa-dollar-sign"></i>
                                 </a>
                             </td>
                         </tr>
