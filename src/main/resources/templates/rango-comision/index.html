@@ -8,15 +8,20 @@
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   
+    <!-- SweetAlert2 -->
+  	<link rel="stylesheet" th:href="@{/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css}">
+	<!-- Toastr -->
+  	<link rel="stylesheet" th:href="@{/plugins/toastr/toastr.min.css}">
+  	
 </head>
 
 <body>
 	
-	<h1 class="m-0 text-dark" layout:fragment="titulo_seccion">Rangos de Comision</h1>
+	<h1 class="m-0 text-dark" layout:fragment="titulo_seccion">Rangos de Comisión</h1>
 
 	<ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
         <li class="breadcrumb-item"><a th:href="@{/index}">Home</a></li>
-        <li class="breadcrumb-item active">Rango Comision</li>
+        <li class="breadcrumb-item active">Rango Comisión</li>
     </ol>
 
 	<div layout:fragment="content">
@@ -30,7 +35,7 @@
 	            <div class="card-header text-right">
 		            <button class="btn btn-md btn-primary" title="Agregar Rango Comision" data-toggle="modal" data-target="#">
 						<i class="fas fa-plus-circle mr-1 text-white"></i>
-						<span class="text-white">Nuevo Rango Comision</span>
+						<span class="text-white">Nuevo Rango Comisión</span>
 					</button>
 	              <h3 class="card-title"></h3>
 	            </div>
@@ -39,17 +44,17 @@
 	              <table id="example1" class="table table-bordered table-striped">
 	                <thead>
 	                <tr>
-	                  <th>Venta Minima</th>
-	                  <th>Venta Maxima</th>
-	                  <th>Tasa de Comision</th>
+	                  <th>Venta Mínima</th>
+	                  <th>Venta Máxima</th>
+	                  <th>Tasa de Comisión</th>
 					  <th>Acciones</th>
 	                </tr>
 	                </thead>
 	                <tbody>
-	                <tr th:each="rangosComision: ${rangoComision}">
+	                <tr th:each="rangoComision: ${rangosComision}">
 	                  <td><span th:text="'$' + ${#numbers.formatDecimal(rangoComision.ventaMin, 0, 'COMMA', 2, 'POINT')}"></span></td>
 	                  <td><span th:text="'$' + ${#numbers.formatDecimal(rangoComision.ventaMax, 0, 'COMMA', 2, 'POINT')}"></span></td>
-	                  <td><span th:text="${rangoComision.tasaComision} + '%'"></span></td>
+	                  <td><span th:text="${rangoComision.tasaComision*100} + '%'"></span></td>
 						<td>						
 							<button class="btn btn-sm btn-primary" style="text-decoration: none; color: white;"
 									title="Editar">
@@ -70,16 +75,16 @@
 	                
 	                <tr th:if="${#lists.isEmpty(rangosComision)}">
 	                	<td colspan="4">
-	                		No hay Rangos de Comision actualmente.
+	                		No hay Rangos de Comisión actualmente.
 	                	</td>
 	                </tr>
 	                              
 	                </tbody>
 	                <tfoot>
 	                <tr>
-	                  <th>Venta Minima</th>
-	                  <th>Venta Maxima</th>
-	                  <th>Tasa de Comision</th>
+	                  <th>Venta Mínima</th>
+	                  <th>Venta Máxima</th>
+	                  <th>Tasa de Comisión</th>
 					  <th>Acciones</th>
 	                </tr>
 	                </tfoot>
@@ -97,7 +102,7 @@
 		  <div class="modal-dialog" role="document">
 		    <div class="modal-content">
 		      <div class="modal-header">
-		        <h5 class="modal-title">Eliminar Rango Comision</h5>
+		        <h5 class="modal-title">Eliminar Rango Comisión</h5>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		          <span aria-hidden="true">&times;</span>
 		        </button>
@@ -137,17 +142,39 @@
 		<script type="text/javascript">
 		
 			function activateModalDestroy(param){
+				
+			 var formatter = new Intl.NumberFormat('en-US', {
+				  style: 'currency',
+				  currency: 'USD',
+				});	
 			  
 			  var idRangoComision = $(param).attr("data-idRangoComision");
 			  var ventaMin = $(param).attr("data-ventaMin");
 			  var ventaMax = $(param).attr("data-ventaMax");
 			  var tasaComision = $(param).attr("data-tasaComision");
-			  document.getElementById("divMessage").innerHTML = "<p>Esta seguro que desea eliminar el rango comision: <b>min=</b>$"+ ventaMin + ", <b>max=</b>$"+ ventaMax + ", <b>tasa=</b>"+ tasaComision +"?</p>";
+			  document.getElementById("divMessage").innerHTML = "<p>¿Esta seguro que desea eliminar el rango comisión: <b>min=</b>"+ formatter.format(ventaMin) + ", <b>max=</b>"+ formatter.format(ventaMax) + ", <b>tasa=</b>"+ tasaComision*100 +"%?</p>";
 			  
 			  $("#idRangoComisionInputDestroy").val(idRangoComision);
 			  
 			  $("#rangoComisionModalDestroy").modal();
 		 	 }
+			
+			$(function () {
+			    $("#example2").DataTable({
+			      "responsive": true,
+			      "autoWidth": false,
+			    });
+			    $('#example1').DataTable({
+			      "paging": true,
+			      "lengthChange": false,
+			      "searching": true,
+			      "ordering": true,
+			      "info": true,
+			      "autoWidth": false,
+			      "responsive": true,
+			      "pageLength": 5,
+			    });
+			  });
 		
 		</script>
 				
@@ -161,7 +188,7 @@
 			  },3000);
 			  
 			  if(delete_success === 'true'){
-				 toastr.error("Rango de Comision Eliminado"); 
+				 toastr.error("Rango de Comisión Eliminado"); 
 			  }
 			
 			});

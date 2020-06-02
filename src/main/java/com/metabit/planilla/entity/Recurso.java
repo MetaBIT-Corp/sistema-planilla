@@ -31,6 +31,11 @@ public class Recurso {
 	
 	public Recurso() {}
 
+	public Recurso(Integer idRecurso, String recurso) {
+		this.idRecurso = idRecurso;
+		this.recurso = recurso;
+	}
+
 	public Recurso(Integer idRecurso, String recurso, List<RolesRecursosPrivilegios> rolesRecursosPrivilegios) {
 		super();
 		this.idRecurso = idRecurso;

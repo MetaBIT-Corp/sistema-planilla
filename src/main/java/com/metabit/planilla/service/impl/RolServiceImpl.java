@@ -40,5 +40,20 @@ public class RolServiceImpl implements RolService{
 		// TODO Auto-generated method stub
 		return rolJpaRepository.findUserRoles(id_usuario);
 	}
-	
+
+	@Override
+	public Rol storeRol(Rol rol) {
+		return null;
+	}
+
+	@Override
+	public Rol updateRol(Rol rol) {
+		return null;
+	}
+
+	@Override
+	public void deleteRol(int idRol) {
+
+	}
+
 }
