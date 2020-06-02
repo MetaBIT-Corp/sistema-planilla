@@ -50,6 +50,9 @@ public class Puesto {
 	@Column(name = "es_administrativo")
 	private boolean esAdministrativo;
 	
+	@Column(name = "puesto_habilitado")
+	private boolean puestoHabilitado;
+	
 	//Relación que permite obtener los registros de la tabla empleados_puestos_unidades, donde el puesto ha sido asignado
 	@OneToMany(mappedBy = "puesto", fetch = FetchType.EAGER)
 	@JsonIgnore
@@ -62,7 +65,8 @@ public class Puesto {
 	public Puesto(
 			@NotNull @Size(min = 1, max = 250, message = "El titulo es obligatorio* (máximo de 250 caracteres)") String puesto,
 			@NotNull @Min(300) double salarioMinimo, @NotNull @Min(300) double salarioMaximo,
-			@Size(min = 0, max = 250) String descripcion, boolean usuarioRequerido, boolean esAdministrativo) {
+			@Size(min = 0, max = 250) String descripcion, boolean usuarioRequerido, boolean esAdministrativo,
+			boolean puestoHabilitado) {
 		super();
 		this.puesto = puesto;
 		this.salarioMinimo = salarioMinimo;
@@ -70,12 +74,14 @@ public class Puesto {
 		this.descripcion = descripcion;
 		this.usuarioRequerido = usuarioRequerido;
 		this.esAdministrativo = esAdministrativo;
+		this.puestoHabilitado = puestoHabilitado;
 	}
 
 	public Puesto(int idPuesto,
 			@NotNull @Size(min = 1, max = 250, message = "El titulo es obligatorio* (máximo de 250 caracteres)") String puesto,
 			@NotNull @Min(300) double salarioMinimo, @NotNull @Min(300) double salarioMaximo,
-			@Size(min = 0, max = 250) String descripcion, boolean usuarioRequerido, boolean esAdministrativo) {
+			@Size(min = 0, max = 250) String descripcion, boolean usuarioRequerido, boolean esAdministrativo,
+			boolean puestoHabilitado) {
 		super();
 		this.idPuesto = idPuesto;
 		this.puesto = puesto;
@@ -84,6 +90,7 @@ public class Puesto {
 		this.descripcion = descripcion;
 		this.usuarioRequerido = usuarioRequerido;
 		this.esAdministrativo = esAdministrativo;
+		this.puestoHabilitado = puestoHabilitado;
 	}
 
 	public int getIdPuesto() {
@@ -149,12 +156,20 @@ public class Puesto {
 	public void setEpu(List<EmpleadosPuestosUnidades> epu) {
 		this.epu = epu;
 	}
+	
+	public boolean isPuestoHabilitado() {
+		return puestoHabilitado;
+	}
+
+	public void setPuestoHabilitado(boolean puestoHabilitado) {
+		this.puestoHabilitado = puestoHabilitado;
+	}
 
 	@Override
 	public String toString() {
 		return "Puesto [idPuesto=" + idPuesto + ", puesto=" + puesto + ", salarioMinimo=" + salarioMinimo
 				+ ", salarioMaximo=" + salarioMaximo + ", descripcion=" + descripcion + ", usuarioRequerido="
-				+ usuarioRequerido + ", esAdministrativo=" + esAdministrativo + "]";
-	}
-	
+				+ usuarioRequerido + ", esAdministrativo=" + esAdministrativo + ", puestoHabilitado=" + puestoHabilitado
+				+ ", epu=" + epu + "]";
+	}	
 }

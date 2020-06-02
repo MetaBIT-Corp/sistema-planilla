@@ -1,13 +1,6 @@
 package com.metabit.planilla.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -18,9 +11,8 @@ public class EmpleadosPuestosUnidades {
 	@GeneratedValue
 	@Column(name = "id_empleado_puesto_unidad", nullable = false)
 	private int idEmpleadoPuestoUnidad;
-	
-	@NotNull
-	@ManyToOne(fetch = FetchType.EAGER)
+
+	@OneToOne(fetch=FetchType.LAZY,optional = false)
 	@JoinColumn(name = "id_empleado", nullable = false)
 	private Empleado empleado;
 	
@@ -29,14 +21,19 @@ public class EmpleadosPuestosUnidades {
 	@JoinColumn(name = "id_puesto", nullable = false)
 	private Puesto puesto;
 
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_unidad_organizacional", nullable = false)
+	private UnidadOrganizacional unidadOrganizacional;
+
 	public EmpleadosPuestosUnidades() {
 		super();
 	}
 
-	public EmpleadosPuestosUnidades(@NotNull Empleado empleado, @NotNull Puesto puesto) {
+	public EmpleadosPuestosUnidades(@NotNull Empleado empleado, @NotNull Puesto puesto, @NotNull UnidadOrganizacional unidadOrganizacional) {
 		super();
 		this.empleado = empleado;
 		this.puesto = puesto;
+		this.unidadOrganizacional = unidadOrganizacional;
 	}
 
 	public EmpleadosPuestosUnidades(int idEmpleadoPuestoUnidad, @NotNull Empleado empleado, @NotNull Puesto puesto) {
@@ -44,6 +41,14 @@ public class EmpleadosPuestosUnidades {
 		this.idEmpleadoPuestoUnidad = idEmpleadoPuestoUnidad;
 		this.empleado = empleado;
 		this.puesto = puesto;
+	}
+
+	public UnidadOrganizacional getUnidadOrganizacional() {
+		return unidadOrganizacional;
+	}
+
+	public void setUnidadOrganizacional(UnidadOrganizacional unidadOrganizacional) {
+		this.unidadOrganizacional = unidadOrganizacional;
 	}
 
 	public int getIdEmpleadoPuestoUnidad() {

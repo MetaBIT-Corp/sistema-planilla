@@ -29,6 +29,7 @@ public class Rol {
 	private String authority;
 	
 	@ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
+	@JsonIgnore
 	private Set<Usuario> usuarios = new HashSet<Usuario>();
 	
 	@OneToMany(mappedBy = "rol", fetch = FetchType.EAGER)

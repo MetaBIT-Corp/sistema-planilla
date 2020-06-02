@@ -2,6 +2,7 @@ package com.metabit.planilla.service.impl;
 
 import com.metabit.planilla.entity.Empleado;
 import com.metabit.planilla.entity.Genero;
+import com.metabit.planilla.entity.Usuario;
 import com.metabit.planilla.repository.EmpleadoJpaRepository;
 import com.metabit.planilla.service.EmpleadoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,5 +81,10 @@ public class EmpleadoServiceImpl implements EmpleadoService {
                 return true;
             }
         }
+    }
+
+    @Override
+    public Empleado findByUsuario(Usuario usuario) {
+        return empleadoJpaRepository.findByUsuario(usuario);
     }
 }

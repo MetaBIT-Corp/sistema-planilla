@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layouts/layout}">
+
+<head>
+
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" th:href="@{/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css}">
+    <!-- Toastr -->
+    <link rel="stylesheet" th:href="@{/plugins/toastr/toastr.min.css}">
+
+</head>
+
+<body>
+
+<h1 class="ml-4 text-dark" layout:fragment="titulo_seccion">Unidades Organizacionales</h1>
+
+<ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
+    <li class="breadcrumb-item"><a th:href="@{/index}">Home</a></li>
+</ol>
+
+<div layout:fragment="content">
+    <div class="row ml-3 mr-3">
+
+        <div class="col-md-12 ">
+            <div class="card">
+                <div class="card-header text-right">
+                    <a type="button" class="btn btn-sm btn-primary" id="crear_unidad_btn">
+                        <i class="fas fa-plus-circle mr-1 text-white"></i>
+                        <span class="text-white">Nueva Unidad Organizacional</span>
+                    </a>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <table id="example1" class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th>Nombre Unidad Organizacional</th>
+                            <th>Unidad Organizacional Padre</th>
+                            <th>Tipo de Unidad Organizacional</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="uo: ${unidades}">
+                            <td><span th:text="${uo.unidadOrganizacional}"></span></td>
+                            <td><span th:text="${uo.unidadPadre==null} ? 'Ninguna' : ${uo.unidadPadre.unidadOrganizacional}"></span></td>
+                            <td><span th:text="${uo.tipoUnidadOrganizacional.tipoUnidadOrganizacional}"></span></td>
+
+                            <td class="text-center text-white" th:if="${rolGerente == true or rolAdmin == true}">
+                                <a class="btn btn-info btn-sm" title="Ver Unidad Organizacional">
+                                    <i class="fas fa-eye"></i>
+                                </a>&nbsp;
+                                <a class="btn btn-primary btn-sm edit-unidad" title="Editar Unidad Organizacional" th:attr="data-id=${uo.idUnidadOrganizacional}">
+                                    <i class="fas fa-pen"></i>
+                                </a>&nbsp;
+                                <a class="btn btn-danger btn-sm" title="Eliminar Unidad Organizacional">
+                                    <i class="far fa-trash-alt"></i>
+                                </a>&nbsp;
+                                <a class="btn btn-warning btn-sm text-dark" title="Asignar Presupuesto" th:if="${rolPresupuesto == true}">
+                                    <i class="far fa-dollar-sign"></i>
+                                </a>
+                            </td>
+                            <td class="text-center text-white" th:if="${rolPresupuesto == true and rolAdmin ==false and rolGerente == false}">
+                                <a class="btn btn-warning btn-sm text-dark" title="Asignar Presupuesto">
+                                    <i class="fas fa-dollar-sign"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <th>Nombre Unidad Organizacional</th>
+                            <th>Unidad Organizacional Padre</th>
+                            <th>Tipo de Unidad Organizacional</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
+
+    <!-- MODAL CREAR UNIDAD -->
+    <div th:insert="unidad-organizacional/create :: create_unidad"></div>
+
+    <!-- MODAL EDITAR UNIDAD -->
+    <div th:insert="unidad-organizacional/edit :: edit_unidad"></div>
+
+</div>
+
+
+<section layout:fragment="scripts">
+    <!-- DataTables -->
+    <script th:src="@{/plugins/datatables/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
+    <script th:src="@{/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
+    <script th:src="@{/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
+    <script th:src="@{/js/datatable/datatable.js}"></script>
+    <!-- Toastr -->
+    <script th:src="@{/plugins/toastr/toastr.min.js}"></script>
+    <!-- SweetAlert2 -->
+    <script th:src="@{/plugins/sweetalert2/sweetalert2.min.js}"></script>
+
+    <script>
+        $("#crear_unidad_btn").on("click",function () {
+            $("#error").attr("hidden","hidden");
+            $("#create_modal").modal("show");
+        });
+
+        $("#btn_registrar").on("click", function () {
+
+            $.ajax({
+                type: "POST",
+                url: "/unidades-organizacionales/store",
+                data: $("#create_form").serialize(),
+                success: function (data) {
+                    $("#error").attr("hidden","hidden");
+                    $("#create_modal").modal("hide");
+                    toastr.success(data);
+                    setTimeout(function() {
+                        location.reload();
+                    },3000);
+                },
+                error: function (data){
+                    console.log(data.responseText);
+                    $("#error").removeAttr("hidden");
+                    $("#error").text(data.responseText);
+                }
+            });
+        });
+
+        $(".edit-unidad").on("click",function () {
+            var idUnidad = $(this).data("id");
+            $("#idUnidadOrganizacional").val(idUnidad);
+            $.get('/unidades-organizacionales/edit/' + idUnidad, function (data) {
+                $("#edit_nombreUnidad").val(data.result.unidadOrganizacional+"");
+                $( "#edit_tipo_unidad option:selected" ).removeAttr("selected");
+                $( "#edit_tipo_unidad option[value="+data.result.tipoUnidadOrganizacional.idTipoUnidadOrganizacional+"]").attr("selected","selected");
+                $( "#edit_unidadPadre option:selected" ).removeAttr("selected");
+                if(data.result.unidadPadre != null){
+                    $( "#edit_unidadPadre option[value="+data.result.unidadPadre.idUnidadOrganizacional+"]").attr("selected","selected");
+                }else{
+                    $( "#edit_unidadPadre option[value='-1']").attr("selected","selected");
+                }
+            });
+            $("#error_edit").attr("hidden","hidden");
+            $("#edit_unidad").modal("show");
+        });
+
+        $("#btn_actualizar").on("click", function () {
+
+            $.ajax({
+                type: "POST",
+                url: "/unidades-organizacionales/update",
+                data: $("#update_form").serialize(),
+                success: function (data) {
+                    $("#error").attr("hidden","hidden");
+                    $("#edit_unidad").modal("hide");
+                    toastr.success(data);
+                    setTimeout(function() {
+                        location.reload();
+                    },3000);
+                },
+                error: function (data){
+                    $("#error_edit").removeAttr("hidden");
+                    $("#error_edit").text(data.responseText);
+                }
+            });
+        });
+
+    </script>
+</section>
+</body>
+</html>
