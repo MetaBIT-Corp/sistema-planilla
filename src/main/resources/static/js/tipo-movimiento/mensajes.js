@@ -1,4 +1,5 @@
 $(document).ready(function(){
+	  
   var store = $('#store').val();
   var update = $('#update').val();
   var delet = $('#delete').val();

@@ -1,0 +1,28 @@
+{
+  "homepage": "https://www.basicprimitives.com/",
+  "author": "Basic Primitives Inc. <support@basicprimitives.com> (https://www.basicprimitives.com)",
+  "license": "SEE LICENSE IN license.pdf",
+  "scripts": {
+    "src.primitives.merge": "node merge.js src.primitives\\src.primitives.json",
+    "src.primitives.compile": "npx google-closure-compiler --js=min\\primitives.latest.js --js_output_file=min\\primitives.min.js",
+    "src.primitives.jquery.merge": "node merge.js src.primitives.jquery\\src.primitives.jquery.json",
+    "src.primitives.jquery.compile": "npx google-closure-compiler --js=min\\primitives.jquery.latest.js --js_output_file=min\\primitives.jquery.min.js",
+    "src.tests.merge": "node merge.js src.tests\\src.tests.json",
+    "merge": "yarn src.primitives.merge && yarn src.primitives.compile && yarn src.primitives.jquery.merge && yarn src.primitives.jquery.compile && yarn src.tests.merge",
+    "apireference": "node apireference.js apireference.json",
+    "screenshots": "node screenshots.js",
+    "eslint": "./node_modules/.bin/eslint ./min/primitives.latest.js"
+  },
+  "dependencies": {
+    "google-closure-compiler": "^20200112.0.0",
+    "puppeteer": "^1.20.0"
+  },
+  "description": "Basic Primitives Diagrams for JavaScript - data visualization components library that implements organizational chart and multi-parent dependency diagrams, contains implementations of JavaScript Controls and PDF rendering plugins.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BasicPrimitives/javascript"
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0"
+  }
+}

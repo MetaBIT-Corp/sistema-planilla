@@ -70,6 +70,9 @@ INSERT ALL INTO RECURSOS VALUES(1, 'EMPLEADO')
 		   INTO	RECURSOS VALUES(6, 'PROFESION')
 		   INTO	RECURSOS VALUES(7, 'TIPOMOVIMIENTO')
 		   INTO	RECURSOS VALUES(8, 'UNIDADORGANIZACIONAL')
+		   INTO	RECURSOS VALUES(9, 'UNIDADORGANIZACIONAL_JEFE')
+		   INTO	RECURSOS VALUES(10, 'PRESUPUESTO')
+		   INTO	RECURSOS VALUES(11, 'RANGO_COMISION')
 SELECT * FROM DUAL;
 
 INSERT ALL INTO ROLES VALUES(1, 'ROLE_ADMIN')
@@ -133,7 +136,28 @@ INSERT ALL INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(1,1,1,1)
   		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(47,3,7,3)
   		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(48,4,7,3)
 
-  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(49,1,8,6)
+  		   /*ROL JEFE UNIDAD, RECURSO UNIDADORGANIZACIONAL_JEFE*/
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(49,1,9,6)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(50,2,9,6)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(51,3,9,6)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(52,4,9,6)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(53,5,9,6)
+
+  		   /*ROL PRESUPUESTO, SOLO SE TIENE EL PRIVILEGIO EDIT*/
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(54,2,10,4)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(55,1,10,4)
+
+  		   /*AGREGANDO PRIVILEGIOS AL ROL ADMIN PARA UNIDAD ORGANIZACIONAL*/
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(56,1,8,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(57,2,8,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(58,3,8,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(59,4,8,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(60,5,8,1)
+
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(61,1,11,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(62,2,11,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(63,3,11,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(64,4,11,1)
 
 SELECT * FROM DUAL;
 
@@ -203,22 +227,24 @@ insert into empleados_profesiones(ID_EMPLEADO_PROFESION, ID_EMPLEADO, ID_PROFESI
 
 
 --Tipos Movimiento
-insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, monto_base, movimiento, porcentaje_movimiento, tipo_movimiento_habilitado)
-						values	(1, 1, 1, 0.00, 'Impuesto sobre la Renta', 0, 1);
-insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, monto_base, movimiento, porcentaje_movimiento, tipo_movimiento_habilitado)
-						values	(2, 1, 1, 0.00, 'ISSS', 7.25 , 1);
-insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, monto_base, movimiento, porcentaje_movimiento, tipo_movimiento_habilitado)
-						values	(3, 1, 1, 0.00, 'AFP', 3 , 1);
-insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, monto_base, movimiento, porcentaje_movimiento, tipo_movimiento_habilitado)
-						values	(4, 0, 0, 0.00, 'Aguinaldo', 70 , 1);
-insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, monto_base, movimiento, porcentaje_movimiento, tipo_movimiento_habilitado)
-						values	(5, 0, 0, 500.00 , 'Bono', 0, 1);
+insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, es_patronal, monto_base, monto_maximo, movimiento, porcentaje_movimiento, tipo_movimiento_habilitado)
+						values	(1, 1, 1, 0, 0.00, 1000.00, 'ISSS Empleado', 3.00 , 1);
+insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, es_patronal, monto_base, monto_maximo, movimiento, porcentaje_movimiento, tipo_movimiento_habilitado)
+						values	(2, 1, 1, 1, 0.00, 1000.00, 'ISSS Patronal', 7.50 , 1);
+insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, es_patronal, monto_base, monto_maximo, movimiento, porcentaje_movimiento, tipo_movimiento_habilitado)
+						values	(3, 1, 1, 0, 0.00, 6500.00, 'AFP Empleado', 6.25 , 1);
+insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, es_patronal, monto_base, monto_maximo, movimiento, porcentaje_movimiento, tipo_movimiento_habilitado)
+						values	(4, 1, 1, 1, 0.00, 6500.00, 'AFP Patronal', 6.75 , 1);
+insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, es_patronal, monto_base, monto_maximo, movimiento, porcentaje_movimiento, tipo_movimiento_habilitado)
+						values	(5, 1, 1, 1, 0.00, 1000.00, 'INSAFORP', 1.00, 1);
+insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, es_patronal, monto_base, monto_maximo, movimiento, porcentaje_movimiento, tipo_movimiento_habilitado)
+						values	(6, 0, 0, 0, 50.00, 0.00, 'Bono navideño', 0.00, 1);
 
 --TIPO UNIDAD
 insert into tipos_unidad_organizacional values(500,1,'Gerencias',1);
 insert into tipos_unidad_organizacional values(501,2,'Departamentos',1);
 insert into tipos_unidad_organizacional values(502,3,'Areas',1);
-insert into tipos_unidad_organizacional values(503,4,'Seciones',1);
+insert into tipos_unidad_organizacional values(503,4,'Secciones',1);
 
 --Unidades organizacionales
 insert into unidades_organizacionales(id_unidad_organizacional, unidad_organizacional, id_tipo_unidad_organizacional) values(500, 'Gerencia General', 500);
@@ -234,19 +260,33 @@ insert into unidades_organizacionales values(509,'Seccion de Testing/QA',503,507
 insert into unidades_organizacionales values(510,'Seccion de Desarrolladores Backend',503,507);
 insert into unidades_organizacionales values(511,'Seccion de Desarrolladores Frontend',503,507);
 
+/*----------------------ANIO LABORAL----------------------*/
+INSERT INTO anios_laborales VALUES(100, 2018, 30);
+INSERT INTO anios_laborales VALUES(101, 2019, 30);
+INSERT INTO anios_laborales VALUES(102, 2020, 30);
+
+
+insert into centros_costos values(500,0.0,0.0,0.0,102,500);
+insert into centros_costos values(501,0.0,0.0,0.0,102,501);
+insert into centros_costos values(502,0.0,0.0,0.0,102,502);
+insert into centros_costos values(503,0.0,0.0,0.0,102,503);
+insert into centros_costos values(504,0.0,0.0,0.0,102,504);
+insert into centros_costos values(505,0.0,0.0,0.0,102,505);
+insert into centros_costos values(506,0.0,0.0,0.0,102,506);
+insert into centros_costos values(507,0.0,0.0,0.0,102,507);
+insert into centros_costos values(508,0.0,0.0,0.0,102,508);
+insert into centros_costos values(509,0.0,0.0,0.0,102,509);
+insert into centros_costos values(510,0.0,0.0,0.0,102,510);
+insert into centros_costos values(511,0.0,0.0,0.0,102,511);
 --Empleado Puesto Unidad
 insert into empleados_puestos_unidades	(id_empleado_puesto_unidad, id_empleado, id_puesto,id_unidad_organizacional)
 								 values (100, 300, 1,501);
 insert into empleados_puestos_unidades	(id_empleado_puesto_unidad, id_empleado, id_puesto,id_unidad_organizacional)
 								 values (101, 301, 2,502);
 
-/*----------------------ANIO LABORAL----------------------*/
-INSERT INTO anios_laborales VALUES(100, 2018, 30);
-INSERT INTO anios_laborales VALUES(101, 2019, 30);
-INSERT INTO anios_laborales VALUES(102, 2020, 30);
 
 /*----------------------PERIODO----------------------*/
-INSERT ALL 
+/*INSERT ALL
   INTO PERIODOS VALUES(100, 0, '01/01/18', '30/01/18', 100)
   INTO PERIODOS VALUES(101, 0, '01/02/18', '28/02/18', 100)
   INTO PERIODOS VALUES(102, 0, '01/03/18', '30/03/18', 100)
@@ -285,16 +325,16 @@ INSERT ALL
   INTO PERIODOS VALUES(133, 0, '01/10/20', '30/10/20', 102)
   INTO PERIODOS VALUES(134, 0, '01/11/20', '30/11/20', 102)
   INTO PERIODOS VALUES(135, 0, '01/12/20', '30/12/20', 102)
-SELECT * FROM DUAL;
+SELECT * FROM DUAL;*/
 
 /*----------------------PLANILLA----------------------*/
-INSERT ALL
+/*INSERT ALL
   INTO PLANILLAS(ID_PLANILLA, TOTAL_DESCUENTOS, TOTAL_INGRESOS, ID_EMPLEADO, ID_PERIODO) VALUES(100, 90, 150, 300, 105)
   INTO PLANILLAS(ID_PLANILLA, TOTAL_DESCUENTOS, TOTAL_INGRESOS, ID_EMPLEADO, ID_PERIODO) VALUES(101, 75, 225, 301, 105)
-SELECT * FROM DUAL;
+SELECT * FROM DUAL;*/
 
 /*----------------------PLANILLA MOVIMIENTOS----------------------*/
-INSERT ALL
+/*INSERT ALL
   INTO PLANILLA_MOVIMIENTOS VALUES(100, 100, 1)
   INTO PLANILLA_MOVIMIENTOS VALUES(101, 100, 2)
   INTO PLANILLA_MOVIMIENTOS VALUES(102, 100, 3)
@@ -305,7 +345,7 @@ INSERT ALL
   INTO PLANILLA_MOVIMIENTOS VALUES(107, 100, 3)
   INTO PLANILLA_MOVIMIENTOS VALUES(108, 100, 4)
   INTO PLANILLA_MOVIMIENTOS VALUES(109, 100, 5)
-SELECT * FROM DUAL;
+SELECT * FROM DUAL;*/
 
 /*----------------------RANGOS RENTA----------------------*/
 INSERT ALL
@@ -327,7 +367,7 @@ SELECT * FROM DUAL;
 
 /*------------------RANGOS COMISION----------------------------*/
 
-INSERT INTO RANGOS_COMISION (id_rango_comision, venta_min, venta_max, tasa_comision, rango_comision_habilitado) VALUES (1,500.00,1000.00,0.15,1);
-INSERT INTO RANGOS_COMISION (id_rango_comision, venta_min, venta_max, tasa_comision, rango_comision_habilitado) VALUES (2,1500.00,2000.00,0.25,1);
-INSERT INTO RANGOS_COMISION (id_rango_comision, venta_min, venta_max, tasa_comision, rango_comision_habilitado) VALUES (3,2500.00,3000.00,0.35,1);
+INSERT INTO RANGOS_COMISION (id_rango_comision, venta_min, venta_max, tasa_comision, rango_comision_habilitado) VALUES (101,500.00,1000.00,0.15,1);
+INSERT INTO RANGOS_COMISION (id_rango_comision, venta_min, venta_max, tasa_comision, rango_comision_habilitado) VALUES (102,1500.00,2000.00,0.25,1);
+INSERT INTO RANGOS_COMISION (id_rango_comision, venta_min, venta_max, tasa_comision, rango_comision_habilitado) VALUES (103,2500.00,3000.00,0.35,1);
 

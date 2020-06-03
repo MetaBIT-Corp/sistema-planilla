@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="privilegio_modal">
+    <!-- Modal para Gestión de Privilegios -->
+    <div class="modal" id="privilegioModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="privilegioModalTitle"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <form id="privilegioForm" method="post" action="#" th:action="@{/privilegio/store}" th:object="${privilegioEntity}">
+
+                    <div class="card-body">
+                        <div class="form-group d-none">
+                            <label for="idPrivilegioInput">ID</label>
+                            <input type="text" th:field="*{idPrivilegio}" class="form-control" id="idPrivilegioInput" placeholder="ID de Privilegio">
+                        </div>
+                        <div class="form-group">
+                            <label for="privilegioInput">Nombre *</label>
+                            <input type="text" th:field="*{privilegio}" class="form-control" id="privilegioInput" placeholder="Nombre del Privilegio">
+                        </div>
+
+                        <div id="divError" class="callout callout-danger">
+                            <p class="my-0"><i class="fas fa-exclamation-circle mr-2"></i><strong>Por favor, corregir los siguientes errores:</strong></p>
+                            <ul id="ulError" class="mb-0">
+                            </ul>
+                        </div>
+
+                    </div>
+
+                    <div class="card-footer">
+                        <button type="submit" id="btnSubmitPrivilegio" class="btn btn-primary">Crear</button>
+                        <button type="button" id="btnCancelarPrivilegio" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

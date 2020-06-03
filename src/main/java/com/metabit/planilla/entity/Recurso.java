@@ -27,7 +27,7 @@ public class Recurso {
 	
 	@OneToMany(mappedBy = "recurso", fetch = FetchType.LAZY)
 	@JsonIgnore
-    private List<RolesRecursosPrivilegios> rolesRecursosPrivilegios =  new ArrayList<>();
+    private List<RolRecursoPrivilegio> rolesRecursosPrivilegios =  new ArrayList<>();
 	
 	public Recurso() {}
 
@@ -36,7 +36,7 @@ public class Recurso {
 		this.recurso = recurso;
 	}
 
-	public Recurso(Integer idRecurso, String recurso, List<RolesRecursosPrivilegios> rolesRecursosPrivilegios) {
+	public Recurso(Integer idRecurso, String recurso, List<RolRecursoPrivilegio> rolesRecursosPrivilegios) {
 		super();
 		this.idRecurso = idRecurso;
 		this.recurso = recurso;
@@ -59,11 +59,11 @@ public class Recurso {
 		this.recurso = recurso;
 	}
 
-	public List<RolesRecursosPrivilegios> getRolesRecursosPrivilegios() {
+	public List<RolRecursoPrivilegio> getRolesRecursosPrivilegios() {
 		return rolesRecursosPrivilegios;
 	}
 
-	public void setRolesRecursosPrivilegios(List<RolesRecursosPrivilegios> rolesRecursosPrivilegios) {
+	public void setRolesRecursosPrivilegios(List<RolRecursoPrivilegio> rolesRecursosPrivilegios) {
 		this.rolesRecursosPrivilegios = rolesRecursosPrivilegios;
 	}
 }

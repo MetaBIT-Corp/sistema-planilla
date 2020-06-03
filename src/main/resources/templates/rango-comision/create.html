@@ -1,0 +1,61 @@
+<div th:fragment="create_rango">
+
+    <!-- Modal para creacion de Unidad Organizacional -->
+    <div class="modal fade" id="create_modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Nueva Unidad Organizacional</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger" role="alert" id="error" hidden>
+
+                    </div>
+                    <form id="create_form" th:object="${rango}">
+
+                        <!-- Inicio Formulario-->
+                        <div class="form-group row">
+                            <input type="text" hidden id="id_rango" th:field="*{id}" th:value="${id}">
+                            <label for="ventaMin" class="col-sm-7 col-form-label"><strong>Monto venta minimo *</strong></label>
+                            <div class="col-sm-5">
+                                <input type="number" th:field="*{ventaMin}" th:value="*{ventaMin}" class="form-control" id="ventaMin" min="1" value="1" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="ventaMax" class="col-sm-7 col-form-label"><strong>Monto venta maximo *</strong></label>
+                            <div class="col-sm-5">
+                                <input type="number" th:field="*{ventaMax}" th:value="*{ventaMax}" class="form-control" id="ventaMax" min="1" value="1" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="tas" class="col-sm-7 col-form-label"><strong>Tasa comision *</strong></label>
+                            <div class="col-sm-5">
+                                <input type="number" th:field="*{tasaComision}" th:value="*{tasaComision}" class="form-control" id="tasaComision" value="0.01" min="0.01" step="0.01" max="1">
+                            </div>
+                        </div>
+                        <div class="form-group row ml-1">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="habilitado"
+                                       th:field="*{habilitado}"
+                                       th:value="${habilitado}">
+                                <label class="custom-control-label" for="habilitado">Habilitar rango comision</label>
+                                <small id="emailHelp" class="form-text text-muted">(Seleccione para habilitar rango comision. Deseleccionar para deshabilitar).</small>
+                            </div>
+                        </div>
+                        <!-- Fin Formulario-->
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btn_registrar">Guardar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- FIN MODAL -->
+
+</div>

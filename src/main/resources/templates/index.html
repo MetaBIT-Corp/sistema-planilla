@@ -7,7 +7,9 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"
+  />
 </head>
 
 <body>
@@ -19,14 +21,21 @@
         <li class="breadcrumb-item active">Planilla</li>
     </ol>
 
-	<div layout:fragment="content">
-		<div class="jumbotron">
-		  <h1 class="display-4">MetaBit Payroll System </h1>
-		  <p class="lead">MetaBit Payroll System es un proyecto de software orientado a la gestión, control y manejo de planillas de empleados, 
-		  				  de la empresa MetaBit SA de CV.</p>
-		  <hr class="my-4">
-		  <p>El proyecto es desarrollado por <i class="text-danger fa fa-heart"></i> por <a href="https://github.com/MetaBIT-Corp">MetaBit-Corp</a></p>
-		  
+	<div layout:fragment="content" >
+		
+		<div class="row mt-5">
+			<div class="animate__animated animate__bounceInUp col-md-6 ml-3 mr-3" >
+				<h1 class="display-4">MetaBit Payroll System </h1>
+				<p class="lead">
+				MetaBit Payroll System es un proyecto de software orientado a la gestión, 
+				control y manejo de planillas de empleados, de la empresa MetaBit SA de CV. 
+				</p>
+				<hr class="my-4">
+				<p>El proyecto es desarrollado por <a href="https://github.com/MetaBIT-Corp">MetaBit-Corp</a></p>
+			</div>
+			<div class="animate__animated animate__bounceInRight col-md-5 ml-3 mr-3">
+				<img alt="" th:src="@{/img/planilla.svg}" style="max-width: 100%;">
+			</div>
 		</div>
 	</div>
 	

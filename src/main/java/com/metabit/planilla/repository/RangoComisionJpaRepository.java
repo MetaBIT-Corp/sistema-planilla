@@ -9,5 +9,5 @@ import com.metabit.planilla.entity.RangoComision;
 
 @Repository("rangoComisionJpaRepository")
 public interface RangoComisionJpaRepository extends JpaRepository<RangoComision, Serializable>{
-
+    public abstract RangoComision getById(int id);
 }
