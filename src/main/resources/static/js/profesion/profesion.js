@@ -52,11 +52,11 @@ $(document).ready(function(){
 
     $('.profesionBtnVer').on('click',function () {
         var modal = $('#profesionModal');
+        modal.find('.modal-header #profesionModalTitle').text('Información de Profesión u Oficio');
         modal.find('.card-body #profesionInput').attr('disabled',true);
         modal.find('.card-body #esProfesionInput').attr('disabled',true);
         modal.find('.card-footer #btnSubmitProfesion').attr('class','d-none');
         modal.find('.card-footer #btnCancelarProfesion').text('Aceptar');
-        modal.find('.modal-header #modalTitleProfesion').text('Información de Profesión u Oficio');
     });
 
     $('#btnSubmitProfesion').click(function (e) {
@@ -81,7 +81,6 @@ $(document).ready(function(){
 
                     if($('#idProfesionInput').val()!=''){
                         window.location.href = document.location.origin + "/profesion/index?update_success=true";
-
                     }else{
                         window.location.href = document.location.origin + "/profesion/index?store_success=true";
                     }
