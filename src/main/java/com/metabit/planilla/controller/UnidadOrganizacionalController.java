@@ -55,7 +55,6 @@ public class UnidadOrganizacionalController {
     private AnioLaboralService anioLaboralService;
 
     private static final String INDEX_VIEW = "unidad-organizacional/index";
-    private static final String EDIT_VIEW = "unidad-organizacional/edit";
     private static final String SHOW_VIEW = "unidad-organizacional/show";
     private static final Log LOGGER = LogFactory.getLog(UnidadOrganizacionalController.class);
 
@@ -124,7 +123,22 @@ public class UnidadOrganizacionalController {
     @GetMapping("/show/{id}")
     public ModelAndView show(@PathVariable(value = "id", required = true) int id) {
         ModelAndView mav = new ModelAndView(SHOW_VIEW);
+        UnidadOrganizacional unidad = unidadOrganizacionalService.getOneUnidadOrganizacional(id);
+        AnioLaboral anioLaboral = anioLaboralService.getAnioLaboral(LocalDate.now().getYear());
+        CentroCosto centroCosto = centroCostoService.findByAnioAndUnidad(anioLaboral,unidad);
+        mav.addObject("unidad",unidad);
+        mav.addObject("centroCosto",centroCosto);
+        mav.addObject("anio",anioLaboral);
         return mav;
+    }
+
+    @GetMapping("/show-unidad/{id}")
+    public @ResponseBody
+    JsonResponse showUnidad(@PathVariable(value = "id", required = true) int id) {
+        JsonResponse jsonResponse = new JsonResponse();
+        UnidadOrganizacional uo = unidadOrganizacionalService.getOneUnidadOrganizacional(id);
+        jsonResponse.setResult(unidadOrganizacionalService.getAllHijas(uo));
+        return jsonResponse;
     }
 
     //Save new Unidad Organizacional
@@ -250,7 +264,4 @@ public class UnidadOrganizacionalController {
         Usuario usuario = userJpaRepository.findByUsername(userDetail.getUsername());
         return usuario;
     }
-
-
-
 }

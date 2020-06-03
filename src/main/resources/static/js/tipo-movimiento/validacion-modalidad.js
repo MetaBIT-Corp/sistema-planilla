@@ -14,31 +14,31 @@ $(document).ready(function() {
 		}
 		
 		if(porcentajemovimiento != 0){
-			console.log(porcentajemovimiento);
 			$("#modalidad").val('1');
 			$("#divpm").show();
-		}
-		
+			$("#divMontoMaximo").show();
+		}	
 	}
+});
+
+
+/* dinamica al cambiar en el selector de Modalidad
+ * 0: Monto Fijo
+ * 1: Porcentaje
+ */
+$("#modalidad").change(function(){
+	var opcion = $("#modalidad").val();
+	$("#montobase").val('0.00');
+	$("#porcentajemovimiento").val('0.00');
+	$("#montomaximo").val('0.00');
 	
-	//dinamica al cambiar en el selector
-	// 0: Monto Fijo
-	// 1: Porcentaje
-	
-	$("#modalidad").change(function(){
-		var opcion = $("#modalidad").val();
-		$("#montobase").val('0.00');
-		$("#porcentajemovimiento").val('0.00');
-		
-		if(opcion === '0'){
-			$("#divpm").hide();
-			$("#divmonto").show();
-			
-			
-		}else{
-			$("#divmonto").hide();
-			$("#divpm").show();						
-			}
-		});
-	
-	});
+	if(opcion === '0'){
+		$("#divpm").hide();
+		$("#divMontoMaximo").hide();
+		$("#divmonto").show();	
+	}else{
+		$("#divmonto").hide();
+		$("#divpm").show();
+		$("#divMontoMaximo").show();
+	}
+});
