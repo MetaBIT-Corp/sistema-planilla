@@ -43,17 +43,17 @@ public class RolServiceImpl implements RolService{
 
 	@Override
 	public Rol storeRol(Rol rol) {
-		return null;
+		return rolJpaRepository.save(rol);
 	}
 
 	@Override
 	public Rol updateRol(Rol rol) {
-		return null;
+		return rolJpaRepository.save(rol);
 	}
 
 	@Override
 	public void deleteRol(int idRol) {
-
+		rolJpaRepository.deleteById(idRol);
 	}
 
 }

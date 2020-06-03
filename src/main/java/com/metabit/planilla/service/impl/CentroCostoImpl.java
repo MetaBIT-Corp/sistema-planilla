@@ -1,6 +1,8 @@
 package com.metabit.planilla.service.impl;
 
+import com.metabit.planilla.entity.AnioLaboral;
 import com.metabit.planilla.entity.CentroCosto;
+import com.metabit.planilla.entity.UnidadOrganizacional;
 import com.metabit.planilla.repository.CentroCostoJpaRepository;
 import com.metabit.planilla.service.CentroCostoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,11 @@ public class CentroCostoImpl implements CentroCostoService {
     @Override
     public CentroCosto creatOrUpdate(CentroCosto centroCosto) {
         return centroCostoJpaRepository.save(centroCosto);
+    }
+
+    @Override
+    public CentroCosto findByAnioAndUnidad(AnioLaboral anio, UnidadOrganizacional unidad) {
+        return centroCostoJpaRepository.findByAnioLaboralAndUnidadOrganizacional(anio,unidad);
     }
 
     @Override

@@ -1,0 +1,543 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <title>JavaScript Control Dependencies Chart Demo</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+  <!-- header -->
+  <!-- # include file="../../src.primitives/src.primitives.html"-->
+  <link href="../../min/primitives.latest.css?5100" media="screen" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="../../min/primitives.min.js?5100"></script>
+  <script type="text/javascript" src="common/helpers.js"></script>
+  <script type="text/javascript" src="../data/techtree.js"></script>
+
+  <script type="text/javascript">
+    var control = null;
+    var timer;
+
+    var optionsRender = primitives.helpers.controls.getFamDiagramOptionsRender([], {
+      /* Family Diagram Specific Options */
+      neighboursSelectionMode: primitives.common.NeighboursSelectionMode.ParentsChildrenSiblingsAndSpouses,
+      groupByType: primitives.common.GroupByType.Parents,
+      alignBylevels: "true",
+      hideGrandParentsConnectors: "false",
+
+      /* On-screen annotations specific options */
+      AnnotationOptions: {
+        connectorPlacementType: primitives.common.ConnectorPlacementType.Offbeat,
+        connectorShapeType: primitives.common.ConnectorShapeType.OneWay,
+        labelPlacementType: primitives.common.ConnectorLabelPlacementType.Between,
+        lineWidth: 2,
+        lineType: primitives.common.LineType.Dashed,
+        color: primitives.common.Colors.Red,
+        offset: 5,
+        zOrderType: primitives.common.ZOrderType.Auto
+      },
+      /* Layout */
+      pageFitMode: primitives.common.PageFitMode.None,
+      orientationType: primitives.common.OrientationType.Left,
+      verticalAlignment: primitives.common.VerticalAlignmentType.Middle,
+      horizontalAlignment: primitives.common.HorizontalAlignmentType.Center,
+      childrenPlacementType: primitives.common.ChildrenPlacementType.Horizontal,
+      leavesPlacementType: primitives.common.ChildrenPlacementType.Horizontal,
+      maximumColumnsInMatrix: 6,
+      minimalVisibility: primitives.common.Visibility.Dot,
+      selectionPathMode: primitives.common.SelectionPathMode.FullStack,
+
+      hasButtons: primitives.common.Enabled.True,
+      hasSelectorCheckbox: primitives.common.Enabled.False,
+      selectCheckBoxLabel: "Pinned",
+      itemTitleFirstFontColor: primitives.common.Colors.White,
+      itemTitleSecondFontColor: primitives.common.Colors.White,
+      buttonsPanelSize: 28,
+      groupTitlePanelSize: 24,
+      checkBoxPanelSize: 24,
+
+      /* group title options */
+      groupTitlePlacementType: primitives.common.AdviserPlacementType.Left,
+      groupTitleOrientation: primitives.text.TextOrientationType.RotateRight,
+      groupTitleVerticalAlignment: primitives.common.VerticalAlignmentType.Middle,
+      groupTitleHorizontalAlignment: primitives.common.HorizontalAlignmentType.Center,
+      groupTitleFontSize: "12px",
+      groupTitleFontFamily: "Arial",
+      groupTitleColor: primitives.common.Colors.RoyalBlue,
+      groupTitleFontWeight: "normal",
+      groupTitleFontStyle: "normal",
+
+      /* Template */
+      DefaultTemplateOptions: {
+        minimizedItemCornerRadius: 6,
+        minimizedItemSize: new primitives.common.Size(6, 6),
+        highlightPadding: 3,
+        minimizedItemShapeType: primitives.common.ShapeType.None,
+        minimizedItemLineWidth: 0,
+        minimizedItemLineType: primitives.common.LineType.Solid,
+        minimizedItemBorderColor: null,
+        minimizedItemFillColor: null,
+        minimizedItemOpacity: 1.0
+      },
+
+      /* Intervals */
+      normalLevelShift: 20,
+      dotLevelShift: 12,
+      lineLevelShift: 12,
+      normalItemsInterval: 12,
+      dotItemsInterval: 12,
+      lineItemsInterval: 20,
+      cousinsIntervalMultiplier: 1,
+
+      /* Connectors */
+      arrowsDirection: primitives.common.GroupByType.Parents,
+      showExtraArrows: true,
+      extraArrowsMinimumSpace: 20,
+      connectorType: primitives.common.ConnectorType.Squared,
+      elbowType: primitives.common.ElbowType.Round,
+      bevelSize: 4,
+      elbowDotSize: 4,
+      linesType: primitives.common.LineType.Solid,
+      linesColor: primitives.common.Colors.Black,
+      linesWidth: 1,
+
+      /* Labels */
+      showLabels: primitives.common.Enabled.False,
+      labelSize: new primitives.common.Size(80, 24),
+      labelOrientation: primitives.text.TextOrientationType.Horizontal,
+      labelPlacement: primitives.common.PlacementType.Top,
+      labelOffset: 1,
+      labelFontSize: "10px",
+      labelFontFamily: "Arial",
+      labelColor: primitives.common.Colors.Black,
+      labelFontWeight: "normal",
+      labelFontStyle: "normal",
+
+      /* Callout */
+      calloutMaximumVisibility: primitives.common.Visibility.Dot,
+      showCallout: "true",
+      calloutPlacementOffset: 100,
+      calloutfillColor: "#000000",
+      calloutBorderColor: null,
+      calloutOffset: 4,
+      calloutCornerRadius: 4,
+      calloutPointerWidth: "10%",
+      calloutLineWidth: 1,
+      calloutOpacity: 0.2,
+
+      /* Interactivity */
+      navigationMode: primitives.common.NavigationMode.Default,
+      highlightGravityRadius: 40,
+      enablePanning: true,
+
+      /* Graphics */
+      graphicsType: primitives.common.GraphicsType.SVG,
+
+      scale: 1.0
+    },
+      /* On property change event handler */
+      function () {
+        control.setOptions(GetDiagramConfig());
+        control.update(primitives.common.UpdateMode.Refresh);
+      });
+
+    document.addEventListener('DOMContentLoaded', function () {
+      optionsRender.render(document.getElementById("westpanel"));
+      control = primitives.famdiagram.Control(document.getElementById("centerpanel"),
+        GetDiagramConfig()
+      );
+
+      window.addEventListener('resize', function (event) {
+        onWindowResize();
+      });
+    });
+
+    function GetDiagramConfig() {
+      var options = optionsRender.getValues();
+
+      primitives.common.mergeObjects(options, {
+        templates: [getUnitTemplate(), getCalloutUnitTemplate(), getDotTemplate()],
+        defaultTemplateName: "UnitTemplate",
+        defaultCalloutTemplateName: "CalloutUnitTemplate",
+        onItemRender: onTemplateRender,
+        arrowsDirection: primitives.common.GroupByType.Children,
+      })
+
+      primitives.common.mergeObjects(options, {
+        onCursorChanging: onCursorChanging,
+        onCursorChanged: onCursorChanged,
+        onHighlightChanging: onHighlightChanging,
+        onHighlightChanged: onHighlightChanged,
+        onSelectionChanged: onSelectionChanged
+      });
+
+      var annotations = [];
+      // Populate annotations to visualize family ordering references
+      for (var index = 0; index < famdata.length; index += 1) {
+        var item = famdata[index];
+        if (item.relativeItem != null) {
+          annotations.push({
+            annotationType: primitives.common.AnnotationType.Connector,
+            fromItem: item.id,
+            toItem: item.relativeItem,
+            label: null,
+            connectorShapeType: primitives.common.ConnectorShapeType.OneWay,
+            color: primitives.common.Colors.Blue,
+            offset: -5,
+            lineWidth: 3,
+            lineType: primitives.common.LineType.Dotted,
+            connectorPlacementType: primitives.common.ConnectorPlacementType.Straight,
+            selectItems: false
+          });
+        }
+        if (item.primaryParent != null) {
+          annotations.push({
+            annotationType: primitives.common.AnnotationType.Connector,
+            fromItem: item.id,
+            toItem: item.primaryParent,
+            label: null,
+            connectorShapeType: primitives.common.ConnectorShapeType.OneWay,
+            color: primitives.common.Colors.Red,
+            offset: -5,
+            lineWidth: 3,
+            lineType: primitives.common.LineType.Dotted,
+            connectorPlacementType: primitives.common.ConnectorPlacementType.Offbeat,
+            selectItems: false
+          });
+        }
+      }
+
+      primitives.common.mergeObjects(options, {
+        items: famdata,
+        cursorItem: 1,
+        annotations: annotations
+      }); // See dependencies.js
+
+      return options;
+    }
+
+    function getDefaultTemplate(options) {
+      var result = new primitives.orgdiagram.TemplateConfig();
+      result.name = "defaultTemplate";
+
+      // If we don't change anything in template then all its properties stays default
+      // So we change only minimized item properties
+      primitives.common.mergeObjects(result, options.DefaultTemplateOptions);
+
+      return result;
+    }
+
+    function getParentsList(data) {
+      var message = "",
+        index, len;
+
+      if (data.parentItems.length > 0) {
+        message += " Parent item <b>";
+        for (index = 0, len = data.parentItems.length; index < len; index += 1) {
+          if (index > 0) {
+            message += ", ";
+          }
+          message += "'" + data.parentItems[index].title + "'";
+        }
+        message += "</b>";
+      }
+
+      return message;
+    };
+
+    function onSelectionChanged(e, data) {
+      var selectedItems = control.getOption("selectedItems");
+      var message = "";
+      for (var index = 0; index < selectedItems.length; index += 1) {
+        var itemConfig = selectedItems[index];
+        if (message != "") {
+          message += ", ";
+        }
+        message += "<b>'" + itemConfig.title + "'</b>";
+      }
+      message += getParentsList(data);
+      document.getElementById("southpanel").innerHTML = "User selected following items: " + message;
+    }
+
+    function onHighlightChanging(e, data) {
+      var message = (data.context != null) ? "User is hovering mouse over item <b>'" + data.context.title + "'</b>." : "";
+      message += getParentsList(data);
+      document.getElementById("southpanel").innerHTML = message;
+    }
+
+    function onHighlightChanged(e, data) {
+      var message = (data.context != null) ? "User hovers mouse over item <b>'" + data.context.title + "'</b>." : "";
+      message += getParentsList(data);
+      document.getElementById("southpanel").innerHTML = message;
+    }
+
+    function onCursorChanging(e, data) {
+      var message = "User is clicking on item '" + data.context.title + "'.";
+      message += getParentsList(data);
+      updateHighlightPathAnnotations(data);
+      document.getElementById("southpanel").innerHTML = message;
+    }
+
+    function onCursorChanged(e, data) {
+      var message = "User clicked on item '" + data.context.title + "'.";
+      message += getParentsList(data);
+      document.getElementById("southpanel").innerHTML = message;
+    }
+
+    var options = optionsRender.getValues();
+    control.update(primitives.common.UpdateMode.Refresh);
+
+    function updateHighlightPathAnnotations(data) {
+      var annotations = control.getOption("annotations");
+
+      var newAnnotations = [];
+      for (var index = 0, len = annotations.length; index < len; index += 1) {
+        var annotation = annotations[index];
+        if (annotation.annotationType != primitives.common.AnnotationType.HighlightPath) {
+          newAnnotations.push(annotation);
+        }
+      }
+
+      var items = [];
+      items = items.concat(data.parentItems);
+      items = items.concat(data.childrenItems);
+      for (index = 0, len = items.length; index < len; index += 1) {
+        var parent = items[index];
+        var highlightid = data.context.id;
+        var annotation = new primitives.famdiagram.HighlightPathAnnotationConfig({
+          items: [highlightid, parent.id],
+          color: primitives.common.Colors.Navy,
+          opacity: 0.4,
+          lineWidth: 6,
+          zOrderType: primitives.common.ZOrderType.Background,
+          showArrows: false
+        });
+        newAnnotations.push(annotation);
+      }
+      control.setOptions({ annotations: newAnnotations });
+    }
+
+    function onWindowResize() {
+      if (timer == null) {
+        timer = window.setTimeout(function () {
+          control.update(primitives.orgdiagram.UpdateMode.Refresh);
+          window.clearTimeout(timer);
+          timer = null;
+        }, 300);
+      }
+    }
+
+    function onTemplateRender(event, data) {
+      var itemConfig = data.context,
+        element = data.element;
+
+      if (data.templateName == "dot") {
+        var titleBackground = element;
+        titleBackground.style.backgroundColor = itemConfig.itemTitleColor || primitives.common.Colors.RoyalBlue;
+      }
+
+      if (data.templateName == "UnitTemplate") {
+        var titleBackground = element.firstChild;
+        titleBackground.style.backgroundColor = itemConfig.itemTitleColor || primitives.common.Colors.RoyalBlue;
+
+        var title = titleBackground.firstChild;
+        title.textContent = itemConfig.title;
+      }
+
+      if (data.templateName == "CalloutUnitTemplate") {
+        var titleBackground = element.firstChild;
+        titleBackground.style.backgroundColor = itemConfig.itemTitleColor || primitives.common.Colors.RoyalBlue;
+
+        var title = element.childNodes[1];
+        title.textContent = itemConfig.title;
+
+        var description = element.childNodes[2];
+        description.textContent = itemConfig.description;
+      }
+    }
+
+    function getDotTemplate() {
+      var result = new primitives.famdiagram.TemplateConfig();
+      result.name = "dot";
+
+      result.isActive = false;
+      result.itemSize = new primitives.common.Size(8, 8);
+      result.minimizedItemSize = new primitives.common.Size(8, 8);
+      result.minimizedItemCornerRadius = 4;
+      result.minimizedItemLineWidth = 1;
+      result.minimizedItemLineType = primitives.common.LineType.Solid;
+      result.minimizedItemBorderColor = null; // Shape border line has the same color as item title background color 
+      result.minimizedItemFillColor = null; // Shape background has the same color as item title background color 
+      result.minimizedItemOpacity = 0.7; // Shape background opacity
+
+      result.itemTemplate = ["div", {
+        "style": {
+          top: "2px",
+          left: "2px",
+          width: result.itemSize.width + "px",
+          height: result.itemSize.height + "px"
+        },
+        "class": ["bp-corner-all"]
+      }];
+
+      return result;
+    }
+
+    function getUnitTemplate() {
+      var result = new primitives.famdiagram.TemplateConfig();
+      result.name = "UnitTemplate";
+
+      result.itemSize = new primitives.common.Size(164, 34);
+      result.minimizedItemSize = new primitives.common.Size(8, 8);
+      result.minimizedItemCornerRadius = 4;
+      result.minimizedItemLineWidth = 1;
+      result.minimizedItemLineType = primitives.common.LineType.Solid;
+      result.minimizedItemBorderColor = null; // Shape border line has the same color as item title background color 
+      result.minimizedItemFillColor = null; // Shape background has the same color as item title background color 
+      result.minimizedItemOpacity = 0.7; // Shape background opacity
+
+      result.itemTemplate = ["div",
+        {
+          "style": {
+            width: result.itemSize.width + "px",
+            height: result.itemSize.height + "px"
+          },
+          "class": ["bp-item", "bp-corner-all", "bt-item-frame"]
+        },
+        ["div",
+          {
+            "name": "titleBackground",
+            "class": ["bp-item", "bp-corner-all", "bp-title-frame"],
+            "style": {
+              top: "2px",
+              left: "2px",
+              width: "160px",
+              height: "30px"
+            }
+          },
+          ["div",
+            {
+              "name": "title",
+              "class": "bp-item",
+              "style": {
+                top: "2px",
+                left: "2px",
+                width: "160px",
+                height: "34px",
+                fontSize: "12px"
+              }
+            }
+          ]
+        ]
+      ];
+
+      return result;
+    }
+
+    function getCalloutUnitTemplate() {
+      var result = new primitives.famdiagram.TemplateConfig();
+      result.name = "CalloutUnitTemplate";
+
+      result.itemSize = new primitives.common.Size(320, 60);
+      result.minimizedItemSize = new primitives.common.Size(8, 8);
+      result.minimizedItemCornerRadius = 4;
+      result.minimizedItemLineWidth = 1;
+      result.minimizedItemLineType = primitives.common.LineType.Solid;
+      result.minimizedItemBorderColor = null; // Shape border line has the same color as item title background color 
+      result.minimizedItemFillColor = null; // Shape background has the same color as item title background color 
+      result.minimizedItemOpacity = 0.7; // Shape background opacity
+
+      result.itemTemplate = ["div",
+        {
+          "style": {
+            top: "2px",
+            left: "2px",
+            width: result.itemSize.width + "px",
+            height: result.itemSize.height + "px"
+          },
+          "class": ["bp-item", "bp-corner-all", "bt-item-frame"]
+        },
+        ["div",
+          {
+            "name": "titleBackground",
+            "style": {
+              top: "2px",
+              left: "2px",
+              width: "316px",
+              height: "4px"
+            },
+            "class": ["bp-item", "bp-corner-all", "bp-title-frame"]
+          }
+        ],
+        ["div",
+          {
+            name: "title",
+            "class": "bp-item",
+            "style": {
+              top: "8px",
+              left: "2px",
+              width: "312px",
+              height: "24px",
+              fontSize: "12px"
+            }
+          }
+        ],
+        ["div",
+          {
+            name: "description",
+            "class": "bp-item",
+            "style": {
+              top: "36px",
+              left: "4px",
+              width: "312px",
+              height: "36px",
+              fontSize: "10px"
+            }
+          }
+        ]
+      ];
+
+      return result;
+    }
+  </script>
+  <!-- /header -->
+</head>
+
+<body>
+  <div
+    style="position: absolute; width: 400px; left: 0px; top: 0px; bottom: 50px; padding: 0px; margin: 0px; border-style: none; font-size: 14px; overflow: scroll; -webkit-overflow-scrolling: touch;">
+    <div id="westpanel" style="padding: 5px; margin: 5px; font: normal 12px verdana, areal;">
+      <h2>Dependency Graph Visualization Demo</h2>
+      <p>On the right you may see a demo of a dependency graph. It contains around 170 nodes with some of the nodes
+        being arranged into multiple
+        explicit
+        sequences that show the evolution and order of dependency of said nodes.
+        We need to display all of the node sequences together in one hierarchy meanwhile allowing the user to see the
+        seperate individual sequences and their nodes.
+        In order to accomplish this, we can set priority for how nodes should align under their parents. In a family
+        diagram every node may have multiple parents and by default
+        aligns itself to be equally distanced from all of them. In this case however, we are intrested in having nodes
+        be closer or farther away from a specific parent.
+        This is done by giving higher priority to one of its parents. Our family diagram provides the property
+        <b>primaryParent</b>
+        which can be applied to a node. Automatically indicating that the child node or nodes should be alligned closer
+        to said parent within the hierarchy. This property is optional and doesn't
+        change any node relations,
+        so if it is applied to a non-exsisting parent then it will simply be ignored.</p>
+      <p>This alignment priority can then be used to create a full sequence, branch or chain of nodes within a grander
+        herarchy. This can be seen if you take a look at the sequence of flight related technologies starting from
+        "Subsonic flight" and ending with
+        "Cutting-Edge Aeronautics".</p>
+      <p>In the diagram red connection annotations display "primaryParent" references to enforce the hierarchy and
+        blue annotations display references enforcing the sorting of nodes within one group.</p>
+
+
+    </div>
+  </div>
+  <div id="centerpanel"
+    style="position: absolute; border-style: dotted; border-width: 0px; top: 0; right: 0; bottom: 50px; left: 400px;">
+  </div>
+  <div id="southpanel"
+    style="position: absolute; border-style: dotted; border-width: 0px; height: 50px; right: 0; bottom: 0; left: 0;">
+  </div>
+</body>
+
+</html>
