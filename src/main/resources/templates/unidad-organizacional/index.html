@@ -30,7 +30,7 @@
         <div class="col-md-12 ">
             <div class="card">
                 <div class="card-header text-right">
-                    <a type="button" class="btn btn-sm btn-primary" id="crear_unidad_btn">
+                    <a type="button" class="btn btn-sm btn-primary" id="crear_unidad_btn" th:if="${create == true}">
                         <i class="fas fa-plus-circle mr-1 text-white"></i>
                         <span class="text-white">Nueva Unidad Organizacional</span>
                     </a>
@@ -49,25 +49,27 @@
                         <tbody>
                         <tr th:each="uo: ${unidades}">
                             <td><span th:text="${uo.unidadOrganizacional}"></span></td>
-                            <td><span th:text="${uo.unidadPadre==null} ? 'Ninguna' : ${uo.unidadPadre.unidadOrganizacional}"></span></td>
+                            <td><span
+                                    th:text="${uo.unidadPadre==null} ? 'Ninguna' : ${uo.unidadPadre.unidadOrganizacional}"></span>
+                            </td>
                             <td><span th:text="${uo.tipoUnidadOrganizacional.tipoUnidadOrganizacional}"></span></td>
 
-                            <td class="text-center text-white" th:if="${rolGerente == true or rolAdmin == true}">
-                                <a class="btn btn-info btn-sm" title="Ver Unidad Organizacional">
+                            <td class="text-center text-white">
+                                <a class="btn btn-info btn-sm" title="Ver Unidad Organizacional"
+                                   th:if="${show == true}">
                                     <i class="fas fa-eye"></i>
                                 </a>&nbsp;
-                                <a class="btn btn-primary btn-sm edit-unidad" title="Editar Unidad Organizacional" th:attr="data-id=${uo.idUnidadOrganizacional}">
+                                <a class="btn btn-primary btn-sm edit-unidad" title="Editar Unidad Organizacional"
+                                   th:if="${edit == true}" th:attr="data-id=${uo.idUnidadOrganizacional}">
                                     <i class="fas fa-pen"></i>
                                 </a>&nbsp;
-                                <a class="btn btn-danger btn-sm delete_btn" title="Eliminar Unidad Organizacional" th:attr="data-id=${uo.idUnidadOrganizacional}">
+                                <a class="btn btn-danger btn-sm delete_btn" title="Eliminar Unidad Organizacional"
+                                   th:if="${delete == true}" th:attr="data-id=${uo.idUnidadOrganizacional}">
                                     <i class="far fa-trash-alt"></i>
                                 </a>&nbsp;
-                                <a class="btn btn-warning btn-sm text-dark" title="Asignar Presupuesto" th:if="${rolPresupuesto == true}">
-                                    <i class="far fa-dollar-sign"></i>
-                                </a>
-                            </td>
-                            <td class="text-center text-white" th:if="${rolPresupuesto == true and rolAdmin ==false and rolGerente == false}">
-                                <a class="btn btn-warning btn-sm text-dark" title="Asignar Presupuesto">
+
+                                <a class="btn btn-warning btn-sm text-dark" title="Asignar Presupuesto"
+                                   th:if="${presupuesto == true}">
                                     <i class="fas fa-dollar-sign"></i>
                                 </a>
                             </td>
@@ -97,7 +99,7 @@
 
     <!-- MODAL ELIMINAR UNIDAD -->
     <div class="modal" id="delete_modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Eliminar Unidad Organizacional</h5>
@@ -105,16 +107,17 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                    <div class="modal-body">
-                        <form id="delete_form">
-                            <input type="text" name="id_unidad_delete" hidden id="id_unidad_delete">
-                        </form>
-                        ¿Desea eliminar la unidad organizacional seleccionada? Si la unidad posee subunidades la eliminacion no sera posible.
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" id="delete" class="btn btn-danger">Eliminar</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    </div>
+                <div class="modal-body">
+                    <form id="delete_form">
+                        <input type="text" name="id_unidad_delete" hidden id="id_unidad_delete">
+                    </form>
+                    ¿Desea eliminar la unidad organizacional seleccionada? Si la unidad posee subunidades la eliminacion
+                    no sera posible.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="delete" class="btn btn-danger">Eliminar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                </div>
             </div>
         </div>
     </div>
@@ -134,8 +137,8 @@
     <script th:src="@{/plugins/sweetalert2/sweetalert2.min.js}"></script>
 
     <script>
-        $("#crear_unidad_btn").on("click",function () {
-            $("#error").attr("hidden","hidden");
+        $("#crear_unidad_btn").on("click", function () {
+            $("#error").attr("hidden", "hidden");
             $("#create_modal").modal("show");
         });
 
@@ -146,14 +149,14 @@
                 url: "/unidades-organizacionales/store",
                 data: $("#create_form").serialize(),
                 success: function (data) {
-                    $("#error").attr("hidden","hidden");
+                    $("#error").attr("hidden", "hidden");
                     $("#create_modal").modal("hide");
                     toastr.success(data);
-                    setTimeout(function() {
+                    setTimeout(function () {
                         location.reload();
-                    },2000);
+                    }, 2000);
                 },
-                error: function (data){
+                error: function (data) {
                     console.log(data.responseText);
                     $("#error").removeAttr("hidden");
                     $("#error").text(data.responseText);
@@ -161,21 +164,21 @@
             });
         });
 
-        $(".edit-unidad").on("click",function () {
+        $(".edit-unidad").on("click", function () {
             var idUnidad = $(this).data("id");
             $("#idUnidadOrganizacional").val(idUnidad);
             $.get('/unidades-organizacionales/edit/' + idUnidad, function (data) {
-                $("#edit_nombreUnidad").val(data.result.unidadOrganizacional+"");
-                $( "#edit_tipo_unidad option:selected" ).removeAttr("selected");
-                $( "#edit_tipo_unidad option[value="+data.result.tipoUnidadOrganizacional.idTipoUnidadOrganizacional+"]").attr("selected","selected");
-                $( "#edit_unidadPadre option:selected" ).removeAttr("selected");
-                if(data.result.unidadPadre != null){
-                    $( "#edit_unidadPadre option[value="+data.result.unidadPadre.idUnidadOrganizacional+"]").attr("selected","selected");
-                }else{
-                    $( "#edit_unidadPadre option[value='-1']").attr("selected","selected");
+                $("#edit_nombreUnidad").val(data.result.unidadOrganizacional + "");
+                $("#edit_tipo_unidad option:selected").removeAttr("selected");
+                $("#edit_tipo_unidad option[value=" + data.result.tipoUnidadOrganizacional.idTipoUnidadOrganizacional + "]").attr("selected", "selected");
+                $("#edit_unidadPadre option:selected").removeAttr("selected");
+                if (data.result.unidadPadre != null) {
+                    $("#edit_unidadPadre option[value=" + data.result.unidadPadre.idUnidadOrganizacional + "]").attr("selected", "selected");
+                } else {
+                    $("#edit_unidadPadre option[value='-1']").attr("selected", "selected");
                 }
             });
-            $("#error_edit").attr("hidden","hidden");
+            $("#error_edit").attr("hidden", "hidden");
             $("#edit_unidad").modal("show");
         });
 
@@ -186,14 +189,14 @@
                 url: "/unidades-organizacionales/update",
                 data: $("#update_form").serialize(),
                 success: function (data) {
-                    $("#error").attr("hidden","hidden");
+                    $("#error").attr("hidden", "hidden");
                     $("#edit_unidad").modal("hide");
                     toastr.success(data);
-                    setTimeout(function() {
+                    setTimeout(function () {
                         location.reload();
-                    },2000);
+                    }, 2000);
                 },
-                error: function (data){
+                error: function (data) {
                     $("#error_edit").removeAttr("hidden");
                     $("#error_edit").text(data.responseText);
                 }
@@ -212,16 +215,16 @@
                     success: function (data) {
                         $("#delete_modal").modal("hide");
                         toastr.success(data);
-                        setTimeout(function() {
+                        setTimeout(function () {
                             location.reload();
-                        },2000);
+                        }, 2000);
                     },
-                    error: function (data){
+                    error: function (data) {
                         $("#delete_modal").modal("hide");
                         toastr.error(data.responseText);
-                        setTimeout(function() {
+                        setTimeout(function () {
                             location.reload();
-                        },2000);
+                        }, 2000);
                     }
                 });
             });
