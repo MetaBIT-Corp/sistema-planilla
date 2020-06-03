@@ -102,10 +102,10 @@ public class TipoMovimientoController {
 		} else {
 			//creamos y retornamos a listado de tipos de movimiento
 			if(tipoMovimiento.getIdMovimiento() == 0) {
+				tipoMovimiento.setTipoMovimientoHabilitado(true);
 				tipoMovimientoService.storeTipoMovimiento(tipoMovimiento);
 				return "redirect:/tipo-movimiento/index?store_success=true";
 			}else {
-				tipoMovimiento.setTipoMovimientoHabilitado(true);
 				tipoMovimientoService.storeTipoMovimiento(tipoMovimiento);
 				return "redirect:/tipo-movimiento/index?update_success=true";
 			}
@@ -122,6 +122,11 @@ public class TipoMovimientoController {
 	@PreAuthorize("hasAuthority('TIPOMOVIMIENTO_DELETE')")
 	@PostMapping("/destroy")
 	public String destroyTipoMovimiento(@RequestParam("idTipoMovimientoDestroy") int id) {
+		TipoMovimiento tipoMovimiento = tipoMovimientoService.getTipoMovimiento(id);
+		//valicación, no se puede eliminar si ha sido asignado a uno o más movimientos
+		if(tipoMovimiento.getPlanillaMovimientos().size() > 0) {
+			return "redirect:/tipo-movimiento/index?delete_success=false";
+		}
 		tipoMovimientoService.destroyTipoMovimiento(id);
 		return "redirect:/tipo-movimiento/index?delete_success=true";
 	}

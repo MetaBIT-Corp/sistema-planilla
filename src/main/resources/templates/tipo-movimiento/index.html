@@ -51,7 +51,7 @@
 									<th>Fijo/No Fijo</th>
 									<th>Monto Base</th>
 									<th>Porcentaje</th>
-									<th>Habilitado/deshabilitado</th>
+									<th>Habilitado/Deshabilitado</th>
 									<th>Acciones</th>
 								</tr>
 							</thead>
@@ -63,7 +63,7 @@
 									<td th:if="${tipoMovimiento.esFijo}"> Fijo </td>
 									<td th:unless="${tipoMovimiento.esFijo}">No fijo</td>
 									<td><span th:text=" '$'+ ${#numbers.formatDecimal(tipoMovimiento.montoBase, 1, 'COMMA', 2, 'POINT')}"></span></td>
-									<td th:text="${tipoMovimiento.porcentajeMovimiento} + '%'"></td>
+									<td th:utext="${tipoMovimiento.porcentajeMovimiento} + '%' + '<br/>' + 'max: $'+ ${#numbers.formatDecimal(tipoMovimiento.montoMaximo, 1, 'COMMA', 2, 'POINT')}"></td>
 									<td th:if="${tipoMovimiento.tipoMovimientoHabilitado}"> Habilitado </td>
 									<td th:unless="${tipoMovimiento.tipoMovimientoHabilitado}">Deshabilitado </td>
 									<td>	
@@ -80,7 +80,7 @@
 											</a>
 				                            
 				                            <button class="dropdown-item" title="Eliminar Tipo de Movimiento"
-				                             th:attr="data-idTipoMovimiento=${tipoMovimiento.IdMovimiento}, data-movimiento=${tipoMovimiento.movimiento}" 
+				                             th:attr="data-idTipoMovimiento=${tipoMovimiento.IdMovimiento}, data-movimiento=${tipoMovimiento.movimiento}, data-movimientos=${tipoMovimiento.planillaMovimientos.size()}" 
 												onclick="activateModalDestroy(this)">
 												<i class="far fa-trash-alt mr-3" ></i> Eliminar
 											</button>
@@ -115,7 +115,7 @@
 									<th>Fijo/No Fijo</th>
 									<th>Monto Base</th>
 									<th>Porcentaje</th>
-									<th>Habilitado/deshabilitado</th>
+									<th>Habilitado/Deshabilitado</th>
 									<th>Acciones</th>
 								</tr>
 							</tfoot>
