@@ -42,4 +42,10 @@ public class PlanServiceImpl implements PlanService{
 		return planJpaRepository.findByEmpleado(empleado);
 	}
 
+	@Override
+	public Plan getPlan(int idPlan) {
+		
+		return planJpaRepository.getOne(idPlan);
+	}
+
 }

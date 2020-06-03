@@ -7,6 +7,7 @@ import com.metabit.planilla.entity.Plan;
 
 public interface PlanService {
 
+	public Plan getPlan(int idPlan);
 	public Plan createPlan(Plan plan);
 	public Plan updatePlan(Plan plan);
 	public void deletePlan(int idPlan);
