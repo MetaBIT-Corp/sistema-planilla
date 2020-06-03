@@ -72,6 +72,7 @@ INSERT ALL INTO RECURSOS VALUES(1, 'EMPLEADO')
 		   INTO	RECURSOS VALUES(8, 'UNIDADORGANIZACIONAL')
 		   INTO	RECURSOS VALUES(9, 'UNIDADORGANIZACIONAL_JEFE')
 		   INTO	RECURSOS VALUES(10, 'PRESUPUESTO')
+		   INTO	RECURSOS VALUES(11, 'RANGO_COMISION')
 SELECT * FROM DUAL;
 
 INSERT ALL INTO ROLES VALUES(1, 'ROLE_ADMIN')
@@ -152,6 +153,11 @@ INSERT ALL INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(1,1,1,1)
   		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(58,3,8,1)
   		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(59,4,8,1)
   		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(60,5,8,1)
+
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(61,1,11,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(62,2,11,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(63,3,11,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(64,4,11,1)
 
 SELECT * FROM DUAL;
 
@@ -359,7 +365,7 @@ SELECT * FROM DUAL;
 
 /*------------------RANGOS COMISION----------------------------*/
 
-INSERT INTO RANGOS_COMISION (id_rango_comision, venta_min, venta_max, tasa_comision, rango_comision_habilitado) VALUES (1,500.00,1000.00,0.15,1);
-INSERT INTO RANGOS_COMISION (id_rango_comision, venta_min, venta_max, tasa_comision, rango_comision_habilitado) VALUES (2,1500.00,2000.00,0.25,1);
-INSERT INTO RANGOS_COMISION (id_rango_comision, venta_min, venta_max, tasa_comision, rango_comision_habilitado) VALUES (3,2500.00,3000.00,0.35,1);
+INSERT INTO RANGOS_COMISION (id_rango_comision, venta_min, venta_max, tasa_comision, rango_comision_habilitado) VALUES (101,500.00,1000.00,0.15,1);
+INSERT INTO RANGOS_COMISION (id_rango_comision, venta_min, venta_max, tasa_comision, rango_comision_habilitado) VALUES (102,1500.00,2000.00,0.25,1);
+INSERT INTO RANGOS_COMISION (id_rango_comision, venta_min, venta_max, tasa_comision, rango_comision_habilitado) VALUES (103,2500.00,3000.00,0.35,1);
 
