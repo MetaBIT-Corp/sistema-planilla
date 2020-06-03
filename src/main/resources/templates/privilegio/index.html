@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layouts/layout}">
+
+<head>
+
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <link rel="stylesheet" th:href="@{/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css}">
+    <link rel="stylesheet" th:href="@{/plugins/toastr/toastr.min.css}">
+
+    <title>Sistema Planilla | Privilegios</title>
+
+</head>
+<body>
+<h1 class="m-0 text-dark" layout:fragment="titulo_seccion">Privilegios</h1>
+<ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="#" th:href="@{/index}">Home</a>
+    </li>
+    <li class="breadcrumb-item active">Privilegios</li>
+</ol>
+
+<div layout:fragment="content">
+
+    <input type="hidden" id="store" th:value="${store_success}">
+    <input type="hidden" id="update" th:value="${update_success}">
+    <input type="hidden" id="delete" th:value="${delete_success}">
+    <input type="hidden" id="enable" th:value="${enable_success}">
+    <input type="hidden" id="disable" th:value="${disable_success}">
+
+    <div class="row ml-3 mr-3">
+        <div class="col-md-12">
+            <div class="card">
+
+                <div class="card-header text-right">
+                    <a class="btn btn-primary btn-sm"
+                       href="#"
+                       id="privilegioBtnNuevo"
+                       data-toggle="modal"
+                       data-target="#privilegioModal">
+                        <i class="fas fa-plus-circle mr-1 text-white"></i>
+                        <span class="text-white">Nuevo Privilegio</span>
+                    </a>
+                </div>
+
+                <div class="card-body">
+                    <table id="example1" class="table table-bordered table-striped">
+
+                        <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+
+                        <tr th:each="privilegio: ${privilegios}">
+
+                            <td><span th:text="${privilegio.privilegio}"></span></td>
+
+                            <td class="text-center">
+                                <a class="btn btn-info btn-sm privilegioBtnVer"
+                                   href="#"
+                                   title="Ver Privilegio"
+                                   data-toggle="modal"
+                                   data-target="#privilegioModal"
+                                   th:attr="
+                                       data-privilegio=${privilegio.privilegio}">
+                                    <i class="fas fa-eye"></i>
+                                </a>&nbsp;&nbsp;
+                                <a class="btn btn-primary btn-sm privilegioBtnEditar"
+                                   href="#"
+                                   title="Editar Privilegio"
+                                   data-toggle="modal"
+                                   data-target="#privilegioModal"
+                                   th:attr="
+                                       data-id-privilegio=${privilegio.idPrivilegio},
+                                       data-privilegio=${privilegio.privilegio}">
+                                    <i class="fas fa-pen"></i>
+                                </a>&nbsp;&nbsp;
+                                <a class="btn btn-danger btn-sm"
+                                   href="#"
+                                   title="Eliminar Privilegio"
+                                   data-toggle="modal"
+                                   data-target="#privilegioModalDestroy"
+                                   th:attr="
+                                       data-id-privilegio=${privilegio.idPrivilegio},
+                                       data-privilegio=${privilegio.privilegio}">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </td>
+
+                        </tr>
+
+                        <tr th:if="${#lists.isEmpty(privilegios)}">
+                            <td colspan="6">
+                                A&uacute;n no se registran privilegios en el sistema
+                            </td>
+                        </tr>
+
+                        </tbody>
+
+                        <tfoot>
+                        <tr>
+                            <th>Nombre</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                        </tfoot>
+
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div th:insert="privilegio/privilegio-modal :: privilegio_modal"></div>
+    <div th:insert="privilegio/delete-modal :: delete_modal"></div>
+
+</div>
+
+<section layout:fragment="scripts">
+    <script th:src="@{/plugins/datatables/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
+    <script th:src="@{/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
+    <script th:src="@{/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
+
+    <script th:src="@{/plugins/toastr/toastr.min.js}"></script>
+    <script th:src="@{/plugins/sweetalert2/sweetalert2.min.js}"></script>
+
+    <script th:src="@{/js/datatable/datatable.js}"></script>
+    <script th:src="@{/js/privilegio/privilegio.js}"></script>
+</section>
+
+</body>
+</html>
