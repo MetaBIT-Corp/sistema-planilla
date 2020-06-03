@@ -99,8 +99,8 @@
 	  <!-- Main Sidebar Container -->
 	  <aside class="main-sidebar sidebar-dark-primary elevation-4">
 	    <!-- Brand Logo -->
-	    <a href="#" class="brand-link">
-	      <img th:src="@{/dist/img/logo.png}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+	    <a href="#" th:href="@{/index}" class="brand-link">
+	      <img th:src="@{/img/logo.png}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
 	           style="opacity: .8">
 	      <span class="brand-text font-weight-light">Metabit</span>
 	    </a>
@@ -125,13 +125,13 @@
 	        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 	          <!-- Add icons to the links using the .nav-icon class
 	               with font-awesome or any other icon font library -->
-	
+		
 	      
-	          <li class="nav-header">PLANILLA</li>
+	          <li class="nav-header">MENU</li>
 	          
 	          <!-- ADMINISTRACION -->
-	          <li class="nav-item has-treeview">
-	            <a href="#" class="nav-link">
+	          <li class="nav-item has-treeview" id="admonLista">
+	            <a href="#" class="nav-link" id="admonItem">
 	              <i class="nav-icon fas fa-circle"></i>
 	              <p>
 	                Administración
@@ -139,57 +139,113 @@
 	              </p>
 	            </a>
 	            <ul class="nav nav-treeview">
-	              <li class="nav-item">
-	                <a href="#" th:href="@{/empresa/perfil/show}" class="nav-link">
-	                  <i class="far fa-building ml-1 mr-3"></i>
-	                  <p> Empresa</p>
-	                </a>
-	              </li>
-	              <li class="nav-item">
-	                <a href="#" th:href="@{/empleado/index}" class="nav-link">
-	                  <i class="fas fa-users mr-3"></i>
-	                  <p> Empleados</p>
-	                </a>
-	              </li>
-	              <li class="nav-item" sec:authorize="hasAuthority('PUESTO_INDEX')">
-	                <a href="#" th:href="@{/puesto/index}" class="nav-link">
-	                  <i class="fas fa-briefcase mr-3"></i>
-	                  <p>Puestos</p>
-	                </a>
-	              </li>
-	              <li class="nav-item">
-	                <a href="#" th:href="@{/profesion/index}" class="nav-link">
-	                  <i class="fas fa-user-tie mr-3"></i>
-	                  <p>Profesiones</p>
-	                </a>
-	              </li>
-	               <li class="nav-item">
-	                <a href="#" th:href="@{/tipo-documento/index}" class="nav-link">
-	                  <i class="far fa-id-card mr-2"></i>
-	                  <p>Tipos de documentos</p>
-	                </a>
-	              </li>
-	               <li class="nav-item">
-	                <a href="#" th:href="@{/genero/index}" class="nav-link">
-	                  <i class="fas fa-venus-mars mr-2"></i>
-	                  <p>Generos</p>
-	                </a>
-	              </li>
-	              <li class="nav-item">
-	                <a href="#" th:href="@{/rango-comision/index}" class="nav-link">
-	                  <i class="fas fa-percent mr-2"></i>
-	                  <p>Rangos Comisión</p>
-	                </a>
-	              </li>
 					<li class="nav-item">
-						<a href="#" th:href="@{/unidades-organizacionales/index}" class="nav-link">
-							<i class="fas fa-sitemap mr-2"></i>
-							<p>Unidades Organizacionales</p>
+						<a href="#" th:href="@{/empresa/perfil/show}" class="nav-link">
+						  <i class="far fa-building ml-1 mr-3"></i>
+						  <p> Empresa</p>
 						</a>
 					</li>
+					<li class="nav-item">
+						<a href="#" th:href="@{/empleado/index}" class="nav-link">
+						  <i class="fas fa-users mr-3"></i>
+						  <p> Empleados</p>
+						</a>
+					</li>
+					<li class="nav-item" sec:authorize="hasAuthority('PUESTO_INDEX')">
+						<a href="#" th:href="@{/puesto/index}" class="nav-link" id="puestoItem">
+						  <i class="fas fa-briefcase mr-3"></i>
+						  <p>Puestos</p>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a href="#" th:href="@{/profesion/index}" class="nav-link">
+						  <i class="fas fa-user-tie mr-3"></i>
+						  <p>Profesiones</p>
+						</a>
+					</li>
+					 <li class="nav-item">
+						<a href="#" th:href="@{/tipo-documento/index}" class="nav-link">
+						  <i class="far fa-id-card mr-2"></i>
+						  <p>Tipos de documentos</p>
+						</a>
+					</li>
+					 <li class="nav-item">
+						<a href="#" th:href="@{/genero/index}" class="nav-link">
+						  <i class="fas fa-venus-mars mr-2"></i>
+						  <p>Generos</p>
+						</a>
+					</li>
+					
+					<li class="nav-item" >
+						<a href="#" th:href="@{/unidades-organizacionales/index}" class="nav-link">
+							<div style="display: flex; align-items: center;">
+								<i class="fas fa-sitemap mr-2" ></i>
+								<p>Unidades <br/> Organizacionales</p>
+							</div>
+						</a>
+					</li>
+					
 	            </ul>
 	          </li>
 	          <!-- ADMINISTRACION -->
+	          
+	          <!-- PLANILLA -->
+			<li class="nav-item has-treeview" id="planillaLista">
+	            <a href="#" class="nav-link" id="planillaItem">
+	              <i class="nav-icon fas fa-circle"></i>
+	              <p>
+	                Planilla
+	                <i class="right fas fa-angle-left"></i>
+	              </p>
+	            </a>
+	            <ul class="nav nav-treeview">
+	            	<li class="nav-item">
+						<a href="#" th:href="@{/rango-comision/index}" class="nav-link">
+						  <i class="fas fa-percent mr-3"></i>
+						  <p>Rangos Comisión</p>
+						</a>
+					</li>
+					
+					<li class="nav-item">
+
+						<a href="#" th:href="@{/tipo-movimiento/index}" class="nav-link" id="tipoMovimientoItem">
+							<i class="fas fa-hand-holding-usd  mr-2"></i>
+							<p>Tipos de Movimiento</p>
+						</a>
+					</li>
+	            </ul>
+            </li>
+	        <!-- PLANILLA -->
+			<!-- Permisos -->
+			<li class="nav-item has-treeview">
+				<a href="#" class="nav-link">
+					<i class="fas fa-key mr-2"></i>
+					<p>Permisos<i class="right fas fa-angle-left"></i></p>
+				</a>
+				<ul class="nav nav-treeview">
+					<li class="nav-item">
+						<a href="#" class="nav-link">
+							<i class="fas fa-user-tag mr-2"></i>
+							<p> Roles</p>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a href="#" th:href="@{/recurso/index}" class="nav-link">
+							<i class="fas fa-cubes mr-2"></i>
+							<p> Recursos</p>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a href="#" th:href="@{/privilegio/index}" class="nav-link">
+							<i class="fas fa-file-contract mr-2"></i>
+							<p> Privilegios</p>
+						</a>
+					</li>
+
+				</ul>
+			</li>
+			<!-- Fin Permisos -->
+	          
 	        </ul>
 	      </nav>
 	      <!-- /.sidebar-menu -->
@@ -280,7 +336,6 @@
 	<script th:src="@{/dist/js/pages/dashboard.js}"></script>-->
 	<!-- AdminLTE for demo purposes -->
 	<script th:src="@{/dist/js/demo.js}"></script>
-	
 	<section layout:fragment="scripts">
 	</section>
 	

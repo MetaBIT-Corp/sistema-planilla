@@ -1,9 +1,9 @@
 $(document).ready(function(){
-  var store = $('#store').val();
-  var update = $('#update').val();
-  var delet = $('#delete').val();
-  var enable = $('#enable').val();
-  var disable = $('#disable').val();
+	var store = $('#store').val();
+	var update = $('#update').val();
+	var delet = $('#delete').val();
+	var enable = $('#enable').val();
+	var disable = $('#disable').val();
   
  
   setTimeout(function() {
@@ -29,3 +29,4 @@ $(document).ready(function(){
 	  toastr.error("Puesto deshabilitado"); 
   }
 })
+

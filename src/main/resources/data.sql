@@ -227,16 +227,18 @@ insert into empleados_profesiones(ID_EMPLEADO_PROFESION, ID_EMPLEADO, ID_PROFESI
 
 
 --Tipos Movimiento
-insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, monto_base, movimiento, porcentaje_movimiento, tipo_movimiento_habilitado)
-						values	(1, 1, 1, 0.00, 'Impuesto sobre la Renta', 0, 1);
-insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, monto_base, movimiento, porcentaje_movimiento, tipo_movimiento_habilitado)
-						values	(2, 1, 1, 0.00, 'ISSS', 7.25 , 1);
-insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, monto_base, movimiento, porcentaje_movimiento, tipo_movimiento_habilitado)
-						values	(3, 1, 1, 0.00, 'AFP', 3 , 1);
-insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, monto_base, movimiento, porcentaje_movimiento, tipo_movimiento_habilitado)
-						values	(4, 0, 0, 0.00, 'Aguinaldo', 70 , 1);
-insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, monto_base, movimiento, porcentaje_movimiento, tipo_movimiento_habilitado)
-						values	(5, 0, 0, 500.00 , 'Bono', 0, 1);
+insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, es_patronal, monto_base, monto_maximo, movimiento, porcentaje_movimiento, tipo_movimiento_habilitado)
+						values	(1, 1, 1, 0, 0.00, 1000.00, 'ISSS Empleado', 3.00 , 1);
+insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, es_patronal, monto_base, monto_maximo, movimiento, porcentaje_movimiento, tipo_movimiento_habilitado)
+						values	(2, 1, 1, 1, 0.00, 1000.00, 'ISSS Patronal', 7.50 , 1);
+insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, es_patronal, monto_base, monto_maximo, movimiento, porcentaje_movimiento, tipo_movimiento_habilitado)
+						values	(3, 1, 1, 0, 0.00, 6500.00, 'AFP Empleado', 6.25 , 1);
+insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, es_patronal, monto_base, monto_maximo, movimiento, porcentaje_movimiento, tipo_movimiento_habilitado)
+						values	(4, 1, 1, 1, 0.00, 6500.00, 'AFP Patronal', 6.75 , 1);
+insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, es_patronal, monto_base, monto_maximo, movimiento, porcentaje_movimiento, tipo_movimiento_habilitado)
+						values	(5, 1, 1, 1, 0.00, 1000.00, 'INSAFORP', 1.00, 1);
+insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, es_patronal, monto_base, monto_maximo, movimiento, porcentaje_movimiento, tipo_movimiento_habilitado)
+						values	(6, 0, 0, 0, 50.00, 0.00, 'Bono navideño', 0.00, 1);
 
 --TIPO UNIDAD
 insert into tipos_unidad_organizacional values(500,1,'Gerencias',1);

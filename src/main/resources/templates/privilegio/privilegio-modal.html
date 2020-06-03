@@ -5,29 +5,29 @@
     <title>Title</title>
 </head>
 <body>
-<div th:fragment="recurso_modal">
-    <!-- Modal para Gestión de Recurso -->
-    <div class="modal" id="recursoModal" tabindex="-1" role="dialog">
+<div th:fragment="privilegio_modal">
+    <!-- Modal para Gestión de Privilegios -->
+    <div class="modal" id="privilegioModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h5 class="modal-title" id="recursoModalTitle"></h5>
+                    <h5 class="modal-title" id="privilegioModalTitle"></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
 
-                <form id="recursoForm" method="post" action="#" th:action="@{/recurso/store}" th:object="${recursoEntity}">
+                <form id="privilegioForm" method="post" action="#" th:action="@{/privilegio/store}" th:object="${privilegioEntity}">
 
                     <div class="card-body">
                         <div class="form-group d-none">
-                            <label for="idRecursoInput">ID</label>
-                            <input type="text" th:field="*{idRecurso}" class="form-control" id="idRecursoInput" placeholder="ID de Recurso">
+                            <label for="idPrivilegioInput">ID</label>
+                            <input type="text" th:field="*{idPrivilegio}" class="form-control" id="idPrivilegioInput" placeholder="ID de Privilegio">
                         </div>
                         <div class="form-group">
-                            <label for="recursoInput">Nombre *</label>
-                            <input type="text" th:field="*{recurso}" class="form-control" id="recursoInput" placeholder="Nombre del Recurso">
+                            <label for="privilegioInput">Nombre *</label>
+                            <input type="text" th:field="*{privilegio}" class="form-control" id="privilegioInput" placeholder="Nombre del Privilegio">
                         </div>
 
                         <div id="divError" class="callout callout-danger">
@@ -39,8 +39,8 @@
                     </div>
 
                     <div class="card-footer">
-                        <button type="submit" id="btnSubmitRecurso" class="btn btn-primary">Crear</button>
-                        <button type="button" id="btnCancelarRecurso" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" id="btnSubmitPrivilegio" class="btn btn-primary">Crear</button>
+                        <button type="button" id="btnCancelarPrivilegio" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     </div>
 
                 </form>
