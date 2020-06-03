@@ -31,7 +31,8 @@
         <input type="hidden" id="disable" th:value="${disable_success}">
 
         <div class="row ml-3 mr-3">
-            <div class="col-md-12">
+            <span class="col-md-2"></span><!-- Para centrar DataTable -->
+            <div class="col-md-8">
                 <div class="card">
 
                     <div class="card-header text-right">
@@ -115,6 +116,7 @@
 
                 </div>
             </div>
+            <span class="col-md-2"></span><!-- Para centrar DataTable -->
         </div>
 
         <div th:insert="recurso/recurso-modal :: recurso_modal"></div>

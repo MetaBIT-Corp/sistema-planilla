@@ -207,6 +207,7 @@
 					</li>
 					
 					<li class="nav-item">
+
 						<a href="#" th:href="@{/tipo-movimiento/index}" class="nav-link" id="tipoMovimientoItem">
 							<i class="fas fa-hand-holding-usd  mr-2"></i>
 							<p>Tipos de Movimiento</p>
@@ -215,6 +216,35 @@
 	            </ul>
             </li>
 	        <!-- PLANILLA -->
+			<!-- Permisos -->
+			<li class="nav-item has-treeview">
+				<a href="#" class="nav-link">
+					<i class="fas fa-key mr-2"></i>
+					<p>Permisos<i class="right fas fa-angle-left"></i></p>
+				</a>
+				<ul class="nav nav-treeview">
+					<li class="nav-item">
+						<a href="#" th:href="@{/rol/index}" class="nav-link">
+							<i class="fas fa-user-tag mr-2"></i>
+							<p> Roles</p>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a href="#" th:href="@{/recurso/index}" class="nav-link">
+							<i class="fas fa-cubes mr-2"></i>
+							<p> Recursos</p>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a href="#" th:href="@{/privilegio/index}" class="nav-link">
+							<i class="fas fa-file-contract mr-2"></i>
+							<p> Privilegios</p>
+						</a>
+					</li>
+
+				</ul>
+			</li>
+			<!-- Fin Permisos -->
 	          
 	        </ul>
 	      </nav>

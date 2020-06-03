@@ -1,8 +1,8 @@
 package com.metabit.planilla.controller;
 
 import com.metabit.planilla.domain.JsonResponse;
-import com.metabit.planilla.entity.Recurso;
-import com.metabit.planilla.service.RecursoService;
+import com.metabit.planilla.entity.Privilegio;
+import com.metabit.planilla.service.PrivilegioService;
 import com.metabit.planilla.service.RolRecursoPrivilegioService;
 
 import org.apache.commons.logging.Log;
@@ -18,18 +18,18 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("/recurso")
-public class RecursoController {
+@RequestMapping("/privilegio")
+public class PrivilegioController {
 
     @Autowired
-    @Qualifier("recursoServiceImpl")
-    private RecursoService recursoService;
+    @Qualifier("privilegioServiceImpl")
+    private PrivilegioService privilegioService;
 
     @Autowired
     @Qualifier("rolRecursoPrivilegioServiceImpl")
     private RolRecursoPrivilegioService rolRecursoPrivilegioService;
 
-    private static final String INDEX_VIEW = "recurso/index";
+    private static final String INDEX_VIEW = "privilegio/index";
     private static final Log LOGGER = LogFactory.getLog(RecursoController.class);
 
     @GetMapping("/index")
@@ -47,31 +47,32 @@ public class RecursoController {
                     String delete_success){
 
         ModelAndView modelAndView = new ModelAndView(INDEX_VIEW);
-        modelAndView.addObject("recursos", recursoService.getRecursos());
+        modelAndView.addObject("privilegios", privilegioService.getPrivilegios());
         model.addAttribute("store_success", store_success);
         model.addAttribute("update_success", update_success);
         model.addAttribute("enable_success", enable_success);
         model.addAttribute("disable_success", disable_success);
         model.addAttribute("delete_success", delete_success);
-        model.addAttribute("recursoEntity", new Recurso());
+        model.addAttribute("privilegioEntity", new Privilegio());
         return modelAndView;
     }
 
     @PostMapping("/store")
-    public @ResponseBody JsonResponse store(@ModelAttribute(name="recursoEntity") Recurso recurso, BindingResult bindingResult){
+    public @ResponseBody
+    JsonResponse store(@ModelAttribute(name="privilegioEntity") Privilegio privilegio, BindingResult bindingResult){
 
         JsonResponse jsonResponse = new JsonResponse();
 
-        ValidationUtils.rejectIfEmpty(bindingResult,"recurso","Ingrese el nombre del recurso.");
+        ValidationUtils.rejectIfEmpty(bindingResult,"privilegio","Ingrese el nombre del privilegio.");
 
         if(!bindingResult.hasErrors()){
-            if(recurso.getIdRecurso() == null) {
-                recursoService.storeRecurso(recurso);
+            if(privilegio.getIdPrivilegio() == null) {
+                privilegioService.storePrivilegio(privilegio);
             }else{
-                recursoService.updateRecurso(recurso);
+                privilegioService.updatePrivilegio(privilegio);
             }
             jsonResponse.setStatus("SUCCESS");
-            jsonResponse.setResult(recurso);
+            jsonResponse.setResult(privilegio);
         }else{
             jsonResponse.setStatus("FAIL");
             jsonResponse.setResult(bindingResult.getAllErrors());
@@ -82,17 +83,16 @@ public class RecursoController {
     }
 
     @PostMapping("/destroy")
-    public String destroy(@RequestParam("idRecursoDestroy") int idRecurso) {
+    public String destroy(@RequestParam("idPrivilegioDestroy") int idPrivilegio) {
 
-        Recurso recurso = recursoService.getRecurso(idRecurso);
+        Privilegio privilegio = privilegioService.getPrivilegio(idPrivilegio);
 
-        int asignaciones = rolRecursoPrivilegioService.findByRecurso(recurso).size();
+        int asignaciones = rolRecursoPrivilegioService.findByPrivilegio(privilegio).size();
         if (asignaciones>0){
             return "redirect:/"+INDEX_VIEW+"?delete_success=false";
         }else{
-            recursoService.deleteRecurso(idRecurso);
+            privilegioService.deletePrivilegio(idPrivilegio);
             return "redirect:/"+INDEX_VIEW+"?delete_success=true";
         }
     }
-
 }

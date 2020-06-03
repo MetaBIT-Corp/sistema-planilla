@@ -2,7 +2,9 @@ package com.metabit.planilla.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -13,8 +15,8 @@ import javax.persistence.Table;
 public class Plan {
 
 	@Id
-	@GeneratedValue
-	@Column(name = "id_plan", nullable = false)
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id_plan", nullable = false, unique = true)
 	private int idPlan;
 	
 	@Column(name = "plan", nullable = false)
@@ -41,7 +43,7 @@ public class Plan {
 	@Column(name = "es_egreso", nullable = false)
 	private boolean esEgreso;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "id_empleado", nullable = false)
 	private Empleado empleado;
 
@@ -141,4 +143,13 @@ public class Plan {
 	}
 	
 	public Plan() {}
+
+	@Override
+	public String toString() {
+		return "Plan [idPlan=" + idPlan + ", plan=" + plan + ", montoPlan=" + montoPlan + ", tasaInteres=" + tasaInteres
+				+ ", periodicidadPlan=" + periodicidadPlan + ", plazo=" + plazo + ", montoCuota=" + montoCuota
+				+ ", esActivo=" + esActivo + ", esEgreso=" + esEgreso + ", empleado=" + empleado + "]";
+	}
+	
+	
 }

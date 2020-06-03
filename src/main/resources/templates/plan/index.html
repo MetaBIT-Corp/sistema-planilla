@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layouts/layout}">
+
+<head>
+
+  <meta charset="utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  
+    <!-- SweetAlert2 -->
+  	<link rel="stylesheet" th:href="@{/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css}">
+	<!-- Toastr -->
+  	<link rel="stylesheet" th:href="@{/plugins/toastr/toastr.min.css}">
+  	
+</head>
+
+<body>
+	
+	<h1 class="m-0 text-dark" layout:fragment="titulo_seccion">Planes de Empleado</h1>
+
+	<ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
+        <li class="breadcrumb-item"><a href="#" th:href="@{/index}">Home</a></li>
+        <li class="breadcrumb-item active">Planes</li>
+    </ol>
+
+	<div layout:fragment="content">
+		<input type="hidden" id="store" th:if="${store_success != null}" value="true">
+		<!-- DataTable de Generos -->
+		<div class="row ml-10 mr-10">
+			
+			<div class="offset-1 col-md-10">
+			 <div class="card">
+	            <div class="card-header text-right">
+		            <button class="btn btn-md btn-primary" title="Agregar Plan" data-toggle="modal" data-target="#planModal">
+						<i class="fas fa-plus-circle mr-1 text-white"></i>
+						<span class="text-white">Nuevo Plan</span>
+					</button>
+	              <h3 class="card-title"></h3>
+	            </div>
+	            <!-- /.card-header -->
+	            <div class="card-body">
+	              <table id="example1" class="table table-bordered table-striped">
+	                <thead>
+	                <tr>
+	                  <th>Plan</th>
+	                  <th>Monto del plan</th>
+	                  <th>Monto por cuota</th>
+	                  <th>Tipo</th> <!-- Ingreso o Egreso -->
+	                  <th>Estado</th>
+					  <th>Acciones</th>
+	                </tr>
+	                </thead>
+	                <tbody>
+	                <tr th:each="plan: ${planes}">
+	                  <td><span th:text="${plan.plan}"></span></td>
+	                  <td><span th:text="'$' + ${#numbers.formatDecimal(plan.montoPlan, 0, 'COMMA', 2, 'POINT')}"></span></td>
+	                  <td><span th:text="'$' + ${#numbers.formatDecimal(plan.montoCuota, 0, 'COMMA', 2, 'POINT')}"></span></td>
+	                  <td>
+	                  	<div th:switch="${plan.esEgreso}"> 
+						  <p th:case="true">Egreso</p>
+						  <p th:case="*">Ingreso</p> 
+						</div>
+	                  </td>
+	                  <td>
+	                  	<div th:switch="${plan.esActivo}"> 
+						  <p th:case="true">Activo</p>
+						  <p th:case="*">Saldado</p> 
+						</div>
+	                  </td>
+	                  <td>	
+		                  <button class="btn btn-sm btn-primary" style="text-decoration: none; color: white;"
+										title="Ver Detalle">
+										
+								<span><i class="far fa-eye"></i></span>
+								
+							</button>					
+							<button class="btn btn-sm btn-secondary" style="text-decoration: none; color: white;"
+									title="Ver Cuotas">
+									
+								<span><i class="far fa-calendar"></i></span>
+								
+							</button>
+							<button class="btn btn-sm btn-danger" style="text-decoration: none; color: white;"
+									title="Eliminar Plan">
+									
+								<span><i class="fas fa-trash"></i></span>
+								
+							</button>
+						</td>
+	                </tr>
+	                
+	                <tr th:if="${#lists.isEmpty(planes)}" rowspan="4">
+	                	<td colspan="7">
+	                		El Empleado no posee ningun Plan actualmente.
+	                	</td>
+	                </tr>
+	                              
+	                </tbody>
+	                <tfoot>
+	                <tr>
+	                  <th>Plan</th>
+	                  <th>Monto del plan</th>
+	                  <th>Monto por cuota</th>
+	                  <th>Tipo</th> <!-- Ingreso o Egreso -->
+	                  <th>Estado</th>
+					  <th>Acciones</th>
+	                </tr>
+	                </tfoot>
+	              </table>
+	            </div>
+	            <!-- /.card-body -->
+	          </div>
+	          <!-- /.card -->
+		
+			</div>
+		</div>
+		
+		<input type="hidden" id="salarioBase" th:value="${empleado.salarioBaseMensual}">
+		<!-- Modal para Crear Plan -->
+		<div class="modal" id="planModal" tabindex="-1" role="dialog">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title">Crear Plan</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <form method="post" action="#" th:action="@{/plan/store}" th:object="${planEntity}">
+			      <input type="hidden" th:field="*{empleado.idEmpleado}" th:value="${empleado}">
+			      <div class="modal-body">
+			        <div class="form-group">
+					    <label for="planInput">Plan:</label>
+					    <input type="text" th:field="*{plan}" class="form-control" id="planInput" placeholder="Ingrese el titulo del plan..." required="required">
+					  </div>
+					  <div class="form-row">
+					  	<div class="col-md-6 mb-3">
+						    <label for="montoPlanInput">Monto del Plan:</label>
+						    <input type="number" th:field="*{montoPlan}" class="form-control" id="montoPlanInput" placeholder="Ingrese el monto del plan..." required="required"
+						    min="0" step="0.01">
+						  </div>
+						  <div class="col-md-6 mb-3">
+						    <label for="tasaInteresInput">Tasa de Interes:</label>
+						    <input type="number" th:field="*{tasaInteres}" class="form-control" id="tasaInteresInput" placeholder="Ingrese el titulo del plan..." required="required"
+						    min="0" step="0.01">
+						  </div>
+					  </div>
+					  <div class="form-row">
+					  	<div class="col-md-6 mb-3">
+						    <label for="montoPlanInput">Periodicidad:</label><br>
+						    <div class="form-check form-check-inline">
+							  <input class="form-check-input" th:field="*{periodicidadPlan}" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="15">
+							  <label class="form-check-label" for="inlineRadio1">Quincenal</label>
+							</div>
+							<div class="form-check form-check-inline">
+							  <input class="form-check-input" th:field="*{periodicidadPlan}" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="30">
+							  <label class="form-check-label" for="inlineRadio2">Mensual</label>
+							</div>
+						  </div>
+						  <div class="col-md-6 mb-3">
+						    <label for="tasaInteresInput">Numero de Cuotas:</label>
+						    <input type="number" th:field="*{plazo}" class="form-control" id="plazoInput" required="required"
+						    min="0" step="1">
+						  </div>
+					  </div>
+					  <div class="form-row">
+					  	<div class="col-md-6 mb-3">
+						    <label for="montoPlanInput">Tipo:</label><br>
+						    <div class="form-check form-check-inline">
+							  <input class="form-check-input" th:field="*{esEgreso}" type="radio" name="inlineRadioOptions2" id="inlineRadio2_1" value="1">
+							  <label class="form-check-label" for="inlineRadio2_1">Egreso</label>
+							</div>
+							<div class="form-check form-check-inline">
+							  <input class="form-check-input" th:field="*{esEgreso}" type="radio" name="inlineRadioOptions2" id="inlineRadio2_2" value="0" >
+							  <label class="form-check-label" for="inlineRadio2_2">Ingreso</label>
+							</div>
+						  </div>
+						  <div class="col-md-6 mb-3">
+						    <label for="tasaInteresInput">Monto por Cuota:</label>
+						    <input type="number" th:field="*{montoCuota}" class="form-control" id="montoCuotaInput" required="required"
+						    min="0" step="0.01" readonly="readonly">
+						  </div>
+					  </div>
+					  <div id="divError" class="callout callout-danger" style="display:none;">
+                          <p class="my-0"><i class="fas fa-exclamation-circle mr-2"></i><strong>Por favor, corregir los siguientes errores:</strong></p>
+                          <ul id="ulError" class="mb-0">
+                          </ul>
+                      </div>
+			      </div>
+			      <div class="modal-footer">
+			        <button id="guardar" type="submit" class="btn btn-primary" disabled="">Guardar</button>
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+			      </div>
+		      </form>
+		    </div>
+		  </div>
+		</div>
+		
+	</div>
+	
+	
+	<section layout:fragment="scripts">
+	
+		<!-- DataTables -->
+	  	<script th:src="@{/plugins/datatables/jquery.dataTables.min.js}"></script>
+	  	<script th:src="@{/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
+		<script th:src="@{/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
+		<script th:src="@{/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
+		<!-- Toastr -->
+		<script th:src="@{/plugins/toastr/toastr.min.js}"></script>
+		<!-- SweetAlert2 -->
+		<script th:src="@{/plugins/sweetalert2/sweetalert2.min.js}"></script>
+		
+		<script type="text/javascript">
+			$(function () {
+			    $("#example2").DataTable({
+			      "responsive": true,
+			      "autoWidth": false,
+			    });
+			    $('#example1').DataTable({
+			      "paging": true,
+			      "lengthChange": false,
+			      "searching": true,
+			      "ordering": true,
+			      "info": true,
+			      "autoWidth": false,
+			      "responsive": true,
+			      "pageLength": 5,
+			    });
+			  });
+		</script>
+		
+		<script type="text/javascript"> 
+		
+		$(document).ready(function(){
+			  var store = $('#store').val();
+			  
+			  setTimeout(function() {
+			    $(".alert").fadeOut();           
+			  },3000);
+			  
+			  if(store === 'true'){
+				 toastr.success("Genero creado con éxito"); 
+			  }
+			  
+			  $("#planInput").on("change", calcularMontoCuota);
+			  $("#montoPlanInput").on("change", calcularMontoCuota);
+			  $("#tasaInteresInput").on("change", calcularMontoCuota);
+			  $("#plazoInput").on("change", calcularMontoCuota);
+			  $("#inlineRadio1").on("change", calcularMontoCuota);
+			  $("#inlineRadio2").on("change", calcularMontoCuota);
+			  
+			  function calcularMontoCuota(){
+				  
+				  var plan = $("#planInput").val();
+				  var montoPlan = Number($("#montoPlanInput").val());
+				  var tasaInteres = Number($("#tasaInteresInput").val());
+				  var plazo = Number($("#plazoInput").val());
+				  var periodicidad_quincenal = $("#inlineRadio1").is(':checked');
+				  var periodicidad_mensual = $("#inlineRadio2").is(':checked');
+				  var salarioBase = Number($("#salarioBase").val());
+				  var limiteRetencion = salarioBase*0.20;
+				  var plazo_mensual = 0;
+				  
+				  //Si es egreso se hace este calculo
+				  if(montoPlan > 0 && tasaInteres > 0 && plazo > 0 && (periodicidad_quincenal || periodicidad_mensual)){
+					  
+					  if(periodicidad_quincenal)
+						  plazo_mensual = plazo/2;
+					  else
+						  plazo_mensual = plazo;
+					  
+					  var monto_total = montoPlan + montoPlan*tasaInteres*(plazo_mensual/12);
+					  var monto_cuota = (monto_total/plazo).toFixed(2);
+					  
+					  $("#montoCuotaInput").val(monto_cuota);
+					  
+					  var error_items = "";
+					  
+					  if(plan == ""){
+						  error_items += "<li>El Campo <b>Plan</b> es Requerido.</li>";						  
+					  }
+					  
+					  if(monto_cuota > limiteRetencion){
+						  error_items += "<li>El Monto Cuota sobrepasa el 20% del salario base mensual.</li>";
+					  }
+					  
+					  if(error_items == ""){
+						  document.getElementById("divError").style.display="none";
+						  document.getElementById("ulError").innerHTML = "";
+						  $("#guardar").prop('disabled', false);
+					  }else{
+						  $("#guardar").prop('disabled', true);
+						  document.getElementById("divError").style.display="block";
+						  document.getElementById("ulError").innerHTML = error_items;
+					  }
+					  
+					  
+				  }
+			  }
+			});
+		  
+		  
+		  
+		</script>
+		
+	</section>
+
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="delete_modal">
+
+    <!-- Modal para Confirmar Eliminacion de Privilegio -->
+    <div class="modal" id="privilegioModalDestroy" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Eliminar Privilegio</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <form method="post"
+                      action="#"
+                      th:action="@{/privilegio/destroy}">
+
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <strong><span id="destroyMessage"></span></strong><br>
+                            <span id="destroyMessageInfo"></span>
+                            <input type="hidden" class="form-control" id="idPrivilegioInputDestroy" name="idPrivilegioDestroy">
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
