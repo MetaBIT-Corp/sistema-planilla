@@ -56,4 +56,9 @@ public class RolServiceImpl implements RolService{
 		rolJpaRepository.deleteById(idRol);
 	}
 
+	@Override
+	public List<Rol> getAllUsedRoles() {
+		return rolJpaRepository.getAllUsedRoles();
+	}
+
 }

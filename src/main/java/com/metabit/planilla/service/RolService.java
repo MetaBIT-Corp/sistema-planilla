@@ -13,5 +13,6 @@ public interface RolService {
     public abstract Rol storeRol(Rol rol);
     public abstract Rol updateRol(Rol rol);
     public abstract void deleteRol(int idRol);
+    public abstract List<Rol> getAllUsedRoles();
 
 }
