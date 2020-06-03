@@ -236,7 +236,7 @@ insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, monto_base, 
 insert into tipos_unidad_organizacional values(500,1,'Gerencias',1);
 insert into tipos_unidad_organizacional values(501,2,'Departamentos',1);
 insert into tipos_unidad_organizacional values(502,3,'Areas',1);
-insert into tipos_unidad_organizacional values(503,4,'Seciones',1);
+insert into tipos_unidad_organizacional values(503,4,'Secciones',1);
 
 --Unidades organizacionales
 insert into unidades_organizacionales(id_unidad_organizacional, unidad_organizacional, id_tipo_unidad_organizacional) values(500, 'Gerencia General', 500);
