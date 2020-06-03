@@ -27,7 +27,7 @@ public class Privilegio {
 	
 	@OneToMany(mappedBy = "privilegio", fetch = FetchType.LAZY)
 	@JsonIgnore
-    private List<RolesRecursosPrivilegios> rolesRecursosPrivilegios =  new ArrayList<>();
+    private List<RolRecursoPrivilegio> rolesRecursosPrivilegios =  new ArrayList<>();
 	
 	public Privilegio() {}
 
@@ -36,7 +36,7 @@ public class Privilegio {
 		this.privilegio = privilegio;
 	}
 
-	public Privilegio(Integer idPrivilegio, String privilegio, List<RolesRecursosPrivilegios> rolesRecursosPrivilegios) {
+	public Privilegio(Integer idPrivilegio, String privilegio, List<RolRecursoPrivilegio> rolesRecursosPrivilegios) {
 		super();
 		this.idPrivilegio = idPrivilegio;
 		this.privilegio = privilegio;
@@ -59,11 +59,11 @@ public class Privilegio {
 		this.privilegio = privilegio;
 	}
 
-	public List<RolesRecursosPrivilegios> getRolesRecursosPrivilegios() {
+	public List<RolRecursoPrivilegio> getRolesRecursosPrivilegios() {
 		return rolesRecursosPrivilegios;
 	}
 
-	public void setRolesRecursosPrivilegios(List<RolesRecursosPrivilegios> rolesRecursosPrivilegios) {
+	public void setRolesRecursosPrivilegios(List<RolRecursoPrivilegio> rolesRecursosPrivilegios) {
 		this.rolesRecursosPrivilegios = rolesRecursosPrivilegios;
 	}
 

@@ -25,7 +25,7 @@ public class CentroCosto {
     private UnidadOrganizacional unidadOrganizacional;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="id_anios_laborales")
+    @JoinColumn(name="id_anio")
     private AnioLaboral anioLaboral;
 
     public CentroCosto(){}

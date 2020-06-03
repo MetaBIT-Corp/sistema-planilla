@@ -63,13 +63,15 @@ INSERT ALL INTO PRIVILEGIOS VALUES(1, 'INDEX')
 SELECT * FROM DUAL;
 
 INSERT ALL INTO RECURSOS VALUES(1, 'EMPLEADO')
-       INTO RECURSOS VALUES(2, 'EMPRESA')
-       INTO RECURSOS VALUES(3, 'GENERO')
-       INTO RECURSOS VALUES(4, 'TIPODOCUMENTO')
-       INTO RECURSOS VALUES(5, 'PUESTO')
-       INTO RECURSOS VALUES(6, 'PROFESION')
-       INTO RECURSOS VALUES(7, 'TIPOMOVIMIENTO')
-       INTO RECURSOS VALUES(8, 'UNIDADORGANIZACIONAL')
+		   INTO	RECURSOS VALUES(2, 'EMPRESA')
+		   INTO	RECURSOS VALUES(3, 'GENERO')
+		   INTO	RECURSOS VALUES(4, 'TIPODOCUMENTO')
+		   INTO	RECURSOS VALUES(5, 'PUESTO')
+		   INTO	RECURSOS VALUES(6, 'PROFESION')
+		   INTO	RECURSOS VALUES(7, 'TIPOMOVIMIENTO')
+		   INTO	RECURSOS VALUES(8, 'UNIDADORGANIZACIONAL')
+		   INTO	RECURSOS VALUES(9, 'UNIDADORGANIZACIONAL_JEFE')
+		   INTO	RECURSOS VALUES(10, 'PRESUPUESTO')
 SELECT * FROM DUAL;
 
 INSERT ALL INTO ROLES VALUES(1, 'ROLE_ADMIN')
@@ -81,60 +83,75 @@ INSERT ALL INTO ROLES VALUES(1, 'ROLE_ADMIN')
 SELECT * FROM DUAL;
 
 INSERT ALL INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(1,1,1,1)
-       INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(2,2,1,1)
-       INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(3,3,1,1)
-         INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(4,4,1,1)
-         INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(5,5,1,1)
-         INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(6,1,2,1)
-       INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(7,2,2,1)
-       INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(8,3,2,1)
-         INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(9,4,2,1)
-         INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(10,5,2,1)
-         INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(11,1,3,1)
-       INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(12,2,3,1)
-       INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(13,3,3,1)
-         INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(14,4,3,1)
-         INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(15,5,3,1)
-         INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(16,1,4,1)
-       INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(17,2,4,1)
-       INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(18,3,4,1)
-         INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(19,4,4,1)
-         INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(20,5,4,1)
-         INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(21,1,5,1)
-       INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(22,2,5,1)
-       INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(23,3,5,1)
-         INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(24,4,5,1)
-         INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(25,5,5,1)
-         INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(26,1,6,1)
-       INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(27,2,6,1)
-       INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(28,3,6,1)
-         INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(29,4,6,1)
-         INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(30,5,6,1)
+		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(2,2,1,1)
+		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(3,3,1,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(4,4,1,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(5,5,1,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(6,1,2,1)
+		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(7,2,2,1)
+		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(8,3,2,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(9,4,2,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(10,5,2,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(11,1,3,1)
+		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(12,2,3,1)
+		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(13,3,3,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(14,4,3,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(15,5,3,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(16,1,4,1)
+		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(17,2,4,1)
+		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(18,3,4,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(19,4,4,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(20,5,4,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(21,1,5,1)
+		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(22,2,5,1)
+		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(23,3,5,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(24,4,5,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(25,5,5,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(26,1,6,1)
+		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(27,2,6,1)
+		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(28,3,6,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(29,4,6,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(30,5,6,1)
 
-         INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(31,1,1,5)
-         INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(32,1,2,5)
-         INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(33,1,3,5)
-         INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(34,1,4,5)
-         INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(35,1,5,5)
-         INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(36,1,6,5)
-         
-         INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(37,1,7,1)
-         INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(38,2,7,1)
-         INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(39,3,7,1)
-         INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(40,4,7,1)
-         
-         INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(41,1,7,2)
-         INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(42,2,7,2)
-         INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(43,3,7,2)
-         INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(44,4,7,2)
-         
-         INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(45,1,7,3)
-         INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(46,2,7,3)
-         INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(47,3,7,3)
-         INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(48,4,7,3)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(31,1,1,5)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(32,1,2,5)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(33,1,3,5)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(34,1,4,5)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(35,1,5,5)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(36,1,6,5)
+  		   
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(37,1,7,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(38,2,7,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(39,3,7,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(40,4,7,1)
+  		   
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(41,1,7,2)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(42,2,7,2)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(43,3,7,2)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(44,4,7,2)
+  		   
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(45,1,7,3)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(46,2,7,3)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(47,3,7,3)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(48,4,7,3)
 
-         INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(49,1,8,6)
+  		   /*ROL JEFE UNIDAD, RECURSO UNIDADORGANIZACIONAL_JEFE*/
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(49,1,9,6)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(50,2,9,6)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(51,3,9,6)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(52,4,9,6)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(53,5,9,6)
 
+  		   /*ROL PRESUPUESTO, SOLO SE TIENE EL PRIVILEGIO EDIT*/
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(54,2,10,4)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(55,1,10,4)
+
+  		   /*AGREGANDO PRIVILEGIOS AL ROL ADMIN PARA UNIDAD ORGANIZACIONAL*/
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(56,1,8,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(57,2,8,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(58,3,8,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(59,4,8,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(60,5,8,1)
 SELECT * FROM DUAL;
 
 INSERT ALL INTO USUARIOS VALUES(1,0,0,1,0,'$2a$10$.wYsFS0/zPkY3.LnN8F/reqimatDtOS71.5Uzh/RzlF718/aFO7oS',1,'admin')
@@ -203,22 +220,24 @@ insert into empleados_profesiones(ID_EMPLEADO_PROFESION, ID_EMPLEADO, ID_PROFESI
 
 
 --Tipos Movimiento
-insert into tipos_movimiento  (id_movimiento, es_descuento, es_fijo, monto_base, movimiento, porcentaje_movimiento, tipo_movimiento_habilitado)
-            values  (1, 1, 1, 0.00, 'Impuesto sobre la Renta', 0, 1);
-insert into tipos_movimiento  (id_movimiento, es_descuento, es_fijo, monto_base, movimiento, porcentaje_movimiento, tipo_movimiento_habilitado)
-            values  (2, 1, 1, 0.00, 'ISSS', 7.25 , 1);
-insert into tipos_movimiento  (id_movimiento, es_descuento, es_fijo, monto_base, movimiento, porcentaje_movimiento, tipo_movimiento_habilitado)
-            values  (3, 1, 1, 0.00, 'AFP', 3 , 1);
-insert into tipos_movimiento  (id_movimiento, es_descuento, es_fijo, monto_base, movimiento, porcentaje_movimiento, tipo_movimiento_habilitado)
-            values  (4, 0, 0, 0.00, 'Aguinaldo', 70 , 1);
-insert into tipos_movimiento  (id_movimiento, es_descuento, es_fijo, monto_base, movimiento, porcentaje_movimiento, tipo_movimiento_habilitado)
-            values  (5, 0, 0, 500.00 , 'Bono', 0, 1);
+insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, es_patronal, monto_base, monto_maximo, movimiento, porcentaje_movimiento, tipo_movimiento_habilitado)
+						values	(1, 1, 1, 0, 0.00, 1000.00, 'ISSS Empleado', 3.00 , 1);
+insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, es_patronal, monto_base, monto_maximo, movimiento, porcentaje_movimiento, tipo_movimiento_habilitado)
+						values	(2, 1, 1, 1, 0.00, 1000.00, 'ISSS Patronal', 7.50 , 1);
+insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, es_patronal, monto_base, monto_maximo, movimiento, porcentaje_movimiento, tipo_movimiento_habilitado)
+						values	(3, 1, 1, 0, 0.00, 6500.00, 'AFP Empleado', 6.25 , 1);
+insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, es_patronal, monto_base, monto_maximo, movimiento, porcentaje_movimiento, tipo_movimiento_habilitado)
+						values	(4, 1, 1, 1, 0.00, 6500.00, 'AFP Patronal', 6.75 , 1);
+insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, es_patronal, monto_base, monto_maximo, movimiento, porcentaje_movimiento, tipo_movimiento_habilitado)
+						values	(5, 1, 1, 1, 0.00, 1000.00, 'INSAFORP', 1.00, 1);
+insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, es_patronal, monto_base, monto_maximo, movimiento, porcentaje_movimiento, tipo_movimiento_habilitado)
+						values	(6, 0, 0, 0, 50.00, 0.00, 'Bono navideño', 0.00, 1);
 
 --TIPO UNIDAD
 insert into tipos_unidad_organizacional values(500,1,'Gerencias',1);
 insert into tipos_unidad_organizacional values(501,2,'Departamentos',1);
 insert into tipos_unidad_organizacional values(502,3,'Areas',1);
-insert into tipos_unidad_organizacional values(503,4,'Seciones',1);
+insert into tipos_unidad_organizacional values(503,4,'Secciones',1);
 
 --Unidades organizacionales
 insert into unidades_organizacionales(id_unidad_organizacional, unidad_organizacional, id_tipo_unidad_organizacional) values(500, 'Gerencia General', 500);
@@ -234,19 +253,33 @@ insert into unidades_organizacionales values(509,'Seccion de Testing/QA',503,507
 insert into unidades_organizacionales values(510,'Seccion de Desarrolladores Backend',503,507);
 insert into unidades_organizacionales values(511,'Seccion de Desarrolladores Frontend',503,507);
 
+/*----------------------ANIO LABORAL----------------------*/
+INSERT INTO anios_laborales VALUES(100, 2018, 30);
+INSERT INTO anios_laborales VALUES(101, 2019, 30);
+INSERT INTO anios_laborales VALUES(102, 2020, 30);
+
+
+insert into centros_costos values(500,0.0,0.0,0.0,102,500);
+insert into centros_costos values(501,0.0,0.0,0.0,102,501);
+insert into centros_costos values(502,0.0,0.0,0.0,102,502);
+insert into centros_costos values(503,0.0,0.0,0.0,102,503);
+insert into centros_costos values(504,0.0,0.0,0.0,102,504);
+insert into centros_costos values(505,0.0,0.0,0.0,102,505);
+insert into centros_costos values(506,0.0,0.0,0.0,102,506);
+insert into centros_costos values(507,0.0,0.0,0.0,102,507);
+insert into centros_costos values(508,0.0,0.0,0.0,102,508);
+insert into centros_costos values(509,0.0,0.0,0.0,102,509);
+insert into centros_costos values(510,0.0,0.0,0.0,102,510);
+insert into centros_costos values(511,0.0,0.0,0.0,102,511);
 --Empleado Puesto Unidad
 insert into empleados_puestos_unidades  (id_empleado_puesto_unidad, id_empleado, id_puesto,id_unidad_organizacional)
                  values (100, 300, 1,501);
 insert into empleados_puestos_unidades  (id_empleado_puesto_unidad, id_empleado, id_puesto,id_unidad_organizacional)
                  values (101, 301, 2,502);
 
-/*----------------------ANIO LABORAL----------------------*/
-INSERT INTO anios_laborales VALUES(100, 2018, 30);
-INSERT INTO anios_laborales VALUES(101, 2019, 30);
-INSERT INTO anios_laborales VALUES(102, 2020, 30);
 
 /*----------------------PERIODO----------------------*/
-INSERT ALL 
+INSERT ALL
   INTO PERIODOS VALUES(100, 0, '01/01/18', '30/01/18', 100)
   INTO PERIODOS VALUES(101, 0, '01/02/18', '28/02/18', 100)
   INTO PERIODOS VALUES(102, 0, '01/03/18', '30/03/18', 100)

@@ -34,7 +34,7 @@ public class Rol {
 	
 	@OneToMany(mappedBy = "rol", fetch = FetchType.EAGER)
 	@JsonIgnore
-    private List<RolesRecursosPrivilegios> rolesRecursosPrivilegios =  new ArrayList<>();
+    private List<RolRecursoPrivilegio> rolesRecursosPrivilegios =  new ArrayList<>();
 	
 	public Rol() {}
 
@@ -43,7 +43,7 @@ public class Rol {
 		this.authority = authority;
 	}
 
-	public Rol(Integer idRol, String authority, Set<Usuario> usuarios, List<RolesRecursosPrivilegios> rolesRecursosPrivilegios) {
+	public Rol(Integer idRol, String authority, Set<Usuario> usuarios, List<RolRecursoPrivilegio> rolesRecursosPrivilegios) {
 		super();
 		this.idRol = idRol;
 		this.authority = authority;
@@ -75,11 +75,11 @@ public class Rol {
 		this.usuarios = usuarios;
 	}
 
-	public List<RolesRecursosPrivilegios> getRolesRecursosPrivilegios() {
+	public List<RolRecursoPrivilegio> getRolesRecursosPrivilegios() {
 		return rolesRecursosPrivilegios;
 	}
 
-	public void setRolesRecursosPrivilegios(List<RolesRecursosPrivilegios> rolesRecursosPrivilegios) {
+	public void setRolesRecursosPrivilegios(List<RolRecursoPrivilegio> rolesRecursosPrivilegios) {
 		this.rolesRecursosPrivilegios = rolesRecursosPrivilegios;
 	}
 	

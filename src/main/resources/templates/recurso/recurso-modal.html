@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="recurso_modal">
+    <!-- Modal para Gestión de Recurso -->
+    <div class="modal" id="recursoModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="recursoModalTitle"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <form id="recursoForm" method="post" action="#" th:action="@{/recurso/store}" th:object="${recursoEntity}">
+
+                    <div class="card-body">
+                        <div class="form-group d-none">
+                            <label for="idRecursoInput">ID</label>
+                            <input type="text" th:field="*{idRecurso}" class="form-control" id="idRecursoInput" placeholder="ID de Recurso">
+                        </div>
+                        <div class="form-group">
+                            <label for="recursoInput">Nombre *</label>
+                            <input type="text" th:field="*{recurso}" class="form-control" id="recursoInput" placeholder="Nombre del Recurso">
+                        </div>
+
+                        <div id="divError" class="callout callout-danger">
+                            <p class="my-0"><i class="fas fa-exclamation-circle mr-2"></i><strong>Por favor, corregir los siguientes errores:</strong></p>
+                            <ul id="ulError" class="mb-0">
+                            </ul>
+                        </div>
+
+                    </div>
+
+                    <div class="card-footer">
+                        <button type="submit" id="btnSubmitRecurso" class="btn btn-primary">Crear</button>
+                        <button type="button" id="btnCancelarRecurso" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
