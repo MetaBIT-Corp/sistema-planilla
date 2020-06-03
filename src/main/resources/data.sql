@@ -1,32 +1,32 @@
 /* PUESTOS */
 INSERT INTO puestos(id_puesto, descripcion, es_administrativo, puesto, puesto_habilitado, salario_maximo, salario_minimo, usuario_requerido)
-	   VALUES      (1, 'Descripción del puesto', 1 , 'Administrador Presupuestario', 1, 5000, 1200, 1);
+     VALUES      (1, 'Descripción del puesto', 1 , 'Administrador Presupuestario', 1, 5000, 1200, 1);
 INSERT INTO puestos(id_puesto, descripcion, es_administrativo, puesto, puesto_habilitado, salario_maximo, salario_minimo, usuario_requerido)
-	   VALUES      (2, 'Descripción del puesto', 1 , 'Gerente de Departamento', 1 , 4000, 800, 1);
+     VALUES      (2, 'Descripción del puesto', 1 , 'Gerente de Departamento', 1 , 4000, 800, 1);
 INSERT INTO puestos(id_puesto, descripcion, es_administrativo, puesto, puesto_habilitado, salario_maximo, salario_minimo, usuario_requerido)
-	   VALUES      (3, 'Descripción del puesto', 1 , 'Jefe de planilla', 1 , 1000, 360, 1);
+     VALUES      (3, 'Descripción del puesto', 1 , 'Jefe de planilla', 1 , 1000, 360, 1);
 INSERT INTO puestos(id_puesto, descripcion, es_administrativo, puesto, puesto_habilitado, salario_maximo, salario_minimo, usuario_requerido)
-	   VALUES      (4, 'Descripción del puesto', 1 , 'Analista Financiero', 0 , 1000, 360, 0);
+     VALUES      (4, 'Descripción del puesto', 1 , 'Analista Financiero', 0 , 1000, 360, 0);
 INSERT INTO puestos(id_puesto, descripcion, es_administrativo, puesto, puesto_habilitado, salario_maximo, salario_minimo, usuario_requerido)
-	   VALUES      (5, 'Descripción del puesto', 0 , 'Analista de Sistemas', 1 , 1000, 360, 0);
+     VALUES      (5, 'Descripción del puesto', 0 , 'Analista de Sistemas', 1 , 1000, 360, 0);
 INSERT INTO puestos(id_puesto, descripcion, es_administrativo, puesto, puesto_habilitado, salario_maximo, salario_minimo, usuario_requerido)
-	   VALUES      (6, 'Descripción del puesto', 1 , 'Auxiliar de planilla', 1 , 1000, 360, 1);
+     VALUES      (6, 'Descripción del puesto', 1 , 'Auxiliar de planilla', 1 , 1000, 360, 1);
 INSERT INTO puestos(id_puesto, descripcion, es_administrativo, puesto, puesto_habilitado, salario_maximo, salario_minimo, usuario_requerido)
-	   VALUES      (7, 'Descripción del puesto', 0 , 'Asesor Legal', 0 , 1000, 360, 0);
+     VALUES      (7, 'Descripción del puesto', 0 , 'Asesor Legal', 0 , 1000, 360, 0);
 INSERT INTO puestos(id_puesto, descripcion, es_administrativo, puesto, puesto_habilitado, salario_maximo, salario_minimo, usuario_requerido)
-	   VALUES      (8, 'Descripción del puesto', 1 , 'Contador', 1 , 1000, 360, 0);
+     VALUES      (8, 'Descripción del puesto', 1 , 'Contador', 1 , 1000, 360, 0);
 INSERT INTO puestos(id_puesto, descripcion, es_administrativo, puesto, puesto_habilitado, salario_maximo, salario_minimo, usuario_requerido)
-	   VALUES      (9, 'Descripción del puesto', 1 , 'Auxiliar Contable', 1 , 1000, 360, 0);
+     VALUES      (9, 'Descripción del puesto', 1 , 'Auxiliar Contable', 1 , 1000, 360, 0);
 INSERT INTO puestos(id_puesto, descripcion, es_administrativo, puesto, puesto_habilitado, salario_maximo, salario_minimo, usuario_requerido)
-	   VALUES      (10, 'Descripción del puesto', 1 , 'Secretaria', 1 , 1000, 360, 0);
+     VALUES      (10, 'Descripción del puesto', 1 , 'Secretaria', 1 , 1000, 360, 0);
 INSERT INTO puestos(id_puesto, descripcion, es_administrativo, puesto, puesto_habilitado, salario_maximo, salario_minimo, usuario_requerido)
-	   VALUES      (11, 'Descripción del puesto', 0 , 'Programador', 1 , 1000, 360, 0);
+     VALUES      (11, 'Descripción del puesto', 0 , 'Programador', 1 , 1000, 360, 0);
 INSERT INTO puestos(id_puesto, descripcion, es_administrativo, puesto, puesto_habilitado, salario_maximo, salario_minimo, usuario_requerido)
-	   VALUES      (12, 'Descripción del puesto', 1 , 'Soporte técnico', 1 , 1000, 360, 0);
+     VALUES      (12, 'Descripción del puesto', 1 , 'Soporte técnico', 1 , 1000, 360, 0);
 INSERT INTO puestos(id_puesto, descripcion, es_administrativo, puesto, puesto_habilitado, salario_maximo, salario_minimo, usuario_requerido)
-	   VALUES      (13, 'Descripción del puesto', 1 , 'Técnico de Redes', 1 , 1000, 360, 0);
+     VALUES      (13, 'Descripción del puesto', 1 , 'Técnico de Redes', 1 , 1000, 360, 0);
 INSERT INTO puestos(id_puesto, descripcion, es_administrativo, puesto, puesto_habilitado, salario_maximo, salario_minimo, usuario_requerido)
-	   VALUES      (14, 'Descripción del puesto', 1 , 'Administrador de Bases de Datos', 1 , 1000, 360, 0);
+     VALUES      (14, 'Descripción del puesto', 1 , 'Administrador de Bases de Datos', 1 , 1000, 360, 0);
 
 /*PROFESIONES*/
 INSERT INTO profesiones(id_profesion, profesion, es_profesion, profesion_habilitada) VALUES (1, 'Ingeniero en Sistemas Informáticos', 1, 1);
@@ -76,11 +76,11 @@ INSERT ALL INTO RECURSOS VALUES(1, 'EMPLEADO')
 SELECT * FROM DUAL;
 
 INSERT ALL INTO ROLES VALUES(1, 'ROLE_ADMIN')
-		   INTO ROLES VALUES(2, 'ROLE_JEFE')
-		   INTO ROLES VALUES(3, 'ROLE_AUXILIAR')
-		   INTO ROLES VALUES(4, 'ROLE_PRESUPUESTO')
-		   INTO ROLES VALUES(5, 'ROLE_USER')
-		   INTO ROLES VALUES(6, 'ROLE_JEFEUNIDAD')
+       INTO ROLES VALUES(2, 'ROLE_JEFE')
+       INTO ROLES VALUES(3, 'ROLE_AUXILIAR')
+       INTO ROLES VALUES(4, 'ROLE_PRESUPUESTO')
+       INTO ROLES VALUES(5, 'ROLE_USER')
+       INTO ROLES VALUES(6, 'ROLE_JEFEUNIDAD')
 SELECT * FROM DUAL;
 
 INSERT ALL INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(1,1,1,1)
@@ -153,12 +153,10 @@ INSERT ALL INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(1,1,1,1)
   		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(58,3,8,1)
   		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(59,4,8,1)
   		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(60,5,8,1)
-
   		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(61,1,11,1)
   		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(62,2,11,1)
   		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(63,3,11,1)
   		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(64,4,11,1)
-
 SELECT * FROM DUAL;
 
 INSERT ALL INTO USUARIOS VALUES(1,0,0,1,0,'$2a$10$.wYsFS0/zPkY3.LnN8F/reqimatDtOS71.5Uzh/RzlF718/aFO7oS',1,'admin')
@@ -169,10 +167,10 @@ INSERT ALL INTO USUARIOS VALUES(1,0,0,1,0,'$2a$10$.wYsFS0/zPkY3.LnN8F/reqimatDtO
 SELECT * FROM DUAL;
 
 INSERT ALL INTO USUARIOS_ROLES VALUES(1,1)
-  		   INTO USUARIOS_ROLES VALUES(2,2)
-  		   INTO USUARIOS_ROLES VALUES(3,3)
-  		   INTO USUARIOS_ROLES VALUES(4,4)
-  		   INTO USUARIOS_ROLES VALUES(5,5)
+         INTO USUARIOS_ROLES VALUES(2,2)
+         INTO USUARIOS_ROLES VALUES(3,3)
+         INTO USUARIOS_ROLES VALUES(4,4)
+         INTO USUARIOS_ROLES VALUES(5,5)
 SELECT * FROM DUAL;
 
 /*-------------------------------------------------------------------------------------*/
@@ -279,10 +277,10 @@ insert into centros_costos values(509,0.0,0.0,0.0,102,509);
 insert into centros_costos values(510,0.0,0.0,0.0,102,510);
 insert into centros_costos values(511,0.0,0.0,0.0,102,511);
 --Empleado Puesto Unidad
-insert into empleados_puestos_unidades	(id_empleado_puesto_unidad, id_empleado, id_puesto,id_unidad_organizacional)
-								 values (100, 300, 1,501);
-insert into empleados_puestos_unidades	(id_empleado_puesto_unidad, id_empleado, id_puesto,id_unidad_organizacional)
-								 values (101, 301, 2,502);
+insert into empleados_puestos_unidades  (id_empleado_puesto_unidad, id_empleado, id_puesto,id_unidad_organizacional)
+                 values (100, 300, 1,501);
+insert into empleados_puestos_unidades  (id_empleado_puesto_unidad, id_empleado, id_puesto,id_unidad_organizacional)
+                 values (101, 301, 2,502);
 
 
 /*----------------------PERIODO----------------------*/
@@ -366,7 +364,6 @@ INSERT ALL
 SELECT * FROM DUAL;
 
 /*------------------RANGOS COMISION----------------------------*/
-
 INSERT INTO RANGOS_COMISION (id_rango_comision, venta_min, venta_max, tasa_comision, rango_comision_habilitado) VALUES (101,500.00,1000.00,0.15,1);
 INSERT INTO RANGOS_COMISION (id_rango_comision, venta_min, venta_max, tasa_comision, rango_comision_habilitado) VALUES (102,1500.00,2000.00,0.25,1);
 INSERT INTO RANGOS_COMISION (id_rango_comision, venta_min, venta_max, tasa_comision, rango_comision_habilitado) VALUES (103,2500.00,3000.00,0.35,1);

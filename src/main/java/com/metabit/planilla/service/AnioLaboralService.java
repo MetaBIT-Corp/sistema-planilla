@@ -7,4 +7,5 @@ import com.metabit.planilla.entity.AnioLaboral;
 public interface AnioLaboralService {
 	public abstract List<AnioLaboral> getAllAniosLaborales();
 	public abstract AnioLaboral getAnioLaboral(int anio);
+	public abstract AnioLaboral addAnioLaboral(AnioLaboral anioLaboral);
 }
