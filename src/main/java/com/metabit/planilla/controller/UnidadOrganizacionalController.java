@@ -74,7 +74,7 @@ public class UnidadOrganizacionalController {
         Boolean presupuesto = false;
 
         for (Rol rol : rolService.getUserRoles(usuario.getIdUsuario())) {
-            for (RolesRecursosPrivilegios rrp:rol.getRolesRecursosPrivilegios()) {
+            for (RolRecursoPrivilegio rrp:rol.getRolesRecursosPrivilegios()) {
 
                 //SE VERIFICA SI TIENE EL RECURSO JEFE UNIDAD
                 if(rrp.getRecurso().getRecurso().equals("UNIDADORGANIZACIONAL_JEFE")){
@@ -154,7 +154,7 @@ public class UnidadOrganizacionalController {
         Boolean jefeUnidad = false;
         Usuario usuario = getUserLogueado();
         for (Rol rol : rolService.getUserRoles(usuario.getIdUsuario())) {
-            for (RolesRecursosPrivilegios rrp:rol.getRolesRecursosPrivilegios()) {
+            for (RolRecursoPrivilegio rrp:rol.getRolesRecursosPrivilegios()) {
                 //SE VERIFICA SI TIENE EL RECURSO JEFE UNIDAD
                 if (rrp.getRecurso().getRecurso().equals("UNIDADORGANIZACIONAL_JEFE")) {
                     jefeUnidad = true;
@@ -215,7 +215,7 @@ public class UnidadOrganizacionalController {
         Boolean jefeUnidad = false;
         Usuario usuario = getUserLogueado();
         for (Rol rol : rolService.getUserRoles(usuario.getIdUsuario())) {
-            for (RolesRecursosPrivilegios rrp:rol.getRolesRecursosPrivilegios()) {
+            for (RolRecursoPrivilegio rrp:rol.getRolesRecursosPrivilegios()) {
                 //SE VERIFICA SI TIENE EL RECURSO JEFE UNIDAD
                 if (rrp.getRecurso().getRecurso().equals("UNIDADORGANIZACIONAL_JEFE")) {
                     jefeUnidad = true;
