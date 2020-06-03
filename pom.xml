@@ -52,7 +52,6 @@
 		<dependency>
 	    	<groupId>nz.net.ultraq.thymeleaf</groupId>
 	      	<artifactId>thymeleaf-layout-dialect</artifactId>
-	      <version>2.3.0</version>
 	    </dependency>
 		
 		<dependency>
@@ -69,7 +68,6 @@
 		<dependency>
 			<groupId>org.thymeleaf.extras</groupId>
 			<artifactId>thymeleaf-extras-java8time</artifactId>
-			<version>3.0.1.RELEASE</version>
 		</dependency>
 
 		<dependency>
@@ -111,13 +109,11 @@
         	<plugin>
 	            <groupId>org.apache.maven.plugins</groupId>
 	            <artifactId>maven-compiler-plugin</artifactId>
-	            <version>3.5.1</version>
 	            <configuration>
 	                <source>1.8</source>
 	                <target>1.8</target>
 	            </configuration>
-	        </plugin>
-        	
+	        </plugin> 	
 		</plugins>
 	</build>
 </project>
