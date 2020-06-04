@@ -29,7 +29,8 @@
 		<input type="hidden" name="" th:if="${success}" id="success_msg">
 		<div class="container">
 			<div class="row ml-5">
-				<div class="col-md-11">
+				<div class="col-md-1"></div>
+				<div class="col-md-9">
 					<ul th:if="${!#lists.isEmpty(errors)}" class="alert alert-danger ml-2 mr-2" role="alert">
 						<li  class="ml-2" th:each="error : ${errors}" th:text="${error}"></li>
 					</ul>
@@ -37,7 +38,8 @@
 			</div>
 		</div>
 		<div class="row ml-3 mr-3">
-			<div class="col-md-12 ">
+			<div class="col-md-1"></div>
+			<div class="col-md-10 ">
 				<div class="card">
 					<div class="card-header">
 						<div class="row">
@@ -81,7 +83,7 @@
 									<td><span th:text="${periodo.fechaInicio}"></span></td>
 					                <td><span th:text="${periodo.fechaFinal}"></span></td>
 					                <td>
-					                	<span th:if="${periodo.fechaInicio.isBefore(local_date) && !periodo.activo}" class="badge badge-danger ">Cerrado</span>
+					                	<span th:if="${periodo.fechaFinal.isBefore(local_date) && !periodo.activo}" class="badge badge-danger ">Cerrado</span>
 					                	<span th:if="${periodo.activo}" class="badge badge-success ">Activo</span>
 					                	<span th:if="${periodo.fechaInicio.isAfter(local_date) && !periodo.activo}" class="badge badge-info ">No iniciado</span>
 					                </td>
