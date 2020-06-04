@@ -36,6 +36,11 @@ public class UnidadOrganizacional {
     @JoinColumn(name="id_tipo_unidad_organizacional")
     private TipoUnidadOrganizacional tipoUnidadOrganizacional;
 
+    //Empleado puestos unidades
+    @JsonIgnore
+    @OneToMany(mappedBy="unidadOrganizacional",cascade=CascadeType.ALL)
+    private List<EmpleadosPuestosUnidades> empleadosPuestosUnidades=new ArrayList<>();
+
     public UnidadOrganizacional(){}
     public UnidadOrganizacional(int idUnidadOrganizacional, String unidadOrganizacional, List<UnidadOrganizacional> subunidades, List<CentroCosto> centroCostos, UnidadOrganizacional unidadPadre) {
         this.idUnidadOrganizacional = idUnidadOrganizacional;
@@ -43,6 +48,14 @@ public class UnidadOrganizacional {
         this.subunidades = subunidades;
         this.centroCostos = centroCostos;
         this.unidadPadre = unidadPadre;
+    }
+
+    public List<EmpleadosPuestosUnidades> getEmpleadosPuestosUnidades() {
+        return empleadosPuestosUnidades;
+    }
+
+    public void setEmpleadosPuestosUnidades(List<EmpleadosPuestosUnidades> empleadosPuestosUnidades) {
+        this.empleadosPuestosUnidades = empleadosPuestosUnidades;
     }
 
     public TipoUnidadOrganizacional getTipoUnidadOrganizacional() {
