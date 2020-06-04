@@ -73,7 +73,12 @@
 	                  </td>
 	                  <td>	
 		                  <button class="btn btn-sm btn-primary" style="text-decoration: none; color: white;"
-										title="Ver Detalle">
+									title="Ver Detalle" onclick="activateModalView(this);"
+									th:attr="data-plan=${plan.plan},
+									data-montoPlan=${plan.montoPlan}, data-tasaInteres=${plan.tasaInteres},
+									data-periodicidadPlan=${plan.periodicidadPlan}, data-plazo=${plan.plazo}, 
+									data-montoCuota=${plan.montoCuota}, data-esActivo=${plan.esActivo},
+									data-esEgreso=${plan.esEgreso}">
 										
 								<span><i class="far fa-eye"></i></span>
 								
@@ -230,6 +235,56 @@
 		    </div>
 		  </div>
 		</div>	
+		
+		<!-- Modal para Visualizar Plan -->
+		<div class="modal" id="planViewModal" tabindex="-1" role="dialog">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title">Detalle Plan</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+			      <div class="modal-body">
+			        <div class="form-group">
+					    <label>Plan:</label><br/>
+					    <div id="viewPlan"></div>
+					  </div>
+					  <div class="form-row">
+					  	<div class="col-md-6 mb-3">
+						    <label>Tipo:</label><br>
+						    <div id="viewTipoPlan" ></div>
+						  </div>
+					  	<div class="col-md-6 mb-3">
+						    <label>Monto del Plan:</label>
+						    <div id="viewMontoPlan" ></div>
+						  </div>
+					  </div>
+					  <div class="form-row">
+					  	<div class="col-md-6 mb-3">
+						    <label>Periodicidad:</label><br>
+						    <div id="viewPeriodicidadPlan" ></div>
+						  </div>
+						  <div class="col-md-6 mb-3">
+						    <label>Numero de Cuotas:</label>
+						    <div id="viewNumeroCuotas" ></div>
+						  </div>
+					  </div>
+					  <div class="form-row">
+					  	 <div id="tiv_div" class="col-md-6 mb-3 d-none">
+						    <label>Tasa de Interes:</label>
+						    <div id="viewTasaInteres" ></div>
+						  </div>
+						  <div class="col-md-6 mb-3">
+						    <label>Monto por Cuota:</label>
+						    <div id="viewMontoCuota" ></div>
+						  </div>
+					  </div>
+			      </div>
+		    </div>
+		  </div>
+		</div>
 	</div>
 	
 	
@@ -271,6 +326,49 @@
 				  $("#idPlanInputDestroy").val(id_plan);
 				  
 				  $("#planModalDestroy").modal();
+			  }
+			
+			function activateModalView(param){
+				
+				var formatter = new Intl.NumberFormat('en-US', {
+				  style: 'currency',
+				  currency: 'USD',
+				});
+				  
+				  var plan = $(param).attr("data-plan");
+				  var montoPlan = formatter.format(Number($(param).attr("data-montoPlan"))); 
+				  var tasaInteres = Number($(param).attr("data-tasaInteres")).toFixed(1);
+				  var periodicidadPlan = $(param).attr("data-periodicidadPlan"); 
+				  var plazo = $(param).attr("data-plazo");
+				  var montoCuota = formatter.format(Number($(param).attr("data-montoCuota"))); 
+				  var esActivo = $(param).attr("data-esActivo");
+				  var esEgreso = $(param).attr("data-esEgreso");
+				  var ingreso_egreso;
+				  var periodicidad;
+				  
+				  if(esEgreso == 'true'){
+					  ingreso_egreso = '<i style="text-decoration: none; color: red;" class="fa fa-arrow-circle-down" aria-hidden="true"></i> Egreso</p>';
+					  $("#tiv_div").removeClass('d-none');
+				  }else{
+					  ingreso_egreso = '<i style="text-decoration: none; color: green;" class="fa fa-arrow-circle-up" aria-hidden="true"></i> Ingreso</p>';
+					  $("#tiv_div").addClass('d-none');
+				  }
+				  
+				  if(viewPeriodicidadPlan == 15){
+					  periodicidad = "Quincenal";
+				  }else{
+					  periodicidad = "Mensual";
+				  }
+				  
+				  document.getElementById("viewPlan").innerHTML = "<p>" + plan + "</p>";
+				  document.getElementById("viewTipoPlan").innerHTML = ingreso_egreso; 
+				  document.getElementById("viewMontoPlan").innerHTML = "<p>" + montoPlan + "</p>";
+				  document.getElementById("viewPeriodicidadPlan").innerHTML = "<p>" + periodicidad + "</p>"; 
+				  document.getElementById("viewNumeroCuotas").innerHTML = "<p>" + plazo + "</p>";
+				  document.getElementById("viewTasaInteres").innerHTML = "<p>" + tasaInteres*100 + "%</p>";
+				  document.getElementById("viewMontoCuota").innerHTML = "<p>" + montoCuota + "</p>"; 
+				  
+				  $("#planViewModal").modal();
 			  }
 		</script>
 		
