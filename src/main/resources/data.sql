@@ -367,3 +367,99 @@ SELECT * FROM DUAL;
 INSERT INTO RANGOS_COMISION (id_rango_comision, venta_min, venta_max, tasa_comision, rango_comision_habilitado) VALUES (101,500.00,1000.00,0.15,1);
 INSERT INTO RANGOS_COMISION (id_rango_comision, venta_min, venta_max, tasa_comision, rango_comision_habilitado) VALUES (102,1500.00,2000.00,0.25,1);
 INSERT INTO RANGOS_COMISION (id_rango_comision, venta_min, venta_max, tasa_comision, rango_comision_habilitado) VALUES (103,2500.00,3000.00,0.35,1);
+
+
+/*-------------------------Trigger Crear Cuotas ---------------------*/
+/*DROP SEQUENCE cuotas_seq;
+CREATE SEQUENCE cuotas_seq START WITH 1 INCREMENT BY 1 NOCACHE NOCYCLE;
+ 
+CREATE OR REPLACE TRIGGER crearcuotas AFTER
+    INSERT ON planes
+    FOR EACH ROW
+DECLARE
+    id_plan              planes.id_plan%TYPE := :new.id_plan;
+    peridicidad_plan     planes.periodicidad_plan%TYPE := :new.periodicidad_plan;
+    plazo_plan           planes.plazo%TYPE := :new.plazo;
+    fecha_prevista_pago  cuotas.fecha_prevista_pago%TYPE;
+    numero_cuota         cuotas.numero_cuota%TYPE;
+    ultima_fecha_pagada  DATE;
+BEGIN
+	--Si es Mensual
+    IF peridicidad_plan = 30 THEN
+        FOR i IN 1..plazo_plan LOOP
+            numero_cuota := i;
+            IF i = 1 THEN
+                fecha_prevista_pago := last_day(sysdate);
+            ELSE
+                fecha_prevista_pago := last_day(add_months(fecha_prevista_pago, 1));
+            END IF;
+
+            INSERT INTO cuotas (
+                id_cuota,
+                fecha_prevista_pago,
+                fecha_real_pago,
+                monto_cancelado,
+                numero_cuota,
+                id_plan
+            ) VALUES (
+                cuotas_seq.NEXTVAL,
+                fecha_prevista_pago,
+                NULL,
+                0.0,
+                numero_cuota,
+                id_plan
+            );
+
+        END LOOP;
+
+    ELSE
+        FOR i IN 1..plazo_plan LOOP
+            numero_cuota := i;
+            IF i = 1 THEN
+                IF ( sysdate - ( add_months(last_day(sysdate), -1) + 1 ) ) < 15 THEN
+                    fecha_prevista_pago := ( add_months(last_day(sysdate), -1) + 1 ) + 14;
+
+                ELSE
+                    fecha_prevista_pago := last_day(sysdate);
+                END IF;
+
+            ELSE
+                IF last_day(fecha_prevista_pago) = fecha_prevista_pago THEN
+                    fecha_prevista_pago := fecha_prevista_pago + 15;
+                ELSE
+                    fecha_prevista_pago := last_day(fecha_prevista_pago);
+                END IF;
+            END IF;
+
+            INSERT INTO cuotas (
+                id_cuota,
+                fecha_prevista_pago,
+                fecha_real_pago,
+                monto_cancelado,
+                numero_cuota,
+                id_plan
+            ) VALUES (
+                cuotas_seq.NEXTVAL,
+                fecha_prevista_pago,
+                NULL,
+                0.0,
+                numero_cuota,
+                id_plan
+            );
+
+        END LOOP;
+    END IF;
+END;
+
+CREATE OR REPLACE TRIGGER eliminarcuotas BEFORE
+    DELETE ON planes
+    FOR EACH ROW
+DECLARE
+    id_plan planes.id_plan%TYPE := :old.id_plan;
+BEGIN
+    DELETE FROM cuotas
+    WHERE
+        id_plan = id_plan;
+
+END;*/
+ 

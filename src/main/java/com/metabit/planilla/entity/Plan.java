@@ -1,5 +1,8 @@
 package com.metabit.planilla.entity;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -46,7 +50,7 @@ public class Plan {
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "id_empleado", nullable = false)
 	private Empleado empleado;
-
+	
 	public int getIdPlan() {
 		return idPlan;
 	}

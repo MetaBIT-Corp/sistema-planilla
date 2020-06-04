@@ -25,7 +25,7 @@ public class Cuota {
 	@Column(name = "fecha_prevista_pago", nullable = false)
 	private Date fechaPrevistaPago;
 	
-	@Column(name = "fecha_real_pago", nullable = false)
+	@Column(name = "fecha_real_pago", nullable = true)
 	private Date fechaRealPago;
 	
 	@Column(name = "monto_cancelado", nullable = false)
