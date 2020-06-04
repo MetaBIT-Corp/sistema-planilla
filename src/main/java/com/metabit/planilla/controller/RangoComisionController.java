@@ -107,6 +107,21 @@ public class RangoComisionController {
 		if (ventaMax<ventaMin) {
 			return new ResponseEntity<>("El monto de venta maxima no puede ser menor que el monto minimo.", HttpStatus.BAD_REQUEST);
 		}
+
+		Boolean traslape = false;
+		for(RangoComision rc:rangoComisionService.getAllRangoComision()){
+
+			if((ventaMin <= rc.getVentaMin() && ventaMin < rc.getVentaMax()) && (ventaMax > rc.getVentaMin() && ventaMax >= rc.getVentaMax())){
+				traslape = true;
+			}else{
+				if((ventaMin >= rc.getVentaMin() && ventaMin <= rc.getVentaMax())||(ventaMax>= rc.getVentaMin() && ventaMax<= rc.getVentaMax())){
+					traslape = true;
+				}
+			}
+		}
+		if(traslape) {
+			return new ResponseEntity<>("El rango comision ingresado esta contenido por otro rango ya existente. (Rangos traslapados) ", HttpStatus.BAD_REQUEST);
+		}
 		RangoComision rangoComision;
 		String mensaje;
 		if(allParams.get("id").equals("0")){
