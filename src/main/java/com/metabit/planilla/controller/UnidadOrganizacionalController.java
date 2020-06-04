@@ -268,11 +268,10 @@ public class UnidadOrganizacionalController {
     @PreAuthorize("hasAuthority('UNIDADORGANIZACIONAL_JEFE_DELETE') or hasAuthority('UNIDADORGANIZACIONAL_DELETE')")
     public ResponseEntity<?> delete(@RequestParam(name = "id_unidad_delete", required = true) int id) {
         UnidadOrganizacional uo = unidadOrganizacionalService.getOneUnidadOrganizacional(id);
-        if (uo.getSubunidades().size() != 0) {
-            return new ResponseEntity<>("No puede ser eliminada, posee SUBUNIDADES.", HttpStatus.BAD_REQUEST);
-        } else {
-            unidadOrganizacionalService.deleteUnidad(uo);
+        if (uo.getSubunidades().size() != 0 || uo.getEmpleadosPuestosUnidades().size() !=0) {
+            return new ResponseEntity<>("No puede ser eliminada, posee SUBUNIDADES o EMPLEADOS asignados.", HttpStatus.BAD_REQUEST);
         }
+        unidadOrganizacionalService.deleteUnidad(uo);
         return new ResponseEntity<>("Se elimino la unidad correctamente.", HttpStatus.OK);
     }
 
