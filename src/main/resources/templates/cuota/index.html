@@ -16,15 +16,98 @@
 
 	<ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
         <li class="breadcrumb-item"><a href="#" th:href="@{/index}">Home</a></li>
+        <li class="breadcrumb-item active"><a href="#" th:href="@{/plan/index?idEmpleado={idEmpleado}(idEmpleado=${idEmpleado})}">Planes</a></li>
         <li class="breadcrumb-item active">Cuotas</li>
     </ol>
 
 	<div layout:fragment="content">
+	
+		<!-- DataTable de Cuotas -->
+		<div class="row ml-3 mr-3">
+			
+			<div class="offset-1 col-md-10">
+			 <div class="card">
+	            <div class="card-header text-right">
+	              <h3 class="card-title"></h3>
+	            </div>
+	            <!-- /.card-header -->
+	            <div class="card-body">
+	              <table id="example1" class="table table-bordered table-striped">
+	                <thead>
+	                <tr>
+	                  <th>Cuota</th>
+	                  <th>Fecha Limite</th>
+	                  <th>Cancelado en</th>
+	                  <th>Monto Cancelado</th>
+	                  <th>Estado</th>
+	                </tr>
+	                </thead>
+	                <tbody>
+	                <tr th:each="cuota: ${cuotas}">
+	                  <td><span th:text="${cuota.numeroCuota}"></span></td>
+	                  <td><span th:text="${#dates.format(cuota.fechaPrevistaPago, 'dd-MMM-yyyy')}"></span></td>
+	                  <td>
+	                  	<span th:if="${cuota.fechaRealPago}" th:text="${#dates.format(cuota.fechaRealPago, 'dd-MMM-yyyy')}"></span>
+	                  	<span th:if="${cuota.fechaRealPago == null}" th:text="----"></span>
+	                  </td>
+	                  <td><span th:text="'$' + ${#numbers.formatDecimal(cuota.montoCancelado, 1, 'COMMA', 2, 'POINT')}"></span></td>
+	                  <td>
+	                  	<span class='badge badge-secondary' th:if="${cuota.montoCancelado == cuota.plan.montoCuota}" th:text="CANCELADO"></span>
+	                  	<span class='badge badge-warning' th:if="${cuota.montoCancelado < cuota.plan.montoCuota}" th:text="PENDIENTE"></span>
+	                  </td>
+	                </tr>
+	                
+	                <tr th:if="${#lists.isEmpty(cuotas)}">
+	                	<td colspan="5">
+	                		No hay Cuotas existentes para este Plan.
+	                	</td>
+	                </tr>
+	                              
+	                </tbody>
+	                <tfoot>
+	                <tr>
+	                  <th>Cuota</th>
+	                  <th>Fecha Limite</th>
+	                  <th>Cancelado en</th>
+	                  <th>Monto Cancelado</th>
+	                  <th>Estado</th>
+	                </tr>
+	                </tfoot>
+	              </table>
+	            </div>
+	            <!-- /.card-body -->
+	          </div>
+	          <!-- /.card -->
 		
+			</div>
+		</div>
 	</div>
 	
 	
 	<section layout:fragment="scripts">
+		<!-- DataTables -->
+	  	<script th:src="@{/plugins/datatables/jquery.dataTables.min.js}"></script>
+	  	<script th:src="@{/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
+		<script th:src="@{/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
+		<script th:src="@{/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
+		<script type="text/javascript">
+			$(function () {
+			    $("#example2").DataTable({
+			      "responsive": true,
+			      "autoWidth": false,
+			    });
+			    $('#example1').DataTable({
+			      "paging": true,
+			      "lengthChange": false,
+			      "searching": true,
+			      "ordering": true,
+			      "info": true,
+			      "autoWidth": false,
+			      "responsive": true,
+			      "pageLength": 5,
+			    });
+			  });
+		</script>
 	</section>
 
 </body>

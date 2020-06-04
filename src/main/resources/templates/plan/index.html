@@ -21,11 +21,14 @@
 
 	<ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
         <li class="breadcrumb-item"><a href="#" th:href="@{/index}">Home</a></li>
+        <li class="breadcrumb-item"><a href="#" th:href="@{/empleado/index}">Empleados</a></li>
         <li class="breadcrumb-item active">Planes</li>
     </ol>
 
 	<div layout:fragment="content">
 		<input type="hidden" id="store" th:if="${store_success != null}" value="true">
+		<input type="hidden" id="delete" th:if="${delete_success != null}" value="true">
+		<input type="hidden" id="delete_fail" th:if="${delete_failed != null}" value="true">
 		<!-- DataTable de Generos -->
 		<div class="row ml-10 mr-10">
 			
@@ -58,14 +61,14 @@
 	                  <td><span th:text="'$' + ${#numbers.formatDecimal(plan.montoCuota, 0, 'COMMA', 2, 'POINT')}"></span></td>
 	                  <td>
 	                  	<div th:switch="${plan.esEgreso}"> 
-						  <p th:case="true">Egreso</p>
-						  <p th:case="*">Ingreso</p> 
+						  <p th:case="true"><i style="text-decoration: none; color: red;" class="fa fa-arrow-circle-down" aria-hidden="true"></i>Egreso</p>
+						  <p th:case="*"><i style="text-decoration: none; color: green;" class="fa fa-arrow-circle-up" aria-hidden="true"></i>Ingreso</p> 
 						</div>
 	                  </td>
 	                  <td>
 	                  	<div th:switch="${plan.esActivo}"> 
-						  <p th:case="true">Activo</p>
-						  <p th:case="*">Saldado</p> 
+						  <p th:case="true"><span class='badge badge-success'>Activo</span></p>
+						  <p th:case="*"><span class='badge badge-secondary'>Saldado</span></p> 
 						</div>
 	                  </td>
 	                  <td>	
@@ -75,14 +78,15 @@
 								<span><i class="far fa-eye"></i></span>
 								
 							</button>					
-							<button class="btn btn-sm btn-secondary" style="text-decoration: none; color: white;"
+							<a th:href="@{/cuota/index?idPlan={idPlan}(idPlan=${plan.idPlan})}" class="btn btn-sm btn-secondary" style="text-decoration: none; color: white;"
 									title="Ver Cuotas">
 									
 								<span><i class="far fa-calendar"></i></span>
 								
-							</button>
+							</a>
 							<button class="btn btn-sm btn-danger" style="text-decoration: none; color: white;"
-									title="Eliminar Plan">
+									title="Eliminar Plan" onclick="activateModalDestroy(this);"
+									th:attr="data-idPlan=${plan.idPlan}, data-plan=${plan.plan}">
 									
 								<span><i class="fas fa-trash"></i></span>
 								
@@ -136,13 +140,23 @@
 					  </div>
 					  <div class="form-row">
 					  	<div class="col-md-6 mb-3">
+						    <label for="montoPlanInput">Tipo:</label><br>
+						    <div class="form-check form-check-inline">
+							  <input class="form-check-input" th:field="*{esEgreso}" type="radio" name="inlineRadioOptions2" id="inlineRadio2_1" value="1">
+							  <label class="form-check-label" for="inlineRadio2_1">
+							  	<i style="text-decoration: none; color: red;" class="fa fa-arrow-circle-down" aria-hidden="true"></i>Egreso
+							  </label>
+							</div>
+							<div class="form-check form-check-inline">
+							  <input class="form-check-input" th:field="*{esEgreso}" type="radio" name="inlineRadioOptions2" id="inlineRadio2_2" value="0" >
+							  <label class="form-check-label" for="inlineRadio2_2">
+							   <i style="text-decoration: none; color: green;" class="fa fa-arrow-circle-up" aria-hidden="true"></i>Ingreso
+							  </label>
+							</div>
+						  </div>
+					  	<div class="col-md-6 mb-3">
 						    <label for="montoPlanInput">Monto del Plan:</label>
 						    <input type="number" th:field="*{montoPlan}" class="form-control" id="montoPlanInput" placeholder="Ingrese el monto del plan..." required="required"
-						    min="0" step="0.01">
-						  </div>
-						  <div class="col-md-6 mb-3">
-						    <label for="tasaInteresInput">Tasa de Interes:</label>
-						    <input type="number" th:field="*{tasaInteres}" class="form-control" id="tasaInteresInput" placeholder="Ingrese el titulo del plan..." required="required"
 						    min="0" step="0.01">
 						  </div>
 					  </div>
@@ -165,16 +179,10 @@
 						  </div>
 					  </div>
 					  <div class="form-row">
-					  	<div class="col-md-6 mb-3">
-						    <label for="montoPlanInput">Tipo:</label><br>
-						    <div class="form-check form-check-inline">
-							  <input class="form-check-input" th:field="*{esEgreso}" type="radio" name="inlineRadioOptions2" id="inlineRadio2_1" value="1">
-							  <label class="form-check-label" for="inlineRadio2_1">Egreso</label>
-							</div>
-							<div class="form-check form-check-inline">
-							  <input class="form-check-input" th:field="*{esEgreso}" type="radio" name="inlineRadioOptions2" id="inlineRadio2_2" value="0" >
-							  <label class="form-check-label" for="inlineRadio2_2">Ingreso</label>
-							</div>
+					  	 <div id="ti_div" class="col-md-6 mb-3 d-none">
+						    <label for="tasaInteresInput">Tasa de Interes:</label>
+						    <input type="number" th:field="*{tasaInteres}" class="form-control" id="tasaInteresInput" placeholder="Ingrese el titulo del plan..." required="required"
+						    min="0" step="0.01">
 						  </div>
 						  <div class="col-md-6 mb-3">
 						    <label for="tasaInteresInput">Monto por Cuota:</label>
@@ -197,6 +205,31 @@
 		  </div>
 		</div>
 		
+		<!-- Modal para Confirmar Eliminacion de Plan -->
+		<div class="modal" id="planModalDestroy" tabindex="-1" role="dialog">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title">Eliminar Plan</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <form method="post" action="#" th:action="@{/plan/destroy}">
+			      <div class="modal-body">
+			        <div class="form-group">
+					    <div id="divMessage"></div>
+					    <input type="hidden" class="form-control" id="idPlanInputDestroy" name="idPlanDestroy" value="">				
+					  </div>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="submit" class="btn btn-danger">Confirmar</button>
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+			      </div>
+		      </form>
+		    </div>
+		  </div>
+		</div>	
 	</div>
 	
 	
@@ -229,20 +262,41 @@
 			      "pageLength": 5,
 			    });
 			  });
+			
+			function activateModalDestroy(param){
+				  
+				  var id_plan = $(param).attr("data-idPlan");
+				  var plan = $(param).attr("data-plan");
+				  document.getElementById("divMessage").innerHTML = "<p>Esta seguro que desea eliminar el Plan: <b>" + plan + "</b>?</p>";
+				  $("#idPlanInputDestroy").val(id_plan);
+				  
+				  $("#planModalDestroy").modal();
+			  }
 		</script>
 		
 		<script type="text/javascript"> 
 		
 		$(document).ready(function(){
 			  var store = $('#store').val();
+			  var del = $('#delete').val();
+			  var del_fail = $('#delete_fail').val();
 			  
 			  setTimeout(function() {
 			    $(".alert").fadeOut();           
 			  },3000);
 			  
 			  if(store === 'true'){
-				 toastr.success("Genero creado con éxito"); 
+				 toastr.success("Plan creado con éxito."); 
 			  }
+			  if(del === 'true'){
+				 toastr.error("Plan eliminado con éxito."); 
+			  }
+			  if(del_fail === 'true'){
+				  toastr.warning("El Plan no se puede eliminar porque posee Cuotas Canceladas.");
+			  }
+			  
+			  $("#inlineRadio2_1").on("change", evaluarTipo);
+			  $("#inlineRadio2_2").on("change", evaluarTipo);
 			  
 			  $("#planInput").on("change", calcularMontoCuota);
 			  $("#montoPlanInput").on("change", calcularMontoCuota);
@@ -250,6 +304,22 @@
 			  $("#plazoInput").on("change", calcularMontoCuota);
 			  $("#inlineRadio1").on("change", calcularMontoCuota);
 			  $("#inlineRadio2").on("change", calcularMontoCuota);
+			  
+			  function evaluarTipo(){
+				  
+				  var egreso = $("#inlineRadio2_1").is(':checked');
+				  
+				  if(egreso){
+					  $("#ti_div").removeClass('d-none');
+					  $("#guardar").prop('disabled', true);
+					  $("#montoCuotaInput").val("0.0");
+					  calcularMontoCuota();
+				  }else{
+					  $("#ti_div").toggleClass('d-none');
+					  calcularMontoCuota();
+				  } 
+				  
+			  }
 			  
 			  function calcularMontoCuota(){
 				  
@@ -262,9 +332,11 @@
 				  var salarioBase = Number($("#salarioBase").val());
 				  var limiteRetencion = salarioBase*0.20;
 				  var plazo_mensual = 0;
+				  var egreso = $("#inlineRadio2_1").is(':checked');
+				  var ingreso = $("#inlineRadio2_2").is(':checked');
 				  
 				  //Si es egreso se hace este calculo
-				  if(montoPlan > 0 && tasaInteres > 0 && plazo > 0 && (periodicidad_quincenal || periodicidad_mensual)){
+				  if(egreso && montoPlan > 0 && tasaInteres > 0 && plazo > 0 && (periodicidad_quincenal || periodicidad_mensual)){
 					  
 					  if(periodicidad_quincenal)
 						  plazo_mensual = plazo/2;
@@ -297,6 +369,27 @@
 					  }
 					  
 					  
+				  }
+				  
+				  if(ingreso && montoPlan > 0 && plazo > 0 && (periodicidad_quincenal || periodicidad_mensual)){
+					  var monto_cuota = (montoPlan/plazo).toFixed(2);
+					  $("#montoCuotaInput").val(monto_cuota);
+					  
+					  var error_items = "";
+					  
+					  if(plan == ""){
+						  error_items += "<li>El Campo <b>Plan</b> es Requerido.</li>";						  
+					  }
+					  
+					  if(error_items == ""){
+						  document.getElementById("divError").style.display="none";
+						  document.getElementById("ulError").innerHTML = "";
+						  $("#guardar").prop('disabled', false);
+					  }else{
+						  $("#guardar").prop('disabled', true);
+						  document.getElementById("divError").style.display="block";
+						  document.getElementById("ulError").innerHTML = error_items;
+					  }
 				  }
 			  }
 			});

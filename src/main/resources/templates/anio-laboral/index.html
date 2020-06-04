@@ -26,9 +26,20 @@
 	</ol>
 	
 	<div layout:fragment="content">	
-	
+		<input type="hidden" name="" th:if="${success}" id="success_msg">
+		<div class="container">
+			<div class="row ml-5">
+				<div class="col-md-1"></div>
+				<div class="col-md-9">
+					<ul th:if="${!#lists.isEmpty(errors)}" class="alert alert-danger ml-2 mr-2" role="alert">
+						<li  class="ml-2" th:each="error : ${errors}" th:text="${error}"></li>
+					</ul>
+				</div>
+			</div>
+		</div>
 		<div class="row ml-3 mr-3">
-			<div class="col-md-12 ">
+			<div class="col-md-1"></div>
+			<div class="col-md-10 ">
 				<div class="card">
 					<div class="card-header">
 						<div class="row">
@@ -36,7 +47,7 @@
 							<div class="col-md-4">
 								<div class="form-group">
 								<select id="aniosLaborales" class="form-control select2bs4" style="width: 100%;">
-				                    <div th:each="year : ${years}">
+				                    <div th:if="${!#lists.isEmpty(years)}" th:each="year : ${years}">
 				                    	<option th:if="${selected_year.anioLaboral}==${year.anioLaboral}"
 				                    		th:text="|Año Laboral ${year.anioLaboral}|" th:value="${year.anioLaboral}" selected="selected">
 				                    	</option>
@@ -67,30 +78,25 @@
 				                </tr>
 							</thead>
 							<tbody>
+								<div th:if="${selected_year != null}">
 								<tr th:each="periodo: ${selected_year.periodos}">
 									<td><span th:text="${periodo.fechaInicio}"></span></td>
 					                <td><span th:text="${periodo.fechaFinal}"></span></td>
 					                <td>
-					                	<span th:if="${periodo.fechaInicio.isBefore(local_date) && !periodo.activo}" class="badge badge-danger ">Cerrado</span>
+					                	<span th:if="${periodo.fechaFinal.isBefore(local_date) && !periodo.activo}" class="badge badge-danger ">Cerrado</span>
 					                	<span th:if="${periodo.activo}" class="badge badge-success ">Activo</span>
 					                	<span th:if="${periodo.fechaInicio.isAfter(local_date) && !periodo.activo}" class="badge badge-info ">No iniciado</span>
 					                </td>
-									<td>					 
-				                        <div class="btn-group">
-				                          <button type="button" class="btn btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown">
-				                          	<span>Accion</span>
-				                          </button>
-				                          <div class="dropdown-menu">
-				                          
-											
-				                          </div>
-				                        </div>
-										
+									<td class="text-center">
+										<a href="#" class="btn btn-sm btn-info" title="Generar planillas">
+											<i class="fas fa-clipboard-list"></i>&nbsp;&nbsp;Generar Planillas
+										</a>
 									</td>
 								</tr>
+								</div>
 								<tr th:if="${#lists.isEmpty(years)}">
 				                	<td colspan="6">
-				                		No hay Puestos actualmente.
+				                		No hay periodos en el Año Laboral
 				                	</td>
 				                </tr>
 							</tbody>
@@ -120,16 +126,16 @@
 		          <span aria-hidden="true">&times;</span>
 		        </button>
 		      </div>
-		      <form method="post" action="#" th:action="@{/genero/destroy}">
+		      <form method="POST" action="#" th:action="@{/anio-laboral/store}">
 			      <div class="modal-body">
 			        <div class="form-group">
 			            <label for="recipient-name" class="col-form-label">Año:</label>
-			            <input type="text" class="form-control" id="recipient-name" disabled="true" 
-			            th:value="${#dates.format(#dates.createNow(), 'yyyy')}">
+			            <input type="text" class="form-control" id="recipient-name" readonly="true" 
+			            th:value="${#dates.format(#dates.createNow(), 'yyyy')}" name="anioLaboral">
 			        </div>
 			        <div class="form-group">
 			        	<label for="recipient-name" class="col-form-label">Periodicidad:</label>
-			        	<select class="form-control" style="width: 100%;">
+			        	<select class="form-control" style="width: 100%;" name="periodicidad">
 		                    <option value="15">15 días</option>
 		                    <option value="30">30 días</option>
 	                	</select>
@@ -183,6 +189,15 @@
 	          $('#addAnioLaboral').modal('show');
 	        });
 
+			setTimeout(function() {
+				$(".alert").fadeOut();           
+			},3000);
+
+			var success = $('#success_msg').val();
+			if(success != null){
+			    toastr.success('El Año Laboral fue registrado con éxito');
+			}
+	        
 
 		</script>
 		<!-- Scripts-->
