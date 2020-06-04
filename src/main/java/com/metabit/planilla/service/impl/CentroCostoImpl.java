@@ -32,7 +32,13 @@ public class CentroCostoImpl implements CentroCostoService {
     }
 
     @Override
+    public CentroCosto getOneCentroCosto(int id) {
+        return centroCostoJpaRepository.getOne(id);
+    }
+
+    @Override
     public void deleteCentroCosto(CentroCosto centroCosto) {
         centroCostoJpaRepository.delete(centroCosto);
     }
+
 }

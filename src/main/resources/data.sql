@@ -173,6 +173,7 @@ INSERT ALL INTO USUARIOS_ROLES VALUES(1,1)
   		   INTO USUARIOS_ROLES VALUES(3,3)
   		   INTO USUARIOS_ROLES VALUES(4,4)
   		   INTO USUARIOS_ROLES VALUES(5,5)
+  		   INTO USUARIOS_ROLES VALUES(1,4)
 SELECT * FROM DUAL;
 
 /*-------------------------------------------------------------------------------------*/

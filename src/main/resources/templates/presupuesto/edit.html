@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html layout:decorate="~{layouts/layout}">
-
 <head>
 
-    <meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <!-- Tell the browser to be responsive to screen width -->
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!-- SweetAlert2 -->
     <link rel="stylesheet" th:href="@{/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css}">
     <!-- Toastr -->
@@ -17,101 +15,173 @@
     <link th:href="@{/primitives/min/primitives.latest.css?5100}" media="screen" rel="stylesheet" type="text/css"/>
 
 </head>
-
 <body>
 
-<h1 class="ml-4 text-dark" layout:fragment="titulo_seccion"></h1>
+<h1 class="m-0 text-dark" layout:fragment="titulo_seccion"></h1>
 
 <ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
-    <li class="breadcrumb-item"><a th:href="@{/index}">Home</a></li>
+    <li class="breadcrumb-item">
+        <a href="#" th:href="@{/index}">Home</a>
+    </li>
     <li class="breadcrumb-item"><a th:href="@{/unidades-organizacionales/index}">Unidades Organizacionales</a></li>
-    <li class="breadcrumb-item active">Detalle Unidad</li>
+    <li class="breadcrumb-item active">Asignacion de Presupuesto</li>
 </ol>
 
 <div layout:fragment="content">
     <div class="row">
-        <div class="col-5 mt-4">
+        <!-- left column -->
+        <div class="col-5">
+            <!-- general form elements -->
             <div class="card card-primary">
                 <div class="card-header">
-                    <h3 class="card-title" id="unidadId" th:attr="data-id=${unidad.idUnidadOrganizacional}">Detalle de unidad organizacional</h3>
+                    <h3 class="card-title" id="unidadId" th:attr="data-id=${unidad.idUnidadOrganizacional}" th:text="'Asignacion de presupuesto a '+${unidad.unidadOrganizacional}" ></h3>
                 </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-6">
-                            <label><strong>Nombre Unidad: </strong></label>
+                <!-- /.card-header -->
+                <!-- form start -->
+                <form id="presupuesto_form">
+                    <div class="card-body">
+
+                        <div  class="callout callout-danger" id="message" th:if="${anio_error == true}">
+                            <p id="mayor">
+                                <i class="icon fas fa-ban mr-2" style="color:red;"></i><span style="text-size=4px" th:text="${adventencia}"></span>
+                            </p>
                         </div>
-                        <div class="col-6 text-center">
-                            <h5 th:text="${unidad.unidadOrganizacional}"></h5>
+                        <div  class="callout callout-danger" id="errors" hidden>
+                            <p id="error_message">
+                            </p>
+                        </div>
+
+                       <div th:if="${anio_error == false}">
+                           <div class="row">
+                               <div class="col-6">
+                                   <label><strong>Nombre: </strong></label>
+                               </div>
+                               <div class="col-6 text-center">
+                                   <h5 th:text="${unidad.unidadOrganizacional}"></h5>
+                               </div>
+                           </div>
+                           <div class="row">
+                               <div class="col-6">
+                                   <label><strong>Tipo de unidad: </strong></label>
+                               </div>
+                               <div class="col-6 text-center">
+                                   <h5 th:text="${unidad.tipoUnidadOrganizacional.tipoUnidadOrganizacional}"></h5>
+                               </div>
+                           </div>
+                           <div class="row" th:if="${presupuestoPadreDisponible>0}">
+                               <div class="col-6">
+                                   <label><strong>Presupuesto disponible de unidad padre:</strong></label>
+                               </div>
+                               <div class="col-2"></div>
+                               <div class="col-4">
+                                   <u><h5 th:text="'$ '+${#numbers.formatDecimal(presupuestoPadreDisponible,1,'COMMA',2,'POINT')}"></h5></u>
+                               </div>
+                           </div>
+                           <div class="row">
+                               <div class="col-8">
+                                   <label><strong>Presupuesto asignado: </strong></label>
+                               </div>
+                               <div class="col-4">
+                                   <h5 th:text="'$ '+${#numbers.formatDecimal(centroCosto.presupuestoAsignado,1,'COMMA',2,'POINT')}"></h5>
+                               </div>
+                           </div>
+                           <div class="row">
+                               <div class="col-8">
+                                   <label><strong>Presupuesto anterior: </strong></label>
+                               </div>
+                               <div class="col-4">
+                                   <h5 th:text="'$ '+${#numbers.formatDecimal(centroCosto.presupuestoAnterior,1,'COMMA',2,'POINT')}"></h5>
+                               </div>
+                           </div>
+                           <div class="row">
+                               <div class="col-8">
+                                   <label><strong>Presupuesto devengado: </strong></label>
+                               </div>
+                               <div class="col-4">
+                                   <h5 th:text="'$ '+${#numbers.formatDecimal(centroCosto.presupuestoDevengado,1,'COMMA',2,'POINT')}"></h5>
+                               </div>
+                           </div>
+                           <div class="row">
+                               <div class="col-8">
+                                   <label><strong>Año laboral: </strong></label>
+                               </div>
+                               <div class="col-4">
+                                   <h5 th:text="${anio.anioLaboral}"></h5>
+                               </div>
+                           </div>
+                       </div>
+
+                        <div class="mt-2">
+                            <input type="hidden" class="form-control form-control-user" th:value="${centroCosto.idCentroCosto}" name="idCentroCosto">
+
+                            <div class="form-group">
+                                <label for="monto_asig">Monto a asignar </label>
+                                <input type="number" class="form-control" id="monto_asig" name="mas">
+                                <small id="emailHelp" class="form-text text-muted">La cantidad ingresada se sumara al presupuesto actual de la unidad.</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="monto_dis">Monto a disminuir</label>
+                                <input type="number" class="form-control" id="monto_dis" name="menos">
+                                <small id="emailHelp" class="form-text text-muted">La cantidad ingresada se restara al presupuesto actual de la unidad.</small>
+                            </div>
+
                         </div>
                     </div>
-                    <div class="row" th:if="${unidad.unidadPadre != null}">
-                        <div class="col-6">
-                            <label><strong>Unidad Padre: </strong></label>
-                        </div>
-                        <div class="col-6 text-center">
-                            <h5 th:text="${unidad.unidadPadre.unidadOrganizacional}"></h5>
-                        </div>
+                    <!-- /.card-body -->
+
+                    <div class="card-footer">
+                        <button type="button" id="btn_registrar" class="btn btn-primary" th:if="${anio_error == false}">Registrar Asignacion</button>
+                        <a type="button" class="btn btn-default" href="#"
+                           th:href="@{/unidades-organizacionales/index}">Cancelar</a>
                     </div>
-                    <div class="row">
-                        <div class="col-6">
-                            <label><strong>Tipo de unidad: </strong></label>
-                        </div>
-                        <div class="col-6 text-center">
-                            <h5 th:text="${unidad.tipoUnidadOrganizacional.tipoUnidadOrganizacional}"></h5>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-8">
-                            <label><strong>Presupuesto asignado: </strong></label>
-                        </div>
-                        <div class="col-4">
-                            <h5 th:text="'$ '+${#numbers.formatDecimal(centroCosto.presupuestoAsignado,1,'COMMA',2,'POINT')}"></h5>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-8">
-                            <label><strong>Presupuesto anterior: </strong></label>
-                        </div>
-                        <div class="col-4">
-                            <h5 th:text="'$ '+${#numbers.formatDecimal(centroCosto.presupuestoAnterior,1,'COMMA',2,'POINT')}"></h5>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-8">
-                            <label><strong>Presupuesto devengado: </strong></label>
-                        </div>
-                        <div class="col-4">
-                            <h5 th:text="'$ '+${#numbers.formatDecimal(centroCosto.presupuestoDevengado,1,'COMMA',2,'POINT')}"></h5>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-8">
-                            <label><strong>Año laboral: </strong></label>
-                        </div>
-                        <div class="col-4">
-                            <h5 th:text="${anio.anioLaboral}"></h5>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-footer text-right">
-                    <a type="button" class="btn btn-default" th:href="@{/unidades-organizacionales/index}">Listado Unidades</a>
-                </div>
+                </form>
             </div>
+            <!-- /.card -->
         </div>
-        <div class="col-7">
+        <div class="col-7 mt-5">
             <h6 class="text-center" id="mensaje">Seleccione Sub-Unidad</h6>
             <div id="basicdiagram" class="col-12" style="height: 370px; border-style: dotted; border-width: 1px;/"></div>
         </div>
-
     </div>
-
 </div>
-
 <section layout:fragment="scripts">
     <!-- Toastr -->
     <script th:src="@{/plugins/toastr/toastr.min.js}"></script>
     <!-- SweetAlert2 -->
     <script th:src="@{/plugins/sweetalert2/sweetalert2.min.js}"></script>
+
+    <script>
+        $("#btn_registrar").on("click", function () {
+
+            $.ajax({
+                type: "POST",
+                url: "/presupuesto/store",
+                data: $("#presupuesto_form").serialize(),
+                dataType: "json",
+                success: function (data) {
+                    $("#errors").attr("hidden", "hidden");
+                    toastr.success(data.success);
+                    setTimeout(function () {
+                        location.reload();
+                    }, 2000);
+                },
+                error: function (data) {
+                    $("#errors").removeAttr("hidden");
+                    var m = "";
+                    $.each(data.responseJSON, function (key, value) {
+                        m += "<i class='icon fas fa-ban mr-2' style='color:red;'></i><span style='text-size=4px'>" + value + "</span>";
+                    });
+                    document.getElementById("error_message").innerHTML = m;
+
+                    //Para mover al inicio de la pagina el control
+                    $('html, body').animate({
+                        scrollTop: 0
+                    }, 'slow');
+
+                }
+            });
+        });
+    </script>
 
     <script type="text/javascript" th:src="@{/primitives/packages/jquery-ui-1.12.1/external/jquery/jquery.js}"></script>
     <script type="text/javascript" th:src="@{/primitives/packages/jquery-ui-1.12.1/jquery-ui.min.js}"></script>
@@ -164,6 +234,7 @@
                                     link: data.result[i].idUnidadOrganizacional
                                 }));
                             }
+
                         }else{
                             var items = [
                                 new primitives.orgdiagram.ItemConfig({
@@ -204,7 +275,7 @@
                         options.pageFitMode = primitives.common.PageFitMode.None;
                         options.hasSelectorCheckbox = primitives.common.Enabled.False;
                         options.onCursorChanged = function (e, d) {
-                            window.location.href = document.location.origin + "/unidades-organizacionales/show/" + d.context.link;
+                            window.location.href = document.location.origin + "/presupuesto/edit/" + d.context.link;
                         };
                         options.cursorItem = 0;
 

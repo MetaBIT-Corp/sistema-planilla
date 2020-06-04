@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -74,25 +76,33 @@ public class UnidadOrganizacionalController {
         Boolean presupuesto = false;
 
         for (Rol rol : rolService.getUserRoles(usuario.getIdUsuario())) {
-            for (RolRecursoPrivilegio rrp:rol.getRolesRecursosPrivilegios()) {
+            for (RolRecursoPrivilegio rrp : rol.getRolesRecursosPrivilegios()) {
 
                 //SE VERIFICA SI TIENE EL RECURSO JEFE UNIDAD
-                if(rrp.getRecurso().getRecurso().equals("UNIDADORGANIZACIONAL_JEFE")){
+                if (rrp.getRecurso().getRecurso().equals("UNIDADORGANIZACIONAL_JEFE")) {
                     jefeUnidad = true;
                 }
 
                 //VERIFICACION DE PRIVILEGIOS EN BASE RECURSOS UNIDADORG_JEFE, UNIDADORGANIZACIONAL y PRESUPUESTO
-                if(rrp.getRecurso().getRecurso().equals("UNIDADORGANIZACIONAL_JEFE") ||
+                if (rrp.getRecurso().getRecurso().equals("UNIDADORGANIZACIONAL_JEFE") ||
                         rrp.getRecurso().getRecurso().equals("UNIDADORGANIZACIONAL")
-                ){
-                    switch (rrp.getPrivilegio().getPrivilegio()){
-                        case "CREATE" : create = true; break;
-                        case "EDIT" : edit = true; break;
-                        case "DELETE" : delete = true; break;
-                        case "SHOW" : show = true; break;
+                ) {
+                    switch (rrp.getPrivilegio().getPrivilegio()) {
+                        case "CREATE":
+                            create = true;
+                            break;
+                        case "EDIT":
+                            edit = true;
+                            break;
+                        case "DELETE":
+                            delete = true;
+                            break;
+                        case "SHOW":
+                            show = true;
+                            break;
                     }
                 }
-                if(rrp.getRecurso().getRecurso().equals("PRESUPUESTO")&&rrp.getPrivilegio().getPrivilegio().equals("EDIT")){
+                if (rrp.getRecurso().getRecurso().equals("PRESUPUESTO") && rrp.getPrivilegio().getPrivilegio().equals("EDIT")) {
                     presupuesto = true;
                 }
             }
@@ -111,8 +121,8 @@ public class UnidadOrganizacionalController {
         mav.addObject("edit", edit);
         mav.addObject("delete", delete);
         mav.addObject("show", show);
-        mav.addObject("presupuesto",presupuesto);
-        mav.addObject("jefeUnidad",jefeUnidad);
+        mav.addObject("presupuesto", presupuesto);
+        mav.addObject("jefeUnidad", jefeUnidad);
         mav.addObject("unidad", new UnidadOrganizacional());
         mav.addObject("tipos_unidad", tipoUnidadOrganizacionalService.getAll());
         return mav;
@@ -125,10 +135,10 @@ public class UnidadOrganizacionalController {
         ModelAndView mav = new ModelAndView(SHOW_VIEW);
         UnidadOrganizacional unidad = unidadOrganizacionalService.getOneUnidadOrganizacional(id);
         AnioLaboral anioLaboral = anioLaboralService.getAnioLaboral(LocalDate.now().getYear());
-        CentroCosto centroCosto = centroCostoService.findByAnioAndUnidad(anioLaboral,unidad);
-        mav.addObject("unidad",unidad);
-        mav.addObject("centroCosto",centroCosto);
-        mav.addObject("anio",anioLaboral);
+        CentroCosto centroCosto = centroCostoService.findByAnioAndUnidad(anioLaboral, unidad);
+        mav.addObject("unidad", unidad);
+        mav.addObject("centroCosto", centroCosto);
+        mav.addObject("anio", anioLaboral);
         return mav;
     }
 
@@ -137,7 +147,15 @@ public class UnidadOrganizacionalController {
     JsonResponse showUnidad(@PathVariable(value = "id", required = true) int id) {
         JsonResponse jsonResponse = new JsonResponse();
         UnidadOrganizacional uo = unidadOrganizacionalService.getOneUnidadOrganizacional(id);
-        jsonResponse.setResult(unidadOrganizacionalService.getAllHijas(uo));
+        List<UnidadOrganizacional> unidad = new ArrayList<>();
+        if(unidadOrganizacionalService.getAllHijas(uo).size()==0){
+            unidad.add(uo);
+            LOGGER.info(unidad.get(0).getUnidadOrganizacional());
+            jsonResponse.setResult(unidad);
+        }else{
+            jsonResponse.setResult(unidadOrganizacionalService.getAllHijas(uo));
+        }
+
         return jsonResponse;
     }
 
@@ -154,7 +172,7 @@ public class UnidadOrganizacionalController {
         Boolean jefeUnidad = false;
         Usuario usuario = getUserLogueado();
         for (Rol rol : rolService.getUserRoles(usuario.getIdUsuario())) {
-            for (RolRecursoPrivilegio rrp:rol.getRolesRecursosPrivilegios()) {
+            for (RolRecursoPrivilegio rrp : rol.getRolesRecursosPrivilegios()) {
                 //SE VERIFICA SI TIENE EL RECURSO JEFE UNIDAD
                 if (rrp.getRecurso().getRecurso().equals("UNIDADORGANIZACIONAL_JEFE")) {
                     jefeUnidad = true;
@@ -165,10 +183,10 @@ public class UnidadOrganizacionalController {
         UnidadOrganizacional uo = new UnidadOrganizacional();
         uo.setUnidadOrganizacional(allParams.get("unidadOrganizacional"));
 
-        if(jefeUnidad){
+        if (jefeUnidad) {
             Empleado empleado = empleadoService.findByUsuario(usuario);
             uo.setUnidadPadre(empleado.getEmpleadosPuestosUnidades().getUnidadOrganizacional());
-        }else{
+        } else {
             int idUnidadPadre = Integer.parseInt(allParams.get("idUnidadPadre"));
             if (idUnidadPadre == -1) {
                 uo.setUnidadPadre(null);
@@ -215,7 +233,7 @@ public class UnidadOrganizacionalController {
         Boolean jefeUnidad = false;
         Usuario usuario = getUserLogueado();
         for (Rol rol : rolService.getUserRoles(usuario.getIdUsuario())) {
-            for (RolRecursoPrivilegio rrp:rol.getRolesRecursosPrivilegios()) {
+            for (RolRecursoPrivilegio rrp : rol.getRolesRecursosPrivilegios()) {
                 //SE VERIFICA SI TIENE EL RECURSO JEFE UNIDAD
                 if (rrp.getRecurso().getRecurso().equals("UNIDADORGANIZACIONAL_JEFE")) {
                     jefeUnidad = true;
@@ -227,10 +245,10 @@ public class UnidadOrganizacionalController {
         UnidadOrganizacional uo = unidadOrganizacionalService.getOneUnidadOrganizacional(Integer.parseInt(allParams.get("idUnidadOrganizacional")));
         uo.setUnidadOrganizacional(allParams.get("unidadOrganizacional"));
 
-        if(jefeUnidad){
+        if (jefeUnidad) {
             Empleado empleado = empleadoService.findByUsuario(usuario);
             uo.setUnidadPadre(empleado.getEmpleadosPuestosUnidades().getUnidadOrganizacional());
-        }else{
+        } else {
             int idUnidadPadre = Integer.parseInt(allParams.get("idUnidadPadre"));
 
             if (idUnidadPadre == -1) {
@@ -250,15 +268,15 @@ public class UnidadOrganizacionalController {
     @PreAuthorize("hasAuthority('UNIDADORGANIZACIONAL_JEFE_DELETE') or hasAuthority('UNIDADORGANIZACIONAL_DELETE')")
     public ResponseEntity<?> delete(@RequestParam(name = "id_unidad_delete", required = true) int id) {
         UnidadOrganizacional uo = unidadOrganizacionalService.getOneUnidadOrganizacional(id);
-        if(uo.getSubunidades().size()!=0){
-            return  new ResponseEntity<>("No puede ser eliminada, posee SUBUNIDADES.",HttpStatus.BAD_REQUEST);
-        }else{
+        if (uo.getSubunidades().size() != 0) {
+            return new ResponseEntity<>("No puede ser eliminada, posee SUBUNIDADES.", HttpStatus.BAD_REQUEST);
+        } else {
             unidadOrganizacionalService.deleteUnidad(uo);
         }
         return new ResponseEntity<>("Se elimino la unidad correctamente.", HttpStatus.OK);
     }
 
-    private Usuario getUserLogueado(){
+    private Usuario getUserLogueado() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetail = (UserDetails) auth.getPrincipal();
         Usuario usuario = userJpaRepository.findByUsername(userDetail.getUsername());

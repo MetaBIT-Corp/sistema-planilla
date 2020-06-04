@@ -9,7 +9,7 @@ public class CentroCosto {
     @Id
     @GeneratedValue
     @Column(name = "id_centro_costo")
-    private int id_centro_costo;
+    private int idCentroCosto;
 
     @Column(name = "presupuesto_asignado")
     private double presupuestoAsignado;
@@ -30,19 +30,19 @@ public class CentroCosto {
 
     public CentroCosto(){}
     public CentroCosto(int id_centro_costo, double presupuestoAsignado, double presupuestoDevengado, double presupuestoAnterior, UnidadOrganizacional unidadOrganizacional) {
-        this.id_centro_costo = id_centro_costo;
+        this.idCentroCosto = idCentroCosto;
         this.presupuestoAsignado = presupuestoAsignado;
         this.presupuestoDevengado = presupuestoDevengado;
         this.presupuestoAnterior = presupuestoAnterior;
         this.unidadOrganizacional = unidadOrganizacional;
     }
 
-    public int getId_centro_costo() {
-        return id_centro_costo;
+    public int getIdCentroCosto() {
+        return idCentroCosto;
     }
 
-    public void setId_centro_costo(int id_centro_costo) {
-        this.id_centro_costo = id_centro_costo;
+    public void setIdCentroCosto(int idCentroCosto) {
+        this.idCentroCosto = idCentroCosto;
     }
 
     public double getPresupuestoAsignado() {
