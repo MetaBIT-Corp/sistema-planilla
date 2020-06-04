@@ -285,7 +285,7 @@ insert into empleados_puestos_unidades  (id_empleado_puesto_unidad, id_empleado,
 
 
 /*----------------------PERIODO----------------------*/
-/*INSERT ALL
+INSERT ALL
   INTO PERIODOS VALUES(100, 0, '01/01/18', '30/01/18', 100)
   INTO PERIODOS VALUES(101, 0, '01/02/18', '28/02/18', 100)
   INTO PERIODOS VALUES(102, 0, '01/03/18', '30/03/18', 100)
@@ -324,13 +324,13 @@ insert into empleados_puestos_unidades  (id_empleado_puesto_unidad, id_empleado,
   INTO PERIODOS VALUES(133, 0, '01/10/20', '30/10/20', 102)
   INTO PERIODOS VALUES(134, 0, '01/11/20', '30/11/20', 102)
   INTO PERIODOS VALUES(135, 0, '01/12/20', '30/12/20', 102)
-SELECT * FROM DUAL;*/
+SELECT * FROM DUAL;
 
 /*----------------------PLANILLA----------------------*/
-/*INSERT ALL
+INSERT ALL
   INTO PLANILLAS(ID_PLANILLA, TOTAL_DESCUENTOS, TOTAL_INGRESOS, ID_EMPLEADO, ID_PERIODO) VALUES(100, 90, 150, 300, 105)
   INTO PLANILLAS(ID_PLANILLA, TOTAL_DESCUENTOS, TOTAL_INGRESOS, ID_EMPLEADO, ID_PERIODO) VALUES(101, 75, 225, 301, 105)
-SELECT * FROM DUAL;*/
+SELECT * FROM DUAL;
 
 /*----------------------PLANILLA MOVIMIENTOS----------------------*/
 /*INSERT ALL

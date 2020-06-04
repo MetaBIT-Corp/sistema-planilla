@@ -1,5 +1,8 @@
 package com.metabit.planilla.service;
 
-public interface PlanillaMovimientosService {
+import com.metabit.planilla.entity.PlanillaMovimiento;
 
+public interface PlanillaMovimientosService {
+	
+	public abstract PlanillaMovimiento storePlanillaMovimiento(PlanillaMovimiento planillaMovimiento);
 }

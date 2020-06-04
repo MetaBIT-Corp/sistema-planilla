@@ -71,6 +71,7 @@
 						<table id="example1" class="table table-bordered table-striped">
 							<thead>
 								<tr>
+								  <th>#</th>
 				                  <th>Fecha inicio</th>
 				                  <th>Fecha final</th>
 				                  <th>Estado</th>
@@ -79,16 +80,18 @@
 							</thead>
 							<tbody>
 								<div th:if="${selected_year != null}">
-								<tr th:each="periodo: ${selected_year.periodos}">
-									<td><span th:text="${periodo.fechaInicio}"></span></td>
-					                <td><span th:text="${periodo.fechaFinal}"></span></td>
+
+								<tr th:each="periodo, state: ${selected_year.periodos}">
+									<td th:text="${state.count}"></td>
+									<td th:text="${#temporals.format(periodo.fechaInicio, 'dd, MMM. yyyy')}" class="fecha_inicio"></td>
+									<td th:text="${#temporals.format(periodo.fechaFinal, 'dd, MMM. yyyy')}" class="fecha_final"></td>
 					                <td>
 					                	<span th:if="${periodo.fechaFinal.isBefore(local_date) && !periodo.activo}" class="badge badge-danger ">Cerrado</span>
 					                	<span th:if="${periodo.activo}" class="badge badge-success ">Activo</span>
 					                	<span th:if="${periodo.fechaInicio.isAfter(local_date) && !periodo.activo}" class="badge badge-info ">No iniciado</span>
 					                </td>
 									<td class="text-center">
-										<a href="#" class="btn btn-sm btn-info" title="Generar planillas">
+										<a href="#" class="btn btn-sm btn-info" title="Generar planillas" th:attr="data-periodo=${periodo.idPeriodo}">
 											<i class="fas fa-clipboard-list"></i>&nbsp;&nbsp;Generar Planillas
 										</a>
 									</td>
@@ -102,6 +105,7 @@
 							</tbody>
 							<tfoot>
 								<tr>
+								  <th>#</th>
 				                  <th>Fecha inicio</th>
 				                  <th>Fecha final</th>
 				                  <th>Estado</th>
@@ -150,6 +154,31 @@
 		  </div>
 		</div>
 
+		<!-- Modal para confirmar la generación de las planillas -->
+		<div class="modal fade" id="generarPlanillas" tabindex="-1" role="dialog" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title">Generar Planillas</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <form method="POST" action="#" th:action="@{/planilla/store}">
+			      <div class="modal-body">
+			        <div class="form-group">
+			            <p>¿Desea generar las planillas para el periodo del <em></em>?</p>
+			        </div>
+			      <div class="modal-footer">
+			      	<input id="id_periodo" type="hidden" name="id_periodo" value="">
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+			        <button type="submit" class="btn btn-primary">Sí</button>
+			      </div>
+		      </form>
+		    </div>
+		  </div>
+		</div>
+
 	</div>
 	<!-- Scripts-->
 	<section layout:fragment="scripts">
@@ -183,7 +212,7 @@
 			$('#aniosLaborales').on('change', function(){
 				var anio = $(this).val();
 				location.href = '/anio-laboral/index/' + anio;
-			})
+			});
 
 			$('#add-anio-laboral').on('click', function(){
 	          $('#addAnioLaboral').modal('show');
@@ -198,6 +227,16 @@
 			    toastr.success('El Año Laboral fue registrado con éxito');
 			}
 	        
+			$('[data-periodo]').on('click', function(){
+				
+				var id_periodo = $(this).data('periodo');
+				var fecha_inicio = $(this).parent().siblings('.fecha_inicio').text();
+				var fecha_final = $(this).parent().siblings('.fecha_final').text();
+				
+				$('em').text(fecha_inicio + ' al ' + fecha_final);
+				$('#id_periodo').val(id_periodo);
+				$('#generarPlanillas').modal('show');
+			});
 
 		</script>
 		<!-- Scripts-->
