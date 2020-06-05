@@ -16,18 +16,16 @@
 </head>
 <body>
 
-	<h1 class="m-0 text-dark" layout:fragment="titulo_seccion">Años Laborales</h1>
+	<h1 class="m-0 text-dark" layout:fragment="titulo_seccion">Rangos Renta</h1>
 
 	<ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
 		<li class="breadcrumb-item">
 			<a href="#" th:href="@{/index}">Home</a>
 		</li>
-		<li class="breadcrumb-item active">Años laborales</li>
+		<li class="breadcrumb-item active">Rangos Renta</li>
 	</ol>
 	
 	<div layout:fragment="content">	
-		<input type="hidden" name="" th:if="${success_anio}" id="success_anio">
-		<input type="hidden" name="" th:if="${success_planilla}" id="success_planilla">
 		<div class="container">
 			<div class="row ml-5">
 				<div class="col-md-1"></div>
@@ -42,74 +40,47 @@
 			<div class="col-md-1"></div>
 			<div class="col-md-10 ">
 				<div class="card">
-					<div class="card-header">
-						<div class="row">
-							<div class="col-md-4"></div>
-							<div class="col-md-4">
-								<div class="form-group">
-								<select id="aniosLaborales" class="form-control select2bs4" style="width: 100%;">
-				                    <th:block th:if="${!#lists.isEmpty(years)}" th:each="year : ${years}">
-				                    	<option th:if="${selected_year.anioLaboral}==${year.anioLaboral}"
-				                    		th:text="|Año Laboral ${year.anioLaboral}|" th:value="${year.anioLaboral}" selected="selected">
-				                    	</option>
-				                    	<option th:unless="${selected_year.anioLaboral}==${year.anioLaboral}"
-				                    		th:text="|Año Laboral ${year.anioLaboral}|" th:value="${year.anioLaboral}">
-				                    	</option>
-				                    </th:block>
-				                    <option th:if="${#lists.isEmpty(years)}">No hay años laborales</option>
-			                  </select>
-			                  	</div>
-							</div>
-							<div class="col-md-4  text-right">
-								<a href="#" type="button" class="btn btn-sm btn-primary" id="add-anio-laboral"> 
-									<i class="fas fa-plus-circle mr-1 text-white"></i> 
-									<span class="text-white">Nuevo Año laboral</span>
-								</a>
-							</div>
-						</div>
-					</div>
+	            <div class="card-header text-right">
+		            <button class="btn btn-sm btn-primary" title="Agregar Rango de Renta">
+						<i class="fas fa-plus-circle mr-1 text-white"></i>
+						<span class="text-white">Nuevo Rango de Renta</span>
+					</button>
+	              <h3 class="card-title"></h3>
+	            </div>
 					
 					<div class="card-body">
 						<table id="example1" class="table table-bordered table-striped">
 							<thead>
 								<tr>
-								  <th>#</th>
-				                  <th>Fecha inicio</th>
-				                  <th>Fecha final</th>
-				                  <th>Estado</th>
+								  <th>Desde</th>
+				                  <th>Hasta</th>
+				                  <th>Procentaje</th>
+				                  <th>Exceso</th>
+				                  <th>Cuota fija</th>
+								  <th>Periodicidad</th>
 								  <th>Acciones</th>
 				                </tr>
 							</thead>
 							<tbody>
-								<div th:if="${selected_year != null}">
 
-								<tr th:each="periodo, state: ${selected_year.periodos}">
-									<td th:text="${state.count}"></td>
-									<td th:text="${#temporals.format(periodo.fechaInicio, 'dd, MMM. yyyy')}" class="fecha_inicio"></td>
-									<td th:text="${#temporals.format(periodo.fechaFinal, 'dd, MMM. yyyy')}" class="fecha_final"></td>
-					                <td>
-					                	<span th:if="${periodo.fechaFinal.isBefore(local_date) && !periodo.activo}" class="badge badge-danger">Cerrado</span>
-					                	<th:block th:if="${periodo.fechaInicio.isBefore(local_date) && periodo.fechaFinal.isAfter(local_date)}">
-					                		<span th:if="${periodo.activo}" class="badge badge-success">Activo</span>
-					                		<span th:if="${!periodo.activo}" class="badge badge-info">No iniciado</span>
-					                	</th:block>
-					                	<span th:if="${periodo.fechaInicio.isAfter(local_date) && !periodo.activo}" class="badge badge-info">No iniciado</span>
-					                </td>
+								<tr th:each="rango_renta: ${rangos_renta}">
+									<td th:text="${rango_renta.salarioMin}"></td>
+									<td th:text="${rango_renta.salarioMax}"></td>
+									<td th:text="${rango_renta.porcentajeRenta}"></td>
+									<td th:text="${rango_renta.exceso}"></td>
+									<td th:text="${rango_renta.cuotaFija}"></td>
+									<th:block th:switch="${rango_renta.periodicidadRenta}">
+										<td th:case="30">Mensualmente</td>
+										<td th:case="15">Quincenalmente</td>
+										<td th:case="7">Semanalmente</td>
+									</th:block>
 									<td class="text-center">
-										<th:block th:if="${periodo.fechaInicio.isBefore(local_date) && periodo.fechaFinal.isAfter(local_date) && !periodo.activo}">
-											<button class="btn btn-sm btn-info" title="Generar planillas" th:attr="data-periodo=${periodo.idPeriodo}">
-												<i class="fas fa-clipboard-list"></i>&nbsp;&nbsp;Generar Planillas
-											</button>
-										</th:block>
-										<th:block th:unless="${periodo.fechaInicio.isBefore(local_date) && periodo.fechaFinal.isAfter(local_date) && !periodo.activo}">
-											<button class="btn btn-sm btn-info" title="Generar planillas" th:attr="data-periodo=${periodo.idPeriodo}" disabled="true">
-											<i class="fas fa-clipboard-list"></i>&nbsp;&nbsp;Generar Planillas
-										</button>
-										</th:block>
+										<button class="btn btn-sm btn-primary mr-2" title="Editar">
+											<i class="fas fa-pencil-alt"></i>
+										</button>	
 									</td>
 								</tr>
-								</div>
-								<tr th:if="${#lists.isEmpty(years)}">
+								<tr th:if="${#lists.isEmpty(rangos_renta)}">
 				                	<td colspan="6">
 				                		No hay periodos en el Año Laboral
 				                	</td>
@@ -117,10 +88,12 @@
 							</tbody>
 							<tfoot>
 								<tr>
-								  <th>#</th>
-				                  <th>Fecha inicio</th>
-				                  <th>Fecha final</th>
-				                  <th>Estado</th>
+								  <th>Desde</th>
+				                  <th>Hasta</th>
+				                  <th>Procentaje</th>
+				                  <th>Exceso</th>
+				                  <th>Cuota fija</th>
+								  <th>Periodicidad</th>
 								  <th>Acciones</th>
 				                </tr>
 							</tfoot>
@@ -152,8 +125,8 @@
 			        <div class="form-group">
 			        	<label for="recipient-name" class="col-form-label">Periodicidad:</label>
 			        	<select class="form-control" style="width: 100%;" name="periodicidad">
-		                    <option value="15">Quincenalmente</option>
-		                    <option value="30">Mensualmente</option>
+		                    <option value="15">15 días</option>
+		                    <option value="30">30 días</option>
 	                	</select>
 			        </div>
 			      </div>
@@ -204,24 +177,20 @@
 		<script th:src="@{/plugins/toastr/toastr.min.js}"></script>
 		<!-- SweetAlert2 -->
 		<script th:src="@{/plugins/sweetalert2/sweetalert2.min.js}"></script>
-		<!-- Select2 -->
-		<script th:src="@{/plugins/select2/js/select2.full.min.js}"></script>
 
 		<!-- page script -->
 		<script>
 			$(function() {
-				$("#example1").DataTable({
-					"responsive" : true,
-					"autoWidth" : false,
-				});
+				var table = $("#example1").DataTable({
+							"responsive" : true,
+							"autoWidth" : false,
+						});
+				table.order( [ 5, 'asc' ])
+    				.draw();
 
-				//Initialize Select2 Elements
-			    $('.select2bs4').select2({
-			      theme: 'bootstrap4'
-			    })
 			});	
 
-			$('#aniosLaborales').on('change', function(){
+			/*$('#aniosLaborales').on('change', function(){
 				var anio = $(this).val();
 				location.href = '/anio-laboral/index/' + anio;
 			});
@@ -253,7 +222,7 @@
 				$('em').text(fecha_inicio + ' al ' + fecha_final);
 				$('#id_periodo').val(id_periodo);
 				$('#generarPlanillas').modal('show');
-			});
+			});*/
 
 		</script>
 		<!-- Scripts-->

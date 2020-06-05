@@ -29,11 +29,11 @@ public class AnioLaboralController {
 	@Qualifier("anioLaboralServiceImpl")
 	private AnioLaboralService anioLaboralService;
 	
-	private static final String INDEX = "anio-laboral/index";
+	private static final String INDEX_VIEW = "anio-laboral/index";
 	
 	@GetMapping(path = {"/index","/index/{year}"})
 	public ModelAndView index(@PathVariable(value = "year", required=false) Integer year) {
-		ModelAndView mav = new ModelAndView(INDEX);
+		ModelAndView mav = new ModelAndView(INDEX_VIEW);
 		
 		if(year==null) {
 			year=Calendar.getInstance().get(Calendar.YEAR);
