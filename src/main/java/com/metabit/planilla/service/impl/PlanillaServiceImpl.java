@@ -27,5 +27,12 @@ public class PlanillaServiceImpl implements PlanillaService {
 		return planillaJpaRepository.save(planilla);
 	}
 
+	@Override
+	public void updatePlanillaMovimientos(int id_planilla) {
+		// TODO Auto-generated method stub
+		planillaJpaRepository.planillaUpdateMovimientos(id_planilla);
+	}
+	
+	
 	
 }

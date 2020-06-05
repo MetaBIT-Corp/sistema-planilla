@@ -1,5 +1,7 @@
 package com.metabit.planilla.controller;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.metabit.planilla.entity.Empleado;
 import com.metabit.planilla.entity.Periodo;
@@ -45,10 +48,24 @@ public class PlanillaController {
     private TipoMovimientoService tipoMovimientoService;
 	
 	@PostMapping("/store")
-	public String store(@RequestParam(name =  "id_perido", required = false) Integer id_periodo) {
+	public String store(@RequestParam(name =  "id_periodo", required = false) Integer id_periodo, RedirectAttributes redirAttrs) {
 		List<Empleado> empleados = empleadoService.getAllEmployees();
 		List<TipoMovimiento> tiposMovimiento = tipoMovimientoService.getTipoMovimientosFijos(true);
-		Periodo periodo = periodoService.getByIdPerido(id_periodo);
+		Periodo periodo = periodoService.getByIdPeriodo(id_periodo);
+		List<String> errors = new ArrayList<String>();
+		
+		if(periodo.getFechaInicio().isAfter(LocalDate.now()) || periodo.getFechaFinal().isBefore(LocalDate.now()) || !periodo.getPlanillas().isEmpty()) {
+			if(periodo.getFechaInicio().isAfter(LocalDate.now()))
+				errors.add("No se pueden generar las planillas de este periodo, esperar hasta "+periodo.getFechaInicio());
+			if(periodo.getFechaFinal().isBefore(LocalDate.now()) || !periodo.getPlanillas().isEmpty())
+				errors.add("Las planillas de este periodo ya fueron generadas.");
+			
+			redirAttrs.addFlashAttribute("errors", errors);
+			return "redirect:/anio-laboral/index";
+		}
+		
+		periodo.setActivo(true);
+		periodoService.storePeriodo(periodo);
 		
 		for (Empleado empleado : empleados) {
 			Planilla planilla = new Planilla();
@@ -67,10 +84,15 @@ public class PlanillaController {
 				}
 				
 				pm.setMontoMovimiento(movimiento);
+				pm.setTipoMovimiento(tm);
+				pm.setPlanilla(planilla);
+				planillaMovimientosService.storePlanillaMovimiento(pm);
 				
 			}
+			planillaService.updatePlanillaMovimientos(planilla.getIdPlanilla());
 		}
 		
+		redirAttrs.addFlashAttribute("success_planilla", "success");
 		return "redirect:/anio-laboral/index";
 	}
 }

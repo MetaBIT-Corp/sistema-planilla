@@ -16,9 +16,15 @@ public class PeriodoServiceImpl implements PeriodoService{
 	private PeriodoJpaRepository periodoJpaRepository;
 
 	@Override
-	public Periodo getByIdPerido(int id_periodo) {
+	public Periodo getByIdPeriodo(int id_periodo) {
 		// TODO Auto-generated method stub
 		return periodoJpaRepository.findByIdPeriodo(id_periodo);
+	}
+
+	@Override
+	public Periodo storePeriodo(Periodo periodo) {
+		// TODO Auto-generated method stub
+		return periodoJpaRepository.save(periodo);
 	}
 	
 	

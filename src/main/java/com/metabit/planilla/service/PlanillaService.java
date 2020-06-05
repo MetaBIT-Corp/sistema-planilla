@@ -6,5 +6,6 @@ public interface PlanillaService {
 	
 	public abstract Planilla storePlanilla(Planilla planilla);
 	public abstract Planilla updatePlanilla(Planilla planilla);
+	public abstract void updatePlanillaMovimientos(int id_planilla);
 
 }

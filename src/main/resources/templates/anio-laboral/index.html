@@ -26,7 +26,8 @@
 	</ol>
 	
 	<div layout:fragment="content">	
-		<input type="hidden" name="" th:if="${success}" id="success_msg">
+		<input type="hidden" name="" th:if="${success_anio}" id="success_anio">
+		<input type="hidden" name="" th:if="${success_planilla}" id="success_planilla">
 		<div class="container">
 			<div class="row ml-5">
 				<div class="col-md-1"></div>
@@ -47,14 +48,15 @@
 							<div class="col-md-4">
 								<div class="form-group">
 								<select id="aniosLaborales" class="form-control select2bs4" style="width: 100%;">
-				                    <div th:if="${!#lists.isEmpty(years)}" th:each="year : ${years}">
+				                    <th:block th:if="${!#lists.isEmpty(years)}" th:each="year : ${years}">
 				                    	<option th:if="${selected_year.anioLaboral}==${year.anioLaboral}"
 				                    		th:text="|Año Laboral ${year.anioLaboral}|" th:value="${year.anioLaboral}" selected="selected">
 				                    	</option>
 				                    	<option th:unless="${selected_year.anioLaboral}==${year.anioLaboral}"
 				                    		th:text="|Año Laboral ${year.anioLaboral}|" th:value="${year.anioLaboral}">
 				                    	</option>
-				                    </div>
+				                    </th:block>
+				                    <option th:if="${#lists.isEmpty(years)}">No hay años laborales</option>
 			                  </select>
 			                  	</div>
 							</div>
@@ -86,14 +88,24 @@
 									<td th:text="${#temporals.format(periodo.fechaInicio, 'dd, MMM. yyyy')}" class="fecha_inicio"></td>
 									<td th:text="${#temporals.format(periodo.fechaFinal, 'dd, MMM. yyyy')}" class="fecha_final"></td>
 					                <td>
-					                	<span th:if="${periodo.fechaFinal.isBefore(local_date) && !periodo.activo}" class="badge badge-danger ">Cerrado</span>
-					                	<span th:if="${periodo.activo}" class="badge badge-success ">Activo</span>
-					                	<span th:if="${periodo.fechaInicio.isAfter(local_date) && !periodo.activo}" class="badge badge-info ">No iniciado</span>
+					                	<span th:if="${periodo.fechaFinal.isBefore(local_date) && !periodo.activo}" class="badge badge-danger">Cerrado</span>
+					                	<th:block th:if="${periodo.fechaInicio.isBefore(local_date) && periodo.fechaFinal.isAfter(local_date)}">
+					                		<span th:if="${periodo.activo}" class="badge badge-success">Activo</span>
+					                		<span th:if="${!periodo.activo}" class="badge badge-info">No iniciado</span>
+					                	</th:block>
+					                	<span th:if="${periodo.fechaInicio.isAfter(local_date) && !periodo.activo}" class="badge badge-info">No iniciado</span>
 					                </td>
 									<td class="text-center">
-										<a href="#" class="btn btn-sm btn-info" title="Generar planillas" th:attr="data-periodo=${periodo.idPeriodo}">
+										<th:block th:if="${periodo.fechaInicio.isBefore(local_date) && periodo.fechaFinal.isAfter(local_date) && !periodo.activo}">
+											<button class="btn btn-sm btn-info" title="Generar planillas" th:attr="data-periodo=${periodo.idPeriodo}">
+												<i class="fas fa-clipboard-list"></i>&nbsp;&nbsp;Generar Planillas
+											</button>
+										</th:block>
+										<th:block th:unless="${periodo.fechaInicio.isBefore(local_date) && periodo.fechaFinal.isAfter(local_date) && !periodo.activo}">
+											<button class="btn btn-sm btn-info" title="Generar planillas" th:attr="data-periodo=${periodo.idPeriodo}" disabled="true">
 											<i class="fas fa-clipboard-list"></i>&nbsp;&nbsp;Generar Planillas
-										</a>
+										</button>
+										</th:block>
 									</td>
 								</tr>
 								</div>
@@ -222,9 +234,14 @@
 				$(".alert").fadeOut();           
 			},3000);
 
-			var success = $('#success_msg').val();
+			var success = $('#success_anio').val();
 			if(success != null){
 			    toastr.success('El Año Laboral fue registrado con éxito');
+			}
+
+			var success = $('#success_planilla').val();
+			if(success != null){
+			    toastr.success('Las planillas del periodo fueron generadas con éxito');
 			}
 	        
 			$('[data-periodo]').on('click', function(){

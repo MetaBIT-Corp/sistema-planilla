@@ -72,7 +72,7 @@ public class AnioLaboralController {
 		anioLaboral.setPeriodicidad(periodicidad);
 		anioLaboralService.addAnioLaboral(anioLaboral);
 		
-		redirAttrs.addFlashAttribute("success", "success");
+		redirAttrs.addFlashAttribute("success_anio", "success");
 		return "redirect:/anio-laboral/index";
 	}
 }
