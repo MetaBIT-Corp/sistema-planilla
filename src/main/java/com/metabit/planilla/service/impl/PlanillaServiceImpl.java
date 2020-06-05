@@ -1,9 +1,12 @@
 package com.metabit.planilla.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.metabit.planilla.entity.Periodo;
 import com.metabit.planilla.entity.Planilla;
 import com.metabit.planilla.repository.PlanillaJpaRepository;
 import com.metabit.planilla.service.PlanillaService;
@@ -31,6 +34,11 @@ public class PlanillaServiceImpl implements PlanillaService {
 	public void updatePlanillaMovimientos(int id_planilla) {
 		// TODO Auto-generated method stub
 		planillaJpaRepository.planillaUpdateMovimientos(id_planilla);
+	}
+
+	@Override
+	public List<Planilla> getPlanillasByPeriodo(Periodo periodo) {
+		return planillaJpaRepository.findByPeriodo(periodo);
 	}
 	
 	

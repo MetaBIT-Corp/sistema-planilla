@@ -11,4 +11,5 @@ import com.metabit.planilla.entity.Periodo;
 public interface PeriodoJpaRepository extends JpaRepository<Periodo, Serializable>{
 
 	public abstract Periodo findByIdPeriodo(int id_periodo);
+	public abstract Periodo findByActivo(boolean activo);
 }

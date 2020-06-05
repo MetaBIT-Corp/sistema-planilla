@@ -26,6 +26,11 @@ public class PeriodoServiceImpl implements PeriodoService{
 		// TODO Auto-generated method stub
 		return periodoJpaRepository.save(periodo);
 	}
+
+	@Override
+	public Periodo getPeriodoActivo() {
+		return periodoJpaRepository.findByActivo(true);
+	}
 	
 	
 

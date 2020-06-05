@@ -7,6 +7,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,6 +29,8 @@ import com.metabit.planilla.service.TipoMovimientoService;
 @RequestMapping("/planilla")
 public class PlanillaController {
 	
+	private static String INDEX_VIEW = "planilla/index";
+	
 	@Autowired
     @Qualifier("periodoServiceImpl")
     private PeriodoService periodoService;
@@ -46,6 +50,16 @@ public class PlanillaController {
 	@Autowired
     @Qualifier("tipoMovimientoServiceImpl")
     private TipoMovimientoService tipoMovimientoService;
+	
+	@GetMapping("/index")
+	public String index(Model model) {
+		Periodo periodo_activo = periodoService.getPeriodoActivo();
+		List<Planilla> planillas = planillaService.getPlanillasByPeriodo(periodo_activo);
+		
+		model.addAttribute("planillas", planillas);
+		
+		return INDEX_VIEW;
+	}
 	
 	@PostMapping("/store")
 	public String store(@RequestParam(name =  "id_periodo", required = false) Integer id_periodo, RedirectAttributes redirAttrs) {

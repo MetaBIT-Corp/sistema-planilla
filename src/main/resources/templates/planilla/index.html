@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layouts/layout}">
+
+<head>
+
+  <meta charset="utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  
+</head>
+
+<body>
+	
+	<h1 class="m-0 text-dark" layout:fragment="titulo_seccion">Empleados-Planilla</h1>
+
+	<ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
+        <li class="breadcrumb-item"><a href="#" th:href="@{/index}">Home</a></li>
+        <li class="breadcrumb-item active">Empleados-Planilla</li>
+    </ol>
+
+	<div layout:fragment="content">
+		<!-- DataTable de Empleados Planilla -->
+		<div class="row ml-1 mr-1">
+			
+			<div class="offset-1 col-md-10">
+			 <div class="card">
+	            <div class="card-header text-right">
+	              <h3 class="card-title"></h3>
+	            </div>
+	            <!-- /.card-header -->
+	            <div class="card-body">
+	              <table id="example1" class="table table-bordered table-striped">
+	                <thead>
+	                <tr>
+	                  <th>Codigo empleado</th>
+	                  <th>Nombre</th>
+	                  <th>Apellidos</th>
+	                  <th>Horas de trabajo</th>
+	                  <th>Salario Neto</th>
+	                  <th>Tipo</th>
+					  <th>Acciones</th>
+	                </tr>
+	                </thead>
+	                <tbody>
+	                <tr th:each="planilla: ${planillas}">
+	                  <td><span th:text="${planilla.empleado.codigo}"></span></td>
+	                  <td>
+	                    <span th:if="${planilla.empleado.nombreSegundo}" th:text="${planilla.empleado.nombrePrimero + ' ' + planilla.empleado.nombreSegundo}"></span>
+	                  	<span th:if="${planilla.empleado.nombreSegundo == null}" th:text="${planilla.empleado.nombrePrimero}"></span>
+	                  </td>
+	                  <td><span th:text="${planilla.empleado.apellidoMaterno}"></span></td>
+	                  <td><span th:text="${planilla.empleado.horasTrabajo}"></span></td>
+	                  <td><span th:text="${planilla.salarioNeto}"></span></td>
+	                  <td>
+	                  	<span th:if="${planilla.empleado.esAdministrativo}">Administrativo</span>
+	                  	<span th:if="${planilla.empleado.esAdministrativo == false}">Vendedor</span>
+	                  </td>
+						<td>						
+							<button class="btn btn-sm btn-primary" style="text-decoration: none; color: white;"
+									title="Ver Planilla">
+									
+								<span><i class="fas fa-eye"></i></span>
+								
+							</button>
+						</td>
+	                </tr>
+	                
+	                <tr th:if="${#lists.isEmpty(empleados)}">
+	                	<td colspan="7">
+	                		No hay Empleados-Planilla actualmente.
+	                	</td>
+	                </tr>
+	                              
+	                </tbody>
+	                <tfoot>
+	                <tr>
+	                  <th>Codigo empleado</th>
+	                  <th>Nombre</th>
+	                  <th>Apellidos</th>
+	                  <th>Horas de trabajo</th>
+	                  <th>Salario Neto</th>
+	                  <th>Tipo</th>
+					  <th>Acciones</th>
+	                </tr>
+	                </tfoot>
+	              </table>
+	            </div>
+	            <!-- /.card-body -->
+	          </div>
+	          <!-- /.card -->
+		
+			</div>
+		</div>
+	</div>
+	
+	
+	<section layout:fragment="scripts">
+	
+		<!-- DataTables -->
+	  	<script th:src="@{/plugins/datatables/jquery.dataTables.min.js}"></script>
+	  	<script th:src="@{/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
+		<script th:src="@{/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
+		<script th:src="@{/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
+		
+		<script type="text/javascript">
+			$(function () {
+			    $("#example2").DataTable({
+			      "responsive": true,
+			      "autoWidth": false,
+			    });
+			    $('#example1').DataTable({
+			      "paging": true,
+			      "lengthChange": false,
+			      "searching": true,
+			      "ordering": true,
+			      "info": true,
+			      "autoWidth": false,
+			      "responsive": true,
+			      "pageLength": 5,
+			    });
+			  });
+		</script>
+	</section>
+
+</body>
+</html>
