@@ -202,10 +202,12 @@
 
 				$("#staticBackdropLabel").text("Crear Rango Comision");
 				$("#create_modal").modal("show");
+				$("#error").attr("hidden", "hidden");
 			});
 
 			$(".btn_edit").on("click", function () {
 				var id = $(this).data("id");
+				$("#error").attr("hidden", "hidden");
 				$("#staticBackdropLabel").text("Editar Rango Comision");
 				$("#create_modal").modal("show");
 
