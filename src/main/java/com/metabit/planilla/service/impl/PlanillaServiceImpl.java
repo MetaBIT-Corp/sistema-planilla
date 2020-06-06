@@ -1,6 +1,7 @@
 package com.metabit.planilla.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -39,6 +40,11 @@ public class PlanillaServiceImpl implements PlanillaService {
 	@Override
 	public List<Planilla> getPlanillasByPeriodo(Periodo periodo) {
 		return planillaJpaRepository.findByPeriodo(periodo);
+	}
+
+	@Override
+	public Optional<Planilla> getPlanillaById(int id_planilla) {
+		return planillaJpaRepository.findById(id_planilla);
 	}
 	
 	

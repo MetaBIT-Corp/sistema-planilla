@@ -52,6 +52,11 @@ public class TipoMovimientoServiceImpl implements TipoMovimientoService {
 		// TODO Auto-generated method stub
 		return tipoMovimientoJpaRepository.findByEsFijo(esFijo);
 	}
+
+	@Override
+	public List<TipoMovimiento> getByEsDescuento(boolean esDescuento) {
+		return tipoMovimientoJpaRepository.getByEsDescuento(esDescuento);
+	}
 	
 	
 

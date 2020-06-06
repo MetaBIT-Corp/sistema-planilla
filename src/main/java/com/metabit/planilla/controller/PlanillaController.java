@@ -3,6 +3,7 @@ package com.metabit.planilla.controller;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -30,6 +31,7 @@ import com.metabit.planilla.service.TipoMovimientoService;
 public class PlanillaController {
 	
 	private static String INDEX_VIEW = "planilla/index";
+	private static String SHOW_VIEW = "planilla/show";
 	
 	@Autowired
     @Qualifier("periodoServiceImpl")
@@ -61,6 +63,106 @@ public class PlanillaController {
 		return INDEX_VIEW;
 	}
 	
+	@GetMapping("/show")
+	public String show(Model model, @RequestParam(name = "planilla", required = true) int id_planilla) {
+		Optional<Planilla> planilla = planillaService.getPlanillaById(id_planilla);
+		
+		List<PlanillaMovimiento> ingresos = null;
+		List<PlanillaMovimiento> descuentos = null;
+		
+		if(planilla.isPresent()) {
+			model.addAttribute("planilla", planilla.get());
+			List<PlanillaMovimiento> planillaMovimientos = planillaMovimientosService.getPlanillaMovimientosByPlanilla(planilla.get());
+			
+			for (PlanillaMovimiento planillaMovimiento : planillaMovimientos) {
+				
+				if(planillaMovimiento.getTipoMovimiento().isEsDescuento())
+					descuentos.add(planillaMovimiento);
+				else
+					ingresos.add(planillaMovimiento);
+			}
+			
+			model.addAttribute("ingresos", ingresos);
+			model.addAttribute("descuentos", descuentos);
+			
+			List<TipoMovimiento> allDescuentos = tipoMovimientoService.getByEsDescuento(true);
+			List<TipoMovimiento> allIngresos = tipoMovimientoService.getByEsDescuento(false);
+			
+			List<TipoMovimiento> descuentosPendientes = obtenerPendientes(descuentos, allDescuentos);
+			List<TipoMovimiento> ingresosPendientes = obtenerPendientes(ingresos, allIngresos);
+			
+			model.addAttribute("descuentosPendientes", descuentosPendientes);
+			model.addAttribute("ingresosPendientes", ingresosPendientes);
+			model.addAttribute("planilla", id_planilla);
+			
+		}
+		
+		return SHOW_VIEW;
+	}
+	
+	private List<TipoMovimiento> obtenerPendientes(List<PlanillaMovimiento> asignados,
+			List<TipoMovimiento> allTiposMovimiento) {
+		
+		List<TipoMovimiento> pendientes = null;
+		
+		for (TipoMovimiento tipoMovimiento: allTiposMovimiento) {
+			
+			boolean tipoMovimientoPendiente = true;
+			
+			for (PlanillaMovimiento asignado : asignados) {
+				
+				if(tipoMovimiento == asignado.getTipoMovimiento())
+					tipoMovimientoPendiente = false;
+				
+			}
+			
+			if(tipoMovimientoPendiente)
+				pendientes.add(tipoMovimiento);
+			
+		}
+		
+		return pendientes;
+	}
+	
+	@PostMapping("/agregar-movimientos")
+	public String agregarMovimientos(@RequestParam(name =  "id_planilla", required = true) Integer id_planilla,
+			@RequestParam(name =  "movimientos_seleccionados", required = true) List<String> idMovimientos) {
+		
+		String tipo = null;
+		int i = 0;
+		
+		Planilla planilla = planillaService.getPlanillaById(id_planilla).isPresent()? planillaService.getPlanillaById(id_planilla).get() : null;
+		
+		for (String idMovimiento : idMovimientos) {
+			
+			float montoMovimiento = 0;
+			TipoMovimiento movimiento = tipoMovimientoService.getTipoMovimiento(Integer.parseInt(idMovimiento));
+			
+			if(i == 0) {
+				if(movimiento.isEsDescuento())
+					tipo = "descuentos";
+				else
+					tipo = "ingresos";
+			}
+			
+			if(movimiento.getMontoBase() > 0)
+				montoMovimiento = (float) movimiento.getMontoBase();
+			else //Posiblemente aqui se debe validar si el periodo es Mensual o Quincenal, con base a eso, el salario base del empleado debe cambiar (a la mitad si es quincenal)
+				montoMovimiento = (float) (planilla.getEmpleado().getSalarioBaseMensual() * movimiento.getPorcentajeMovimiento());
+			
+			PlanillaMovimiento planillaMovimiento = new PlanillaMovimiento();
+			planillaMovimiento.setPlanilla(planilla);
+			planillaMovimiento.setTipoMovimiento(movimiento);
+			planillaMovimiento.setMontoMovimiento(montoMovimiento);
+			
+			planillaMovimientosService.storePlanillaMovimiento(planillaMovimiento);
+			
+			i++;
+		}
+		
+		return "redirect:/planilla/show?planilla=" + planilla.getIdPlanilla();
+	}
+
 	@PostMapping("/store")
 	public String store(@RequestParam(name =  "id_periodo", required = false) Integer id_periodo, RedirectAttributes redirAttrs) {
 		List<Empleado> empleados = empleadoService.getAllEmployees();
