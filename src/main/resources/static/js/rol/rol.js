@@ -15,6 +15,20 @@ $(document).ready(function(){
 
     });
 
+    $('#rolRecursosModal').on('show.bs.modal', function(event){
+
+        var modal = $(this);
+        var link = $(event.relatedTarget);
+
+        modal.find('.modal-header #rolRecursosModalTitle').text('Gestión de Recursos del Rol');
+
+    });
+
+    $('#rolRecursosModal').on("hide.bs.modal", function (event) {
+        if(confirm("Are you sure, you want to close?")) return true;
+        else return false;
+    });
+
     $('#rolBtnNuevo').on('click',function () {
         var modal = $('#rolModal');
         modal.find('.modal-header #rolModalTitle').text('Crear Rol');

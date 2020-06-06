@@ -82,6 +82,16 @@
                                    data-rol=${rol.authority}">
                                     <i class="fas fa-pen"></i>
                                 </a>&nbsp;&nbsp;
+                                <a class="btn btn-dark btn-sm rolBtnRecursos"
+                                   href="#"
+                                   title="Gestionar Recursos del Rol"
+                                   data-toggle="modal"
+                                   data-target="#rolRecursosModal"
+                                   th:attr="
+                                   data-id-rol=${rol.idRol},
+                                   data-rol=${rol.authority}">
+                                    <i class="fas fa-cubes"></i>
+                                </a>&nbsp;&nbsp;
                                 <a class="btn btn-danger btn-sm"
                                    href="#"
                                    title="Eliminar Rol"
