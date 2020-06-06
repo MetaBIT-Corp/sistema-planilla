@@ -64,11 +64,16 @@ public class PlanillaController {
 	}
 	
 	@GetMapping("/show")
-	public String show(Model model, @RequestParam(name = "planilla", required = true) int id_planilla) {
+	public String show(Model model, @RequestParam(name = "planilla", required = true) int id_planilla,
+			@RequestParam(name = "asignacionIngresos", required = false) String asignacionIngresos,
+			@RequestParam(name = "asignacionDescuentos", required = false) String asignacionDescuentos,
+			@RequestParam(name = "deleteIngresos", required = false) String deleteIngresos,
+			@RequestParam(name = "deleteDescuentos", required = false) String deleteDescuentos) {
+		
 		Optional<Planilla> planilla = planillaService.getPlanillaById(id_planilla);
 		
-		List<PlanillaMovimiento> ingresos = null;
-		List<PlanillaMovimiento> descuentos = null;
+		List<PlanillaMovimiento> ingresos = new ArrayList<PlanillaMovimiento>();
+		List<PlanillaMovimiento> descuentos = new ArrayList<PlanillaMovimiento>();
 		
 		if(planilla.isPresent()) {
 			model.addAttribute("planilla", planilla.get());
@@ -94,6 +99,10 @@ public class PlanillaController {
 			model.addAttribute("descuentosPendientes", descuentosPendientes);
 			model.addAttribute("ingresosPendientes", ingresosPendientes);
 			model.addAttribute("planilla", id_planilla);
+			model.addAttribute("asignacionIngresos", asignacionIngresos);
+			model.addAttribute("asignacionDescuentos", asignacionDescuentos);
+			model.addAttribute("deleteIngresos", deleteIngresos);
+			model.addAttribute("deleteDescuentos", deleteDescuentos);
 			
 		}
 		
@@ -103,22 +112,26 @@ public class PlanillaController {
 	private List<TipoMovimiento> obtenerPendientes(List<PlanillaMovimiento> asignados,
 			List<TipoMovimiento> allTiposMovimiento) {
 		
-		List<TipoMovimiento> pendientes = null;
+		List<TipoMovimiento> pendientes = new ArrayList<TipoMovimiento>();
 		
-		for (TipoMovimiento tipoMovimiento: allTiposMovimiento) {
-			
-			boolean tipoMovimientoPendiente = true;
-			
-			for (PlanillaMovimiento asignado : asignados) {
+		if(asignados.size() == 0)
+			pendientes = allTiposMovimiento;
+		else {
+			for (TipoMovimiento tipoMovimiento: allTiposMovimiento) {
 				
-				if(tipoMovimiento == asignado.getTipoMovimiento())
-					tipoMovimientoPendiente = false;
+				boolean tipoMovimientoPendiente = true;
+				
+				for (PlanillaMovimiento asignado : asignados) {
+					
+					if(tipoMovimiento == asignado.getTipoMovimiento())
+						tipoMovimientoPendiente = false;
+					
+				}
+				
+				if(tipoMovimientoPendiente)
+					pendientes.add(tipoMovimiento);
 				
 			}
-			
-			if(tipoMovimientoPendiente)
-				pendientes.add(tipoMovimiento);
-			
 		}
 		
 		return pendientes;
@@ -140,15 +153,15 @@ public class PlanillaController {
 			
 			if(i == 0) {
 				if(movimiento.isEsDescuento())
-					tipo = "descuentos";
+					tipo = "Descuentos";
 				else
-					tipo = "ingresos";
+					tipo = "Ingresos";
 			}
 			
 			if(movimiento.getMontoBase() > 0)
 				montoMovimiento = (float) movimiento.getMontoBase();
 			else //Posiblemente aqui se debe validar si el periodo es Mensual o Quincenal, con base a eso, el salario base del empleado debe cambiar (a la mitad si es quincenal)
-				montoMovimiento = (float) (planilla.getEmpleado().getSalarioBaseMensual() * movimiento.getPorcentajeMovimiento());
+				montoMovimiento = (float) (planilla.getEmpleado().getSalarioBaseMensual() * (movimiento.getPorcentajeMovimiento()/100));
 			
 			PlanillaMovimiento planillaMovimiento = new PlanillaMovimiento();
 			planillaMovimiento.setPlanilla(planilla);
@@ -160,7 +173,31 @@ public class PlanillaController {
 			i++;
 		}
 		
-		return "redirect:/planilla/show?planilla=" + planilla.getIdPlanilla();
+		return "redirect:/planilla/show?planilla=" + planilla.getIdPlanilla() + "&asignacion" + tipo + "=true";
+	}
+	
+	@PostMapping("/destroy-planillaMovimiento")
+	public String destroyPlanillaMovimiento(@RequestParam(name = "idPlanillaMovimientoDestroy", required = true) int id_planilla_movimiento) {
+		
+		Optional <PlanillaMovimiento> planilla_movimiento_o = planillaMovimientosService.getPlanillaMovimientosById(id_planilla_movimiento);
+		PlanillaMovimiento planilla_movimiento = null;
+		Planilla planilla = null;
+		String tipo = null;
+		
+		if(planilla_movimiento_o.isPresent()) {
+			planilla_movimiento = planilla_movimiento_o.get();
+			planilla = planilla_movimiento.getPlanilla();
+			
+			if(planilla_movimiento.getTipoMovimiento().isEsDescuento())
+				tipo = "Descuentos";
+			else
+				tipo = "Ingresos";
+			
+			planillaMovimientosService.deletePlanillaMovimientosById(planilla_movimiento.getIdPlaillaMovimiento());
+			
+		}
+		
+		return "redirect:/planilla/show?planilla=" + planilla.getIdPlanilla() + "&delete" + tipo + "=true";
 	}
 
 	@PostMapping("/store")

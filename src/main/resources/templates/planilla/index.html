@@ -25,9 +25,6 @@
 			
 			<div class="offset-1 col-md-10">
 			 <div class="card">
-	            <div class="card-header text-right">
-	              <h3 class="card-title"></h3>
-	            </div>
 	            <!-- /.card-header -->
 	            <div class="card-body">
 	              <table id="example1" class="table table-bordered table-striped">
@@ -66,7 +63,7 @@
 						</td>
 	                </tr>
 	                
-	                <tr th:if="${#lists.isEmpty(empleados)}">
+	                <tr th:if="${#lists.isEmpty(planillas)}">
 	                	<td colspan="7">
 	                		No hay Empleados-Planilla actualmente.
 	                	</td>

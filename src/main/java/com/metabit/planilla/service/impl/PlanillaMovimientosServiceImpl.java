@@ -1,6 +1,7 @@
 package com.metabit.planilla.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -27,6 +28,17 @@ public class PlanillaMovimientosServiceImpl implements PlanillaMovimientosServic
 	@Override
 	public List<PlanillaMovimiento> getPlanillaMovimientosByPlanilla(Planilla planilla) {
 		return planillaMovimientosJpaRepository.findByPlanilla(planilla);
+	}
+
+	@Override
+	public Optional<PlanillaMovimiento> getPlanillaMovimientosById(int id_planilla_movimiento) {
+		return planillaMovimientosJpaRepository.findById(id_planilla_movimiento);
+	}
+
+	@Override
+	public void deletePlanillaMovimientosById(int id_planilla_movimiento) {
+		planillaMovimientosJpaRepository.deleteById(id_planilla_movimiento);
+		
 	}
 	
 	

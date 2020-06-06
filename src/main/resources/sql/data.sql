@@ -260,11 +260,11 @@ insert into unidades_organizacionales values(510,'Seccion de Desarrolladores Bac
 insert into unidades_organizacionales values(511,'Seccion de Desarrolladores Frontend',503,507);;
 
 /*----------------------ANIO LABORAL----------------------*/
-/*INSERT INTO anios_laborales VALUES(100, 2018, 30);;
+INSERT INTO anios_laborales VALUES(100, 2018, 30);;
 INSERT INTO anios_laborales VALUES(101, 2019, 30);;
-INSERT INTO anios_laborales VALUES(102, 2020, 30);;*/
+INSERT INTO anios_laborales VALUES(102, 2020, 30);;
 
-/*insert into centros_costos values(500,0.0,0.0,0.0,102,500);;
+insert into centros_costos values(500,0.0,0.0,0.0,102,500);;
 insert into centros_costos values(501,0.0,0.0,0.0,102,501);;
 insert into centros_costos values(502,0.0,0.0,0.0,102,502);;
 insert into centros_costos values(503,0.0,0.0,0.0,102,503);;
@@ -275,7 +275,7 @@ insert into centros_costos values(507,0.0,0.0,0.0,102,507);;
 insert into centros_costos values(508,0.0,0.0,0.0,102,508);;
 insert into centros_costos values(509,0.0,0.0,0.0,102,509);;
 insert into centros_costos values(510,0.0,0.0,0.0,102,510);;
-insert into centros_costos values(511,0.0,0.0,0.0,102,511);;*/
+insert into centros_costos values(511,0.0,0.0,0.0,102,511);;
 --Empleado Puesto Unidad
 insert into empleados_puestos_unidades  (id_empleado_puesto_unidad, id_empleado, id_puesto,id_unidad_organizacional)
                  values (100, 300, 1,501);;
@@ -284,7 +284,7 @@ insert into empleados_puestos_unidades  (id_empleado_puesto_unidad, id_empleado,
 
 
 /*----------------------PERIODO----------------------*/
-/*INSERT ALL
+INSERT ALL
   INTO PERIODOS VALUES(100, 0, '30/01/18', '01/01/18', 100)
   INTO PERIODOS VALUES(101, 0, '28/02/18', '01/02/18', 100)
   INTO PERIODOS VALUES(102, 0, '30/03/18', '01/03/18', 100)
@@ -323,16 +323,16 @@ insert into empleados_puestos_unidades  (id_empleado_puesto_unidad, id_empleado,
   INTO PERIODOS VALUES(133, 0, '30/10/20', '01/10/20', 102)
   INTO PERIODOS VALUES(134, 0, '30/11/20', '01/11/20', 102)
   INTO PERIODOS VALUES(135, 0, '30/12/20', '01/12/20', 102)
-SELECT * FROM DUAL;;*/
+SELECT * FROM DUAL;;
 
 /*----------------------PLANILLA----------------------*/
-/*INSERT ALL
-  INTO PLANILLAS(ID_PLANILLA, TOTAL_DESCUENTOS, TOTAL_INGRESOS, ID_EMPLEADO, ID_PERIODO) VALUES(100, 90, 150, 300, 105)
-  INTO PLANILLAS(ID_PLANILLA, TOTAL_DESCUENTOS, TOTAL_INGRESOS, ID_EMPLEADO, ID_PERIODO) VALUES(101, 75, 225, 301, 105)
-SELECT * FROM DUAL;;*/
+INSERT ALL
+  INTO PLANILLAS(ID_PLANILLA, TOTAL_DESCUENTOS, TOTAL_INGRESOS, ID_EMPLEADO, ID_PERIODO) VALUES(100, 90, 150, 300, 129)
+  INTO PLANILLAS(ID_PLANILLA, TOTAL_DESCUENTOS, TOTAL_INGRESOS, ID_EMPLEADO, ID_PERIODO) VALUES(101, 75, 225, 301, 129)
+SELECT * FROM DUAL;;
 
 /*----------------------PLANILLA MOVIMIENTOS----------------------*/
-/*INSERT ALL
+INSERT ALL
   INTO PLANILLA_MOVIMIENTOS VALUES(100, 150, 100, 1)
   INTO PLANILLA_MOVIMIENTOS VALUES(101, 150, 100, 2)
   INTO PLANILLA_MOVIMIENTOS VALUES(102, 150, 100, 3)
@@ -343,7 +343,7 @@ SELECT * FROM DUAL;;*/
   INTO PLANILLA_MOVIMIENTOS VALUES(107, 150, 100, 3)
   INTO PLANILLA_MOVIMIENTOS VALUES(108, 150, 100, 4)
   INTO PLANILLA_MOVIMIENTOS VALUES(109, 150, 100, 5)
-SELECT * FROM DUAL;;*/
+SELECT * FROM DUAL;;
 
 /*----------------------RANGOS RENTA----------------------*/
 INSERT ALL
