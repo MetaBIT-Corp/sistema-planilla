@@ -1,5 +1,7 @@
 package com.metabit.planilla.controller;
 
+import com.metabit.planilla.domain.JsonResponse;
+import com.metabit.planilla.entity.Privilegio;
 import com.metabit.planilla.entity.Recurso;
 import com.metabit.planilla.entity.Rol;
 import com.metabit.planilla.entity.RolRecursoPrivilegio;
@@ -11,11 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -44,13 +46,26 @@ public class RolRecursoPrivilegioController extends BaseController{
     public ModelAndView index(@PathVariable(value = "id", required = true) int idRol, Model model){
 
         Rol rol = rolService.getByIdRol(idRol);
-
         List<Recurso> recursos = recursoService.getRolRecursos(idRol);
-
         ModelAndView modelAndView = new ModelAndView(INDEX_VIEW);
         modelAndView.addObject("recursos", recursos);
         modelAndView.addObject("rol", rol);
+
         return modelAndView;
+    }
+
+    @GetMapping("/privilegios/{idrol}/{idrecurso}")
+    public @ResponseBody ArrayList<String> privilegios(@PathVariable(value = "idrol", required = true)int idRol, @PathVariable(value = "idrecurso", required = true)int idRecurso){
+
+        ArrayList<String> nombres = new ArrayList<>();
+
+        List<Privilegio> privilegios = privilegioService.getRolRecursoPrivilegios(idRol,idRecurso);
+
+        for(int i=0; i<privilegios.size();i++){
+            nombres.add(privilegios.get(i).getPrivilegio());
+        }
+
+        return nombres;
     }
 
 }

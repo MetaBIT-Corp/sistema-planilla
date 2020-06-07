@@ -39,7 +39,7 @@
                        data-toggle="modal"
                        data-target="#rolRecursoModal">
                         <i class="fas fa-plus-circle mr-1 text-white"></i>
-                        <span class="text-white">Agregar Recurso al Rol</span>
+                        <span class="text-white">Asignar Recurso al Rol</span>
                     </a>
                 </div>
 
@@ -55,21 +55,28 @@
 
                         <tbody>
 
-                        <tr th:each="recurso: ${recursos}">
+                        <tr th:each="recurso, iStat: ${recursos}">
 
                             <td><span th:text="${recurso.recurso}"></span></td>
 
                             <td class="text-center">
 
-                                <a class="btn btn-primary btn-sm rolPrivilegiosBtn"
+                                <!--th:href="@{/rol-recurso-privilegio/privilegios/{idrol}/{idrecurso}(idrol=${rol.idRol},idrecurso=${recurso.idRecurso})}"-->
+
+                                <a class="btn btn-primary btn-sm"
                                    href="#"
-                                   title="Ver privilegios del recurso">
-                                    <i class="fas fa-pen"></i>
+                                   data-toggle="modal"
+                                   data-target="#rolRecursoPrivilegiosModal"
+                                   th:attr="
+                                   data-id-rol=${rol.idRol},
+                                   data-id-recurso=${recurso.idRecurso}"
+                                   title="Gestionar privilegios del recurso">
+                                    <i class="fas fa-file-contract"></i>
                                 </a>&nbsp;&nbsp;
                                 <a class="btn btn-danger btn-sm"
                                    href="#"
-                                   title="Desasignar recursol al rol">
-                                    <i class="fas fa-trash"></i>
+                                   title="Denegar recursol al rol">
+                                    <i class="far fa-times-circle"></i>
                                 </a>
                             </td>
 
