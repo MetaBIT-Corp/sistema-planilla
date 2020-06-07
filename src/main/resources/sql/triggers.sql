@@ -171,4 +171,42 @@ BEGIN
 
 END;
 ;;
- 
+
+/*--------- Trigger para Calcular el Monto de las Horas Extra ---------*/
+CREATE OR REPLACE TRIGGER calcularmontohorasextra BEFORE
+    UPDATE OF horas_extra_diurnas, horas_extra_nocturnas ON planillas
+    FOR EACH ROW
+DECLARE
+    v_horas_extras_d        planillas.horas_extra_diurnas%TYPE := :new.horas_extra_diurnas;
+    v_horas_extras_n        planillas.horas_extra_nocturnas%TYPE := :new.horas_extra_nocturnas;
+    v_id_planilla           planillas.id_planilla%TYPE := :old.id_planilla;
+    v_monto_horas_extra     planillas.monto_horas_extra%TYPE;
+    v_id_empleado           planillas.id_empleado%TYPE := :old.id_empleado;
+    v_salario_base_mensual  empleados.salario_base_mensual%TYPE;
+    v_salario_hora          FLOAT(126);
+BEGIN
+	--Obtenemos el salario base mensual del empleado
+    SELECT
+        salario_base_mensual
+    INTO v_salario_base_mensual
+    FROM
+        empleados
+    WHERE
+        id_empleado = v_id_empleado;
+
+	--Calculamos el salario por hora
+	--Son 44 horas de trabajo semanales y 4 semanas de trabajo, 44*4=176
+
+    v_salario_hora := v_salario_base_mensual / 176;
+
+	--Monto Horas Extra Diurnas; Se pagan con un 100% de recargo, o sea el doble
+    v_monto_horas_extra := v_salario_hora * v_horas_extras_d * 2;
+
+	--Monto Horas Extra Nocturnas; Se pagan con un 125% de recargo, o sea el 2.25
+    v_monto_horas_extra := v_monto_horas_extra + v_salario_hora * v_horas_extras_n * 2.25;
+
+	--Actualizamos el Monto Horas Extra en la Planilla    
+    :new.monto_horas_extra := v_monto_horas_extra;
+
+END;
+;;
