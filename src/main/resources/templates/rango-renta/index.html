@@ -64,11 +64,11 @@
 							<tbody>
 
 								<tr th:each="rango_renta: ${rangos_renta}">
-									<td th:text="${rango_renta.salarioMin}"></td>
-									<td th:text="${rango_renta.salarioMax}"></td>
+									<td th:text="${#numbers.formatCurrency(rango_renta.salarioMin)}"></td>
+									<td th:text="${#numbers.formatCurrency(rango_renta.salarioMax)}"></td>
 									<td th:text="${rango_renta.porcentajeRenta}"></td>
-									<td th:text="${rango_renta.exceso}"></td>
-									<td th:text="${rango_renta.cuotaFija}"></td>
+									<td th:text="${#numbers.formatCurrency(rango_renta.exceso)}"></td>
+									<td th:text="${#numbers.formatCurrency(rango_renta.cuotaFija)}"></td>
 									<th:block th:switch="${rango_renta.periodicidadRenta}">
 										<td th:case="30">Mensualmente</td>
 										<td th:case="15">Quincenalmente</td>
@@ -82,7 +82,7 @@
 								</tr>
 								<tr th:if="${#lists.isEmpty(rangos_renta)}">
 				                	<td colspan="6">
-				                		No hay periodos en el Año Laboral
+				                		No hay Rangos de Renta almacenados
 				                	</td>
 				                </tr>
 							</tbody>
@@ -103,65 +103,6 @@
 				</div>
 				<!-- /.card -->
 			</div>
-		</div>
-
-		<!-- Modal para agregar un año laboral -->
-		<div class="modal fade" id="addAnioLaboral" tabindex="-1" role="dialog" aria-hidden="true">
-		  <div class="modal-dialog" role="document">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <h5 class="modal-title">Agregar Año Laboral</h5>
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		          <span aria-hidden="true">&times;</span>
-		        </button>
-		      </div>
-		      <form method="POST" action="#" th:action="@{/anio-laboral/store}">
-			      <div class="modal-body">
-			        <div class="form-group">
-			            <label for="recipient-name" class="col-form-label">Año:</label>
-			            <input type="text" class="form-control" id="recipient-name" readonly="true" 
-			            th:value="${#dates.format(#dates.createNow(), 'yyyy')}" name="anioLaboral">
-			        </div>
-			        <div class="form-group">
-			        	<label for="recipient-name" class="col-form-label">Periodicidad:</label>
-			        	<select class="form-control" style="width: 100%;" name="periodicidad">
-		                    <option value="15">15 días</option>
-		                    <option value="30">30 días</option>
-	                	</select>
-			        </div>
-			      </div>
-			      <div class="modal-footer">
-			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-			        <button type="submit" class="btn btn-primary">Guardar</button>
-			      </div>
-		      </form>
-		    </div>
-		  </div>
-		</div>
-
-		<!-- Modal para confirmar la generación de las planillas -->
-		<div class="modal fade" id="generarPlanillas" tabindex="-1" role="dialog" aria-hidden="true">
-		  <div class="modal-dialog" role="document">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <h5 class="modal-title">Generar Planillas</h5>
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		          <span aria-hidden="true">&times;</span>
-		        </button>
-		      </div>
-		      <form method="POST" action="#" th:action="@{/planilla/store}">
-			      <div class="modal-body">
-			        <div class="form-group">
-			            <p>¿Desea generar las planillas para el periodo del <em></em>?</p>
-			        </div>
-			      <div class="modal-footer">
-			      	<input id="id_periodo" type="hidden" name="id_periodo" value="">
-			        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-			        <button type="submit" class="btn btn-primary">Sí</button>
-			      </div>
-		      </form>
-		    </div>
-		  </div>
 		</div>
 
 	</div>
@@ -188,41 +129,7 @@
 				table.order( [ 5, 'asc' ])
     				.draw();
 
-			});	
-
-			/*$('#aniosLaborales').on('change', function(){
-				var anio = $(this).val();
-				location.href = '/anio-laboral/index/' + anio;
 			});
-
-			$('#add-anio-laboral').on('click', function(){
-	          $('#addAnioLaboral').modal('show');
-	        });
-
-			setTimeout(function() {
-				$(".alert").fadeOut();           
-			},3000);
-
-			var success = $('#success_anio').val();
-			if(success != null){
-			    toastr.success('El Año Laboral fue registrado con éxito');
-			}
-
-			var success = $('#success_planilla').val();
-			if(success != null){
-			    toastr.success('Las planillas del periodo fueron generadas con éxito');
-			}
-	        
-			$('[data-periodo]').on('click', function(){
-				
-				var id_periodo = $(this).data('periodo');
-				var fecha_inicio = $(this).parent().siblings('.fecha_inicio').text();
-				var fecha_final = $(this).parent().siblings('.fecha_final').text();
-				
-				$('em').text(fecha_inicio + ' al ' + fecha_final);
-				$('#id_periodo').val(id_periodo);
-				$('#generarPlanillas').modal('show');
-			});*/
 
 		</script>
 		<!-- Scripts-->

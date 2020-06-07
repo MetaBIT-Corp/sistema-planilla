@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layouts/layout}">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<!-- Tell the browser to be responsive to screen width -->
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	
+	<!-- SweetAlert2 -->
+  <link rel="stylesheet" th:href="@{/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css}">
+	<!-- Toastr -->
+  <link rel="stylesheet" th:href="@{/plugins/toastr/toastr.min.css}">
+  <!-- Select2 -->
+  <link rel="stylesheet" th:href="@{/plugins/select2/css/select2.min.css}">
+  <link rel="stylesheet" th:href="@{/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css}">
+</head>
+<body>
+
+	<h1 class="m-0 text-dark" layout:fragment="titulo_seccion">Tipo de Unidad Organizacional</h1>
+
+	<ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
+		<li class="breadcrumb-item">
+			<a href="#" th:href="@{/index}">Home</a>
+		</li>
+		<li class="breadcrumb-item active">Tipo de Unidad Organizacional</li>
+	</ol>
+	
+	<div layout:fragment="content">	
+		<input type="hidden" th:if="${success_store}" id="success_store">
+		<input type="hidden" th:if="${success_update}" id="success_update">
+		<input type="hidden" th:if="${success_state != null}" id="success_state" th:value="${success_state}">
+		<div class="container">
+			<div class="row ml-5">
+				<div class="col-md-2"></div>
+				<div class="col-md-7">
+					<ul th:if="${!#lists.isEmpty(errors)}" class="alert alert-danger ml-2 mr-2" role="alert">
+						<li  class="ml-2" th:each="error : ${errors}" th:text="${error.defaultMessage}"></li>
+					</ul>
+					<ul th:if="${!#lists.isEmpty(errors_edit)}" class="alert alert-danger ml-2 mr-2" role="alert">
+						<li  class="ml-2" th:each="error : ${errors_edit}" th:text="${error}"></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="row ml-3 mr-3">
+			<div class="col-md-2"></div>
+			<div class="col-md-8 ">
+				<div class="card">
+	            <div class="card-header text-right">
+		            <button class="btn btn-sm btn-primary" title="Agregar Rango de Renta" id="add-tipo-unidad">
+						<i class="fas fa-plus-circle mr-1 text-white"></i>
+						<span class="text-white">Agregar Tipo de Unidad</span>
+					</button>
+	              <h3 class="card-title"></h3>
+	            </div>
+					
+					<div class="card-body">
+						<table id="example1" class="table table-bordered table-striped">
+							<thead>
+								<tr>
+								  <th>Tipo de Unidad Organizacional</th>
+				                  <th>Nivel Jerarquico</th>
+				                  <th>Acciones</th>
+				                </tr>
+							</thead>
+							<tbody>
+
+								<tr th:each="tuo: ${tipos_unidad_organizacional}">
+									<td class="tuo">[[ ${tuo.tipoUnidadOrganizacional} ]]</td>
+									<td class="nivel-tuo">[[ ${tuo.nivelJerarquico} ]]</td>
+									<td class="text-center">
+										<button class="btn btn-sm btn-primary mr-2" title="Editar" th:attr="data-edit-tuo=${tuo.idTipoUnidadOrganizacional}">
+											<i class="fas fa-pencil-alt"></i>
+										</button>
+										<th:block th:if="${tuo.tipoUnidadOrganizacionalHabilitado}">
+											<button class="btn btn-sm btn-danger mr-2" title="Deshabilitar" th:attr="data-change-state=${tuo.idTipoUnidadOrganizacional}, data-state=false">
+												<i class="fas fa-lock"></i>
+											</button>
+										</th:block>
+										<th:block th:unless="${tuo.tipoUnidadOrganizacionalHabilitado}">
+											<button class="btn btn-sm btn-success mr-2" title="Habilitar" th:attr="data-change-state=${tuo.idTipoUnidadOrganizacional}, data-state=true">
+												<i class="fas fa-unlock-alt"></i>
+											</button>
+										</th:block>
+									</td>
+								</tr>
+								<tr th:if="${#lists.isEmpty(tipos_unidad_organizacional)}">
+				                	<td colspan="6">
+				                		No hay Tipos de Unidad Organizacional almacenados
+				                	</td>
+				                </tr>
+							</tbody>
+							<tfoot>
+								<tr>
+								  <th>Tipo de Unidad Organizacional</th>
+				                  <th>Nivel Jerarquico</th>
+				                  <th>Acciones</th>
+				                </tr>
+							</tfoot>
+						</table>
+					</div>
+					<!-- /.card-body -->
+				</div>
+				<!-- /.card -->
+			</div>
+		</div>
+
+		<!-- Modal para agregar un año laboral -->
+		<div class="modal fade" id="addTipoUnidadOrg" tabindex="-1" role="dialog" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title">Agregar Año Laboral</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <form method="POST" action="#" th:action="@{/tipo-unidad-organizacional/store}" th:object="${tipo_unidad_organizacional}">
+			      <div class="modal-body">
+			        <div class="form-group col-10">
+			            <label for="tipo-unidad" class="col-form-label">Nombre del tipo de unidad:</label>
+			            <input type="text" class="form-control" id="tipo-unidad"  th:field="*{tipoUnidadOrganizacional}" required>
+			        </div>
+			        <div class="form-group col-10">
+			        	<label for="nivel-jerarquico" class="col-form-label">Nivel Jerarquico:</label>
+			        	<input type="number" step="1"  class="form-control" id="nivel-jerarquico"  th:field="*{nivelJerarquico}" min="1" required>
+			        </div>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+			        <button type="submit" class="btn btn-primary">Guardar</button>
+			      </div>
+		      </form>
+		    </div>
+		  </div>
+		</div>
+
+		<!-- Modal para editar un tipo de unidad organizacional -->
+		<div class="modal fade" id="editTipoUnidadOrg" tabindex="-1" role="dialog" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title">Agregar Año Laboral</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <form method="POST" action="#" th:action="@{/tipo-unidad-organizacional/update}" >
+		      	<input type="hidden" id="id-tipo-unidad-edit" name="id-edit">
+			      <div class="modal-body">
+			        <div class="form-group col-10">
+			            <label for="tipo-unidad-edit" class="col-form-label">Nombre del tipo de unidad:</label>
+			            <input type="text" class="form-control" id="tipo-unidad-edit" required name="tipo">
+			        </div>
+			        <div class="form-group col-10">
+			        	<label for="nivel-jerarquico-edit" class="col-form-label">Nivel Jerarquico:</label>
+			        	<input type="number" step="1"  class="form-control" id="nivel-jerarquico-edit" min="1" required name="nivel">
+			        </div>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+			        <button type="submit" class="btn btn-primary">Guardar</button>
+			      </div>
+		      </form>
+		    </div>
+		  </div>
+		</div>
+
+		<!-- Modal para deshabilitar un tipo de unidad organizacional -->
+		<div class="modal fade" id="changeStateTUO" tabindex="-1" role="dialog" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title">Agregar Año Laboral</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <form method="POST" action="#" th:action="@{/tipo-unidad-organizacional/destroy}">
+		      	<input type="hidden" id="id-tipo-unidad-destroy" name="id-tuo">
+		      	<input type="hidden" id="state-tuo" name="state">
+			      <div class="modal-body">
+			        <div class="form-group">
+			            <p id="msg-destroy"></p>
+			        </div>
+			      </div>
+			      <div class="modal-footer">
+			      	<button id="btn-state" type="submit" class="btn btn-danger">Aceptar</button>
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+			      </div>@RequestParam
+		      </form>
+		    </div>
+		  </div>
+		</div>
+
+	</div>
+	<!-- Scripts-->
+	<section layout:fragment="scripts">
+
+		<!-- DataTables -->
+		<script th:src="@{/plugins/datatables/jquery.dataTables.min.js}"></script>
+		<script th:src="@{/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
+		<script th:src="@{/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
+		<script th:src="@{/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
+		<!-- Toastr -->
+		<script th:src="@{/plugins/toastr/toastr.min.js}"></script>
+		<!-- SweetAlert2 -->
+		<script th:src="@{/plugins/sweetalert2/sweetalert2.min.js}"></script>
+
+		<!-- page script -->
+		<script>
+			$(function() {
+				var table = $("#example1").DataTable({
+							"responsive" : true,
+							"autoWidth" : false,
+						});
+				table.order( [ 1, 'asc' ])
+    				.draw();
+			});
+
+			$('#add-tipo-unidad').on('click', function(){
+				$('#addTipoUnidadOrg').modal('show');
+			});
+
+			$('[data-edit-tuo]').on('click', function(){
+				var id_tuo = $(this).data('edit-tuo');
+				var tipo_tuo = $(this).parent().siblings('td.tuo').text();
+				var nivel_tuo = $(this).parent().siblings('td.nivel-tuo').text();
+
+				$('#id-tipo-unidad-edit').val(id_tuo);
+				$('#tipo-unidad-edit').val(tipo_tuo);
+				$('#nivel-jerarquico-edit').val(nivel_tuo);
+
+				$('#editTipoUnidadOrg').modal('show');
+			});
+
+			$('[data-change-state]').on('click', function(){
+				var id_tuo = $(this).data('change-state');
+				var state = $(this).data('state');
+				var tipo_tuo = $(this).parent().siblings('td.tuo').text();
+				var nivel_tuo = $(this).parent().siblings('td.nivel-tuo').text();
+				var message = $('#msg-destroy');
+
+				if(state==true){
+					$('#btn-state').attr('class', 'btn btn-primary')
+					message.html("¿Desea habilitar el tipo de unidad organizacional <em></em>?");
+				}else{
+					$('#btn-state').attr('class', 'btn btn-danger')
+					message.html("¿Desea deshabilitar el tipo de unidad organizacional <em></em>?");
+				}
+
+				$('#id-tipo-unidad-destroy').val(id_tuo);
+				$('#state-tuo').val(state);
+				$('em').text(tipo_tuo + ' con jerarquía nivel ' +nivel_tuo);
+
+				$('#changeStateTUO').modal('show');
+			});
+
+			setTimeout(function() {
+				$(".alert").fadeOut();           
+			},3000);
+
+			var success = $('#success_store').val();
+			if(success != null){
+			    toastr.success('El Tipos de Unidad Organizacional fue registrado con éxito');
+			}
+			var success = $('#success_update').val();
+			if(success != null){
+			    toastr.success('Los cambios fueron guardados con éxito');
+			}
+			var success = $('#success_state').val();
+			if(success != null){
+				var state = success == 'true' ? 'habilitado' : ' deshabilitado';
+				
+			    toastr.success('El Tipos de Unidad Organizacional fue '+state+' con éxito');
+			}
+		</script>
+		<!-- Scripts-->
+	</section>
+
+</body>
+</html>

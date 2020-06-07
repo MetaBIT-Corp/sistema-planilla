@@ -26,4 +26,30 @@ public class TipoUnidadOrganizacionalServiceImpl implements TipoUnidadOrganizaci
     public TipoUnidadOrganizacional getOne(int id) {
         return tipoUnidadOrganizacionalJpaRepository.getOne(id);
     }
+
+	@Override
+	public TipoUnidadOrganizacional store(TipoUnidadOrganizacional tuo) {
+		// TODO Auto-generated method stub
+		return tipoUnidadOrganizacionalJpaRepository.save(tuo);
+	}
+
+	@Override
+	public TipoUnidadOrganizacional update(TipoUnidadOrganizacional tuo) {
+		// TODO Auto-generated method stub
+		return tipoUnidadOrganizacionalJpaRepository.save(tuo);
+	}
+
+	@Override
+	public void destroy(int id_tuo) {
+		// TODO Auto-generated method stub
+		tipoUnidadOrganizacionalJpaRepository.deleteById(id_tuo);
+	}
+
+	@Override
+	public List<TipoUnidadOrganizacional> getByTipoUnidadOrganizacionalHabilitado(boolean estado) {
+		// TODO Auto-generated method stub
+		return tipoUnidadOrganizacionalJpaRepository.findByTipoUnidadOrganizacionalHabilitado(estado);
+	}
+    
+    
 }
