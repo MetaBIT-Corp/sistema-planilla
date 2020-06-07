@@ -45,10 +45,10 @@ public class RolRecursoPrivilegioController extends BaseController{
 
         Rol rol = rolService.getByIdRol(idRol);
 
-        List<Recurso> recursosRol = recursoService.getRolRecursos(idRol);
+        List<Recurso> recursos = recursoService.getRolRecursos(idRol);
 
         ModelAndView modelAndView = new ModelAndView(INDEX_VIEW);
-        modelAndView.addObject("recursos", recursosRol);
+        modelAndView.addObject("recursos", recursos);
         modelAndView.addObject("rol", rol);
         return modelAndView;
     }

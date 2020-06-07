@@ -55,9 +55,9 @@
 
                         <tbody>
 
-                        <tr th:each="recursoRol: ${recursosRol}">
+                        <tr th:each="recurso: ${recursos}">
 
-                            <td><span th:text="${recursoRol.recurso}"></span></td>
+                            <td><span th:text="${recurso.recurso}"></span></td>
 
                             <td class="text-center">
 
@@ -75,7 +75,7 @@
 
                         </tr>
 
-                        <tr th:if="${#lists.isEmpty(recursosRol)}">
+                        <tr th:if="${#lists.isEmpty(recursos)}">
                             <td colspan="6">
                                 A&uacute;n no se asignan recursos a este rol
                             </td>
