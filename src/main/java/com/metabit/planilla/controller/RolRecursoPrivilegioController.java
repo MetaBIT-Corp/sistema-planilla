@@ -55,17 +55,9 @@ public class RolRecursoPrivilegioController extends BaseController{
     }
 
     @GetMapping("/privilegios/{idrol}/{idrecurso}")
-    public @ResponseBody ArrayList<String> privilegios(@PathVariable(value = "idrol", required = true)int idRol, @PathVariable(value = "idrecurso", required = true)int idRecurso){
-
-        ArrayList<String> nombres = new ArrayList<>();
-
+    public @ResponseBody List<Privilegio> privilegios(@PathVariable(value = "idrol", required = true)int idRol, @PathVariable(value = "idrecurso", required = true)int idRecurso){
         List<Privilegio> privilegios = privilegioService.getRolRecursoPrivilegios(idRol,idRecurso);
-
-        for(int i=0; i<privilegios.size();i++){
-            nombres.add(privilegios.get(i).getPrivilegio());
-        }
-
-        return nombres;
+        return privilegios;
     }
 
 }
