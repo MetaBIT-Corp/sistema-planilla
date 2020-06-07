@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layouts/layout}">
+<head>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" th:href="@{/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css}">
+    <!-- Toastr -->
+    <link rel="stylesheet" th:href="@{/plugins/toastr/toastr.min.css}">
+
+    <link rel="stylesheet" th:href="@{/primitives/packages/jquery-ui-1.12.1/jquery-ui.min.css}"/>
+    <link th:href="@{/primitives/min/primitives.latest.css?5100}" media="screen" rel="stylesheet" type="text/css"/>
+
+</head>
+<body>
+
+<h1 class="m-0 text-dark" layout:fragment="titulo_seccion"></h1>
+
+<ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="#" th:href="@{/index}">Home</a>
+    </li>
+    <li class="breadcrumb-item"><a th:href="@{/unidades-organizacionales/index}">Unidades Organizacionales</a></li>
+    <li class="breadcrumb-item active">Asignacion de Presupuesto</li>
+</ol>
+
+<div layout:fragment="content">
+    <div class="row">
+        <!-- left column -->
+        <div class="col-5">
+            <!-- general form elements -->
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title" id="unidadId" th:attr="data-id=${unidad.idUnidadOrganizacional}" th:text="'Asignacion de presupuesto a '+${unidad.unidadOrganizacional}" ></h3>
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
+                <form id="presupuesto_form">
+                    <div class="card-body">
+
+                        <div  class="callout callout-danger" id="message" th:if="${anio_error == true}">
+                            <p id="mayor">
+                                <i class="icon fas fa-ban mr-2" style="color:red;"></i><span style="text-size=4px" th:text="${adventencia}"></span>
+                            </p>
+                        </div>
+                        <div  class="callout callout-danger" id="errors" hidden>
+                            <p id="error_message">
+                            </p>
+                        </div>
+
+                       <div th:if="${anio_error == false}">
+                           <div class="row">
+                               <div class="col-6">
+                                   <label><strong>Nombre: </strong></label>
+                               </div>
+                               <div class="col-6 text-center">
+                                   <h5 th:text="${unidad.unidadOrganizacional}"></h5>
+                               </div>
+                           </div>
+                           <div class="row">
+                               <div class="col-6">
+                                   <label><strong>Tipo de unidad: </strong></label>
+                               </div>
+                               <div class="col-6 text-center">
+                                   <h5 th:text="${unidad.tipoUnidadOrganizacional.tipoUnidadOrganizacional}"></h5>
+                               </div>
+                           </div>
+                           <div class="row" th:if="${presupuestoPadreDisponible>0}">
+                               <div class="col-6">
+                                   <label><strong>Presupuesto disponible de unidad padre:</strong></label>
+                               </div>
+                               <div class="col-2"></div>
+                               <div class="col-4">
+                                   <u><h5 th:text="'$ '+${#numbers.formatDecimal(presupuestoPadreDisponible,1,'COMMA',2,'POINT')}"></h5></u>
+                               </div>
+                           </div>
+                           <div class="row">
+                               <div class="col-8">
+                                   <label><strong>Presupuesto asignado: </strong></label>
+                               </div>
+                               <div class="col-4">
+                                   <h5 th:text="'$ '+${#numbers.formatDecimal(centroCosto.presupuestoAsignado,1,'COMMA',2,'POINT')}"></h5>
+                               </div>
+                           </div>
+                           <div class="row">
+                               <div class="col-8">
+                                   <label><strong>Presupuesto anterior: </strong></label>
+                               </div>
+                               <div class="col-4">
+                                   <h5 th:text="'$ '+${#numbers.formatDecimal(centroCosto.presupuestoAnterior,1,'COMMA',2,'POINT')}"></h5>
+                               </div>
+                           </div>
+                           <div class="row">
+                               <div class="col-8">
+                                   <label><strong>Presupuesto devengado: </strong></label>
+                               </div>
+                               <div class="col-4">
+                                   <h5 th:text="'$ '+${#numbers.formatDecimal(centroCosto.presupuestoDevengado,1,'COMMA',2,'POINT')}"></h5>
+                               </div>
+                           </div>
+                           <div class="row">
+                               <div class="col-8">
+                                   <label><strong>Año laboral: </strong></label>
+                               </div>
+                               <div class="col-4">
+                                   <h5 th:text="${anio.anioLaboral}"></h5>
+                               </div>
+                           </div>
+                       </div>
+
+                        <div class="mt-2">
+                            <input type="hidden" class="form-control form-control-user" th:value="${centroCosto.idCentroCosto}" name="idCentroCosto">
+
+                            <div class="form-group">
+                                <label for="monto_asig">Monto a asignar </label>
+                                <input type="number" class="form-control" id="monto_asig" name="mas">
+                                <small id="emailHelp" class="form-text text-muted">La cantidad ingresada se sumara al presupuesto actual de la unidad.</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="monto_dis">Monto a disminuir</label>
+                                <input type="number" class="form-control" id="monto_dis" name="menos">
+                                <small id="emailHelp" class="form-text text-muted">La cantidad ingresada se restara al presupuesto actual de la unidad.</small>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+
+                    <div class="card-footer">
+                        <button type="button" id="btn_registrar" class="btn btn-primary" th:if="${anio_error == false}">Registrar Asignacion</button>
+                        <a type="button" class="btn btn-default" href="#"
+                           th:href="@{/unidades-organizacionales/index}">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+            <!-- /.card -->
+        </div>
+        <div class="col-7 mt-5">
+            <h6 class="text-center" id="mensaje">Seleccione Sub-Unidad</h6>
+            <div id="basicdiagram" class="col-12" style="height: 370px; border-style: dotted; border-width: 1px;/"></div>
+        </div>
+    </div>
+</div>
+<section layout:fragment="scripts">
+    <!-- Toastr -->
+    <script th:src="@{/plugins/toastr/toastr.min.js}"></script>
+    <!-- SweetAlert2 -->
+    <script th:src="@{/plugins/sweetalert2/sweetalert2.min.js}"></script>
+
+    <script>
+        $("#btn_registrar").on("click", function () {
+
+            $.ajax({
+                type: "POST",
+                url: "/presupuesto/store",
+                data: $("#presupuesto_form").serialize(),
+                dataType: "json",
+                success: function (data) {
+                    $("#errors").attr("hidden", "hidden");
+                    toastr.success(data.success);
+                    setTimeout(function () {
+                        location.reload();
+                    }, 2000);
+                },
+                error: function (data) {
+                    $("#errors").removeAttr("hidden");
+                    var m = "";
+                    $.each(data.responseJSON, function (key, value) {
+                        m += "<i class='icon fas fa-ban mr-2' style='color:red;'></i><span style='text-size=4px'>" + value + "</span>";
+                    });
+                    document.getElementById("error_message").innerHTML = m;
+
+                    //Para mover al inicio de la pagina el control
+                    $('html, body').animate({
+                        scrollTop: 0
+                    }, 'slow');
+
+                }
+            });
+        });
+    </script>
+
+    <script type="text/javascript" th:src="@{/primitives/packages/jquery-ui-1.12.1/external/jquery/jquery.js}"></script>
+    <script type="text/javascript" th:src="@{/primitives/packages/jquery-ui-1.12.1/jquery-ui.min.js}"></script>
+    <script type="text/javascript" th:src="@{/primitives/min/primitives.min.js?5100}"></script>
+    <script type="text/javascript" th:src="@{/primitives/min/primitives.jquery.min.js?5100}"></script>
+    <script type='text/javascript'>
+        $(document).ready(function () {
+            var idUnidad = $("#unidadId").data("id");
+            $.ajax({
+                type: "GET",
+                url: "/unidades-organizacionales/show-unidad/"+idUnidad,
+                dataType: "json",
+                success: function (data) {
+                    if (data.result.length == 0) {
+                        $("#mensaje").text("No posee sub-unidades");
+                    }else{
+                        function ruta_imagen(tipo) {
+                            switch (tipo) {
+                                case "Gerencias": return "/primitives/samples/images/photos/g.png";break;
+                                case "Departamentos": return "/primitives/samples/images/photos/d.png";break;
+                                case "Secciones": return "/primitives/samples/images/photos/s.png";break;
+                                case "Areas": return "/primitives/samples/images/photos/a.png";break;
+                                default: return "/primitives/samples/images/photos/o.png";
+                            }
+
+                        }
+                        var options = new primitives.orgdiagram.Config();
+                        if(data.result[0].unidadPadre.unidadPadre == null){
+                            var items = [
+                                new primitives.orgdiagram.ItemConfig({
+                                    id: 0,
+                                    parent: null,
+                                    title: data.result[0].unidadPadre.unidadOrganizacional,
+                                    description: "Es parte de "+data.result[0].unidadPadre.tipoUnidadOrganizacional.tipoUnidadOrganizacional + " de la empresa METABIT CORP SA de CV",
+                                    groupTitle: data.result[0].unidadPadre.tipoUnidadOrganizacional.tipoUnidadOrganizacional,
+                                    link: data.result[0].unidadPadre.idUnidadOrganizacional,
+                                    image : ruta_imagen(data.result[0].unidadPadre.tipoUnidadOrganizacional.tipoUnidadOrganizacional)
+                                })
+                            ];
+
+                            for (var i = 0; i < data.result.length; i++) {
+                                items.push(new primitives.orgdiagram.ItemConfig({
+                                    id: i + 1,
+                                    parent: 0,
+                                    title: data.result[i].unidadOrganizacional,
+                                    groupTitle: data.result[i].tipoUnidadOrganizacional.tipoUnidadOrganizacional,
+                                    description: "Es parte de "+ data.result[i].tipoUnidadOrganizacional.tipoUnidadOrganizacional + " de la empresa METABIT CORP SA de CV",
+                                    itemTitleColor: primitives.common.Colors.Green,
+                                    image: ruta_imagen(data.result[i].tipoUnidadOrganizacional.tipoUnidadOrganizacional),
+                                    link: data.result[i].idUnidadOrganizacional
+                                }));
+                            }
+
+                        }else{
+                            var items = [
+                                new primitives.orgdiagram.ItemConfig({
+                                    id: 0,
+                                    parent: null,
+                                    title: data.result[0].unidadPadre.unidadPadre.unidadOrganizacional,
+                                    description: "Es parte de "+data.result[0].unidadPadre.unidadPadre.tipoUnidadOrganizacional.tipoUnidadOrganizacional + " de la empresa METABIT CORP SA de CV",
+                                    groupTitle: data.result[0].unidadPadre.unidadPadre.tipoUnidadOrganizacional.tipoUnidadOrganizacional,
+                                    link: data.result[0].unidadPadre.unidadPadre.idUnidadOrganizacional,
+                                    image : ruta_imagen(data.result[0].unidadPadre.unidadPadre.tipoUnidadOrganizacional.tipoUnidadOrganizacional)
+                                }),
+                                new primitives.orgdiagram.ItemConfig({
+                                    id: 1,
+                                    parent: 0,
+                                    title: data.result[0].unidadPadre.unidadOrganizacional,
+                                    description: "Es parte de "+data.result[0].unidadPadre.tipoUnidadOrganizacional.tipoUnidadOrganizacional + " de la empresa METABIT CORP SA de CV",
+                                    groupTitle: data.result[0].unidadPadre.tipoUnidadOrganizacional.tipoUnidadOrganizacional,
+                                    link: data.result[0].unidadPadre.idUnidadOrganizacional,
+                                    image : ruta_imagen(data.result[0].unidadPadre.tipoUnidadOrganizacional.tipoUnidadOrganizacional)
+                                })
+                            ];
+
+                            for (var i = 0; i < data.result.length; i++) {
+                                items.push(new primitives.orgdiagram.ItemConfig({
+                                    id: i + 2,
+                                    parent: 1,
+                                    title: data.result[i].unidadOrganizacional,
+                                    groupTitle: data.result[i].tipoUnidadOrganizacional.tipoUnidadOrganizacional,
+                                    description: "Es parte de "+ data.result[i].tipoUnidadOrganizacional.tipoUnidadOrganizacional + " de la empresa METABIT CORP SA de CV",
+                                    itemTitleColor: primitives.common.Colors.Green,
+                                    image: ruta_imagen(data.result[i].tipoUnidadOrganizacional.tipoUnidadOrganizacional),
+                                    link: data.result[i].idUnidadOrganizacional
+                                }));
+                            }
+                        }
+
+                        options.items = items;
+                        options.pageFitMode = primitives.common.PageFitMode.None;
+                        options.hasSelectorCheckbox = primitives.common.Enabled.False;
+                        options.onCursorChanged = function (e, d) {
+                            window.location.href = document.location.origin + "/presupuesto/edit/" + d.context.link;
+                        };
+                        options.cursorItem = 0;
+
+                        jQuery("#basicdiagram").orgDiagram(options);
+                    }
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            })
+        });
+    </script>
+</section>
+</body>
+</html>

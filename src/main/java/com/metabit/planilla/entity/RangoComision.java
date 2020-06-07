@@ -5,6 +5,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "rangos_comision")
@@ -25,7 +29,7 @@ public class RangoComision {
 	private float tasaComision;
 
 	@Column(name = "rango_comision_habilitado", nullable = false)
-	private float habilitado;
+	private Boolean habilitado;
 
 	public int getId() {
 		return id;
@@ -59,15 +63,15 @@ public class RangoComision {
 		this.tasaComision = tasaComision;
 	}
 
-	public float getHabilitado() {
+	public Boolean getHabilitado() {
 		return habilitado;
 	}
 
-	public void setHabilitado(float habilitado) {
+	public void setHabilitado(Boolean habilitado) {
 		this.habilitado = habilitado;
 	}
 
-	public RangoComision(int id, float ventaMin, float ventaMax, float tasaComision, float habilitado) {
+	public RangoComision(int id, float ventaMin, float ventaMax, float tasaComision, Boolean habilitado) {
 		super();
 		this.id = id;
 		this.ventaMin = ventaMin;

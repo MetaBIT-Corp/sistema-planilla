@@ -25,8 +25,11 @@ public class Cuota {
 	@Column(name = "fecha_prevista_pago", nullable = false)
 	private Date fechaPrevistaPago;
 	
-	@Column(name = "fecha_real_pago", nullable = false)
+	@Column(name = "fecha_real_pago", nullable = true)
 	private Date fechaRealPago;
+	
+	@Column(name = "monto_cancelado", nullable = false)
+	private float montoCancelado;
 	
 	@ManyToOne
 	@JoinColumn(name = "id_plan", nullable = false)
@@ -63,6 +66,14 @@ public class Cuota {
 	public void setFechaRealPago(Date fechaRealPago) {
 		this.fechaRealPago = fechaRealPago;
 	}
+	
+	public float getMontoCancelado() {
+		return montoCancelado;
+	}
+
+	public void setMontoCancelado(float montoCancelado) {
+		this.montoCancelado = montoCancelado;
+	}
 
 	public Plan getPlan() {
 		return plan;
@@ -72,12 +83,13 @@ public class Cuota {
 		this.plan = plan;
 	}
 
-	public Cuota(int idCuota, int numeroCuota, Date fechaPrevistaPago, Date fechaRealPago, Plan plan) {
+	public Cuota(int idCuota, int numeroCuota, Date fechaPrevistaPago, Date fechaRealPago, float montoCancelado, Plan plan) {
 		super();
 		this.idCuota = idCuota;
 		this.numeroCuota = numeroCuota;
 		this.fechaPrevistaPago = fechaPrevistaPago;
 		this.fechaRealPago = fechaRealPago;
+		this.montoCancelado = montoCancelado;
 		this.plan = plan;
 	}
 	

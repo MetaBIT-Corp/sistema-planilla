@@ -31,16 +31,16 @@ public class RangoRenta {
 	private float cuotaFija;
 	
 	@Column(name = "periodicidad_renta", nullable = false)
-	private int periodicidad_renta;
+	private int periodicidadRenta;
 	
 	@Column(name = "rango_renta_habilitado", nullable = false)
 	private boolean rangoRentaHabilitado;
 
 	public RangoRenta() {
 	}
-	
+
 	public RangoRenta(int idRangoRenta, float salarioMin, float salarioMax, float porcentajeRenta, float exceso,
-			float cuotaFija, int periodicidad_renta, boolean rangoRentaHabilitado) {
+			float cuotaFija, int periodicidadRenta, boolean rangoRentaHabilitado) {
 		super();
 		this.idRangoRenta = idRangoRenta;
 		this.salarioMin = salarioMin;
@@ -48,7 +48,7 @@ public class RangoRenta {
 		this.porcentajeRenta = porcentajeRenta;
 		this.exceso = exceso;
 		this.cuotaFija = cuotaFija;
-		this.periodicidad_renta = periodicidad_renta;
+		this.periodicidadRenta = periodicidadRenta;
 		this.rangoRentaHabilitado = rangoRentaHabilitado;
 	}
 
@@ -100,12 +100,12 @@ public class RangoRenta {
 		this.cuotaFija = cuotaFija;
 	}
 
-	public int getPeriodicidad_renta() {
-		return periodicidad_renta;
+	public int getPeriodicidadRenta() {
+		return periodicidadRenta;
 	}
 
-	public void setPeriodicidad_renta(int periodicidad_renta) {
-		this.periodicidad_renta = periodicidad_renta;
+	public void setPeriodicidadRenta(int periodicidadRenta) {
+		this.periodicidadRenta = periodicidadRenta;
 	}
 
 	public boolean isRangoRentaHabilitado() {
@@ -115,5 +115,5 @@ public class RangoRenta {
 	public void setRangoRentaHabilitado(boolean rangoRentaHabilitado) {
 		this.rangoRentaHabilitado = rangoRentaHabilitado;
 	}
-
+	
 }

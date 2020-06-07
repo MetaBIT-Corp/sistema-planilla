@@ -21,6 +21,9 @@ public class PlanillaMovimiento {
 	@Column(name = "id_planilla_movimiento")
 	private int idPlaillaMovimiento;
 	
+	@Column(name = "monto_movimiento", nullable = false)
+	private float montoMovimiento;
+	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_planilla", nullable = false)
 	private Planilla planilla;
@@ -31,10 +34,12 @@ public class PlanillaMovimiento {
 
 	public PlanillaMovimiento() {
 	}
-	
-	public PlanillaMovimiento(int idPlaillaMovimiento, Planilla planilla, TipoMovimiento tipoMovimiento) {
+
+	public PlanillaMovimiento(int idPlaillaMovimiento, float montoMovimiento, Planilla planilla,
+			TipoMovimiento tipoMovimiento) {
 		super();
 		this.idPlaillaMovimiento = idPlaillaMovimiento;
+		this.montoMovimiento = montoMovimiento;
 		this.planilla = planilla;
 		this.tipoMovimiento = tipoMovimiento;
 	}
@@ -45,6 +50,14 @@ public class PlanillaMovimiento {
 
 	public void setIdPlaillaMovimiento(int idPlaillaMovimiento) {
 		this.idPlaillaMovimiento = idPlaillaMovimiento;
+	}
+
+	public float getMontoMovimiento() {
+		return montoMovimiento;
+	}
+
+	public void setMontoMovimiento(float montoMovimiento) {
+		this.montoMovimiento = montoMovimiento;
 	}
 
 	public Planilla getPlanilla() {
@@ -62,5 +75,4 @@ public class PlanillaMovimiento {
 	public void setTipoMovimiento(TipoMovimiento tipoMovimiento) {
 		this.tipoMovimiento = tipoMovimiento;
 	}
-	
 }

@@ -38,10 +38,18 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-6">
-                            <label><strong>Nombre: </strong></label>
+                            <label><strong>Nombre Unidad: </strong></label>
                         </div>
                         <div class="col-6 text-center">
                             <h5 th:text="${unidad.unidadOrganizacional}"></h5>
+                        </div>
+                    </div>
+                    <div class="row" th:if="${unidad.unidadPadre != null}">
+                        <div class="col-6">
+                            <label><strong>Unidad Padre: </strong></label>
+                        </div>
+                        <div class="col-6 text-center">
+                            <h5 th:text="${unidad.unidadPadre.unidadOrganizacional}"></h5>
                         </div>
                     </div>
                     <div class="row">
@@ -86,7 +94,7 @@
                     </div>
                 </div>
                 <div class="card-footer text-right">
-                    <a type="button" class="btn btn-default" th:href="@{/unidades-organizacionales/index}">Listado unidades organizacionales</a>
+                    <a type="button" class="btn btn-default" th:href="@{/unidades-organizacionales/index}">Listado Unidades</a>
                 </div>
             </div>
         </div>
@@ -104,10 +112,6 @@
     <script th:src="@{/plugins/toastr/toastr.min.js}"></script>
     <!-- SweetAlert2 -->
     <script th:src="@{/plugins/sweetalert2/sweetalert2.min.js}"></script>
-    <!-- mensajes de lock y unlock -->
-    <script th:src="@{/js/empleado/mensajes.js}"></script>
-    <!-- para uso de modals -->
-    <script th:src="@{/js/empleado/modals.js}"></script>
 
     <script type="text/javascript" th:src="@{/primitives/packages/jquery-ui-1.12.1/external/jquery/jquery.js}"></script>
     <script type="text/javascript" th:src="@{/primitives/packages/jquery-ui-1.12.1/jquery-ui.min.js}"></script>
@@ -135,32 +139,69 @@
 
                         }
                         var options = new primitives.orgdiagram.Config();
-                        var items = [
-                            new primitives.orgdiagram.ItemConfig({
-                                id: 0,
-                                parent: null,
-                                title: data.result[0].unidadPadre.unidadOrganizacional,
-                                description: "Es parte de "+data.result[0].unidadPadre.tipoUnidadOrganizacional.tipoUnidadOrganizacional + " de la empresa METABIT CORP SA de CV",
-                                groupTitle: data.result[0].unidadPadre.tipoUnidadOrganizacional.tipoUnidadOrganizacional,
-                                link: data.result[0].unidadPadre.idUnidadOrganizacional,
-                                image : ruta_imagen(data.result[0].unidadPadre.tipoUnidadOrganizacional.tipoUnidadOrganizacional)
-                            })
-                        ];
+                        if(data.result[0].unidadPadre.unidadPadre == null){
+                            var items = [
+                                new primitives.orgdiagram.ItemConfig({
+                                    id: 0,
+                                    parent: null,
+                                    title: data.result[0].unidadPadre.unidadOrganizacional,
+                                    description: "Es parte de "+data.result[0].unidadPadre.tipoUnidadOrganizacional.tipoUnidadOrganizacional + " de la empresa METABIT CORP SA de CV",
+                                    groupTitle: data.result[0].unidadPadre.tipoUnidadOrganizacional.tipoUnidadOrganizacional,
+                                    link: data.result[0].unidadPadre.idUnidadOrganizacional,
+                                    image : ruta_imagen(data.result[0].unidadPadre.tipoUnidadOrganizacional.tipoUnidadOrganizacional)
+                                })
+                            ];
 
-                        for (var i = 0; i < data.result.length; i++) {
-                            items.push(new primitives.orgdiagram.ItemConfig({
-                                id: i + 1,
-                                parent: 0,
-                                title: data.result[i].unidadOrganizacional,
-                                groupTitle: data.result[i].tipoUnidadOrganizacional.tipoUnidadOrganizacional,
-                                description: "Es parte de "+ data.result[i].tipoUnidadOrganizacional.tipoUnidadOrganizacional + " de la empresa METABIT CORP SA de CV",
-                                itemTitleColor: primitives.common.Colors.Green,
-                                image: ruta_imagen(data.result[i].tipoUnidadOrganizacional.tipoUnidadOrganizacional),
-                                link: data.result[i].idUnidadOrganizacional
-                            }));
+                            for (var i = 0; i < data.result.length; i++) {
+                                items.push(new primitives.orgdiagram.ItemConfig({
+                                    id: i + 1,
+                                    parent: 0,
+                                    title: data.result[i].unidadOrganizacional,
+                                    groupTitle: data.result[i].tipoUnidadOrganizacional.tipoUnidadOrganizacional,
+                                    description: "Es parte de "+ data.result[i].tipoUnidadOrganizacional.tipoUnidadOrganizacional + " de la empresa METABIT CORP SA de CV",
+                                    itemTitleColor: primitives.common.Colors.Green,
+                                    image: ruta_imagen(data.result[i].tipoUnidadOrganizacional.tipoUnidadOrganizacional),
+                                    link: data.result[i].idUnidadOrganizacional
+                                }));
+                            }
+                        }else{
+                            var items = [
+                                new primitives.orgdiagram.ItemConfig({
+                                    id: 0,
+                                    parent: null,
+                                    title: data.result[0].unidadPadre.unidadPadre.unidadOrganizacional,
+                                    description: "Es parte de "+data.result[0].unidadPadre.unidadPadre.tipoUnidadOrganizacional.tipoUnidadOrganizacional + " de la empresa METABIT CORP SA de CV",
+                                    groupTitle: data.result[0].unidadPadre.unidadPadre.tipoUnidadOrganizacional.tipoUnidadOrganizacional,
+                                    link: data.result[0].unidadPadre.unidadPadre.idUnidadOrganizacional,
+                                    image : ruta_imagen(data.result[0].unidadPadre.unidadPadre.tipoUnidadOrganizacional.tipoUnidadOrganizacional)
+                                }),
+                                new primitives.orgdiagram.ItemConfig({
+                                    id: 1,
+                                    parent: 0,
+                                    title: data.result[0].unidadPadre.unidadOrganizacional,
+                                    description: "Es parte de "+data.result[0].unidadPadre.tipoUnidadOrganizacional.tipoUnidadOrganizacional + " de la empresa METABIT CORP SA de CV",
+                                    groupTitle: data.result[0].unidadPadre.tipoUnidadOrganizacional.tipoUnidadOrganizacional,
+                                    link: data.result[0].unidadPadre.idUnidadOrganizacional,
+                                    image : ruta_imagen(data.result[0].unidadPadre.tipoUnidadOrganizacional.tipoUnidadOrganizacional)
+                                })
+                            ];
+
+                            for (var i = 0; i < data.result.length; i++) {
+                                items.push(new primitives.orgdiagram.ItemConfig({
+                                    id: i + 2,
+                                    parent: 1,
+                                    title: data.result[i].unidadOrganizacional,
+                                    groupTitle: data.result[i].tipoUnidadOrganizacional.tipoUnidadOrganizacional,
+                                    description: "Es parte de "+ data.result[i].tipoUnidadOrganizacional.tipoUnidadOrganizacional + " de la empresa METABIT CORP SA de CV",
+                                    itemTitleColor: primitives.common.Colors.Green,
+                                    image: ruta_imagen(data.result[i].tipoUnidadOrganizacional.tipoUnidadOrganizacional),
+                                    link: data.result[i].idUnidadOrganizacional
+                                }));
+                            }
                         }
 
                         options.items = items;
+                        options.pageFitMode = primitives.common.PageFitMode.None;
                         options.hasSelectorCheckbox = primitives.common.Enabled.False;
                         options.onCursorChanged = function (e, d) {
                             window.location.href = document.location.origin + "/unidades-organizacionales/show/" + d.context.link;
@@ -175,7 +216,6 @@
                 }
             })
         });
-
     </script>
 </section>
 </body>

@@ -10,4 +10,6 @@ public interface TipoMovimientoService {
 	public abstract TipoMovimiento storeTipoMovimiento(TipoMovimiento tipoMovimiento);
 	public abstract TipoMovimiento updateTipoMovimiento(TipoMovimiento tipoMovimiento);
 	public abstract void destroyTipoMovimiento(int id);
+	public abstract List<TipoMovimiento> getTipoMovimientosFijos(boolean esFijo);
+	public abstract List<TipoMovimiento> getByEsDescuento(boolean esDescuento);
 }

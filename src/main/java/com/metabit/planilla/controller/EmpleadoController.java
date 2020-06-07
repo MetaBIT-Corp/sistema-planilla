@@ -300,8 +300,6 @@ public class EmpleadoController {
         /*-------------------------CÓDIGO PARA AGREGAR ROLES AL EMPLEADO-------------------*/
         List<Rol> user_roles = new ArrayList();
         List<Rol> available_roles = new ArrayList();
-
-
         /*------------------FIN DEL CÓDIGO PARA AGREGAR ROLES AL EMPLEADO-------------------*/
 
         //Si tiene usuario cargarlo sino crear uno por si el puesto lo requiere
@@ -310,8 +308,11 @@ public class EmpleadoController {
             /*---------------------------------Codigo KIKE-------------------------------------*/
             user_roles = rolService.getUserRoles(e.getUsuario().getIdUsuario());
             available_roles = rolService.getAvailableRoles(e.getUsuario().getIdUsuario());
+            mav.addObject("available_roles", available_roles);
+            mav.addObject("user_roles", user_roles);
         }else{
             mav.addObject("user",new Usuario());
+            mav.addObject("roles", rolService.getAllRoles());
         }
 
         mav.addObject("empleado", e);
@@ -322,11 +323,6 @@ public class EmpleadoController {
         mav.addObject("generos", generoService.getAllGeneros());
         mav.addObject("municipios", municipioService.getMunicipiosByDepartamento(e.getDireccion().getMunicipio().getDepartamento()));
         mav.addObject("departamentos", departamentoService.getAllDepartamentos());
-
-        /*-------------------------CÓDIGO PARA AGREGAR ROLES AL EMPLEADO-------------------*/
-        mav.addObject("available_roles", available_roles);
-        mav.addObject("user_roles", user_roles);
-        /*------------------FIN DEL CÓDIGO PARA AGREGAR ROLES AL EMPLEADO-------------------*/
 
         return mav;
     }
@@ -389,9 +385,18 @@ public class EmpleadoController {
         epu.setPuesto(puesto);
         epu.setUnidadOrganizacional(unidadOrganizacionalService.getOneUnidadOrganizacional(Integer.parseInt(allParams.get("idUnidadOrganizacional"))));
         empleado.setEmpleadosPuestosUnidades(epu);
-
+        
+        System.out.println("--------------------------------0");
         //Actualizando usuario
         if(puesto.isUsuarioRequerido()){
+        	/*-------------------------CÓDIGO PARA AGREGAR ROLES AL EMPLEADO-------------------*/
+        	List<Rol> rolesList = new ArrayList<Rol>();
+            for (int idRol: roles) {
+            	Rol rol = rolService.getByIdRol(idRol);
+            	rolesList.add(rol);
+            }
+            /*------------------FIN DEL CÓDIGO PARA AGREGAR ROLES AL EMPLEADO-------------------*/
+            
             if(empleado.getUsuario()==null){
                 BCryptPasswordEncoder pe = new BCryptPasswordEncoder();
                 Usuario usuario = new Usuario(
@@ -404,25 +409,31 @@ public class EmpleadoController {
                         0,
                         null
                 );
-                usuario = userJpaRepository.save(usuario);
+                
+                usuario.setRoles(rolesList);
+                userJpaRepository.save(usuario);
                 empleado.setUsuario(usuario);
             }else{
                 empleado.getUsuario().setEnabled(Boolean.parseBoolean(allParams.get("enabled")) ? true : false);
+                
+                /*-------------------------CÓDIGO PARA AGREGAR ROLES AL EMPLEADO-------------------*/
+            	Usuario usuario = empleado.getUsuario();
+                usuario.setRoles(rolesList);
+                userJpaRepository.save(usuario);
+                /*------------------FIN DEL CÓDIGO PARA AGREGAR ROLES AL EMPLEADO-------------------*/
             }
         }
 
         //Si el empleado tien ya un usuario y lo cambian a un puesto sin usuario requerido solo se deshabilita
         if(!puesto.isUsuarioRequerido()&&empleado.getUsuario()!=null){
-            empleado.getUsuario().setEnabled(false);
+        	/*-------------------------CÓDIGO PARA AGREGAR ROLES AL EMPLEADO-------------------*/
+        	List<Rol> rolesList = new ArrayList<Rol>();
+        	Usuario usuario = empleado.getUsuario();
+        	usuario.setRoles(rolesList);
+        	userJpaRepository.save(usuario);
+        	/*------------------FIN DEL CÓDIGO PARA AGREGAR ROLES AL EMPLEADO-------------------*/
+        	empleado.getUsuario().setEnabled(false);
         }
-
-        /*-------------------------CÓDIGO PARA AGREGAR ROLES AL EMPLEADO-------------------*/
-    	/*List<Rol> rolesList = new ArrayList<Rol>();
-        for (int idRol: roles) {
-        	Rol rol = rolService.getByIdRol(idRol);
-        	rolesList.add(rol);
-        }*/
-        /*------------------FIN DEL CÓDIGO PARA AGREGAR ROLES AL EMPLEADO-------------------*/
 
         empleadoService.updateEmployee(empleado);
 

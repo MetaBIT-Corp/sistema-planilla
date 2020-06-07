@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layouts/layout}">
+
+<head>
+
+  <meta charset="utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  
+  <!-- SweetAlert2 -->
+  <link rel="stylesheet" th:href="@{/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css}">
+  <!-- Toastr -->
+  <link rel="stylesheet" th:href="@{/plugins/toastr/toastr.min.css}">
+  
+</head>
+
+<body>
+	
+	<h1 class="m-0 text-dark" layout:fragment="titulo_seccion">Planilla Salarial</h1>
+
+	<ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
+        <li class="breadcrumb-item"><a href="#" th:href="@{/index}">Home</a></li>
+        <li class="breadcrumb-item"><a href="#" th:href="@{/planilla/index}">Empleados-Planilla</a></li>
+        <li class="breadcrumb-item active">Planilla</li>
+    </ol>
+
+	<div layout:fragment="content">
+	
+			<input type="hidden" id="asignacionIngresos" th:if="${asignacionIngresos != null}" value="true">
+			<input type="hidden" id="asignacionDescuentos" th:if="${asignacionDescuentos != null}" value="true">
+			<input type="hidden" id="deleteIngresos" th:if="${deleteIngresos != null}" value="true">
+			<input type="hidden" id="deleteDescuentos" th:if="${deleteDescuentos != null}" value="true">
+			<input type="hidden" id="updateMontoVentas" th:if="${updateMontoVentas != null}" value="true">
+			<input type="hidden" id="updateHorasExtras" th:if="${updateHorasExtras != null}" value="true">
+			
+		    <!-- general form elements -->
+		    <div class="offset-1 col-md-10">
+				<div class="card card-primary">
+	        <div class="card-header">
+	            <h3 class="card-title">Detalle de Planilla</h3>
+	        </div>
+		        <div class="card-body">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a th:if="${asignacionIngresos == null && asignacionDescuentos == null}" class="nav-link active" id="generales-tab" data-toggle="tab" href="#generales" role="tab"
+                       aria-controls="generales" aria-selected="true">Datos Generales</a>
+                       
+                    <a th:if="${asignacionIngresos != null || asignacionDescuentos != null}" class="nav-link active" id="generales-tab" data-toggle="tab" href="#generales" role="tab"
+                    aria-controls="generales" aria-selected="false">Datos Generales</a>
+                </li>
+                <li class="nav-item">
+                    <a th:if="${asignacionIngresos == null}" class="nav-link" id="ingresos-tab" data-toggle="tab" href="#ingresos" role="tab"
+                       aria-controls="ingresos" aria-selected="false">Ingresos</a>
+                       
+                    <a th:if="${asignacionIngresos != null}" class="nav-link" id="ingresos-tab" data-toggle="tab" href="#ingresos" role="tab"
+                    aria-controls="ingresos" aria-selected="true">Ingresos</a>
+                </li>
+                <li class="nav-item">
+                    <a th:if="${asignacionDescuentos == null}" class="nav-link" id="descuentos-tab" data-toggle="tab" href="#descuentos" role="tab"
+                       aria-controls="descuentos" aria-selected="false">Descuentos</a>
+                       
+                    <a th:if="${asignacionDescuentos != null}" class="nav-link" id="descuentos-tab" data-toggle="tab" href="#descuentos" role="tab"
+                    aria-controls="descuentos" aria-selected="true">Descuentos</a>
+                </li>
+            </ul>
+            
+            <div class="tab-content" id="myTabContent">
+                <!--DATOS GENERALES -->
+                <div class="tab-pane fade show active" id="generales" role="tabpanel"
+                     aria-labelledby="generales-tab">
+                    <div class="container">
+                        <div class="card-body">
+                           	  <div class="form-row">
+	                           	  <div class="col-md-6 mb-3">
+								    <label>Nombre:</label><br/>
+								    <span th:text="${planilla.empleado.nombrePrimero}"></span>
+								  </div>
+								  <div class="col-md-6 mb-3">
+								    <label>Apellidos:</label><br/>
+								    <span th:text="${planilla.empleado.apellidoMaterno}"></span>
+								  </div>
+							  </div>
+							  <div class="form-row">
+							  	<div class="col-md-6 mb-3">
+								    <label>Fecha Emisión:</label><br>
+								    <span th:if="${planilla.fechaEmision}" th:text="${planilla.fechaEmision}"></span>
+								    <span th:if="${planilla.fechaEmision == null}">No Emitida</span>
+								  </div>
+							  	<div class="col-md-6 mb-3">
+								    <label>Salario Neto:</label><br>
+								    <span th:text="'$' + ${#numbers.formatDecimal(planilla.salarioNeto, 1, 'COMMA', 2, 'POINT')}"></span>
+								  </div>
+							  </div>
+							  <div class="form-row">
+							  	<div class="col-md-6 mb-3">
+								    <label>Total de Ingresos:</label><br>
+								    <span th:text="'$' + ${#numbers.formatDecimal(planilla.totalIngresos, 1, 'COMMA', 2, 'POINT')}"></span>
+								  </div>
+								  <div class="col-md-6 mb-3">
+								    <label>Total de Descuentos:</label><br>
+								    <span th:text="'$' + ${#numbers.formatDecimal(planilla.totalDescuentos, 1, 'COMMA', 2, 'POINT')}"></span>
+								  </div>
+							  </div>
+							  <div class="form-row" th:if="${planilla.empleado.esAdministrativo == false}">
+							  	 <div class="col-md-6 mb-3">
+								    <label>
+								    	Monto de Ventas:
+								    	<button class="btn btn-sm btn-light" style="text-decoration: none; color: black; border-radius: 50%;"
+												title="Editar Monto de Ventas" onclick="activateModalEditMontoVentas(this);"
+												th:attr="data-idPlanilla=${planilla.idPlanilla}, data-montoVentas=${planilla.montoVentas}">
+												
+											<span><i class="fas fa-pencil-alt"></i></span>
+											
+										</button>
+								    </label><br>
+								    <span th:text="'$' + ${#numbers.formatDecimal(planilla.montoVentas, 1, 'COMMA', 2, 'POINT')}"></span>
+								  </div>
+								  <div class="col-md-6 mb-3">
+								    <label>Monto por Comisión:</label><br>
+								    <span th:text="'$' + ${#numbers.formatDecimal(planilla.montoComision, 1, 'COMMA', 2, 'POINT')}"></span>
+								  </div>
+							  </div>
+							  <div class="form-row">
+							  	 <div class="col-md-6 mb-3">
+								    <label>
+								    	Horas Extras:
+								    	<button class="btn btn-sm btn-light" style="text-decoration: none; color: black; border-radius: 50%;"
+												title="Editar Monto de Ventas" onclick="activateModalEditHorasExtras(this);"
+												th:attr="data-idPlanilla=${planilla.idPlanilla}, data-horasExtrasDiurnas=${planilla.horasExtraDiurnas}, 
+												data-horasExtrasNocturnas=${planilla.horasExtraNocturnas}">
+												
+											<span><i class="fas fa-pencil-alt"></i></span>
+											
+										</button>
+								    </label>
+								    <br>
+								    <div class="row">
+								    	<div class="col-md-3">
+								    		<span class="badge badge-secondary">Diurnas:</span>
+								    	</div>
+								    	<div class="col-md-3">
+								    		<span th:text="${planilla.horasExtraDiurnas + ' hrs'}"></span>
+								    	</div>
+								    </div><br>
+								    <div class="row">
+								    	<div class="col-md-3">
+								    		<span class="badge badge-secondary">Nocturnas:</span>
+								    	</div>
+								    	<div class="col-md-3">
+								    		<span th:text="${planilla.horasExtraNocturnas} + ' hrs'"></span>
+								    	</div>
+								  	</div>
+								  </div>
+								  <div class="col-md-6 mb-3">
+								    <label>Monto por Horas Extras:</label><br>
+								    <span th:text="'$' + ${#numbers.formatDecimal(planilla.montoHorasExtra, 1, 'COMMA', 2, 'POINT')}"></span>
+								  </div>
+							  </div>
+                         </div>
+                      </div>
+                </div>
+      
+                <!--INGRESOS-->
+                <div class="tab-pane fade" id="ingresos" role="tabpanel"
+                     aria-labelledby="ingresos-tab" style="margin-top: 10px;">
+                    <div class="container">
+	                    <div class="card">
+				            <div class="card-header text-right" style="background-color: #E6E6E6;">
+					            <button class="btn btn-md btn-primary" title="Agregar Ingreso" data-toggle="modal" data-target="#modalIngresosPendientes">
+									<i class="fas fa-plus-circle mr-1 text-white"></i>
+									<span class="text-white">Agregar Ingreso</span>
+								</button>
+				            </div>
+                        <div class="card-body">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+	                                <tr>
+	                                    <th>Ingreso</th>
+	                                    <th>Porcentaje/Base</th>
+	                                    <th>Patronal</th>
+	                                    <th>Monto</th>
+	                                    <th>Acciones</th>
+	                                </tr>
+                                </thead>
+
+                                <tbody>
+                                <tr th:each="ingreso: ${ingresos}">
+                                    <td>
+                                    	<span th:text="${ingreso.tipoMovimiento.movimiento}"></span>
+                                    </td>
+                                    <td>
+                                    	<span th:if="${ingreso.tipoMovimiento.porcentajeMovimiento}" th:text="${ingreso.tipoMovimiento.porcentajeMovimiento + '%'}"></span>
+                                    	<span th:if="${ingreso.tipoMovimiento.montoBase}" th:text="'$' + ${#numbers.formatDecimal(ingreso.tipoMovimiento.montoBase, 0, 'COMMA', 2, 'POINT')}"></span>
+                                    </td>
+                                    <td>
+                                    	<span th:if="${ingreso.tipoMovimiento.esPatronal}">Patronal</span>
+                                    	<span th:if="${ingreso.tipoMovimiento.esPatronal == false}">No Patronal</span>
+                                    </td>
+                                    <td>
+                                    	<span th:text="'$' + ${#numbers.formatDecimal(ingreso.montoMovimiento, 0, 'COMMA', 2, 'POINT')}"></span>
+                                    </td>
+                                    <td>
+                                    	<span th:if="${ingreso.tipoMovimiento.esFijo}">Fijo</span>
+                                    	<span th:if="${ingreso.tipoMovimiento.esFijo == false}">
+	                                    	<button class="btn btn-sm btn-danger" style="text-decoration: none; color: white;"
+												title="Remover Ingreso" onclick="activateModalDestroy(this);"
+												th:attr="data-idPlanillaMovimiento=${ingreso.idPlaillaMovimiento}, data-moviento=${ingreso.tipoMovimiento.movimiento}, data-tipo='Ingreso'">
+	                                    		<span><i class="fas fa-trash"></i></span>
+	                                    	</button>
+                                    	</span>
+                                    </td>
+                                </tr>
+                                <tr th:if="${#lists.isEmpty(ingresos)}">
+                                    <td colspan="5">
+                                    Esta Planilla aún no tiene asociado ningún Ingreso.
+                                    </td>
+                                </tr>
+                                </tbody>
+
+                                <tfoot>
+                                <tr>
+                                    <th>Ingreso</th>
+                                    <th>Porcentaje/Base</th>
+                                    <th>Patronal</th>
+                                    <th>Monto</th>
+                                    <th>Acciones</th>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                       </div> 
+                    </div>
+                </div>
+
+                <!--DESCUENTOS-->
+                <div class="tab-pane fade" id="descuentos" role="tabpanel" aria-labelledby="descuentos-tab">
+                    <div class="container-fluid" style="margin-top: 10px;">
+                    	<div class="card">
+				            <div class="card-header text-right" style="background-color: #E6E6E6;">
+					            <button class="btn btn-md btn-primary" title="Agregar Descuento" data-toggle="modal" data-target="#modalDescuentosPendientes">
+									<i class="fas fa-plus-circle mr-1 text-white"></i>
+									<span class="text-white">Agregar Descuento</span>
+								</button>
+				            </div>
+                        	<div class="card-body">
+                                <table id="example2" class="table table-bordered table-striped">
+                                <thead>
+	                                <tr>
+	                                    <th>Descuento</th>
+	                                    <th>Porcentaje/Base</th>
+	                                    <th>Patronal</th>
+	                                    <th>Monto</th>
+	                                    <th>Acciones</th>
+	                                </tr>
+                                </thead>
+
+                                <tbody>
+                                <tr th:each="descuento: ${descuentos}">
+                                    <td>
+                                    	<span th:text="${descuento.tipoMovimiento.movimiento}"></span>
+                                    </td>
+                                    <td>
+                                    	<span th:if="${descuento.tipoMovimiento.porcentajeMovimiento}" th:text="${descuento.tipoMovimiento.porcentajeMovimiento + '%'}"></span>
+                                    	<span th:if="${descuento.tipoMovimiento.montoBase}" th:text="'$' + ${#numbers.formatDecimal(descuento.tipoMovimiento.montoBase, 0, 'COMMA', 2, 'POINT')}"></span>
+                                    </td>
+                                    <td>
+                                    	<span th:if="${descuento.tipoMovimiento.esPatronal}">Patronal</span>
+                                    	<span th:if="${descuento.tipoMovimiento.esPatronal == false}">No Patronal</span>
+                                    </td>
+                                    <td> 
+                                    	<span th:text="'$' + ${#numbers.formatDecimal(descuento.montoMovimiento, 0, 'COMMA', 2, 'POINT')}"></span>
+                                    </td>
+                                    <td>
+                                    	<span th:if="${descuento.tipoMovimiento.esFijo}">Fijo</span>
+                                    	<span th:if="${descuento.tipoMovimiento.esFijo == false}">
+	                                    	<button class="btn btn-sm btn-danger" style="text-decoration: none; color: white;"
+												title="Remover Ingreso" onclick="activateModalDestroy(this);"
+												th:attr="data-idPlanillaMovimiento=${descuento.idPlaillaMovimiento}, data-moviento=${descuento.tipoMovimiento.movimiento}, data-tipo='Descuento'">
+	                                    		<span><i class="fas fa-trash"></i></span>
+	                                    	</button>
+                                    	</span>
+                                    </td>
+                                </tr>
+                                <tr th:if="${#lists.isEmpty(descuentos)}">
+                                    <td colspan="6">
+                                    	Esta Planilla aún no tiene asociado ningún Descuento.
+                                    </td>
+                                </tr>
+                                </tbody>
+
+                                <tfoot>
+                                <tr>
+                                    <th>Descuento</th>
+                                    <th>Porcentaje/Base</th>
+                                    <th>Patronal</th>
+                                    <th>Monto</th>
+                                    <th>Acciones</th>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                       </div> 
+                    </div>
+                </div>
+            </div>
+        </div>
+	</div>
+	
+	<!-- Modal listado de Ingresos pendientes -->
+		<div class="modal fade bd-example-modal-lg" id="modalIngresosPendientes" tabindex="-1" role="dialog">
+		  <div class="modal-dialog modal-lg" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title">Ingresos Pendientes</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <form method="post" action="#" th:action="@{/planilla/agregar-movimientos}">
+		      	  <input type="hidden" id="inputIngresosPlanilla" name="id_planilla" th:value="${planilla.idPlanilla}">
+		      	  <div class="card">
+                  	<div class="card-body">
+				      <table id="example3" class="table table-hover" width="100%" style="table-layout:fixed;">
+	                      <thead>
+		                      <tr>
+		                          <th>Ingreso</th>
+		                          <th>Porcentaje/Base</th>
+		                          <th>Seleccionar</th>
+		                      </tr>
+	                      </thead>
+	                      <tbody>
+	                      <tr th:each="ingreso: ${ingresosPendientes}">
+	                          <td>
+	                          	<span th:text="${ingreso.movimiento}"></span>
+	                          </td>
+	                          <td>
+	                          	<span th:if="${ingreso.porcentajeMovimiento}" th:text="${ingreso.porcentajeMovimiento + '%'}"></span>
+	                          	<span th:if="${ingreso.montoBase}" th:text="'$' + ${#numbers.formatDecimal(ingreso.montoBase, 0, 'COMMA', 2, 'POINT')}"></span>
+	                          </td>
+	                          <td>
+	                          	<div class="form-check">
+								  <input class="form-check-input" type="checkbox" th:value="${ingreso.idMovimiento}" name="movimientos_seleccionados">
+								</div>
+	                          </td>
+	                      </tr>
+	                      <tr th:if="${#lists.isEmpty(ingresosPendientes)}">
+	                          <td colspan="3">
+	                          	Ya no hay Ingresos Pendientes.
+	                          </td>
+	                      </tr>
+	                      </tbody>
+	                      <tfoot>
+	                      </tfoot>
+	                  </table>
+	                 </div>
+	                </div>
+                  <div class="modal-footer">
+			        <button type="submit" class="btn btn-primary">Guardar</button>
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+			      </div>
+		      </form>
+		    </div>
+		  </div>
+		</div>
+		
+		<!-- Modal listado de Descuentos pendientes -->
+		<div class="modal fade bd-example-modal-lg" id="modalDescuentosPendientes" tabindex="-1" role="dialog">
+		  <div class="modal-dialog modal-lg" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title">Descuentos Pendientes</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <form method="post" action="#" th:action="@{/planilla/agregar-movimientos}">
+		     	  <input type="hidden" id="inputDescuentosPlanilla" name="id_planilla" th:value="${planilla.idPlanilla}">
+		     	  <div class="card">
+                  	<div class="card-body">
+				      <table id="example4" class="table table-hover">
+	                      <thead>
+		                      <tr>
+		                          <th>Descuento</th>
+		                          <th>Porcentaje/Base</th>
+		                          <th>Seleccionar</th>
+		                      </tr>
+	                       </thead>
+	                      <tbody>
+	                      <tr th:each="descuento: ${descuentosPendientes}">
+	                          <td>
+	                          	<span th:text="${descuento.movimiento}"></span>
+	                          </td>
+	                          <td>
+	                          	<span th:if="${descuento.porcentajeMovimiento}" th:text="${descuento.porcentajeMovimiento + '%'}"></span>
+	                          	<span th:if="${descuento.montoBase}" th:text="'$' + ${#numbers.formatDecimal(descuento.montoBase, 0, 'COMMA', 2, 'POINT')}"></span>
+	                          </td>
+	                          <td>
+	                          	<div class="form-check">
+								  <input class="form-check-input" type="checkbox" th:value="${descuento.idMovimiento}" name="movimientos_seleccionados">
+								</div>
+	                          </td>
+	                      </tr>
+	                      <tr th:if="${#lists.isEmpty(descuentosPendientes)}">
+	                          <td colspan="3">
+	                          	Ya no hay Descuentos Pendientes.
+	                          </td>
+	                      </tr>
+	                      </tbody>
+	                  </table>
+	                 </div>
+	                </div>
+                  <div class="modal-footer">
+			        <button type="submit" class="btn btn-primary">Guardar</button>
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+			      </div>
+		      </form>
+		    </div>
+		  </div>
+		</div>
+	</div>
+	
+	<!-- Modal para Confirmar Eliminacion de PlanillaMovimiento -->
+	<div class="modal" id="planillaMovimientoModalDestroy" tabindex="-1" role="dialog">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	      <div id="titulo_confirmacion"></div>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <form method="post" action="#" th:action="@{/planilla/destroy-planillaMovimiento}">
+		      <div class="modal-body">
+		        <div class="form-group">
+				    <div id="divMessage"></div>
+				    <input type="hidden" class="form-control" id="idPlanillaMovimientoInputDestroy" name="idPlanillaMovimientoDestroy" value="">				
+				  </div>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="submit" class="btn btn-danger">Confirmar</button>
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+		      </div>
+	      </form>
+	    </div>
+	  </div>
+	</div>	
+	
+	<!-- Modal para Editar Monto de Ventas -->
+		<div class="modal" id="montoVentasModalEdit" tabindex="-1" role="dialog">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title">Editar Monto de Ventas</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <form method="post" action="#" th:action="@{/planilla/update-montoVentas}">
+		      	  <input type="hidden" class="form-control" id="idPlanillaInputEditMV" name="idPlanilla" value="">
+			      <div class="modal-body">
+			        <div class="form-group">
+					    <label for="generoInput">Monto de Ventas: *</label>
+					    <input type="number" class="form-control" id="montoVentasInputEdit"  name="montoVentas" value="" required="required"
+					    min="0" step="0.01">
+					  </div>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="submit" class="btn btn-primary">Actualizar</button>
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+			      </div>
+		      </form>
+		    </div>
+		  </div>
+		</div>
+		
+		<!-- Modal para Editar Horas Extras -->
+		<div class="modal" id="horasExtrasModalEdit" tabindex="-1" role="dialog">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title">Editar Horas Extras</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <form method="post" action="#" th:action="@{/planilla/update-horasExtras}">
+		      	  <input type="hidden" class="form-control" id="idPlanillaInputEditHS" name="idPlanilla" value="">
+			      <div class="modal-body">
+			        <div class="form-group">
+					    <label for="generoInput">Horas Extras Diurnas: *</label>
+					    <input type="number" class="form-control" id="horasExtrasDiurnasInputEdit"  name="horasExtrasDiurnas" value="" required="required"
+					    min="0" step="1">
+					  </div>
+					  <div class="form-group">
+					    <label for="generoInput">Horas Extras Nocturnas: *</label>
+					    <input type="number" class="form-control" id="horasExtrasNocturnasInputEdit"  name="horasExtrasNocturnas" value="" required="required"
+					    min="0" step="1">
+					  </div>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="submit" class="btn btn-primary">Actualizar</button>
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+			      </div>
+		      </form>
+		    </div>
+		  </div>
+		</div>
+		
+</div>	
+		
+	<section layout:fragment="scripts">
+	    <!-- DataTables -->
+	  	<script th:src="@{/plugins/datatables/jquery.dataTables.min.js}"></script>
+	  	<script th:src="@{/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
+		<script th:src="@{/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
+		<script th:src="@{/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
+	
+		<!-- Toastr -->
+		<script th:src="@{/plugins/toastr/toastr.min.js}"></script>
+		<!-- SweetAlert2 -->
+		<script th:src="@{/plugins/sweetalert2/sweetalert2.min.js}"></script>
+		
+		<script type="text/javascript">
+		
+			function activateModalEditMontoVentas(param){
+				  
+				  var id_planilla = $(param).attr("data-idPlanilla");
+				  var monto_ventas = $(param).attr("data-montoVentas");
+				  
+				  $("#idPlanillaInputEditMV").val(id_planilla);
+				  
+				  $("#montoVentasInputEdit").val(monto_ventas);
+				  
+				  $("#montoVentasModalEdit").modal();
+			  }
+			
+			function activateModalEditHorasExtras(param){
+			
+				var id_planilla = $(param).attr("data-idPlanilla");
+				var horas_extras_diurnas = $(param).attr("data-horasExtrasDiurnas");
+				var horas_extras_nocturnas = $(param).attr("data-horasExtrasNocturnas");
+				  
+				$("#idPlanillaInputEditHS").val(id_planilla);
+				$("#horasExtrasDiurnasInputEdit").val(horas_extras_diurnas);
+				$("#horasExtrasNocturnasInputEdit").val(horas_extras_nocturnas);
+				  
+				$("#horasExtrasModalEdit").modal();
+			
+			}
+		
+			function activateModalDestroy(param){
+			  
+			  var idPlanillaMovimiento = $(param).attr("data-idPlanillaMovimiento");
+			  var moviento = $(param).attr("data-moviento");
+			  var tipo = $(param).attr("data-tipo");
+			  
+			  document.getElementById("titulo_confirmacion").innerHTML = '<h5 class="modal-title"> Eliminar ' + tipo + '</h5>';
+			  
+			  document.getElementById("divMessage").innerHTML = "<p>¿Esta seguro que desea eliminar el " + tipo + ": <b>" + moviento + "</b>?</p>";
+			  
+			  $("#idPlanillaMovimientoInputDestroy").val(idPlanillaMovimiento);
+			  
+			  $("#planillaMovimientoModalDestroy").modal();
+			  
+		 	 }
+			
+			$( document ).ready(function() {
+				
+				  var asignacionIngresos = $('#asignacionIngresos').val();
+				  var asignacionDescuentos = $('#asignacionDescuentos').val();
+				  var deleteIngresos = $('#deleteIngresos').val();
+				  var deleteDescuentos = $('#deleteDescuentos').val();
+				  
+				  var updateHorasExtras = $('#updateHorasExtras').val();
+				  var updateMontoVentas = $('#updateMontoVentas').val();
+				 
+				  setTimeout(function() {
+				    $(".alert").fadeOut();           
+				  },3000);
+				  
+				  if(asignacionIngresos === 'true'){
+					 toastr.success("Ingresos Asignados con Éxito!"); 
+				  }
+				  
+				  if(asignacionDescuentos === 'true'){
+					 toastr.success("Descuentos Asignados con Éxito!"); 
+				  }
+				  if(deleteIngresos === 'true'){
+					 toastr.error("Ingreso Eliminado con Éxito!"); 
+				  }
+				  
+				  if(deleteDescuentos === 'true'){
+					 toastr.error("Descuento Eliminado con Éxito!"); 
+				  }
+				  if(updateHorasExtras === 'true'){
+					 toastr.success("Horas Extras actualizadas con Éxito!"); 
+				  }
+				  
+				  if(updateMontoVentas === 'true'){
+					 toastr.success("Monto de Ventas actualizado con Éxito!"); 
+				  }
+			
+			    $('#example1').DataTable({
+			      "paging": true,
+			      "lengthChange": false,
+			      "searching": true,
+			      "ordering": true,
+			      "info": true,
+			      "autoWidth": false,
+			      "responsive": true,
+			      "pageLength": 5,
+			    });
+			    
+			    $("#example2").DataTable({
+			      "paging": true,
+			      "lengthChange": false,
+			      "searching": true,
+			      "ordering": true,
+			      "info": true,
+			      "autoWidth": false,
+			      "responsive": true,
+			      "pageLength": 5,
+			    });
+			    
+			    $("#example3").DataTable({
+	                "responsive": true,
+	                "autoWidth": false,
+	            });
+			    
+			    $("#example4").DataTable({
+	                "responsive": true,
+	                "autoWidth": false,
+	            });
+			    
+			    /*$("#example3").DataTable({
+			      "paging": true,
+			      "lengthChange": false,
+			      "searching": true,
+			      "ordering": true,
+			      "info": true,
+			      "autoWidth": false,
+			      "responsive": true,
+			      "pageLength": 5,
+			    });
+			    
+			    $("#example4").DataTable({
+			      "paging": true,
+			      "lengthChange": false,
+			      "searching": true,
+			      "ordering": true,
+			      "info": true,
+			      "autoWidth": false,
+			      "responsive": true,
+			      "pageLength": 5,
+			    });*/
+			    
+			});
+		</script>
+		
+	</section>
+</body>
+</html>

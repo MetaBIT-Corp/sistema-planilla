@@ -29,4 +29,14 @@ public class RangoComisionServiceImpl implements RangoComisionService{
 		rangoComisionJpaRepository.deleteById(idRangoComision);
 	}
 
+	@Override
+	public RangoComision getOneRango(int id) {
+		return rangoComisionJpaRepository.getById(id);
+	}
+
+	@Override
+	public RangoComision createOrUpdate(RangoComision rangoComision) {
+		return rangoComisionJpaRepository.save(rangoComision);
+	}
+
 }

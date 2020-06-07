@@ -8,4 +8,6 @@ public interface RangoComisionService {
 
 	public List<RangoComision> getAllRangoComision();
 	public void deleteRangoComision(int idRangoComision);
+	public RangoComision getOneRango(int id);
+	public RangoComision createOrUpdate(RangoComision rangoComision);
 }

@@ -10,6 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -22,12 +24,14 @@ public class TipoUnidadOrganizacional {
 	@Column(name = "id_tipo_unidad_organizacional", unique=true, nullable=false)
 	private Integer idTipoUnidadOrganizacional;
 	
+	@NotEmpty(message = "Debe ingresar el nombre del tipo de unidad a crear")
 	@Column(name = "tipo_unidad_organizacional", unique = true, nullable = false)
 	private String tipoUnidadOrganizacional;
 	
 	@Column(name = "tipo_unidad_organizacional_habilidato", nullable = false)
 	private Boolean tipoUnidadOrganizacionalHabilitado;
 	
+	@Min(value = 1, message = "El nivel jerarquico debe ser igual o mayor a 1")
 	@Column(name = "nivel_jerarquico", nullable = false)
 	private Integer nivelJerarquico;
 	

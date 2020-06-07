@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.metabit.planilla.entity.RangoRenta;
 
-@Repository("rangoRentaRepository")
+@Repository("rangoRentaJpaRepository")
 public interface RangoRentaJpaRepository extends JpaRepository<RangoRenta, Serializable>{
 
 }

@@ -33,31 +33,31 @@ public class Planilla {
 	@JsonFormat(pattern="dd/MM/yy")
 	private Date fechaEmision;
 	
-	@Column(name = "monto_ventas")
+	@Column(name = "monto_ventas", columnDefinition="FLOAT(126) DEFAULT 0.0")
 	private float montoVentas;
 	
-	@Column(name = "monto_comision")
+	@Column(name = "monto_comision", columnDefinition="FLOAT(126) DEFAULT 0.0")
 	private float montoComision;
 	
-	@Column(name = "total_ingresos")
+	@Column(name = "total_ingresos", columnDefinition="FLOAT(126) DEFAULT 0.0")
 	private float totalIngresos;
 	
-	@Column(name = "total_descuentos")
+	@Column(name = "total_descuentos", columnDefinition="FLOAT(126) DEFAULT 0.0")
 	private float totalDescuentos;
 	
-	@Column(name = "renta")
+	@Column(name = "renta", columnDefinition="FLOAT(126) DEFAULT 0.0")
 	private float renta;
 	
-	@Column(name = "salario_neto")
+	@Column(name = "salario_neto", columnDefinition="FLOAT(126) DEFAULT 0.0")
 	private float salarioNeto;
 	
-	@Column(name = "horas_extra_diurnas")
+	@Column(name = "horas_extra_diurnas", columnDefinition="NUMBER(10,0) DEFAULT 0")
 	private int horasExtraDiurnas;
 	
-	@Column(name = "horas_extra_nocturnas")
+	@Column(name = "horas_extra_nocturnas", columnDefinition="NUMBER(10,0) DEFAULT 0")
 	private int horasExtraNocturnas;
 	
-	@Column(name = "monto_horas_extra")
+	@Column(name = "monto_horas_extra", columnDefinition="FLOAT(126) DEFAULT 0.0")
 	private float montoHorasExtra;
 	
 	@ManyToOne(fetch = FetchType.EAGER)

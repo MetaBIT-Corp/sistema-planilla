@@ -33,7 +33,7 @@
 			<div class="offset-1 col-md-10">
 			 <div class="card">
 	            <div class="card-header text-right">
-		            <button class="btn btn-md btn-primary" title="Agregar Rango Comision" data-toggle="modal" data-target="#">
+		            <button class="btn btn-md btn-primary" id="btn_create" th:if="${create == true}" title="Agregar Rango Comision" data-toggle="modal" data-target="#">
 						<i class="fas fa-plus-circle mr-1 text-white"></i>
 						<span class="text-white">Nuevo Rango Comisión</span>
 					</button>
@@ -56,9 +56,8 @@
 	                  <td><span th:text="'$' + ${#numbers.formatDecimal(rangoComision.ventaMax, 0, 'COMMA', 2, 'POINT')}"></span></td>
 	                  <td><span th:text="${rangoComision.tasaComision*100} + '%'"></span></td>
 						<td>						
-							<button class="btn btn-sm btn-primary" style="text-decoration: none; color: white;"
+							<button class="btn btn-sm btn-primary btn_edit" th:if="${edit == true}" th:attr="data-id=${rangoComision.id}" style="text-decoration: none; color: white;"
 									title="Editar">
-									
 								<span><i class="fas fa-pencil-alt"></i></span>
 								
 							</button> 
@@ -122,8 +121,9 @@
 		    </div>
 		  </div>
 		</div>
-	</div>
-		
+
+		<!-- MODAL CREAR RANGO -->
+		<div th:insert="rango-comision/create :: create_rango"></div>
 	</div>
 	
 	
@@ -192,6 +192,58 @@
 			  }
 			
 			});
+
+			$("#btn_create").on("click", function () {
+				$("#id_rango").val(0);
+				$("#ventaMin").val(1);
+				$("#ventaMax").val(1);
+				$("#tasaComision").val(0.01);
+				$("#habilitado").prop("checked",false);
+
+				$("#staticBackdropLabel").text("Crear Rango Comision");
+				$("#create_modal").modal("show");
+				$("#error").attr("hidden", "hidden");
+			});
+
+			$(".btn_edit").on("click", function () {
+				var id = $(this).data("id");
+				$("#error").attr("hidden", "hidden");
+				$("#staticBackdropLabel").text("Editar Rango Comision");
+				$("#create_modal").modal("show");
+
+				$.get('/rango-comision/edit/' + id, function (data) {
+					$("#id_rango").val(data.result.id );
+					$("#ventaMin").val(data.result.ventaMin);
+					$("#ventaMax").val(data.result.ventaMax);
+					$("#tasaComision").val(data.result.tasaComision);
+					if(data.result.habilitado){
+						$("#habilitado").prop("checked",true);
+					}
+				});
+			});
+
+			$("#btn_registrar").on("click", function () {
+
+				$.ajax({
+					type: "POST",
+					url: "/rango-comision/store",
+					data: $("#create_form").serialize(),
+					success: function (data) {
+						$("#error").attr("hidden", "hidden");
+						$("#create_modal").modal("hide");
+						toastr.success(data);
+						setTimeout(function () {
+							location.reload();
+						}, 2000);
+					},
+					error: function (data) {
+						console.log(data.responseText);
+						$("#error").removeAttr("hidden");
+						$("#error").text(data.responseText);
+					}
+				});
+			});
+
 		  
 		</script>
 		

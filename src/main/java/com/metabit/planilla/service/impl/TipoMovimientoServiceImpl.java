@@ -47,4 +47,17 @@ public class TipoMovimientoServiceImpl implements TipoMovimientoService {
 		tipoMovimientoJpaRepository.deleteById(id);
 	}
 
+	@Override
+	public List<TipoMovimiento> getTipoMovimientosFijos(boolean esFijo) {
+		// TODO Auto-generated method stub
+		return tipoMovimientoJpaRepository.findByEsFijo(esFijo);
+	}
+
+	@Override
+	public List<TipoMovimiento> getByEsDescuento(boolean esDescuento) {
+		return tipoMovimientoJpaRepository.getByEsDescuento(esDescuento);
+	}
+	
+	
+
 }
