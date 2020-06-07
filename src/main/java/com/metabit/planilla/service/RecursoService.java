@@ -9,4 +9,5 @@ public interface RecursoService {
     public abstract Recurso storeRecurso(Recurso recurso);
     public abstract Recurso updateRecurso(Recurso recurso);
     public abstract void deleteRecurso(int idRecurso);
+    public abstract List<Recurso> getRolRecursos(Integer idRol);
 }

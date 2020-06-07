@@ -10,25 +10,22 @@
     <link rel="stylesheet" th:href="@{/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css}">
     <link rel="stylesheet" th:href="@{/plugins/toastr/toastr.min.css}">
 
-    <title>Sistema Planilla | Roles</title>
+    <title>Sistema Planilla | Recursos de Rol</title>
 
 </head>
 <body>
-<h1 class="m-0 text-dark" layout:fragment="titulo_seccion">Roles</h1>
+<h1 class="m-0 text-dark" layout:fragment="titulo_seccion">Recursos de rol: <b><span class="text-lowercase" th:text="${rol.authority}"></span></b></h1>
 <ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
     <li class="breadcrumb-item">
         <a href="#" th:href="@{/index}">Home</a>
     </li>
-    <li class="breadcrumb-item active">Roles</li>
+    <li class="breadcrumb-item active">
+        <a href="#" th:href="@{/rol/index}">Roles</a>
+    </li>
+    <li class="breadcrumb-item active">Recursos del Rol</li>
 </ol>
 
 <div layout:fragment="content">
-
-    <input type="hidden" id="store" th:value="${store_success}">
-    <input type="hidden" id="update" th:value="${update_success}">
-    <input type="hidden" id="delete" th:value="${delete_success}">
-    <input type="hidden" id="enable" th:value="${enable_success}">
-    <input type="hidden" id="disable" th:value="${disable_success}">
 
     <div class="row ml-3 mr-3">
         <span class="col-md-2"></span><!-- Para centrar DataTable -->
@@ -38,11 +35,11 @@
                 <div class="card-header text-right">
                     <a class="btn btn-primary btn-sm"
                        href="#"
-                       id="rolBtnNuevo"
+                       id="rolRecursoAgregarBtn"
                        data-toggle="modal"
-                       data-target="#rolModal">
+                       data-target="#rolRecursoModal">
                         <i class="fas fa-plus-circle mr-1 text-white"></i>
-                        <span class="text-white">Nuevo Rol</span>
+                        <span class="text-white">Agregar Recurso al Rol</span>
                     </a>
                 </div>
 
@@ -58,48 +55,29 @@
 
                         <tbody>
 
-                        <tr th:each="rol: ${roles}">
+                        <tr th:each="recursoRol: ${recursosRol}">
 
-                            <td><span th:text="${rol.authority}"></span></td>
+                            <td><span th:text="${recursoRol.recurso}"></span></td>
 
                             <td class="text-center">
-                                <a class="btn btn-info btn-sm rolBtnVer"
+
+                                <a class="btn btn-primary btn-sm rolPrivilegiosBtn"
                                    href="#"
-                                   title="Ver Rol"
-                                   data-toggle="modal"
-                                   data-target="#rolModal"
-                                   th:attr="
-                                   data-rol=${rol.authority}">
-                                    <i class="fas fa-eye"></i>
-                                </a>&nbsp;&nbsp;
-                                <a class="btn btn-primary btn-sm rolBtnEditar"
-                                   href="#"
-                                   title="Editar Rol">
+                                   title="Ver privilegios del recurso">
                                     <i class="fas fa-pen"></i>
-                                </a>&nbsp;&nbsp;
-                                <a class="btn btn-outline-primary btn-sm rolBtnRecursos"
-                                   href="#"
-                                   th:href="@{/rol-recurso-privilegio/index/{id}(id=${rol.idRol})}"
-                                   title="Gestionar Recursos del Rol">
-                                    <i class="fas fa-cubes"></i>
                                 </a>&nbsp;&nbsp;
                                 <a class="btn btn-danger btn-sm"
                                    href="#"
-                                   title="Eliminar Rol"
-                                   data-toggle="modal"
-                                   data-target="#rolModalDestroy"
-                                   th:attr="
-                                       data-id-rol=${rol.idRol},
-                                       data-rol=${rol.authority}">
+                                   title="Desasignar recursol al rol">
                                     <i class="fas fa-trash"></i>
                                 </a>
                             </td>
 
                         </tr>
 
-                        <tr th:if="${#lists.isEmpty(roles)}">
+                        <tr th:if="${#lists.isEmpty(recursosRol)}">
                             <td colspan="6">
-                                A&uacute;n no se registran roles en el sistema
+                                A&uacute;n no se asignan recursos a este rol
                             </td>
                         </tr>
 
@@ -120,12 +98,12 @@
         <span class="col-md-2"></span><!-- Para centrar DataTable -->
     </div>
 
-    <div th:insert="rol/rol-modal :: rol_modal"></div>
-    <div th:insert="rol/delete-modal :: delete_modal"></div>
+    <div th:insert="rol-recurso-privilegio/rol-recurso-privilegio-modal :: rol_recurso_modal"></div>
 
 </div>
 
 <section layout:fragment="scripts">
+
     <script th:src="@{/plugins/datatables/jquery.dataTables.min.js}"></script>
     <script th:src="@{/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
     <script th:src="@{/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
@@ -135,7 +113,8 @@
     <script th:src="@{/plugins/sweetalert2/sweetalert2.min.js}"></script>
 
     <script th:src="@{/js/datatable/datatable.js}"></script>
-    <script th:src="@{/js/rol/rol.js}"></script>
+    <script th:src="@{/js/rol-recurso-privilegio/rol-recurso-privilegio.js}"></script>
+
 </section>
 
 </body>

@@ -40,4 +40,9 @@ public class RecursoServiceImpl implements RecursoService {
     public void deleteRecurso(int idRecurso) {
         recursoJpaRepository.deleteById(idRecurso);
     }
+
+    @Override
+    public List<Recurso> getRolRecursos(Integer idRol) {
+        return recursoJpaRepository.getRolRecursos(idRol);
+    }
 }

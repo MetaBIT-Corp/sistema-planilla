@@ -58,4 +58,5 @@ public class RolRecursoPrivilegioServiceImpl implements RolRecursoPrivilegioServ
     public List<RolRecursoPrivilegio> findByPrivilegio(Privilegio privilegio) {
         return rolRecursoPrivilegioJpaRepository.findByPrivilegio(privilegio);
     }
+
 }
