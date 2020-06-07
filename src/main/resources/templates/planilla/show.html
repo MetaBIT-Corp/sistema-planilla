@@ -31,6 +31,8 @@
 			<input type="hidden" id="asignacionDescuentos" th:if="${asignacionDescuentos != null}" value="true">
 			<input type="hidden" id="deleteIngresos" th:if="${deleteIngresos != null}" value="true">
 			<input type="hidden" id="deleteDescuentos" th:if="${deleteDescuentos != null}" value="true">
+			<input type="hidden" id="updateMontoVentas" th:if="${updateMontoVentas != null}" value="true">
+			<input type="hidden" id="updateHorasExtras" th:if="${updateHorasExtras != null}" value="true">
 			
 		    <!-- general form elements -->
 		    <div class="offset-1 col-md-10">
@@ -69,7 +71,92 @@
                      aria-labelledby="generales-tab">
                     <div class="container">
                         <div class="card-body">
-                           Something here - Planilla <span th:text="${planilla}"></span>
+                           	  <div class="form-row">
+	                           	  <div class="col-md-6 mb-3">
+								    <label>Nombre:</label><br/>
+								    <span th:text="${planilla.empleado.nombrePrimero}"></span>
+								  </div>
+								  <div class="col-md-6 mb-3">
+								    <label>Apellidos:</label><br/>
+								    <span th:text="${planilla.empleado.apellidoMaterno}"></span>
+								  </div>
+							  </div>
+							  <div class="form-row">
+							  	<div class="col-md-6 mb-3">
+								    <label>Fecha Emisión:</label><br>
+								    <span th:if="${planilla.fechaEmision}" th:text="${planilla.fechaEmision}"></span>
+								    <span th:if="${planilla.fechaEmision == null}">No Emitida</span>
+								  </div>
+							  	<div class="col-md-6 mb-3">
+								    <label>Salario Neto:</label><br>
+								    <span th:text="'$' + ${#numbers.formatDecimal(planilla.salarioNeto, 1, 'COMMA', 2, 'POINT')}"></span>
+								  </div>
+							  </div>
+							  <div class="form-row">
+							  	<div class="col-md-6 mb-3">
+								    <label>Total de Ingresos:</label><br>
+								    <span th:text="'$' + ${#numbers.formatDecimal(planilla.totalIngresos, 1, 'COMMA', 2, 'POINT')}"></span>
+								  </div>
+								  <div class="col-md-6 mb-3">
+								    <label>Total de Descuentos:</label><br>
+								    <span th:text="'$' + ${#numbers.formatDecimal(planilla.totalDescuentos, 1, 'COMMA', 2, 'POINT')}"></span>
+								  </div>
+							  </div>
+							  <div class="form-row" th:if="${planilla.empleado.esAdministrativo == false}">
+							  	 <div class="col-md-6 mb-3">
+								    <label>
+								    	Monto de Ventas:
+								    	<button class="btn btn-sm btn-light" style="text-decoration: none; color: black; border-radius: 50%;"
+												title="Editar Monto de Ventas" onclick="activateModalEditMontoVentas(this);"
+												th:attr="data-idPlanilla=${planilla.idPlanilla}, data-montoVentas=${planilla.montoVentas}">
+												
+											<span><i class="fas fa-pencil-alt"></i></span>
+											
+										</button>
+								    </label><br>
+								    <span th:text="'$' + ${#numbers.formatDecimal(planilla.montoVentas, 1, 'COMMA', 2, 'POINT')}"></span>
+								  </div>
+								  <div class="col-md-6 mb-3">
+								    <label>Monto por Comisión:</label><br>
+								    <span th:text="'$' + ${#numbers.formatDecimal(planilla.montoComision, 1, 'COMMA', 2, 'POINT')}"></span>
+								  </div>
+							  </div>
+							  <div class="form-row">
+							  	 <div class="col-md-6 mb-3">
+								    <label>
+								    	Horas Extras:
+								    	<button class="btn btn-sm btn-light" style="text-decoration: none; color: black; border-radius: 50%;"
+												title="Editar Monto de Ventas" onclick="activateModalEditHorasExtras(this);"
+												th:attr="data-idPlanilla=${planilla.idPlanilla}, data-horasExtrasDiurnas=${planilla.horasExtraDiurnas}, 
+												data-horasExtrasNocturnas=${planilla.horasExtraNocturnas}">
+												
+											<span><i class="fas fa-pencil-alt"></i></span>
+											
+										</button>
+								    </label>
+								    <br>
+								    <div class="row">
+								    	<div class="col-md-3">
+								    		<span class="badge badge-secondary">Diurnas:</span>
+								    	</div>
+								    	<div class="col-md-3">
+								    		<span th:text="${planilla.horasExtraDiurnas + ' hrs'}"></span>
+								    	</div>
+								    </div><br>
+								    <div class="row">
+								    	<div class="col-md-3">
+								    		<span class="badge badge-secondary">Nocturnas:</span>
+								    	</div>
+								    	<div class="col-md-3">
+								    		<span th:text="${planilla.horasExtraNocturnas} + ' hrs'"></span>
+								    	</div>
+								  	</div>
+								  </div>
+								  <div class="col-md-6 mb-3">
+								    <label>Monto por Horas Extras:</label><br>
+								    <span th:text="'$' + ${#numbers.formatDecimal(planilla.montoHorasExtra, 1, 'COMMA', 2, 'POINT')}"></span>
+								  </div>
+							  </div>
                          </div>
                       </div>
                 </div>
@@ -231,7 +318,7 @@
 		        </button>
 		      </div>
 		      <form method="post" action="#" th:action="@{/planilla/agregar-movimientos}">
-		      	  <input type="hidden" id="inputIngresosPlanilla" name="id_planilla" th:value="${planilla}">
+		      	  <input type="hidden" id="inputIngresosPlanilla" name="id_planilla" th:value="${planilla.idPlanilla}">
 		      	  <div class="card">
                   	<div class="card-body">
 				      <table id="example3" class="table table-hover" width="100%" style="table-layout:fixed;">
@@ -288,7 +375,7 @@
 		        </button>
 		      </div>
 		      <form method="post" action="#" th:action="@{/planilla/agregar-movimientos}">
-		     	  <input type="hidden" id="inputDescuentosPlanilla" name="id_planilla" th:value="${planilla}">
+		     	  <input type="hidden" id="inputDescuentosPlanilla" name="id_planilla" th:value="${planilla.idPlanilla}">
 		     	  <div class="card">
                   	<div class="card-body">
 				      <table id="example4" class="table table-hover">
@@ -358,6 +445,68 @@
 	    </div>
 	  </div>
 	</div>	
+	
+	<!-- Modal para Editar Monto de Ventas -->
+		<div class="modal" id="montoVentasModalEdit" tabindex="-1" role="dialog">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title">Editar Monto de Ventas</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <form method="post" action="#" th:action="@{/planilla/update-montoVentas}">
+		      	  <input type="hidden" class="form-control" id="idPlanillaInputEditMV" name="idPlanilla" value="">
+			      <div class="modal-body">
+			        <div class="form-group">
+					    <label for="generoInput">Monto de Ventas: *</label>
+					    <input type="number" class="form-control" id="montoVentasInputEdit"  name="montoVentas" value="" required="required"
+					    min="0" step="0.01">
+					  </div>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="submit" class="btn btn-primary">Actualizar</button>
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+			      </div>
+		      </form>
+		    </div>
+		  </div>
+		</div>
+		
+		<!-- Modal para Editar Horas Extras -->
+		<div class="modal" id="horasExtrasModalEdit" tabindex="-1" role="dialog">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title">Editar Horas Extras</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <form method="post" action="#" th:action="@{/planilla/update-horasExtras}">
+		      	  <input type="hidden" class="form-control" id="idPlanillaInputEditHS" name="idPlanilla" value="">
+			      <div class="modal-body">
+			        <div class="form-group">
+					    <label for="generoInput">Horas Extras Diurnas: *</label>
+					    <input type="number" class="form-control" id="horasExtrasDiurnasInputEdit"  name="horasExtrasDiurnas" value="" required="required"
+					    min="0" step="1">
+					  </div>
+					  <div class="form-group">
+					    <label for="generoInput">Horas Extras Nocturnas: *</label>
+					    <input type="number" class="form-control" id="horasExtrasNocturnasInputEdit"  name="horasExtrasNocturnas" value="" required="required"
+					    min="0" step="1">
+					  </div>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="submit" class="btn btn-primary">Actualizar</button>
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+			      </div>
+		      </form>
+		    </div>
+		  </div>
+		</div>
+		
 </div>	
 		
 	<section layout:fragment="scripts">
@@ -373,6 +522,32 @@
 		<script th:src="@{/plugins/sweetalert2/sweetalert2.min.js}"></script>
 		
 		<script type="text/javascript">
+		
+			function activateModalEditMontoVentas(param){
+				  
+				  var id_planilla = $(param).attr("data-idPlanilla");
+				  var monto_ventas = $(param).attr("data-montoVentas");
+				  
+				  $("#idPlanillaInputEditMV").val(id_planilla);
+				  
+				  $("#montoVentasInputEdit").val(monto_ventas);
+				  
+				  $("#montoVentasModalEdit").modal();
+			  }
+			
+			function activateModalEditHorasExtras(param){
+			
+				var id_planilla = $(param).attr("data-idPlanilla");
+				var horas_extras_diurnas = $(param).attr("data-horasExtrasDiurnas");
+				var horas_extras_nocturnas = $(param).attr("data-horasExtrasNocturnas");
+				  
+				$("#idPlanillaInputEditHS").val(id_planilla);
+				$("#horasExtrasDiurnasInputEdit").val(horas_extras_diurnas);
+				$("#horasExtrasNocturnasInputEdit").val(horas_extras_nocturnas);
+				  
+				$("#horasExtrasModalEdit").modal();
+			
+			}
 		
 			function activateModalDestroy(param){
 			  
@@ -396,6 +571,9 @@
 				  var asignacionDescuentos = $('#asignacionDescuentos').val();
 				  var deleteIngresos = $('#deleteIngresos').val();
 				  var deleteDescuentos = $('#deleteDescuentos').val();
+				  
+				  var updateHorasExtras = $('#updateHorasExtras').val();
+				  var updateMontoVentas = $('#updateMontoVentas').val();
 				 
 				  setTimeout(function() {
 				    $(".alert").fadeOut();           
@@ -414,6 +592,13 @@
 				  
 				  if(deleteDescuentos === 'true'){
 					 toastr.error("Descuento Eliminado con Éxito!"); 
+				  }
+				  if(updateHorasExtras === 'true'){
+					 toastr.success("Horas Extras actualizadas con Éxito!"); 
+				  }
+				  
+				  if(updateMontoVentas === 'true'){
+					 toastr.success("Monto de Ventas actualizado con Éxito!"); 
 				  }
 			
 			    $('#example1').DataTable({

@@ -48,7 +48,7 @@
 	                  </td>
 	                  <td><span th:text="${planilla.empleado.apellidoMaterno}"></span></td>
 	                  <td><span th:text="${planilla.empleado.horasTrabajo}"></span></td>
-	                  <td><span th:text="${planilla.salarioNeto}"></span></td>
+	                  <td><span th:text="'$' + ${#numbers.formatDecimal(planilla.salarioNeto, 0, 'COMMA', 2, 'POINT')}"></span></td>
 	                  <td>
 	                  	<span th:if="${planilla.empleado.esAdministrativo}">Administrativo</span>
 	                  	<span th:if="${planilla.empleado.esAdministrativo == false}">Vendedor</span>

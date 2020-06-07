@@ -58,6 +58,15 @@ public class PlanillaController {
 		Periodo periodo_activo = periodoService.getPeriodoActivo();
 		List<Planilla> planillas = planillaService.getPlanillasByPeriodo(periodo_activo);
 		
+		float salarioNeto = 0;
+		
+		for (Planilla planilla : planillas) {
+			
+			planilla.setSalarioNeto(calcularSalarioNeto(planilla));
+			
+			planillaService.updatePlanilla(planilla);
+		}
+		
 		model.addAttribute("planillas", planillas);
 		
 		return INDEX_VIEW;
@@ -98,7 +107,7 @@ public class PlanillaController {
 			
 			model.addAttribute("descuentosPendientes", descuentosPendientes);
 			model.addAttribute("ingresosPendientes", ingresosPendientes);
-			model.addAttribute("planilla", id_planilla);
+			model.addAttribute("planilla", planilla.get());
 			model.addAttribute("asignacionIngresos", asignacionIngresos);
 			model.addAttribute("asignacionDescuentos", asignacionDescuentos);
 			model.addAttribute("deleteIngresos", deleteIngresos);
@@ -146,6 +155,9 @@ public class PlanillaController {
 		
 		Planilla planilla = planillaService.getPlanillaById(id_planilla).isPresent()? planillaService.getPlanillaById(id_planilla).get() : null;
 		
+		//Periodicidad Mensual o Quincenal
+		boolean periodicidad_mensual = planilla.getPeriodo().getAnioLaboral().getPeriodicidad() == 30 ? true : false;
+		
 		for (String idMovimiento : idMovimientos) {
 			
 			float montoMovimiento = 0;
@@ -161,8 +173,21 @@ public class PlanillaController {
 			if(movimiento.getMontoBase() > 0)
 				montoMovimiento = (float) movimiento.getMontoBase();
 			else //Posiblemente aqui se debe validar si el periodo es Mensual o Quincenal, con base a eso, el salario base del empleado debe cambiar (a la mitad si es quincenal)
-				montoMovimiento = (float) (planilla.getEmpleado().getSalarioBaseMensual() * (movimiento.getPorcentajeMovimiento()/100));
+				if(periodicidad_mensual)
+					montoMovimiento = (float) (planilla.getEmpleado().getSalarioBaseMensual() * (movimiento.getPorcentajeMovimiento()/100));
+				else
+					montoMovimiento = (float) ((planilla.getEmpleado().getSalarioBaseMensual()/2) * (movimiento.getPorcentajeMovimiento()/100));
+					
 			
+			//Cada vez que se asigne un TipoMovimiento, se actualizara el total de Descuentos e Ingresos
+			if(tipo.equals("Descuentos"))
+				planilla.setTotalDescuentos(planilla.getTotalDescuentos() + montoMovimiento);
+			else
+				planilla.setTotalIngresos(planilla.getTotalIngresos() + montoMovimiento);
+			
+			planilla.setSalarioNeto(calcularSalarioNeto(planilla));
+			planillaService.updatePlanilla(planilla);
+				
 			PlanillaMovimiento planillaMovimiento = new PlanillaMovimiento();
 			planillaMovimiento.setPlanilla(planilla);
 			planillaMovimiento.setTipoMovimiento(movimiento);
@@ -176,6 +201,19 @@ public class PlanillaController {
 		return "redirect:/planilla/show?planilla=" + planilla.getIdPlanilla() + "&asignacion" + tipo + "=true";
 	}
 	
+	private float calcularSalarioNeto(Planilla planilla) {
+		
+		float salarioNeto = 0;
+		
+		//Si la periodicidad es Quincenal, solo se considerara la mitad del Salaria Base de los empleados para los calculos
+		if(planilla.getPeriodo().getAnioLaboral().getPeriodicidad() == 15)
+			salarioNeto = ((float) planilla.getEmpleado().getSalarioBaseMensual()/2) + planilla.getTotalIngresos() - planilla.getTotalDescuentos();
+		else
+			salarioNeto = ((float) planilla.getEmpleado().getSalarioBaseMensual()) + planilla.getTotalIngresos() - planilla.getTotalDescuentos();
+		
+		return salarioNeto;
+	}
+
 	@PostMapping("/destroy-planillaMovimiento")
 	public String destroyPlanillaMovimiento(@RequestParam(name = "idPlanillaMovimientoDestroy", required = true) int id_planilla_movimiento) {
 		
@@ -193,11 +231,48 @@ public class PlanillaController {
 			else
 				tipo = "Ingresos";
 			
+			if(tipo.equals("Descuentos"))
+				planilla.setTotalDescuentos(planilla.getTotalDescuentos() - planilla_movimiento.getMontoMovimiento());
+			else
+				planilla.setTotalIngresos(planilla.getTotalIngresos() - planilla_movimiento.getMontoMovimiento());
+				
 			planillaMovimientosService.deletePlanillaMovimientosById(planilla_movimiento.getIdPlaillaMovimiento());
 			
 		}
 		
 		return "redirect:/planilla/show?planilla=" + planilla.getIdPlanilla() + "&delete" + tipo + "=true";
+	}
+	
+	@PostMapping("/update-montoVentas")
+	public String updateMontoVentas(@RequestParam(name = "idPlanilla", required = true) int id_planilla,
+			@RequestParam(name = "montoVentas", required = true) float monto_ventas) {
+		
+		Optional<Planilla> planilla = planillaService.getPlanillaById(id_planilla);
+		
+		if(planilla.isPresent()) {
+			planilla.get().setMontoVentas(monto_ventas);
+			planillaService.updatePlanilla(planilla.get());
+		}
+		
+		
+		return "redirect:/planilla/show?planilla=" + planilla.get().getIdPlanilla() + "&updateMontoVentas=true";
+	}
+	
+	@PostMapping("/update-horasExtras")
+	public String updateHorasExtras(@RequestParam(name = "idPlanilla", required = true) int id_planilla,
+			@RequestParam(name = "horasExtrasDiurnas", required = true) int horas_extras_diurnas,
+			@RequestParam(name = "horasExtrasNocturnas", required = true) int horas_extras_nocturnas) {
+		
+		Optional<Planilla> planilla = planillaService.getPlanillaById(id_planilla);
+		
+		if(planilla.isPresent()) {
+			planilla.get().setHorasExtraDiurnas(horas_extras_diurnas);
+			planilla.get().setHorasExtraNocturnas(horas_extras_nocturnas);
+			planillaService.updatePlanilla(planilla.get());
+		}
+		
+		
+		return "redirect:/planilla/show?planilla=" + planilla.get().getIdPlanilla() + "&updateHorasExtras=true";
 	}
 
 	@PostMapping("/store")
