@@ -210,3 +210,36 @@ BEGIN
 
 END;
 ;;
+
+/*--------- Trigger para Calcular el Monto Comisión ---------*/
+CREATE OR REPLACE TRIGGER calcularmontocomision BEFORE 
+	UPDATE OF monto_ventas ON planillas
+	FOR EACH ROW
+
+DECLARE
+
+CURSOR cur_rangos_comision IS
+	SELECT venta_min, venta_max, tasa_comision
+	FROM rangos_comision
+	WHERE rango_comision_habilitado = 1;
+
+v_monto_ventas planillas.monto_ventas%TYPE := :new.monto_ventas;
+v_monto_comision planillas.monto_comision%TYPE DEFAULT 0;
+
+BEGIN
+
+FOR rec_rango_comision IN cur_rangos_comision
+LOOP
+	IF v_monto_ventas BETWEEN rec_rango_comision.venta_min AND rec_rango_comision.venta_max THEN
+
+		v_monto_comision := v_monto_ventas * rec_rango_comision.tasa_comision; 
+		:new.monto_comision := v_monto_comision;
+
+	END IF;
+
+	EXIT WHEN v_monto_comision > 0;
+
+END LOOP;
+
+END;
+;;

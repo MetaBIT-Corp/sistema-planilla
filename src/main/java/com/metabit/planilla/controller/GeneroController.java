@@ -32,7 +32,9 @@ public class GeneroController {
 	public String index(Model model, @RequestParam(name="store_success", required=false) String store_success, 
 			@RequestParam(name="update_success", required=false) String update_success,
 			@RequestParam(name="delete_success", required=false) String delete_success,
-			@RequestParam(name="delete_restricted", required=false) String delete_restricted) {
+			@RequestParam(name="delete_restricted", required=false) String delete_restricted,
+			@RequestParam(name="update_restricted", required=false) String update_restricted,
+			@RequestParam(name="store_restricted", required=false) String store_restricted) {
 		
 		//Recibiendo el posible param de Exito en actualizacion
 		model.addAttribute("update_success", update_success);
@@ -45,6 +47,12 @@ public class GeneroController {
 		
 		//Recibiendo el posible param de Restriccion en la eliminacion
 		model.addAttribute("delete_restricted", delete_restricted);
+		
+		//Recibiendo el posible param de Restriccion en la update
+		model.addAttribute("update_restricted", update_restricted);
+		
+		//Recibiendo el posible param de Restriccion en la creación
+		model.addAttribute("store_restricted", store_restricted);
 		
 		//Mandando el objeto de Genero, el cual se utilizara en caso de insertar uno nuevo con el formulario respectivo
 		model.addAttribute("generoEntity", new Genero());

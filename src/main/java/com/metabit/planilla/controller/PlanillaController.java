@@ -77,7 +77,9 @@ public class PlanillaController {
 			@RequestParam(name = "asignacionIngresos", required = false) String asignacionIngresos,
 			@RequestParam(name = "asignacionDescuentos", required = false) String asignacionDescuentos,
 			@RequestParam(name = "deleteIngresos", required = false) String deleteIngresos,
-			@RequestParam(name = "deleteDescuentos", required = false) String deleteDescuentos) {
+			@RequestParam(name = "deleteDescuentos", required = false) String deleteDescuentos,
+			@RequestParam(name = "updateMontoVentas", required = false) String updateMontoVentas,
+			@RequestParam(name = "updateHorasExtras", required = false) String updateHorasExtras) {
 		
 		Optional<Planilla> planilla = planillaService.getPlanillaById(id_planilla);
 		
@@ -107,11 +109,19 @@ public class PlanillaController {
 			
 			model.addAttribute("descuentosPendientes", descuentosPendientes);
 			model.addAttribute("ingresosPendientes", ingresosPendientes);
-			model.addAttribute("planilla", planilla.get());
 			model.addAttribute("asignacionIngresos", asignacionIngresos);
 			model.addAttribute("asignacionDescuentos", asignacionDescuentos);
 			model.addAttribute("deleteIngresos", deleteIngresos);
 			model.addAttribute("deleteDescuentos", deleteDescuentos);
+			model.addAttribute("updateMontoVentas", updateMontoVentas);
+			model.addAttribute("updateHorasExtras", updateHorasExtras);
+			
+			if(updateMontoVentas != null || updateHorasExtras != null || deleteIngresos != null || deleteDescuentos != null) {
+				planilla.get().setSalarioNeto(calcularSalarioNeto(planilla.get()));
+				planillaService.updatePlanilla(planilla.get());
+			}
+			
+			model.addAttribute("planilla", planilla.get());
 			
 		}
 		
@@ -207,9 +217,9 @@ public class PlanillaController {
 		
 		//Si la periodicidad es Quincenal, solo se considerara la mitad del Salaria Base de los empleados para los calculos
 		if(planilla.getPeriodo().getAnioLaboral().getPeriodicidad() == 15)
-			salarioNeto = ((float) planilla.getEmpleado().getSalarioBaseMensual()/2) + planilla.getTotalIngresos() - planilla.getTotalDescuentos();
+			salarioNeto = ((float) planilla.getEmpleado().getSalarioBaseMensual()/2) + planilla.getTotalIngresos() - planilla.getTotalDescuentos() + planilla.getMontoComision() + planilla.getMontoHorasExtra() - planilla.getRenta();
 		else
-			salarioNeto = ((float) planilla.getEmpleado().getSalarioBaseMensual()) + planilla.getTotalIngresos() - planilla.getTotalDescuentos();
+			salarioNeto = ((float) planilla.getEmpleado().getSalarioBaseMensual()) + planilla.getTotalIngresos() - planilla.getTotalDescuentos() + planilla.getMontoComision() + planilla.getMontoHorasExtra() - planilla.getRenta();
 		
 		return salarioNeto;
 	}
