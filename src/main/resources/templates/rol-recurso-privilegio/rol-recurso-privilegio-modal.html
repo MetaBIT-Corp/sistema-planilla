@@ -29,7 +29,7 @@
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h5 class="modal-title" id="rolRecursoPrivilegiosModalTitle">Privilegios del Recurso Asignado al rol</h5>
+                    <h5 class="modal-title" id="rolRecursoPrivilegiosModalTitle">Privilegios del Rol sobre el Recurso</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -38,35 +38,31 @@
                 <div class="modal-body">
                     <div class="card">
 
-                        <div class="card-header text-right">
-                            <a class="btn btn-primary btn-sm"
-                               href="#">
-                                <i class="fas fa-plus-circle mr-1 text-white"></i>
-                                <span class="text-white">Asignar Privilegio a Recurso del Rol</span>
-                            </a>
+                        <div class="card-header row mx-0">
+                            <div class="col-md-6">
+                                <span class="align-middle"><b>Privilegios asignados</b></span>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <a class="btn btn-primary btn-sm"
+                                   href="#">
+                                    <i class="fas fa-plus-circle mr-1 text-white"></i>
+                                    <span class="text-white">Asignar Privilegio</span>
+                                </a>
+                            </div>
                         </div>
 
                         <div class="card-body">
 
-                            <table id="example1" class="table table-bordered text-center">
+                            <table id="table-privilegios" class="table table-borderless text-center">
 
-                                <thead>
+                                <thead class="border-bottom">
                                     <tr>
                                         <th>Nombre</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
 
-                                <tbody id="tbody-privilegios">
-
-                                </tbody>
-
-                                <tfoot>
-                                    <tr>
-                                        <th>Nombre</th>
-                                        <th>Acciones</th>
-                                    </tr>
-                                </tfoot>
+                                <tbody id="tbody-privilegios"></tbody>
 
                             </table>
                         </div>
