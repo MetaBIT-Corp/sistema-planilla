@@ -12,7 +12,7 @@
   <link rel="stylesheet" th:href="@{/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css}">
   <!-- Toastr -->
   <link rel="stylesheet" th:href="@{/plugins/toastr/toastr.min.css}">
-  
+    
 </head>
 
 <body>
@@ -172,7 +172,7 @@
 									<span class="text-white">Agregar Ingreso</span>
 								</button>
 				            </div>
-                        <div class="card-body">
+                        <div th:if="${#lists.isEmpty(ingresos) == false}"  class="card-body">
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
 	                                <tr>
@@ -213,7 +213,7 @@
                                 </tr>
                                 <tr th:if="${#lists.isEmpty(ingresos)}">
                                     <td colspan="5">
-                                    Esta Planilla aún no tiene asociado ningún Ingreso.
+                                    	Esta Planilla aún no tiene asociado ningún Ingreso.
                                     </td>
                                 </tr>
                                 </tbody>
@@ -229,6 +229,12 @@
                                 </tfoot>
                             </table>
                         </div>
+	                        <div th:if="${#lists.isEmpty(ingresos)}" id="divError" class="callout callout-danger">
+	                          <p class="my-0"><i class="fas fa-exclamation-circle mr-2"></i><strong>Mensaje de Información:</strong></p>
+	                          <ul id="ulError" class="mb-0">
+	                          	<li>Esta Planilla aún no tiene asociado ningún Ingreso.</li>
+	                          </ul>
+	                      </div>
                        </div> 
                     </div>
                 </div>
@@ -243,7 +249,7 @@
 									<span class="text-white">Agregar Descuento</span>
 								</button>
 				            </div>
-                        	<div class="card-body">
+                        	<div th:if="${#lists.isEmpty(descuentos) == false}" class="card-body">
                                 <table id="example2" class="table table-bordered table-striped">
                                 <thead>
 	                                <tr>
@@ -283,12 +289,11 @@
                                     </td>
                                 </tr>
                                 <tr th:if="${#lists.isEmpty(descuentos)}">
-                                    <td colspan="6">
+                                    <td colspan="5">
                                     	Esta Planilla aún no tiene asociado ningún Descuento.
                                     </td>
                                 </tr>
                                 </tbody>
-
                                 <tfoot>
                                 <tr>
                                     <th>Descuento</th>
@@ -300,6 +305,12 @@
                                 </tfoot>
                             </table>
                         </div>
+                        <div th:if="${#lists.isEmpty(descuentos)}" id="divError" class="callout callout-danger">
+	                          <p class="my-0"><i class="fas fa-exclamation-circle mr-2"></i><strong>Mensaje de Información:</strong></p>
+	                          <ul id="ulError" class="mb-0">
+	                          	<li>Esta Planilla aún no tiene asociado ningún Descuento.</li>
+	                          </ul>
+	                      </div>
                        </div> 
                     </div>
                 </div>
@@ -317,49 +328,53 @@
 		          <span aria-hidden="true">&times;</span>
 		        </button>
 		      </div>
-		      <form method="post" action="#" th:action="@{/planilla/agregar-movimientos}">
-		      	  <input type="hidden" id="inputIngresosPlanilla" name="id_planilla" th:value="${planilla.idPlanilla}">
-		      	  <div class="card">
-                  	<div class="card-body">
-				      <table id="example3" class="table table-hover" width="100%" style="table-layout:fixed;">
-	                      <thead>
-		                      <tr>
-		                          <th>Ingreso</th>
-		                          <th>Porcentaje/Base</th>
-		                          <th>Seleccionar</th>
-		                      </tr>
-	                      </thead>
-	                      <tbody>
-	                      <tr th:each="ingreso: ${ingresosPendientes}">
-	                          <td>
-	                          	<span th:text="${ingreso.movimiento}"></span>
-	                          </td>
-	                          <td>
-	                          	<span th:if="${ingreso.porcentajeMovimiento}" th:text="${ingreso.porcentajeMovimiento + '%'}"></span>
-	                          	<span th:if="${ingreso.montoBase}" th:text="'$' + ${#numbers.formatDecimal(ingreso.montoBase, 0, 'COMMA', 2, 'POINT')}"></span>
-	                          </td>
-	                          <td>
-	                          	<div class="form-check">
-								  <input class="form-check-input" type="checkbox" th:value="${ingreso.idMovimiento}" name="movimientos_seleccionados">
-								</div>
-	                          </td>
-	                      </tr>
-	                      <tr th:if="${#lists.isEmpty(ingresosPendientes)}">
-	                          <td colspan="3">
-	                          	Ya no hay Ingresos Pendientes.
-	                          </td>
-	                      </tr>
-	                      </tbody>
-	                      <tfoot>
-	                      </tfoot>
-	                  </table>
-	                 </div>
-	                </div>
-                  <div class="modal-footer">
-			        <button type="submit" class="btn btn-primary">Guardar</button>
-			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-			      </div>
-		      </form>
+		      <div class="modal-body">
+			      <form method="post" action="#" th:action="@{/planilla/agregar-movimientos}">
+			      	  <input type="hidden" id="inputIngresosPlanilla" name="id_planilla" th:value="${planilla.idPlanilla}">
+	                  	<div th:if="${#lists.isEmpty(ingresosPendientes) == false}" class="card-body">
+					      <table id="example3" class="table table-bordered table-striped">
+		                      <thead>
+			                      <tr>
+			                          <th>Ingreso</th>
+			                          <th>Porcentaje/Base</th>
+			                          <th>Seleccionar</th>
+			                      </tr>
+		                      </thead>
+		                      <tbody>
+			                      <tr th:each="ingreso: ${ingresosPendientes}">
+			                          <td>
+			                          	<span th:text="${ingreso.movimiento}"></span>
+			                          </td>
+			                          <td>
+			                          	<span th:if="${ingreso.porcentajeMovimiento}" th:text="${ingreso.porcentajeMovimiento + '%'}"></span>
+			                          	<span th:if="${ingreso.montoBase}" th:text="'$' + ${#numbers.formatDecimal(ingreso.montoBase, 0, 'COMMA', 2, 'POINT')}"></span>
+			                          </td>
+			                          <td>
+			                          	<div class="form-check">
+										  <input class="form-check-input" type="checkbox" th:value="${ingreso.idMovimiento}" name="movimientos_seleccionados">
+										</div>
+			                          </td>
+			                      </tr>
+			                      <tr th:if="${#lists.isEmpty(ingresosPendientes)}">
+			                          <td colspan="3">
+			                          	Ya no hay Ingresos Pendientes.
+			                          </td>
+			                      </tr>
+		                      </tbody>
+		                  </table>
+		                </div>
+		                <div th:if="${#lists.isEmpty(ingresosPendientes)}" id="divError" class="callout callout-danger">
+	                          <p class="my-0"><i class="fas fa-exclamation-circle mr-2"></i><strong>Mensaje de Información:</strong></p>
+	                          <ul id="ulError" class="mb-0">
+	                          	<li>Ya no hay Ingresos Pendientes.</li>
+	                          </ul>
+	                      </div>
+	                  <div class="modal-footer">
+				        <button type="submit" class="btn btn-primary">Guardar</button>
+				        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+				      </div>
+			      </form>
+		      </div>
 		    </div>
 		  </div>
 		</div>
@@ -374,47 +389,53 @@
 		          <span aria-hidden="true">&times;</span>
 		        </button>
 		      </div>
-		      <form method="post" action="#" th:action="@{/planilla/agregar-movimientos}">
-		     	  <input type="hidden" id="inputDescuentosPlanilla" name="id_planilla" th:value="${planilla.idPlanilla}">
-		     	  <div class="card">
-                  	<div class="card-body">
-				      <table id="example4" class="table table-hover">
-	                      <thead>
-		                      <tr>
-		                          <th>Descuento</th>
-		                          <th>Porcentaje/Base</th>
-		                          <th>Seleccionar</th>
-		                      </tr>
-	                       </thead>
-	                      <tbody>
-	                      <tr th:each="descuento: ${descuentosPendientes}">
-	                          <td>
-	                          	<span th:text="${descuento.movimiento}"></span>
-	                          </td>
-	                          <td>
-	                          	<span th:if="${descuento.porcentajeMovimiento}" th:text="${descuento.porcentajeMovimiento + '%'}"></span>
-	                          	<span th:if="${descuento.montoBase}" th:text="'$' + ${#numbers.formatDecimal(descuento.montoBase, 0, 'COMMA', 2, 'POINT')}"></span>
-	                          </td>
-	                          <td>
-	                          	<div class="form-check">
-								  <input class="form-check-input" type="checkbox" th:value="${descuento.idMovimiento}" name="movimientos_seleccionados">
-								</div>
-	                          </td>
-	                      </tr>
-	                      <tr th:if="${#lists.isEmpty(descuentosPendientes)}">
-	                          <td colspan="3">
-	                          	Ya no hay Descuentos Pendientes.
-	                          </td>
-	                      </tr>
-	                      </tbody>
-	                  </table>
-	                 </div>
-	                </div>
-                  <div class="modal-footer">
-			        <button type="submit" class="btn btn-primary">Guardar</button>
-			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-			      </div>
-		      </form>
+		      <div th:if="${#lists.isEmpty(descuentosPendientes) == false}" class="modal-body">
+			      <form method="post" action="#" th:action="@{/planilla/agregar-movimientos}">
+			     	  <input type="hidden" id="inputDescuentosPlanilla" name="id_planilla" th:value="${planilla.idPlanilla}">
+	                  	<div class="card-body">
+					      <table id="example4" class="table table-bordered table-striped">
+		                      <thead>
+			                      <tr>
+			                          <th>Descuento</th>
+			                          <th>Porcentaje/Base</th>
+			                          <th>Seleccionar</th>
+			                      </tr>
+		                       </thead>
+		                      <tbody>
+			                      <tr th:each="descuento: ${descuentosPendientes}">
+			                          <td>
+			                          	<span th:text="${descuento.movimiento}"></span>
+			                          </td>
+			                          <td>
+			                          	<span th:if="${descuento.porcentajeMovimiento}" th:text="${descuento.porcentajeMovimiento + '%'}"></span>
+			                          	<span th:if="${descuento.montoBase}" th:text="'$' + ${#numbers.formatDecimal(descuento.montoBase, 0, 'COMMA', 2, 'POINT')}"></span>
+			                          </td>
+			                          <td>
+			                          	<div class="form-check">
+										  <input class="form-check-input" type="checkbox" th:value="${descuento.idMovimiento}" name="movimientos_seleccionados">
+										</div>
+			                          </td>
+			                      </tr>
+			                      <tr th:if="${#lists.isEmpty(descuentosPendientes)}">
+			                          <td colspan="3">
+			                          	Ya no hay Descuentos Pendientes.
+			                          </td>
+			                      </tr>
+		                      </tbody>
+		                  </table>
+		                </div>
+	                  <div class="modal-footer">
+				        <button type="submit" class="btn btn-primary">Guardar</button>
+				        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+				      </div>
+			      </form>
+		      </div>
+		      <div th:if="${#lists.isEmpty(descuentosPendientes)}" id="divError" class="callout callout-danger">
+                  <p class="my-0"><i class="fas fa-exclamation-circle mr-2"></i><strong>Mensaje de Información:</strong></p>
+                  <ul id="ulError" class="mb-0">
+                  	<li>Ya no hay Descuentos Pendientes.</li>
+                  </ul>
+              </div>
 		    </div>
 		  </div>
 		</div>
@@ -515,11 +536,29 @@
 	  	<script th:src="@{/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
 		<script th:src="@{/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
 		<script th:src="@{/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
-	
+		
 		<!-- Toastr -->
 		<script th:src="@{/plugins/toastr/toastr.min.js}"></script>
 		<!-- SweetAlert2 -->
 		<script th:src="@{/plugins/sweetalert2/sweetalert2.min.js}"></script>
+		
+		<script type="text/javascript">
+			$( document ).ready(function() {
+				
+				
+				$('.table').DataTable({
+			    	  "paging": true,
+				      "lengthChange": true,
+				      "searching": true,
+				      "ordering": true,
+				      "info": true,
+				      "autoWidth": false,
+				      "responsive": true,
+				      "pageLength": 5,
+				    }); 
+				    
+			});
+		</script>
 		
 		<script type="text/javascript">
 		
@@ -600,60 +639,6 @@
 				  if(updateMontoVentas === 'true'){
 					 toastr.success("Monto de Ventas actualizado con Éxito!"); 
 				  }
-			
-			    $('#example1').DataTable({
-			      "paging": true,
-			      "lengthChange": false,
-			      "searching": true,
-			      "ordering": true,
-			      "info": true,
-			      "autoWidth": false,
-			      "responsive": true,
-			      "pageLength": 5,
-			    });
-			    
-			    $("#example2").DataTable({
-			      "paging": true,
-			      "lengthChange": false,
-			      "searching": true,
-			      "ordering": true,
-			      "info": true,
-			      "autoWidth": false,
-			      "responsive": true,
-			      "pageLength": 5,
-			    });
-			    
-			    $("#example3").DataTable({
-	                "responsive": true,
-	                "autoWidth": false,
-	            });
-			    
-			    $("#example4").DataTable({
-	                "responsive": true,
-	                "autoWidth": false,
-	            });
-			    
-			    /*$("#example3").DataTable({
-			      "paging": true,
-			      "lengthChange": false,
-			      "searching": true,
-			      "ordering": true,
-			      "info": true,
-			      "autoWidth": false,
-			      "responsive": true,
-			      "pageLength": 5,
-			    });
-			    
-			    $("#example4").DataTable({
-			      "paging": true,
-			      "lengthChange": false,
-			      "searching": true,
-			      "ordering": true,
-			      "info": true,
-			      "autoWidth": false,
-			      "responsive": true,
-			      "pageLength": 5,
-			    });*/
 			    
 			});
 		</script>

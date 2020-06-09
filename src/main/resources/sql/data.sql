@@ -238,6 +238,8 @@ insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, es_patronal,
 						values	(5, 1, 1, 1, 0.00, 1000.00, 'INSAFORP', 1.00, 1);;
 insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, es_patronal, monto_base, monto_maximo, movimiento, porcentaje_movimiento, tipo_movimiento_habilitado)
 						values	(6, 0, 0, 0, 50.00, 0.00, 'Bono navideño', 0.00, 1);;
+insert into tipos_movimiento	(id_movimiento, es_descuento, es_fijo, es_patronal, monto_base, monto_maximo, movimiento, porcentaje_movimiento, tipo_movimiento_habilitado)
+						values	(7, 0, 0, 0, 150.00, 0.00, 'Bono de fin de año', 0.00, 1);;
 
 --TIPO UNIDAD
 insert into tipos_unidad_organizacional values(500,1,'Gerencias',1);;
