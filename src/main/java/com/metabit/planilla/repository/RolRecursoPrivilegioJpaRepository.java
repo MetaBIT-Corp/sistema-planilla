@@ -19,4 +19,6 @@ public interface RolRecursoPrivilegioJpaRepository extends JpaRepository<RolRecu
     public abstract List<RolRecursoPrivilegio> findByPrivilegio(Privilegio privilegio);
     public abstract List<RolRecursoPrivilegio> findByRecursoAndPrivilegio(Recurso recurso, Privilegio privilegio);
 
+    public abstract RolRecursoPrivilegio getRolRecursoPrivilegioByRolAndRecursoAndPrivilegio(Rol rol, Recurso recurso, Privilegio privilegio);
+
 }

@@ -59,4 +59,9 @@ public class RolRecursoPrivilegioServiceImpl implements RolRecursoPrivilegioServ
         return rolRecursoPrivilegioJpaRepository.findByPrivilegio(privilegio);
     }
 
+    @Override
+    public RolRecursoPrivilegio getRolRecursoPrivilegioByRolAndRecursoAndPrivilegio(Rol rol, Recurso recurso, Privilegio privilegio) {
+        return rolRecursoPrivilegioJpaRepository.getRolRecursoPrivilegioByRolAndRecursoAndPrivilegio(rol,recurso,privilegio);
+    }
+
 }

@@ -24,12 +24,12 @@
     </div>
 
     <!-- Modal para Gestionar Permisos de Recurso de Rol -->
-    <div class="modal" id="rolRecursoPrivilegiosModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+    <div class="modal bd-example-modal-lg" id="rolRecursoPrivilegiosModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h5 class="modal-title" id="rolRecursoPrivilegiosModalTitle">Privilegios del Rol sobre el Recurso</h5>
+                    <h5 class="modal-title" id="rolRecursoPrivilegiosModalTitle"></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -37,37 +37,79 @@
 
                 <div class="modal-body">
                     <div class="card">
+                        <div class="card-body row pt-2">
 
-                        <div class="card-header row mx-0">
-                            <div class="col-md-6">
-                                <span class="align-middle"><b>Privilegios asignados</b></span>
+                            <div class="col-md-6 text-center">
+                                <span><b>Privilegios asignados</b></span>
+                                <table id="tablaAsignados" class="table mt-2">
+                                </table>
+
+                                <div id="eliminarFormDiv" class="d-none">
+
+                                    <form id="eliminarForm" method="post" action="#" th:action="@{/rol-recurso-privilegio/eliminar}">
+
+                                        <div class="card-body">
+                                            <div class="form-group">
+                                                <label for="idRolEliminarInput">Rol</label>
+                                                <input type="text" id="idRolEliminarInput" name="idRolEliminar" class="form-control" placeholder="ID de Rol">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="idRecursoInput">Recurso</label>
+                                                <input type="text" id="idRecursoEliminarInput" name="idRecursoEliminar" class="form-control" placeholder="ID de Recurso">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="idPrivilegioInput">Privilegio</label>
+                                                <input type="text" id="idPrivilegioEliminarInput" name="idPrivilegioEliminar" class="form-control" placeholder="ID de Privilegio">
+                                            </div>
+
+                                        </div>
+
+                                        <div class="card-footer">
+                                            <button type="submit" id="btnSubmitEliminar" class="btn btn-primary">Crear</button>
+                                        </div>
+
+                                    </form>
+                                </div>
+
                             </div>
-                            <div class="col-md-6 text-right">
-                                <a class="btn btn-primary btn-sm"
-                                   href="#">
-                                    <i class="fas fa-plus-circle mr-1 text-white"></i>
-                                    <span class="text-white">Asignar Privilegio</span>
-                                </a>
+
+                            <div class="col-md-6 text-center border-left">
+                                <span class="pl-2"><b>Privilegios no asignados</b></span>
+                                <table id="tablaNoAsignados" class="table mt-2">
+                                </table>
+
+                                <div id="asignarFormDiv" class="d-none">
+
+                                    <form id="asignarForm" method="post" action="#" th:action="@{/rol-recurso-privilegio/asignar}">
+
+                                        <div class="card-body">
+                                            <div class="form-group">
+                                                <label for="idRolInput">Rol</label>
+                                                <input type="text" id="idRolInput" name="idRol" class="form-control" placeholder="ID de Rol">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="idRecursoInput">Recurso</label>
+                                                <input type="text" id="idRecursoInput" name="idRecurso" class="form-control" placeholder="ID de Recurso">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="idPrivilegioInput">Privilegio</label>
+                                                <input type="text" id="idPrivilegioInput" name="idPrivilegio" class="form-control" placeholder="ID de Privilegio">
+                                            </div>
+
+                                        </div>
+
+                                        <div class="card-footer">
+                                            <button type="submit" id="btnSubmitAsignar" class="btn btn-primary">Crear</button>
+                                        </div>
+
+                                    </form>
+                                </div>
+
                             </div>
+
                         </div>
-
-                        <div class="card-body">
-
-                            <table id="table-privilegios" class="table table-borderless text-center">
-
-                                <thead class="border-bottom">
-                                    <tr>
-                                        <th>Nombre</th>
-                                        <th>Acciones</th>
-                                    </tr>
-                                </thead>
-
-                                <tbody id="tbody-privilegios"></tbody>
-
-                            </table>
-                        </div>
-
                     </div>
+
                 </div>
 
             </div>

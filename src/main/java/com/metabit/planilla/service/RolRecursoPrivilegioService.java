@@ -19,4 +19,6 @@ public interface RolRecursoPrivilegioService {
     public abstract List<RolRecursoPrivilegio> findByRecurso(Recurso recurso);
     public abstract List<RolRecursoPrivilegio> findByPrivilegio(Privilegio privilegio);
 
+    public abstract RolRecursoPrivilegio getRolRecursoPrivilegioByRolAndRecursoAndPrivilegio(Rol rol, Recurso recurso, Privilegio privilegio);
+
 }
