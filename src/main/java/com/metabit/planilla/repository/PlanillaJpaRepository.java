@@ -19,4 +19,7 @@ public interface PlanillaJpaRepository extends JpaRepository<Planilla, Serializa
 	@Procedure(procedureName = "PLANILLA_UPDATE_MOVIMIENTOS")
 	public abstract void planillaUpdateMovimientos(int id_planilla);
 	public abstract List<Planilla> findByPeriodo(Periodo periodo);
+	
+	@Procedure(name = "show")
+	String showMessage(@Param("p_message") String p_message);
 }

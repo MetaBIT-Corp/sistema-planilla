@@ -7,6 +7,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+  <!-- Select2 -->
+  <link rel="stylesheet" href="../../plugins/select2/css/select2.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
   
 </head>
 
@@ -20,12 +25,23 @@
     </ol>
 
 	<div layout:fragment="content">
+		<!-- <p th:text="${message}"></p> -->
 		<!-- DataTable de Empleados Planilla -->
 		<div class="row ml-1 mr-1">
 			
 			<div class="offset-1 col-md-10">
 			 <div class="card">
 	            <!-- /.card-header -->
+	            <!-- se mostrará opcion de pagar solamente si existen planillas de empleados-->
+	            <div th:if="${!#lists.isEmpty(planillas)}" class="card_header text-right">
+	            	<button  class="btn btn-sm btn-primary mt-3 mr-4 "
+	            		th:attr="data-idPeriodo=${planillas[0].periodo.idPeriodo}"
+                        onclick="activateModalPago(this)"> 
+	            		<i class="fas fa-hand-holding-usd mr-1 text-white"></i>
+						<span class="text-white">Pagar Planilla</span>
+					</button>
+	            </div>
+	            
 	            <div class="card-body">
 	              <table id="example1" class="table table-bordered table-striped">
 	                <thead>
@@ -89,6 +105,29 @@
 		
 			</div>
 		</div>
+		
+		<!-- Modal para elección de unidades -->
+		<div class="modal" id="modalElegirUnidad" tabindex="-1" role="dialog">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title">Pago de planilla de unidad</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <form action="#">  
+				<div class="form-group ml-5 mr-5 mt-4 mb-5" id="divBodyDesplegarUnidades"></div> 
+				<div class="modal-footer">
+				  <button type="submit" id="submitPago" class="btn btn-info">Pagar planilla</button>
+				  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+				</div>
+		      </form>
+		    </div>
+		  </div>
+		</div>	
+		<!-- Modal para elección de unidades -->
+		
 	</div>
 	
 	
@@ -99,6 +138,11 @@
 	  	<script th:src="@{/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
 		<script th:src="@{/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
 		<script th:src="@{/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
+		
+		<!-- para uso de modals -->
+		<script th:src="@{/js/planilla/modals.js}"></script>
+		<!-- Select2 -->
+		<script src="../../plugins/select2/js/select2.full.min.js"></script>
 		
 		<script type="text/javascript">
 			$(function () {
@@ -118,6 +162,7 @@
 			    });
 			  });
 		</script>
+	
 	</section>
 
 </body>

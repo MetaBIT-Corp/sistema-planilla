@@ -46,6 +46,11 @@ public class PlanillaServiceImpl implements PlanillaService {
 	public Optional<Planilla> getPlanillaById(int id_planilla) {
 		return planillaJpaRepository.findById(id_planilla);
 	}
+
+	@Override
+	public String showMessage(String p_message) {
+		return planillaJpaRepository.showMessage(p_message);
+	}
 	
 	
 	

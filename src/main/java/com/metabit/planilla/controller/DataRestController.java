@@ -18,9 +18,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.metabit.planilla.entity.Departamento;
 import com.metabit.planilla.entity.Municipio;
 import com.metabit.planilla.entity.Rol;
+import com.metabit.planilla.entity.UnidadOrganizacional;
 import com.metabit.planilla.service.DepartamentoService;
 import com.metabit.planilla.service.MunicipioService;
 import com.metabit.planilla.service.RolService;
+import com.metabit.planilla.service.UnidadOrganizacionalService;
 
 @RestController
 @RequestMapping("/api")
@@ -42,6 +44,10 @@ public class DataRestController {
 	@Qualifier("puestoServiceImpl")
 	private PuestoService puestoService;
 	
+	@Autowired
+	@Qualifier("unidadOrganizacionalServiceImpl")
+	private UnidadOrganizacionalService unidadOrganizacionalService;
+	
 	@GetMapping("/municipios/{idDepartamento}")
 	public List<Municipio> getMunicipiosByDepto(@PathVariable("idDepartamento") int idDepartamento){
 		Departamento depto = departmentoService.getDepartamento(idDepartamento);
@@ -55,5 +61,10 @@ public class DataRestController {
 	@GetMapping("/required-user/{id}")
 	public Boolean requiredUser(@PathVariable("id") int idPuesto){
 		return puestoService.getPuesto(idPuesto).isUsuarioRequerido();
+	}
+	
+	@GetMapping("/unidades-organizacionales")
+	public List<UnidadOrganizacional> getUnidadesOrganizacionales(){
+		return unidadOrganizacionalService.getAllUnidadesOrganizacionales();
 	}
 }

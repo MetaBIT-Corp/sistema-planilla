@@ -47,3 +47,16 @@ BEGIN
     COMMIT;
 END;
 ;;
+
+/*---PROCEDIMIENTO DE PRUEBA -----*/
+CREATE OR REPLACE PROCEDURE SHOW_MENSAJE_PROCEDURE
+    (p_message IN varchar2, p_message_completo OUT varchar2) -- parametros
+    IS
+    p_message_date  DATE := sysdate;
+BEGIN
+    p_message_completo := 'Hola, Soy un procedimiento de prueba: ' 
+                          || p_message 
+                          || ' Fecha: ' 
+                          || p_message_date;
+END;
+;;

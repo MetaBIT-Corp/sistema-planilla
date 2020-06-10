@@ -1,5 +1,6 @@
 package com.metabit.planilla.entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -11,7 +12,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedStoredProcedureQueries;
+import javax.persistence.NamedStoredProcedureQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.ParameterMode;
+import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Fetch;
@@ -22,7 +27,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "planillas")
-public class Planilla {
+@NamedStoredProcedureQueries({
+	@NamedStoredProcedureQuery(
+		name = "show",
+		procedureName = "SHOW_MENSAJE_PROCEDURE",
+		parameters = {
+				@StoredProcedureParameter(mode = ParameterMode.IN, name="p_message", type = String.class),
+				@StoredProcedureParameter(mode = ParameterMode.OUT, name="p_message_completo", type = String.class)
+		})
+})
+public class Planilla{
 	
 	@Id
 	@GeneratedValue
@@ -72,7 +86,7 @@ public class Planilla {
 	@Fetch(value = FetchMode.SUBSELECT)
 	@JsonIgnore
     private List<PlanillaMovimiento> planillaMovimientos =  new ArrayList<>();
-
+		
 	public Planilla() {
 	}
 

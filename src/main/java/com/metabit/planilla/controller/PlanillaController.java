@@ -66,9 +66,9 @@ public class PlanillaController {
 			
 			planillaService.updatePlanilla(planilla);
 		}
-		
 		model.addAttribute("planillas", planillas);
-		
+		String p_message = "Esta es una prueba";
+		model.addAttribute("message", planillaService.showMessage(p_message));
 		return INDEX_VIEW;
 	}
 	
