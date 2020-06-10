@@ -2,7 +2,7 @@ $(document).ready(function(){
 
     $('#profesionModal').on('show.bs.modal', function(event){
 
-        $('#divError').hide();
+        $('#errorDiv').hide();
 
         var modal = $(this);
         var link = $(event.relatedTarget);
@@ -12,17 +12,17 @@ $(document).ready(function(){
         var esProfesion = link.data('es-profesion');
         var profesionHabilitada = link.data('profesion-habilitada');
 
-        modal.find('.card-body #idProfesionInput').val(idProfesion);
-        modal.find('.card-body #profesionInput').val(profesion);
+        modal.find('.modal-body #idProfesionInput').val(idProfesion);
+        modal.find('.modal-body #profesionInput').val(profesion);
         if(esProfesion==1){
-            modal.find('.card-body #esProfesionInput').prop("checked",true);
+            modal.find('.modal-body #esProfesionInput').prop("checked",true);
         }else{
-            modal.find('.card-body #esProfesionInput').prop("checked",false);
+            modal.find('.modal-body #esProfesionInput').prop("checked",false);
         }
         if(profesionHabilitada==1){
-            modal.find('.card-body #profesionHabilitadaInput').prop("checked",true);
+            modal.find('.modal-body #profesionHabilitadaInput').prop("checked",true);
         }else{
-            modal.find('.card-body #profesionHabilitadaInput').prop("checked",false);
+            modal.find('.modal-body #profesionHabilitadaInput').prop("checked",false);
         }
 
     });
@@ -30,36 +30,36 @@ $(document).ready(function(){
     $('#profesionBtnNueva').on('click',function () {
         var modal = $('#profesionModal');
         modal.find('.modal-header #profesionModalTitle').text('Crear Profesión u Oficio');
-        modal.find('.card-body #idProfesionInput').attr('disabled',true);
-        modal.find('.card-body #profesionInput').attr('disabled',false);
-        modal.find('.card-body #esProfesionInput').attr('disabled',false);
-        modal.find('.card-footer #btnSubmitProfesion').attr('class','btn btn-primary');
-        modal.find('.card-footer #btnSubmitProfesion').text('Crear');
-        modal.find('.card-footer #btnCancelarProfesion').text('Cancelar');
+        modal.find('.modal-body #idProfesionInput').attr('disabled',true);
+        modal.find('.modal-body #profesionInput').attr('disabled',false);
+        modal.find('.modal-body #esProfesionInput').attr('disabled',false);
+        modal.find('.modal-footer #profesionSubmitBtn').attr('class','btn btn-primary');
+        modal.find('.modal-footer #profesionSubmitBtn').text('Crear');
+        modal.find('.modal-footer #profesionCancelarBtn').text('Cancelar');
     });
 
     $('.profesionBtnEditar').on('click',function () {
         var modal = $('#profesionModal');
         modal.find('.modal-header #profesionModalTitle').text('Editar Profesión u Oficio');
-        modal.find('.card-body #idProfesionInput').attr('disabled',false);
-        modal.find('.card-body #profesionInput').attr('disabled',false);
-        modal.find('.card-body #esProfesionInput').attr('disabled',false);
-        modal.find('.card-footer #btnSubmitProfesion').text('Editar');
-        modal.find('.card-footer #btnSubmitProfesion').attr('class','btn btn-primary');
-        modal.find('.card-footer #btnCancelarProfesion').text('Cancelar');
+        modal.find('.modal-body #idProfesionInput').attr('disabled',false);
+        modal.find('.modal-body #profesionInput').attr('disabled',false);
+        modal.find('.modal-body #esProfesionInput').attr('disabled',false);
+        modal.find('.modal-footer #profesionSubmitBtn').text('Editar');
+        modal.find('.modal-footer #profesionSubmitBtn').attr('class','btn btn-primary');
+        modal.find('.modal-footer #profesionCancelarBtn').text('Cancelar');
 
     });
 
     $('.profesionBtnVer').on('click',function () {
         var modal = $('#profesionModal');
         modal.find('.modal-header #profesionModalTitle').text('Información de Profesión u Oficio');
-        modal.find('.card-body #profesionInput').attr('disabled',true);
-        modal.find('.card-body #esProfesionInput').attr('disabled',true);
-        modal.find('.card-footer #btnSubmitProfesion').attr('class','d-none');
-        modal.find('.card-footer #btnCancelarProfesion').text('Aceptar');
+        modal.find('.modal-body #profesionInput').attr('disabled',true);
+        modal.find('.modal-body #esProfesionInput').attr('disabled',true);
+        modal.find('.modal-footer #profesionSubmitBtn').attr('class','d-none');
+        modal.find('.modal-footer #profesionCancelarBtn').text('Aceptar');
     });
 
-    $('#btnSubmitProfesion').click(function (e) {
+    $('#profesionSubmitBtn').click(function (e) {
 
         e.preventDefault();
 
@@ -76,8 +76,8 @@ $(document).ready(function(){
 
                 if (response.status=="SUCCESS"){
 
-                    $('#btnSubmitProfesion').attr('disabled',true);
-                    $('#divError').hide();
+                    $('#profesionSubmitBtn').attr('disabled',true);
+                    $('#errorDiv').hide();
 
                     if($('#idProfesionInput').val()!=''){
                         window.location.href = document.location.origin + "/profesion/index?update_success=true";
@@ -87,19 +87,19 @@ $(document).ready(function(){
 
                 }else{
 
-                    $('#divError').show();
-                    var child = document.getElementById("ulError").lastElementChild;
+                    $('#errorDiv').show();
+                    var child = document.getElementById("errorUl").lastElementChild;
 
                     while (child) {
-                        document.getElementById("ulError").removeChild(child);
-                        child = document.getElementById("ulError").lastElementChild;
+                        document.getElementById("errorUl").removeChild(child);
+                        child = document.getElementById("errorUl").lastElementChild;
                     }
 
                     for(i=0;i<response.result.length;i++){
                         var li = document.createElement('li');
-                        var liContent = document.createTextNode(response.result[i].code);
-                        li.appendChild(liContent);
-                        document.getElementById("ulError").appendChild(li);
+                        var contentLi = document.createTextNode(response.result[i].code);
+                        li.appendChild(contentLi);
+                        document.getElementById("errorUl").appendChild(li);
                     }
 
                 }
@@ -127,18 +127,18 @@ $(document).ready(function(){
         if(profesionHabilitada==1){
             modal.find('.modal-header #disableModalTitle').text('Deshabilitar Profesión');
             modal.find('.modal-body #disableMessage').text("¿Está seguro que desea deshabilitar la profesión '"+profesion+"'?");
-            modal.find('.modal-body #disableMessageInfo').text(
+            modal.find('.modal-body #disableInfoMessage').text(
                 'Esta acción no eliminará la profesión, pero no será posible asignarla a más empleados. ' +
                 'Sin embargo, aquellos empleados a quienes ya se les asigno esta profesión no sufriran ningún cambio.'
             );
-            modal.find('.modal-footer #profesionBtnSubmitDeshabilitar').text('Deshabilitar');
-            modal.find('.modal-footer #profesionBtnSubmitDeshabilitar').attr('class','btn btn-danger');
+            modal.find('.modal-footer #profesionDeshabilitarSubmitBtn').text('Deshabilitar');
+            modal.find('.modal-footer #profesionDeshabilitarSubmitBtn').attr('class','btn btn-danger');
         }else{
             modal.find('.modal-header #disableModalTitle').text('Habilitar Profesión');
             modal.find('.modal-body #disableMessage').text("¿Está seguro que desea habilitar la profesión '"+profesion+"'?");
-            modal.find('.modal-body #disableMessageInfo').text('Esta acción permitirá que sea posible asignar la profesión a los empleados.');
-            modal.find('.modal-footer #profesionBtnSubmitDeshabilitar').text('Habilitar');
-            modal.find('.modal-footer #profesionBtnSubmitDeshabilitar').attr('class','btn btn-info');
+            modal.find('.modal-body #disableInfoMessage').text('Esta acción permitirá que sea posible asignar la profesión a los empleados.');
+            modal.find('.modal-footer #profesionDeshabilitarSubmitBtn').text('Habilitar');
+            modal.find('.modal-footer #profesionDeshabilitarSubmitBtn').attr('class','btn btn-info');
         }
     });
 

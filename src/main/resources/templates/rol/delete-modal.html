@@ -5,13 +5,15 @@
     <title>Title</title>
 </head>
 <body>
+
 <div th:fragment="delete_modal">
 
-    <!-- Modal para Confirmar Eliminacion de Rol -->
+    <!-- Modal para confirmar eliminacion de Rol -->
     <div class="modal" id="rolModalDestroy" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
 
+                <!-- Header de Modal -->
                 <div class="modal-header">
                     <h5 class="modal-title">Eliminar Rol</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -19,21 +21,22 @@
                     </button>
                 </div>
 
-                <form method="post"
-                      action="#"
-                      th:action="@{/rol/destroy}">
+                <!-- Formulario para confirmar eliminación del rol -->
+                <form method="post" th:action="@{/rol/destroy}">
 
+                    <!-- Body de Modal -->
                     <div class="modal-body">
                         <div class="form-group">
                             <strong><span id="destroyMessage"></span></strong><br>
-                            <span id="destroyMessageInfo"></span>
+                            <span id="destroyInfoMessage"></span>
                             <input type="hidden" class="form-control" id="idRolInputDestroy" name="idRolDestroy">
                         </div>
                     </div>
 
+                    <!-- Footer de Modal -->
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-danger">Eliminar</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
                     </div>
 
                 </form>
@@ -43,5 +46,6 @@
     </div>
 
 </div>
+
 </body>
 </html>

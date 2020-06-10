@@ -2,7 +2,7 @@ $(document).ready(function(){
 
     $('#recursoModal').on('show.bs.modal', function(event){
 
-        $('#divError').hide();
+        $('#errorDiv').hide();
 
         var modal = $(this);
         var link = $(event.relatedTarget);
@@ -10,41 +10,41 @@ $(document).ready(function(){
         var idRecurso = link.data('id-recurso');
         var recurso = link.data('recurso');
 
-        modal.find('.card-body #idRecursoInput').val(idRecurso);
-        modal.find('.card-body #recursoInput').val(recurso);
+        modal.find('.modal-body #idRecursoInput').val(idRecurso);
+        modal.find('.modal-body #recursoInput').val(recurso);
 
     });
 
-    $('#recursoBtnNuevo').on('click',function () {
+    $('#recursoNuevoBtn').on('click',function () {
         var modal = $('#recursoModal');
         modal.find('.modal-header #recursoModalTitle').text('Crear Recurso');
-        modal.find('.card-body #idRecursoInput').attr('disabled',true);
-        modal.find('.card-body #recursoInput').attr('disabled',false);
-        modal.find('.card-footer #btnSubmitRecurso').attr('class','btn btn-primary');
-        modal.find('.card-footer #btnSubmitRecurso').text('Crear');
-        modal.find('.card-footer #btnCancelarRecurso').text('Cancelar');
+        modal.find('.modal-body #idRecursoInput').attr('disabled',true);
+        modal.find('.modal-body #recursoInput').attr('disabled',false);
+        modal.find('.modal-footer #recursoSubmitBtn').attr('class','btn btn-primary');
+        modal.find('.modal-footer #recursoSubmitBtn').text('Crear');
+        modal.find('.modal-footer #recursoCancelarBtn').text('Cancelar');
     });
 
-    $('.recursoBtnEditar').on('click',function () {
+    $('.recursoEditarBtn').on('click',function () {
         var modal = $('#recursoModal');
         modal.find('.modal-header #recursoModalTitle').text('Editar Recurso');
-        modal.find('.card-body #idRecursoInput').attr('disabled',false);
-        modal.find('.card-body #recursoInput').attr('disabled',false);
-        modal.find('.card-footer #btnSubmitRecurso').text('Editar');
-        modal.find('.card-footer #btnSubmitRecurso').attr('class','btn btn-primary');
-        modal.find('.card-footer #btnCancelarRecurso').text('Cancelar');
+        modal.find('.modal-body #idRecursoInput').attr('disabled',false);
+        modal.find('.modal-body #recursoInput').attr('disabled',false);
+        modal.find('.modal-footer #recursoSubmitBtn').text('Editar');
+        modal.find('.modal-footer #recursoSubmitBtn').attr('class','btn btn-primary');
+        modal.find('.modal-footer #recursoCancelarBtn').text('Cancelar');
 
     });
 
-    $('.recursoBtnVer').on('click',function () {
+    $('.recursoVerBtn').on('click',function () {
         var modal = $('#recursoModal');
         modal.find('.modal-header #recursoModalTitle').text('Información del Recurso');
-        modal.find('.card-body #recursoInput').attr('disabled',true);
-        modal.find('.card-footer #btnSubmitRecurso').attr('class','d-none');
-        modal.find('.card-footer #btnCancelarRecurso').text('Aceptar');
+        modal.find('.modal-body #recursoInput').attr('disabled',true);
+        modal.find('.modal-footer #recursoSubmitBtn').attr('class','d-none');
+        modal.find('.modal-footer #recursoCancelarBtn').text('Aceptar');
     });
 
-    $('#btnSubmitRecurso').click(function (e) {
+    $('#recursoSubmitBtn').click(function (e) {
 
         e.preventDefault();
 
@@ -61,8 +61,8 @@ $(document).ready(function(){
 
                 if (response.status=="SUCCESS"){
 
-                    $('#btnSubmitRecurso').attr('disabled',true);
-                    $('#divError').hide();
+                    $('#recursoSubmitBtn').attr('disabled',true);
+                    $('#errorDiv').hide();
 
                     if($('#idRecursoInput').val()!=''){
                         window.location.href = document.location.origin + "/recurso/index?update_success=true";
@@ -72,19 +72,19 @@ $(document).ready(function(){
 
                 }else{
 
-                    $('#divError').show();
-                    var child = document.getElementById("ulError").lastElementChild;
+                    $('#errorDiv').show();
+                    var child = document.getElementById("errorUl").lastElementChild;
 
                     while (child) {
-                        document.getElementById("ulError").removeChild(child);
-                        child = document.getElementById("ulError").lastElementChild;
+                        document.getElementById("errorUl").removeChild(child);
+                        child = document.getElementById("errorUl").lastElementChild;
                     }
 
                     for(i=0;i<response.result.length;i++){
                         var li = document.createElement('li');
-                        var liContent = document.createTextNode(response.result[i].code);
-                        li.appendChild(liContent);
-                        document.getElementById("ulError").appendChild(li);
+                        var contentLi = document.createTextNode(response.result[i].code);
+                        li.appendChild(contentLi);
+                        document.getElementById("errorUl").appendChild(li);
                     }
 
                 }
@@ -105,7 +105,7 @@ $(document).ready(function(){
         var recurso = link.data('recurso');
         modal.find('.modal-body #idRecursoInputDestroy').val(idRecurso);
         modal.find('.modal-body #destroyMessage').text("¿Está seguro que desea eliminar el recurso "+String(recurso)+"?");
-        modal.find('.modal-body #destroyMessageInfo').text("El recurso no podrá ser eliminado si ya ha sido asignado a uno o más roles");
+        modal.find('.modal-body #destroyInfoMessage').text("El recurso no podrá ser eliminado si ya ha sido asignado a uno o más roles");
     });
 
     var store = $('#store').val();

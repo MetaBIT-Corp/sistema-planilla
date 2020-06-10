@@ -52,12 +52,19 @@ $(document).ready(function(){
                             var privilegioInput = document.getElementById("idPrivilegioEliminarInput");
                             privilegioInput.setAttribute("value",this.dataset["idPrivilegio"]);
                             document.getElementById("btnSubmitEliminar").click();
+
+                            setTimeout(function(){
+                                $("#rolRecursoPrivilegiosModal").modal("hide");
+                                document.getElementById("btnRecurso"+idRecurso).click();
+                            },300);
+
                             return false;
                         };
                         var ic = document.createElement("i");
                         ic.setAttribute("class","fas fa-times");
                         celda2.appendChild(btn);
                         btn.appendChild(ic);
+                        btn.append(" Eliminar");
                     }else{
                         var tabla = document.getElementById("tablaNoAsignados");
                         var fila = tabla.insertRow(i_no_asignados);
@@ -75,6 +82,10 @@ $(document).ready(function(){
                             var privilegioInput = document.getElementById("idPrivilegioInput");
                             privilegioInput.setAttribute("value",this.dataset["idPrivilegio"]);
                             document.getElementById("btnSubmitAsignar").click();
+                            setTimeout(function(){
+                                $("#rolRecursoPrivilegiosModal").modal("hide");
+                                document.getElementById("btnRecurso"+idRecurso).click();
+                            },300);
                             return false;
                         };
 
@@ -82,6 +93,7 @@ $(document).ready(function(){
                         ic.setAttribute("class","fas fa-check");
                         celda2.appendChild(btn);
                         btn.appendChild(ic);
+                        btn.append(" Asignar");
                     }
 
                 }
@@ -104,11 +116,37 @@ $(document).ready(function(){
 
     });
 
+    $("#btnSubmitEliminar").on("click",function (e) {
+
+        e.preventDefault();
+        var form = $(this).parents('form');
+        var url = form.attr('action');
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: form.serialize(),
+            dataType: "json",
+            success: function (data) {}
+        });
+
+    });
+
     $("#btnSubmitAsignar").on("click",function (e) {
 
-        $.ajax()
+        e.preventDefault();
+        var form = $(this).parents('form');
+        var url = form.attr('action');
 
-    })
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: form.serialize(),
+            dataType: "json",
+            success: function (data) {}
+        });
+
+    });
 
     $("#rolRecursoPrivilegiosModal").on("hide.bs.modal", function(){
         $("#tablaAsignados").html("");

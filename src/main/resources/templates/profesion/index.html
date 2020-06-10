@@ -81,6 +81,8 @@
                                 </td>
 
                                 <td class="text-center">
+
+                                    <!-- Botón para ver información de la Profesión -->
                                     <a class="btn btn-info btn-sm profesionBtnVer"
                                        href="#"
                                        title="Ver Profesi&oacute;n u Oficio"
@@ -91,6 +93,8 @@
                                        data-es-profesion=${profesion.esProfesion}">
                                         <i class="fas fa-eye"></i>
                                     </a>&nbsp;&nbsp;
+
+                                    <!-- Botón para editar registro de la Profesión -->
                                     <a class="btn btn-primary btn-sm profesionBtnEditar"
                                        href="#"
                                        title="Editar Profesi&oacute;n u Oficio"
@@ -103,6 +107,8 @@
                                        data-profesion-habilitada=${profesion.profesionHabilitada}">
                                         <i class="fas fa-pen"></i>
                                     </a>&nbsp;&nbsp;
+
+                                    <!-- Botón para habilitar/deshabilitar la Profesión -->
                                     <a th:class="${profesion.profesionHabilitada} ? 'btn btn-danger btn-sm' : 'btn btn-success btn-sm'"
                                        href="#"
                                        th:title="${profesion.profesionHabilitada} ? 'Deshabilitar Profesi&oacute;n' : 'Habilitar Profesi&oacute;n'"
@@ -115,6 +121,8 @@
                                         <span th:if="${profesion.profesionHabilitada}"><i class="fas fa-lock"></i></span>
                                         <span th:unless="${profesion.profesionHabilitada}"><i class="fas fa-unlock"></i></span>
                                     </a>&nbsp;&nbsp;
+
+                                    <!-- Botón para eliminar registro de la Profesión -->
                                     <a class="btn btn-danger btn-sm"
                                        href="#"
                                        title="Eliminar Profesi&oacute;n u Oficio"

@@ -28,6 +28,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
 
+                <!--Header del Modal-->
                 <div class="modal-header">
                     <h5 class="modal-title" id="rolRecursoPrivilegiosModalTitle"></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -35,19 +36,19 @@
                     </button>
                 </div>
 
+                <!--Body del Modal-->
                 <div class="modal-body">
                     <div class="card">
                         <div class="card-body row pt-2">
 
+                            <!-- Tabla y formulario para privilegios asignados -->
                             <div class="col-md-6 text-center">
+
                                 <span><b>Privilegios asignados</b></span>
-                                <table id="tablaAsignados" class="table mt-2">
-                                </table>
+                                <table id="tablaAsignados" class="table mt-2"></table>
 
                                 <div id="eliminarFormDiv" class="d-none">
-
                                     <form id="eliminarForm" method="post" action="#" th:action="@{/rol-recurso-privilegio/eliminar}">
-
                                         <div class="card-body">
                                             <div class="form-group">
                                                 <label for="idRolEliminarInput">Rol</label>
@@ -61,27 +62,23 @@
                                                 <label for="idPrivilegioInput">Privilegio</label>
                                                 <input type="text" id="idPrivilegioEliminarInput" name="idPrivilegioEliminar" class="form-control" placeholder="ID de Privilegio">
                                             </div>
-
                                         </div>
-
                                         <div class="card-footer">
                                             <button type="submit" id="btnSubmitEliminar" class="btn btn-primary">Crear</button>
                                         </div>
-
                                     </form>
                                 </div>
 
                             </div>
 
+                            <!-- Tabla y formulario para privilegios no asignados -->
                             <div class="col-md-6 text-center border-left">
+
                                 <span class="pl-2"><b>Privilegios no asignados</b></span>
-                                <table id="tablaNoAsignados" class="table mt-2">
-                                </table>
+                                <table id="tablaNoAsignados" class="table mt-2"></table>
 
                                 <div id="asignarFormDiv" class="d-none">
-
                                     <form id="asignarForm" method="post" action="#" th:action="@{/rol-recurso-privilegio/asignar}">
-
                                         <div class="card-body">
                                             <div class="form-group">
                                                 <label for="idRolInput">Rol</label>
@@ -95,13 +92,10 @@
                                                 <label for="idPrivilegioInput">Privilegio</label>
                                                 <input type="text" id="idPrivilegioInput" name="idPrivilegio" class="form-control" placeholder="ID de Privilegio">
                                             </div>
-
                                         </div>
-
                                         <div class="card-footer">
                                             <button type="submit" id="btnSubmitAsignar" class="btn btn-primary">Crear</button>
                                         </div>
-
                                     </form>
                                 </div>
 
@@ -109,7 +103,11 @@
 
                         </div>
                     </div>
+                </div>
 
+                <!--Body del Modal-->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Salir</button>
                 </div>
 
             </div>

@@ -118,9 +118,9 @@ public class RolRecursoPrivilegioController extends BaseController{
         Recurso recurso = recursoService.getRecurso(idRecurso);
         Privilegio privilegio = privilegioService.getPrivilegio(idPrivilegio);
 
-        RolRecursoPrivilegio rolRecursoPrivilegio = rolRecursoPrivilegioService.getRolRecursoPrivilegioByRolAndRecursoAndPrivilegio(rol,recurso,privilegio);
+        RolRecursoPrivilegio rolRecursoPrivilegio = rolRecursoPrivilegioService.findByRolAndRecursoAndPrivilegio(rol,recurso,privilegio);
 
-        rolRecursoPrivilegioService.deleteRolRecursoPrivilegio(rolRecursoPrivilegio.getIdRolRecursoPrivilegio());
+        rolRecursoPrivilegioService.deleteRolRecursoPrivilegio(rolRecursoPrivilegio);
 
         return "redirect:/"+INDEX_VIEW+"/"+idRol;
 

@@ -13,130 +13,149 @@
     <title>Sistema Planilla | Roles</title>
 
 </head>
+
 <body>
-<h1 class="m-0 text-dark" layout:fragment="titulo_seccion">Roles</h1>
-<ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
-    <li class="breadcrumb-item">
-        <a href="#" th:href="@{/index}">Home</a>
-    </li>
-    <li class="breadcrumb-item active">Roles</li>
-</ol>
 
-<div layout:fragment="content">
+    <h1 class="m-0 text-dark" layout:fragment="titulo_seccion">Roles</h1>
+    <ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#" th:href="@{/index}">Home</a>
+        </li>
+        <li class="breadcrumb-item active">Roles</li>
+    </ol>
 
-    <input type="hidden" id="store" th:value="${store_success}">
-    <input type="hidden" id="update" th:value="${update_success}">
-    <input type="hidden" id="delete" th:value="${delete_success}">
-    <input type="hidden" id="enable" th:value="${enable_success}">
-    <input type="hidden" id="disable" th:value="${disable_success}">
+    <div layout:fragment="content">
 
-    <div class="row ml-3 mr-3">
-        <span class="col-md-2"></span><!-- Para centrar DataTable -->
-        <div class="col-md-8">
-            <div class="card">
+        <input type="hidden" id="store" th:value="${store_success}">
+        <input type="hidden" id="update" th:value="${update_success}">
+        <input type="hidden" id="delete" th:value="${delete_success}">
+        <input type="hidden" id="enable" th:value="${enable_success}">
+        <input type="hidden" id="disable" th:value="${disable_success}">
 
-                <div class="card-header text-right">
-                    <a class="btn btn-primary btn-sm"
-                       href="#"
-                       id="rolBtnNuevo"
-                       data-toggle="modal"
-                       data-target="#rolModal">
-                        <i class="fas fa-plus-circle mr-1 text-white"></i>
-                        <span class="text-white">Nuevo Rol</span>
-                    </a>
-                </div>
+        <div class="row ml-3 mr-3">
+            <span class="col-md-2"></span><!-- Para centrar DataTable -->
+            <div class="col-md-8">
+                <div class="card">
 
-                <div class="card-body">
-                    <table id="example1" class="table table-bordered table-striped">
+                    <div class="card-header text-right">
+                        <a class="btn btn-primary btn-sm"
+                           href="#"
+                           id="rolNuevoBtn"
+                           data-toggle="modal"
+                           data-target="#rolModal">
+                            <i class="fas fa-plus-circle mr-1 text-white"></i>
+                            <span class="text-white">Nuevo Rol</span>
+                        </a>
+                    </div>
 
-                        <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th class="text-center">Acciones</th>
-                        </tr>
-                        </thead>
+                    <div class="card-body">
+                        <table id="example1" class="table table-bordered table-striped">
 
-                        <tbody>
+                            <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th class="text-center">Acciones</th>
+                            </tr>
+                            </thead>
 
-                        <tr th:each="rol: ${roles}">
+                            <tbody>
 
-                            <td><span th:text="${rol.authority}"></span></td>
+                            <tr th:each="rol: ${roles}">
 
-                            <td class="text-center">
-                                <a class="btn btn-info btn-sm rolBtnVer"
-                                   href="#"
-                                   title="Ver Rol"
-                                   data-toggle="modal"
-                                   data-target="#rolModal"
-                                   th:attr="
-                                   data-rol=${rol.authority}">
-                                    <i class="fas fa-eye"></i>
-                                </a>&nbsp;&nbsp;
-                                <a class="btn btn-primary btn-sm rolBtnEditar"
-                                   href="#"
-                                   title="Editar Rol">
-                                    <i class="fas fa-pen"></i>
-                                </a>&nbsp;&nbsp;
-                                <a class="btn btn-outline-primary btn-sm rolBtnRecursos"
-                                   href="#"
-                                   th:href="@{/rol-recurso-privilegio/index/{id}(id=${rol.idRol})}"
-                                   title="Gestionar Recursos del Rol">
-                                    <i class="fas fa-cubes"></i>
-                                </a>&nbsp;&nbsp;
-                                <a class="btn btn-danger btn-sm"
-                                   href="#"
-                                   title="Eliminar Rol"
-                                   data-toggle="modal"
-                                   data-target="#rolModalDestroy"
-                                   th:attr="
+                                <td><span th:text="${rol.authority}"></span></td>
+
+                                <td class="text-center">
+
+                                    <!-- Botón para ver información del Rol -->
+                                    <a class="btn btn-info btn-sm rolVerBtn"
+                                       href="#"
+                                       title="Ver Rol"
+                                       data-toggle="modal"
+                                       data-target="#rolModal"
+                                       th:attr="
+                                       data-rol=${rol.authority}">
+                                        <i class="fas fa-eye"></i>
+                                    </a>&nbsp;&nbsp;
+
+                                    <!-- Botón para editar registro del Rol -->
+                                    <a class="btn btn-primary btn-sm rolEditarBtn"
+                                       href="#"
+                                       title="Editar Rol"
+                                       data-toggle="modal"
+                                       data-target="#rolModal"
+                                       th:attr="
                                        data-id-rol=${rol.idRol},
                                        data-rol=${rol.authority}">
-                                    <i class="fas fa-trash"></i>
-                                </a>
-                            </td>
+                                        <i class="fas fa-pen"></i>
+                                    </a>&nbsp;&nbsp;
 
-                        </tr>
+                                    <!-- Botón para ir a gestión de recursos asignados al Rol -->
+                                    <a class="btn btn-outline-primary btn-sm rolRecursosBtn"
+                                       href="#"
+                                       th:href="@{/rol-recurso-privilegio/index/{id}(id=${rol.idRol})}"
+                                       title="Gestionar Recursos asignados al Rol">
+                                        <i class="fas fa-cubes"></i>
+                                    </a>&nbsp;&nbsp;
 
-                        <tr th:if="${#lists.isEmpty(roles)}">
-                            <td colspan="6">
-                                A&uacute;n no se registran roles en el sistema
-                            </td>
-                        </tr>
+                                    <!-- Botón para eliminar registro del Rol -->
+                                    <a class="btn btn-danger btn-sm"
+                                       href="#"
+                                       title="Eliminar Rol"
+                                       data-toggle="modal"
+                                       data-target="#rolModalDestroy"
+                                       th:attr="
+                                           data-id-rol=${rol.idRol},
+                                           data-rol=${rol.authority}">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
 
-                        </tbody>
+                                </td>
 
-                        <tfoot>
-                        <tr>
-                            <th>Nombre</th>
-                            <th class="text-center">Acciones</th>
-                        </tr>
-                        </tfoot>
+                            </tr>
 
-                    </table>
+                            <tr th:if="${#lists.isEmpty(roles)}">
+                                <td colspan="6">
+                                    A&uacute;n no se registran roles en el sistema
+                                </td>
+                            </tr>
+
+                            </tbody>
+
+                            <tfoot>
+                            <tr>
+                                <th>Nombre</th>
+                                <th class="text-center">Acciones</th>
+                            </tr>
+                            </tfoot>
+
+                        </table>
+                    </div>
+
                 </div>
-
             </div>
+            <span class="col-md-2"></span><!-- Para centrar DataTable -->
         </div>
-        <span class="col-md-2"></span><!-- Para centrar DataTable -->
+
+        <div th:insert="rol/rol-modal :: rol_modal"></div>
+        <div th:insert="rol/delete-modal :: delete_modal"></div>
+
     </div>
 
-    <div th:insert="rol/rol-modal :: rol_modal"></div>
-    <div th:insert="rol/delete-modal :: delete_modal"></div>
+    <section layout:fragment="scripts">
 
-</div>
+        <script th:src="@{/plugins/datatables/jquery.dataTables.min.js}"></script>
+        <script th:src="@{/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
+        <script th:src="@{/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
+        <script th:src="@{/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
 
-<section layout:fragment="scripts">
-    <script th:src="@{/plugins/datatables/jquery.dataTables.min.js}"></script>
-    <script th:src="@{/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
-    <script th:src="@{/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
-    <script th:src="@{/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
+        <script th:src="@{/plugins/toastr/toastr.min.js}"></script>
+        <script th:src="@{/plugins/sweetalert2/sweetalert2.min.js}"></script>
 
-    <script th:src="@{/plugins/toastr/toastr.min.js}"></script>
-    <script th:src="@{/plugins/sweetalert2/sweetalert2.min.js}"></script>
+        <script th:src="@{/js/datatable/datatable.js}"></script>
+        <script th:src="@{/js/rol/rol.js}"></script>
 
-    <script th:src="@{/js/datatable/datatable.js}"></script>
-    <script th:src="@{/js/rol/rol.js}"></script>
-</section>
+    </section>
 
 </body>
+
 </html>

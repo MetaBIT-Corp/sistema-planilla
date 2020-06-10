@@ -40,8 +40,8 @@ public class RolRecursoPrivilegioServiceImpl implements RolRecursoPrivilegioServ
     }
 
     @Override
-    public void deleteRolRecursoPrivilegio(int idRolRecursoPrivilegio) {
-        rolRecursoPrivilegioJpaRepository.deleteById(idRolRecursoPrivilegio);
+    public void deleteRolRecursoPrivilegio(RolRecursoPrivilegio rolRecursoPrivilegio) {
+        rolRecursoPrivilegioJpaRepository.delete(rolRecursoPrivilegio);
     }
 
     @Override
@@ -60,8 +60,8 @@ public class RolRecursoPrivilegioServiceImpl implements RolRecursoPrivilegioServ
     }
 
     @Override
-    public RolRecursoPrivilegio getRolRecursoPrivilegioByRolAndRecursoAndPrivilegio(Rol rol, Recurso recurso, Privilegio privilegio) {
-        return rolRecursoPrivilegioJpaRepository.getRolRecursoPrivilegioByRolAndRecursoAndPrivilegio(rol,recurso,privilegio);
+    public RolRecursoPrivilegio findByRolAndRecursoAndPrivilegio(Rol rol, Recurso recurso, Privilegio privilegio) {
+        return rolRecursoPrivilegioJpaRepository.findByRolAndRecursoAndPrivilegio(rol,recurso,privilegio);
     }
 
 }
