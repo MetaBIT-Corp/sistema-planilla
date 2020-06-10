@@ -71,29 +71,11 @@ $(document).ready(function(){
                     }
 
                 }else{
-
-                    $('#errorDiv').show();
-                    var child = document.getElementById("errorUl").lastElementChild;
-
-                    while (child) {
-                        document.getElementById("errorUl").removeChild(child);
-                        child = document.getElementById("errorUl").lastElementChild;
-                    }
-
-                    for(i=0;i<response.result.length;i++){
-                        var li = document.createElement('li');
-                        var contentLi = document.createTextNode(response.result[i].code);
-                        li.appendChild(contentLi);
-                        document.getElementById("errorUl").appendChild(li);
-                    }
-
+                    formularioError(response);
                 }
-
             },
 
-            error: function (e) {
-                alert('Error: '+e);
-            }
+            error: conexionError()
 
         });
     });

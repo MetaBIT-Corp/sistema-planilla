@@ -2,6 +2,8 @@ $(document).ready(function(){
 
     $('#rolRecursoPrivilegiosModal').on("show.bs.modal", function(event) {
 
+        $('#errorDiv').hide();
+
         var modal = $(this);
         var link = $(event.relatedTarget);
 
