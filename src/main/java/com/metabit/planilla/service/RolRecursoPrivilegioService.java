@@ -13,10 +13,12 @@ public interface RolRecursoPrivilegioService {
     public abstract RolRecursoPrivilegio getRolRecursoPrivilegio(int idRolRecursoPrivilegio);
     public abstract RolRecursoPrivilegio storeRolRecursoPrivilegio(RolRecursoPrivilegio rolRecursoPrivilegio);
     public abstract RolRecursoPrivilegio updateRolRecursoPrivilegio(RolRecursoPrivilegio rolRecursoPrivilegio);
-    public abstract void deleteRolRecursoPrivilegio(int idRolRecursoPrivilegio);
+    public abstract void deleteRolRecursoPrivilegio(RolRecursoPrivilegio rolRecursoPrivilegio);
 
     public abstract List<RolRecursoPrivilegio> findByRol(Rol rol);
     public abstract List<RolRecursoPrivilegio> findByRecurso(Recurso recurso);
     public abstract List<RolRecursoPrivilegio> findByPrivilegio(Privilegio privilegio);
+
+    public abstract RolRecursoPrivilegio findByRolAndRecursoAndPrivilegio(Rol rol, Recurso recurso, Privilegio privilegio);
 
 }

@@ -5,34 +5,38 @@
     <title>Title</title>
 </head>
 <body>
+
 <div th:fragment="delete_modal">
 
-    <!-- Modal para Confirmar Eliminacion de Profesion -->
-    <div class="modal" id="profesionModalDestroy" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+    <!-- Modal para confirmar habilitación/deshabilitación de Profesión -->
+    <div class="modal" id="profesionModalDisable" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
 
+                <!-- Header del Modal -->
                 <div class="modal-header">
-                    <h5 class="modal-title">Eliminar Profesi&oacute;n</h5>
+                    <h5 class="modal-title" id="disableModalTitle"></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
 
-                <form method="post"
-                      action="#"
-                      th:action="@{/profesion/destroy}">
+                <!-- Formulario para confirmar habilitación/deshabilitación de Profesión -->
+                <form method="post" th:action="@{/profesion/disable}">
 
+                    <!-- Body del Modal -->
                     <div class="modal-body">
                         <div class="form-group">
-                            <span id="message"></span>
-                            <input type="hidden" class="form-control" id="idProfesionInputDestroy" name="idProfesionDestroy">
+                            <strong><span id="disableMessage"></span></strong><br>
+                            <span id="disableInfoMessage"></span>
+                            <input type="hidden" class="form-control" id="idProfesionInputDisable" name="idProfesionDisable">
                         </div>
                     </div>
 
+                    <!-- Footer del Modal -->
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-danger">Eliminar</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" id="profesionDeshabilitarSubmitBtn"></button>
                     </div>
 
                 </form>
@@ -41,33 +45,34 @@
         </div>
     </div>
 
-    <!-- Modal para Confirmar Deshabilitación de Profesión -->
-    <div class="modal" id="profesionModalDisable" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+    <!-- Modal para confirmar Eliminacion de Profesion -->
+    <div class="modal" id="profesionModalDestroy" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
 
+                <!-- Header del Modal -->
                 <div class="modal-header">
-                    <h5 class="modal-title" id="disableModalTitle"></h5>
+                    <h5 class="modal-title">Eliminar Profesi&oacute;n</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
 
-                <form method="post"
-                      action="#"
-                      th:action="@{/profesion/disable}">
+                <!-- Formulario para confirmar eliminación de Profesión -->
+                <form method="post" th:action="@{/profesion/destroy}">
 
+                    <!-- Body del Modal -->
                     <div class="modal-body">
                         <div class="form-group">
-                            <strong><span id="disableMessage"></span></strong><br>
-                            <span id="disableMessageInfo"></span>
-                            <input type="hidden" class="form-control" id="idProfesionInputDisable" name="idProfesionDisable">
+                            <span id="message"></span>
+                            <input type="hidden" class="form-control" id="idProfesionInputDestroy" name="idProfesionDestroy">
                         </div>
                     </div>
 
+                    <!-- Footer del Modal -->
                     <div class="modal-footer">
-                        <button type="submit" id="profesionBtnSubmitDeshabilitar"></button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
                     </div>
 
                 </form>
@@ -77,5 +82,6 @@
     </div>
 
 </div>
+
 </body>
 </html>

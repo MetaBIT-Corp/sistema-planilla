@@ -40,4 +40,9 @@ public class PrivilegioServiceImpl implements PrivilegioService {
     public void deletePrivilegio(int idPrivilegio) {
         privilegioJpaRepository.deleteById(idPrivilegio);
     }
+
+    @Override
+    public List<Privilegio> getRolRecursoPrivilegios(Integer idRol, Integer idRecurso) {
+        return privilegioJpaRepository.getRolRecursoPrivilegios(idRol,idRecurso);
+    }
 }

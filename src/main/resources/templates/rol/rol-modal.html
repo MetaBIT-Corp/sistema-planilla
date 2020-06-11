@@ -5,12 +5,15 @@
     <title>Title</title>
 </head>
 <body>
+
 <div th:fragment="rol_modal">
-    <!-- Modal para Gestión de Rol -->
+
+    <!-- Modal para registro/edición/consulta de Rol -->
     <div class="modal" id="rolModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
 
+                <!-- Header del Modal -->
                 <div class="modal-header">
                     <h5 class="modal-title" id="rolModalTitle"></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -18,29 +21,35 @@
                     </button>
                 </div>
 
-                <form id="rolForm" method="post" action="#" th:action="@{/rol/store}" th:object="${rolEntity}">
+                <!-- Formulario para registro/edición/consulta de Rol -->
+                <form id="rolForm" method="post" th:action="@{/rol/store}" th:object="${rolEntity}">
 
-                    <div class="card-body">
+                    <!-- Body del Modal -->
+                    <div class="modal-body">
+
                         <div class="form-group d-none">
                             <label for="idRolInput">ID</label>
                             <input type="text" th:field="*{idRol}" class="form-control" id="idRolInput" placeholder="ID de Rol">
                         </div>
+
                         <div class="form-group">
                             <label for="rolInput">Nombre *</label>
                             <input type="text" th:field="*{authority}" class="form-control" id="rolInput" placeholder="Nombre del Rol">
                         </div>
 
-                        <div id="divError" class="callout callout-danger">
+                        <!-- Sección para mostrar errores dinámicamente -->
+                        <div id="errorDiv" class="callout callout-danger">
                             <p class="my-0"><i class="fas fa-exclamation-circle mr-2"></i><strong>Por favor, corregir los siguientes errores:</strong></p>
-                            <ul id="ulError" class="mb-0">
+                            <ul id="errorUl" class="mb-0">
                             </ul>
                         </div>
 
                     </div>
 
-                    <div class="card-footer">
-                        <button type="submit" id="btnSubmitRol" class="btn btn-primary">Crear</button>
-                        <button type="button" id="btnCancelarRol" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <!-- Footer del Modal -->
+                    <div class="modal-footer">
+                        <button type="button" id="rolCancelarBtn" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" id="rolSubmitBtn" class="btn btn-primary">Crear</button>
                     </div>
 
                 </form>
@@ -48,6 +57,7 @@
             </div>
         </div>
     </div>
+
 </div>
 
 </body>

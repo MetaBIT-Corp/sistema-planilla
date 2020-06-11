@@ -113,29 +113,11 @@ $(document).ready(function(){
                     }
 
                 }else{
-
-                    $('#divError').show();
-                    var child = document.getElementById("ulError").lastElementChild;
-
-                    while (child) {
-                        document.getElementById("ulError").removeChild(child);
-                        child = document.getElementById("ulError").lastElementChild;
-                    }
-
-                    for(i=0;i<response.result.length;i++){
-                        var li = document.createElement('li');
-                        var liContent = document.createTextNode(response.result[i].code);
-                        li.appendChild(liContent);
-                        document.getElementById("ulError").appendChild(li);
-                    }
-
+                    formularioError(response);
                 }
-
             },
 
-            error: function (e) {
-                alert('Error: '+e);
-            }
+            error: conexionError()
 
         });
     });

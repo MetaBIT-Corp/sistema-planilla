@@ -9,4 +9,5 @@ public interface PrivilegioService {
     public abstract Privilegio storePrivilegio(Privilegio privilegio);
     public abstract Privilegio updatePrivilegio(Privilegio privilegio);
     public abstract void deletePrivilegio(int idPrivilegio);
+    public abstract List<Privilegio> getRolRecursoPrivilegios(Integer idRol, Integer idRecurso);
 }

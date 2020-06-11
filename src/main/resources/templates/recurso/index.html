@@ -13,7 +13,9 @@
     <title>Sistema Planilla | Recursos</title>
 
 </head>
+
 <body>
+
     <h1 class="m-0 text-dark" layout:fragment="titulo_seccion">Recursos</h1>
     <ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
         <li class="breadcrumb-item">
@@ -38,7 +40,7 @@
                     <div class="card-header text-right">
                         <a class="btn btn-primary btn-sm"
                            href="#"
-                           id="recursoBtnNuevo"
+                           id="recursoNuevoBtn"
                            data-toggle="modal"
                            data-target="#recursoModal">
                             <i class="fas fa-plus-circle mr-1 text-white"></i>
@@ -63,7 +65,9 @@
                                 <td><span th:text="${recurso.recurso}"></span></td>
 
                                 <td class="text-center">
-                                    <a class="btn btn-info btn-sm recursoBtnVer"
+
+                                    <!-- Botón para ver información del Recurso -->
+                                    <a class="btn btn-info btn-sm recursoVerBtn"
                                        href="#"
                                        title="Ver Recurso"
                                        data-toggle="modal"
@@ -72,7 +76,9 @@
                                        data-recurso=${recurso.recurso}">
                                         <i class="fas fa-eye"></i>
                                     </a>&nbsp;&nbsp;
-                                    <a class="btn btn-primary btn-sm recursoBtnEditar"
+
+                                    <!-- Botón para editar registro del Recurso -->
+                                    <a class="btn btn-primary btn-sm recursoEditarBtn"
                                        href="#"
                                        title="Editar Recurso"
                                        data-toggle="modal"
@@ -82,6 +88,8 @@
                                        data-recurso=${recurso.recurso}">
                                         <i class="fas fa-pen"></i>
                                     </a>&nbsp;&nbsp;
+
+                                    <!-- Botón para eliminar registro del Recurso -->
                                     <a class="btn btn-danger btn-sm"
                                        href="#"
                                        title="Eliminar Recurso"
@@ -92,6 +100,7 @@
                                        data-recurso=${recurso.recurso}">
                                         <i class="fas fa-trash"></i>
                                     </a>
+
                                 </td>
 
                             </tr>
@@ -125,6 +134,7 @@
     </div>
 
     <section layout:fragment="scripts">
+
         <script th:src="@{/plugins/datatables/jquery.dataTables.min.js}"></script>
         <script th:src="@{/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
         <script th:src="@{/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
@@ -134,8 +144,11 @@
         <script th:src="@{/plugins/sweetalert2/sweetalert2.min.js}"></script>
 
         <script th:src="@{/js/datatable/datatable.js}"></script>
+        <script th:src="@{/js/errores/errores.js}"></script>
         <script th:src="@{/js/recurso/recurso.js}"></script>
+
     </section>
 
 </body>
+
 </html>

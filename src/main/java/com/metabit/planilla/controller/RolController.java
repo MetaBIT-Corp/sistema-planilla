@@ -57,8 +57,7 @@ public class RolController {
     }
 
     @PostMapping("/store")
-    public @ResponseBody
-    JsonResponse store(@ModelAttribute(name="rolEntity") Rol rol, BindingResult bindingResult){
+    public @ResponseBody JsonResponse store(@ModelAttribute(name="rolEntity") Rol rol, BindingResult bindingResult){
 
         JsonResponse jsonResponse = new JsonResponse();
 

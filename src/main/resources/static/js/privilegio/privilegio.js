@@ -2,7 +2,7 @@ $(document).ready(function(){
 
     $('#privilegioModal').on('show.bs.modal', function(event){
 
-        $('#divError').hide();
+        $('#errorDiv').hide();
 
         var modal = $(this);
         var link = $(event.relatedTarget);
@@ -10,41 +10,41 @@ $(document).ready(function(){
         var idPrivilegio = link.data('id-privilegio');
         var privilegio = link.data('privilegio');
 
-        modal.find('.card-body #idPrivilegioInput').val(idPrivilegio);
-        modal.find('.card-body #privilegioInput').val(privilegio);
+        modal.find('.modal-body #idPrivilegioInput').val(idPrivilegio);
+        modal.find('.modal-body #privilegioInput').val(privilegio);
 
     });
 
-    $('#privilegioBtnNuevo').on('click',function () {
+    $('#privilegioNuevoBtn').on('click',function () {
         var modal = $('#privilegioModal');
         modal.find('.modal-header #privilegioModalTitle').text('Crear Privilegio');
-        modal.find('.card-body #idPrivilegioInput').attr('disabled',true);
-        modal.find('.card-body #privilegioInput').attr('disabled',false);
-        modal.find('.card-footer #btnSubmitPrivilegio').attr('class','btn btn-primary');
-        modal.find('.card-footer #btnSubmitPrivilegio').text('Crear');
-        modal.find('.card-footer #btnCancelarPrivilegio').text('Cancelar');
+        modal.find('.modal-body #idPrivilegioInput').attr('disabled',true);
+        modal.find('.modal-body #privilegioInput').attr('disabled',false);
+        modal.find('.modal-footer #privilegioSubmitBtn').attr('class','btn btn-primary');
+        modal.find('.modal-footer #privilegioSubmitBtn').text('Crear');
+        modal.find('.modal-footer #privilegioCancelarBtn').text('Cancelar');
     });
 
-    $('.privilegioBtnEditar').on('click',function () {
+    $('.privilegioEditarBtn').on('click',function () {
         var modal = $('#privilegioModal');
         modal.find('.modal-header #privilegioModalTitle').text('Editar Privilegio');
-        modal.find('.card-body #idPrivilegioInput').attr('disabled',false);
-        modal.find('.card-body #privilegioInput').attr('disabled',false);
-        modal.find('.card-footer #btnSubmitPrivilegio').text('Editar');
-        modal.find('.card-footer #btnSubmitPrivilegio').attr('class','btn btn-primary');
-        modal.find('.card-footer #btnCancelarPrivilegio').text('Cancelar');
+        modal.find('.modal-body #idPrivilegioInput').attr('disabled',false);
+        modal.find('.modal-body #privilegioInput').attr('disabled',false);
+        modal.find('.modal-footer #privilegioSubmitBtn').text('Editar');
+        modal.find('.modal-footer #privilegioSubmitBtn').attr('class','btn btn-primary');
+        modal.find('.modal-footer #privilegioCancelarBtn').text('Cancelar');
 
     });
 
-    $('.privilegioBtnVer').on('click',function () {
+    $('.privilegioVerBtn').on('click',function () {
         var modal = $('#privilegioModal');
         modal.find('.modal-header #privilegioModalTitle').text('Información del Privilegio');
-        modal.find('.card-body #privilegioInput').attr('disabled',true);
-        modal.find('.card-footer #btnSubmitPrivilegio').attr('class','d-none');
-        modal.find('.card-footer #btnCancelarPrivilegio').text('Aceptar');
+        modal.find('.modal-body #privilegioInput').attr('disabled',true);
+        modal.find('.modal-footer #privilegioSubmitBtn').attr('class','d-none');
+        modal.find('.modal-footer #privilegioCancelarBtn').text('Aceptar');
     });
 
-    $('#btnSubmitPrivilegio').click(function (e) {
+    $('#privilegioSubmitBtn').click(function (e) {
 
         e.preventDefault();
 
@@ -61,8 +61,8 @@ $(document).ready(function(){
 
                 if (response.status=="SUCCESS"){
 
-                    $('#btnSubmitPrivilegio').attr('disabled',true);
-                    $('#divError').hide();
+                    $('#privilegioSubmitBtn').attr('disabled',true);
+                    $('#errorDiv').hide();
 
                     if($('#idPrivilegioInputInput').val()!=''){
                         window.location.href = document.location.origin + "/privilegio/index?update_success=true";
@@ -71,29 +71,11 @@ $(document).ready(function(){
                     }
 
                 }else{
-
-                    $('#divError').show();
-                    var child = document.getElementById("ulError").lastElementChild;
-
-                    while (child) {
-                        document.getElementById("ulError").removeChild(child);
-                        child = document.getElementById("ulError").lastElementChild;
-                    }
-
-                    for(i=0;i<response.result.length;i++){
-                        var li = document.createElement('li');
-                        var liContent = document.createTextNode(response.result[i].code);
-                        li.appendChild(liContent);
-                        document.getElementById("ulError").appendChild(li);
-                    }
-
+                    formularioError(response);
                 }
-
             },
 
-            error: function (e) {
-                alert('Error: '+e);
-            }
+            error: conexionError()
 
         });
     });
@@ -105,7 +87,7 @@ $(document).ready(function(){
         var privilegio = link.data('privilegio');
         modal.find('.modal-body #idPrivilegioInputDestroy').val(idPrivilegio);
         modal.find('.modal-body #destroyMessage').text("¿Está seguro que desea eliminar el privilegio "+String(privilegio)+"?");
-        modal.find('.modal-body #destroyMessageInfo').text("El privilegio no podrá ser eliminado si ya ha sido asignado a uno o más roles");
+        modal.find('.modal-body #destroyInfoMessage').text("El privilegio no podrá ser eliminado si ya ha sido asignado a uno o más roles");
     });
 
     var store = $('#store').val();

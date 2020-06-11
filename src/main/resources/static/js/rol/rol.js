@@ -2,7 +2,7 @@ $(document).ready(function(){
 
     $('#rolModal').on('show.bs.modal', function(event){
 
-        $('#divError').hide();
+        $('#errorDiv').hide();
 
         var modal = $(this);
         var link = $(event.relatedTarget);
@@ -10,41 +10,41 @@ $(document).ready(function(){
         var idRol = link.data('id-rol');
         var rol = link.data('rol');
 
-        modal.find('.card-body #idRolInput').val(idRol);
-        modal.find('.card-body #rolInput').val(rol);
+        modal.find('.modal-body #idRolInput').val(idRol);
+        modal.find('.modal-body #rolInput').val(rol);
 
     });
 
-    $('#rolBtnNuevo').on('click',function () {
+    $('#rolNuevoBtn').on('click',function () {
         var modal = $('#rolModal');
         modal.find('.modal-header #rolModalTitle').text('Crear Rol');
-        modal.find('.card-body #idRolInput').attr('disabled',true);
-        modal.find('.card-body #rolInput').attr('disabled',false);
-        modal.find('.card-footer #btnSubmitRol').attr('class','btn btn-primary');
-        modal.find('.card-footer #btnSubmitRol').text('Crear');
-        modal.find('.card-footer #btnCancelarRol').text('Cancelar');
+        modal.find('.modal-body #idRolInput').attr('disabled',true);
+        modal.find('.modal-body #rolInput').attr('disabled',false);
+        modal.find('.modal-footer #rolSubmitBtn').attr('class','btn btn-primary');
+        modal.find('.modal-footer #rolSubmitBtn').text('Crear');
+        modal.find('.modal-footer #rolCancelarBtn').text('Cancelar');
     });
 
-    $('.rolBtnEditar').on('click',function () {
+    $('.rolEditarBtn').on('click',function () {
         var modal = $('#rolModal');
         modal.find('.modal-header #rolModalTitle').text('Editar Rol');
-        modal.find('.card-body #idRolInput').attr('disabled',false);
-        modal.find('.card-body #rolInput').attr('disabled',false);
-        modal.find('.card-footer #btnSubmitRol').text('Editar');
-        modal.find('.card-footer #btnSubmitRol').attr('class','btn btn-primary');
-        modal.find('.card-footer #btnCancelarRol').text('Cancelar');
+        modal.find('.modal-body #idRolInput').attr('disabled',false);
+        modal.find('.modal-body #rolInput').attr('disabled',false);
+        modal.find('.modal-footer #rolSubmitBtn').text('Editar');
+        modal.find('.modal-footer #rolSubmitBtn').attr('class','btn btn-primary');
+        modal.find('.modal-footer #rolCancelarBtn').text('Cancelar');
 
     });
 
-    $('.rolBtnVer').on('click',function () {
+    $('.rolVerBtn').on('click',function () {
         var modal = $('#rolModal');
         modal.find('.modal-header #rolModalTitle').text('Información del Rol');
-        modal.find('.card-body #rolInput').attr('disabled',true);
-        modal.find('.card-footer #btnSubmitRol').attr('class','d-none');
-        modal.find('.card-footer #btnCancelarRol').text('Aceptar');
+        modal.find('.modal-body #rolInput').attr('disabled',true);
+        modal.find('.modal-footer #rolSubmitBtn').attr('class','d-none');
+        modal.find('.modal-footer #rolCancelarBtn').text('Aceptar');
     });
 
-    $('#btnSubmitRol').click(function (e) {
+    $('#rolSubmitBtn').click(function (e) {
 
         e.preventDefault();
 
@@ -61,39 +61,21 @@ $(document).ready(function(){
 
                 if (response.status=="SUCCESS"){
 
-                    $('#btnSubmitRol').attr('disabled',true);
-                    $('#divError').hide();
+                    $('#rolSubmitBtn').attr('disabled',true);
+                    $('#errorDiv').hide();
 
-                    if($('#idRecursoInput').val()!=''){
+                    if($('#idRolInput').val()!=''){
                         window.location.href = document.location.origin + "/rol/index?update_success=true";
                     }else{
                         window.location.href = document.location.origin + "/rol/index?store_success=true";
                     }
 
                 }else{
-
-                    $('#divError').show();
-                    var child = document.getElementById("ulError").lastElementChild;
-
-                    while (child) {
-                        document.getElementById("ulError").removeChild(child);
-                        child = document.getElementById("ulError").lastElementChild;
-                    }
-
-                    for(i=0;i<response.result.length;i++){
-                        var li = document.createElement('li');
-                        var liContent = document.createTextNode(response.result[i].code);
-                        li.appendChild(liContent);
-                        document.getElementById("ulError").appendChild(li);
-                    }
-
+                    formularioError(response);
                 }
-
             },
 
-            error: function (e) {
-                alert('Error: '+e);
-            }
+            error: conexionError()
 
         });
     });
@@ -105,12 +87,11 @@ $(document).ready(function(){
         var rol = link.data('rol');
         modal.find('.modal-body #idRolInputDestroy').val(idRol);
         modal.find('.modal-body #destroyMessage').text("¿Está seguro que desea eliminar el rol "+String(rol)+"?");
-        modal.find('.modal-body #destroyMessageInfo').text("El rol no podrá ser eliminado si ya ha sido asignado a uno o más usuarios");
+        modal.find('.modal-body #destroyInfoMessage').text("El rol no podrá ser eliminado si ya ha sido asignado a uno o más usuarios");
     });
 
     var store = $('#store').val();
     var update = $('#update').val();
-    var enable = $('#enable').val();
     var delet = $('#delete').val();
 
     setTimeout(function() {$(".alert").fadeOut();},3000);
@@ -125,7 +106,7 @@ $(document).ready(function(){
         toastr.error("Rol eliminado con éxito");
     }
     if(delet === 'false'){
-        toastr.warning("Rol no se puede eliminar. Ya ha sido asignado a uno o más roles");
+        toastr.warning("Rol no se puede eliminar. Ya ha sido asignado a uno o más usuarios");
     }
 
 });
