@@ -7,21 +7,95 @@
 <body>
 <div th:fragment="rol_recurso_modal">
 
-    <!-- Modal para Agregar Recursos de Rol -->
-    <div class="modal" id="rolRecursoModal" tabindex="-1" role="dialog">
+    <!-- Modal para agregar Recurso con privilegio al Rol -->
+    <div class="modal bd-example-modal" id="rolRecursoAsignarModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
 
+                <!--Header del Modal-->
                 <div class="modal-header">
-                    <h5 class="modal-title" id="rolRecursoModalTitle">Agregar Recurso al Rol</h5>
+                    <h5 class="modal-title" id="rolRecursoAsignarModalTitle"></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
 
+                <!-- Formulario para asignación de RolRecursoPrivilegio -->
+                <form id="rolRecursoAsignarForm" method="post" th:action="@{/rol-recurso-privilegio/asignar-recurso}">
+
+                    <!--Body del Modal-->
+                    <div class="modal-body">
+
+                        <div class="form-group">
+                            <label for="idRecursoAsignacionInput">Recurso a asignar</label>
+                            <select id="idRecursoAsignacionInput" name="idRecursoAsignacion" class="form-control"></select>
+                        </div>
+
+                        <div class="form-group d-none">
+                            <label for="idRolAsignacionInput">Rol</label>
+                            <input type="text" id="idRolAsignacionInput" name="idRolAsignacion" class="form-control" placeholder="ID de Rol">
+                        </div>
+
+                        <div id="privilegiosDiv" class="form-group">
+
+                            <table id="privilegiosTable" class="table table-borderless">
+                                <thead>
+                                <tr>
+                                    <th colspan="2">
+                                        Seleccione los Privilegios a asignar sobre el Recurso
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody class="border">
+                                <tr th:each="privilegio:${privilegios}" class="row">
+                                    <td class="align-middle text-right my-0 py-0 col-sm-6">
+                                        <label
+                                            class="text-decoration-none"
+                                            th:attr="
+                                            for='checkbox'+${privilegio.idPrivilegio}"
+                                            th:text="${privilegio.privilegio}">
+                                        </label>
+                                    </td>
+                                    <td class="align-middle text-left my-0 py-0 col-sm-6">
+                                        <input
+                                            type="checkbox"
+                                            class="checkboxPrivilegio"
+                                            th:attr="
+                                            id='checkbox'+${privilegio.idPrivilegio},
+                                            value=${privilegio.idPrivilegio},
+                                            data-id-privilegio=${privilegio.idPrivilegio}">
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                            <label for="idsPrivilegiosoAsignacionInput">IDs de Privilegios a asignar</label>
+                            <input type="text" id="idsPrivilegiosoAsignacionInput" name="idsPrivilegiosoAsignacion" class="form-control" placeholder="IDs de Privilegios">
+
+                        </div>
+
+                        <!-- Sección para mostrar errores dinámicamente -->
+                        <div id="errorDiv" class="callout callout-danger">
+                            <p class="my-0"><i class="fas fa-exclamation-circle mr-2"></i><strong>Por favor, corregir los siguientes errores:</strong></p>
+                            <ul id="errorUl" class="mb-0">
+                            </ul>
+                        </div>
+
+                    </div>
+
+                    <!-- Footer de Modal -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" id="rolRecursoAsignarSubmitBtn" class="btn btn-primary">Asignar</button>
+                    </div>
+
+                </form>
+
             </div>
         </div>
     </div>
+
+
 
     <!-- Modal para Gestionar Permisos de Recurso de Rol -->
     <div class="modal bd-example-modal-lg" id="rolRecursoPrivilegiosModal" tabindex="-1" role="dialog">
@@ -48,7 +122,7 @@
                                 <table id="tablaAsignados" class="table mt-2"></table>
 
                                 <div id="eliminarFormDiv" class="d-none">
-                                    <form id="eliminarForm" method="post" action="#" th:action="@{/rol-recurso-privilegio/eliminar}">
+                                    <form id="eliminarForm" method="post" th:action="@{/rol-recurso-privilegio/eliminar}">
                                         <div class="card-body">
                                             <div class="form-group">
                                                 <label for="idRolEliminarInput">Rol</label>

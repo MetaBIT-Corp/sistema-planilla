@@ -1,5 +1,93 @@
 $(document).ready(function(){
 
+    $('#rolRecursoAsignarModal').on("show.bs.modal", function(event) {
+
+        $('#errorDiv').hide();
+
+        var modal = $(this);
+        var link = $(event.relatedTarget);
+
+        var idRol = link.data("id-rol");
+        var rol = link.data("rol");
+
+        modal.find(".modal-header #rolRecursoAsignarModalTitle").append(
+            "Asignar Recurso a Rol: "+ rol.toString()
+        );
+
+        modal.find("#rolRecursoAsignarForm #idRolAsignacionInput").val(idRol);
+
+        $.ajax({
+
+            type : "GET",
+            url : "/rol-recurso-privilegio/recursos/"+idRol,
+
+            success : function(data) {
+
+                data = $.parseJSON(data);
+
+                var i_no_asignados = 0;
+
+                var combobox = document.getElementById("idRecursoAsignacionInput");
+
+                for (i=0;i<data.length;i++){
+
+                    if(data[i].estado=="0"){
+                        var option = document.createElement("option");
+                        option.setAttribute("value", data[i].idRecurso);
+                        option.setAttribute("label", data[i].recurso);
+                        combobox.appendChild(option);
+                    }
+
+                }
+
+            }
+
+        });
+
+    });
+
+    $("#rolRecursoAsignarModal").on("hide.bs.modal", function(){
+        $("#idRecursoAsignacionInput").html("");
+        $("#rolRecursoAsignarModalTitle").html("");
+    });
+
+    $(".checkboxPrivilegio").change(function () {
+
+        var input = $("#idsPrivilegiosoAsignacionInput");
+
+        input.val("");
+
+        $('.checkboxPrivilegio').each(function(i, obj) {
+            if($(this).is(":checked")){
+                input.val(input.val()+$(this).data("idPrivilegio")+"|");
+            }else{}
+        });
+
+    });
+
+    $("#rolRecursoAsignarSubmitBtn").on("click",function (e) {
+
+        e.preventDefault();
+        var form = $(this).parents('form');
+        var url = form.attr('action');
+
+        $(".checkboxPrivilegio").attr("disabled", true);
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: form.serialize(),
+            dataType: "json",
+            success: function (data) {
+                window.location.href = document.location.origin + "/rol-recurso-privilegio/index/1";
+            },
+            error: conexionError()
+        });
+
+    });
+
+    /* Manejadores de eventos para asignar/eliminar Privilegios a un Rol sobre un Recurso */
+
     $('#rolRecursoPrivilegiosModal').on("show.bs.modal", function(event) {
 
         $('#errorDiv').hide();
@@ -118,6 +206,12 @@ $(document).ready(function(){
 
     });
 
+    $("#rolRecursoPrivilegiosModal").on("hide.bs.modal", function(){
+        $("#tablaAsignados").html("");
+        $("#tablaNoAsignados").html("");
+        $("#rolRecursoPrivilegiosModalTitle").html("");
+    });
+
     $("#btnSubmitEliminar").on("click",function (e) {
 
         e.preventDefault();
@@ -150,10 +244,6 @@ $(document).ready(function(){
 
     });
 
-    $("#rolRecursoPrivilegiosModal").on("hide.bs.modal", function(){
-        $("#tablaAsignados").html("");
-        $("#tablaNoAsignados").html("");
-        $("#rolRecursoPrivilegiosModalTitle").html("");
-    });
+
 
 });

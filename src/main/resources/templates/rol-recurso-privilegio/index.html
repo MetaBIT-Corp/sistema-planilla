@@ -35,9 +35,13 @@
                 <div class="card-header text-right">
                     <a class="btn btn-primary btn-sm"
                        href="#"
-                       id="rolRecursoModalBtn"
+                       id="rolRecursoAsignarModalBtn"
                        data-toggle="modal"
-                       data-target="#rolRecursoModal">
+                       data-target="#rolRecursoAsignarModal"
+                       th:attr="
+                       data-id-rol=${rol.idRol},
+                       data-rol=${rol.authority}">
+
                         <i class="fas fa-plus-circle mr-1 text-white"></i>
                         <span class="text-white">Asignar Recurso al Rol</span>
                     </a>

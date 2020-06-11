@@ -51,13 +51,17 @@ public class RolRecursoPrivilegioController extends BaseController{
 
         Rol rol = rolService.getByIdRol(idRol);
         List<Recurso> recursos = recursoService.getRolRecursos(idRol);
+        List<Privilegio> privilegios = privilegioService.getPrivilegios();
+
         ModelAndView modelAndView = new ModelAndView(INDEX_VIEW);
-        modelAndView.addObject("recursos", recursos);
         modelAndView.addObject("rol", rol);
+        modelAndView.addObject("recursos", recursos);
+        modelAndView.addObject("privilegios", privilegios);
+
         model.addAttribute("rolRecursoPrivilegioEntity", new RolRecursoPrivilegio());
 
-
         return modelAndView;
+
     }
 
     @GetMapping("/privilegios/{idrol}/{idrecurso}")
@@ -67,8 +71,6 @@ public class RolRecursoPrivilegioController extends BaseController{
         List<Privilegio> privilegios = privilegioService.getPrivilegios();
 
         JSONArray jsonArray = new JSONArray();
-
-        int i = 1;
 
         for(Privilegio privilegio:privilegios){
 
@@ -85,7 +87,36 @@ public class RolRecursoPrivilegioController extends BaseController{
                 jsonObject.put("privilegio", privilegio.getPrivilegio());
                 jsonArray.put(jsonObject);
             }
-            i++;
+
+        }
+
+        return jsonArray.toString();
+
+    }
+
+    @GetMapping("/recursos/{idrol}")
+    public @ResponseBody String recursos(@PathVariable(value = "idrol", required = true)int idRol) throws JSONException {
+
+        List<Recurso> rolRecursos = recursoService.getRolRecursos(idRol);
+        List<Recurso> recursos = recursoService.getRecursos();
+
+        JSONArray jsonArray = new JSONArray();
+
+        for(Recurso recurso:recursos){
+
+            if(rolRecursos.contains(recurso)){
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("estado","1");
+                jsonObject.put("idRecurso", recurso.getIdRecurso());
+                jsonObject.put("recurso", recurso.getRecurso());
+                jsonArray.put(jsonObject);
+            }else{
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("estado","0");
+                jsonObject.put("idRecurso", recurso.getIdRecurso());
+                jsonObject.put("recurso", recurso.getRecurso());
+                jsonArray.put(jsonObject);
+            }
 
         }
 
@@ -121,6 +152,38 @@ public class RolRecursoPrivilegioController extends BaseController{
         RolRecursoPrivilegio rolRecursoPrivilegio = rolRecursoPrivilegioService.findByRolAndRecursoAndPrivilegio(rol,recurso,privilegio);
 
         rolRecursoPrivilegioService.deleteRolRecursoPrivilegio(rolRecursoPrivilegio);
+
+        return "redirect:/"+INDEX_VIEW+"/"+idRol;
+
+    }
+
+    @PostMapping("/asignar-recurso")
+    public String asignarRecursp(@RequestParam("idRolAsignacion") int idRol, @RequestParam("idRecursoAsignacion") int idRecurso, @RequestParam("idsPrivilegiosoAsignacion") String idsPrivilegios) {
+
+        Rol rol = rolService.getByIdRol(idRol);
+        Recurso recurso = recursoService.getRecurso(idRecurso);
+
+        String[] ids = idsPrivilegios.split("[|]");
+
+        for(String id:ids){
+
+            int idR = Integer.parseInt(id);
+
+            Privilegio privilegio = privilegioService.getPrivilegio(idR);
+
+            RolRecursoPrivilegio rolRecursoPrivilegio = new RolRecursoPrivilegio();
+            rolRecursoPrivilegio.setRol(rol);
+            rolRecursoPrivilegio.setRecurso(recurso);
+            rolRecursoPrivilegio.setPrivilegio(privilegio);
+
+            rolRecursoPrivilegioService.storeRolRecursoPrivilegio(rolRecursoPrivilegio);
+
+        }
+
+
+
+
+
 
         return "redirect:/"+INDEX_VIEW+"/"+idRol;
 
