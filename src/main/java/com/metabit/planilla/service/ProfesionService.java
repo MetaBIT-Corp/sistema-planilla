@@ -5,6 +5,7 @@ import com.metabit.planilla.entity.Profesion;
 
 public interface ProfesionService {
     public abstract List<Profesion> getProfesiones();
+    public abstract List<Profesion> getProfesionesEnable();
     public abstract Profesion getProfesion(int id);
     public abstract Profesion storeProfesion(Profesion profesion);
     public abstract Profesion updateProfesion(Profesion profesion);

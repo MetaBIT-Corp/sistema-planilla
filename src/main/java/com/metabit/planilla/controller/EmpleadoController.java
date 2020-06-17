@@ -121,10 +121,10 @@ public class EmpleadoController {
         mav.addObject("direccion", new Direccion());
         mav.addObject("user", new Usuario());
         //mav.addObject("roles", );
-        mav.addObject("puestos", puestoService.getPuestos());
+        mav.addObject("puestos", puestoService.getPuestosEnable());
         mav.addObject("unidades", unidadOrganizacionalService.getAllUnidadesOrganizacionales());
         mav.addObject("estadosCiviles", estadoCivilService.getAllCivilStates());
-        mav.addObject("profesiones", profesionService.getProfesiones());
+        mav.addObject("profesiones", profesionService.getProfesionesEnable());
         mav.addObject("documentos", tipoDocumentoService.getTipoDocHabilitado());
         mav.addObject("generos", generoService.getAllGeneros());
         mav.addObject("municipios", departamentoService.getAllDepartamentos().get(0).getMunicipios());
@@ -318,7 +318,7 @@ public class EmpleadoController {
         mav.addObject("empleado", e);
         mav.addObject("direccion", e.getDireccion());
         mav.addObject("unidades", unidadOrganizacionalService.getAllUnidadesOrganizacionales());
-        mav.addObject("puestos", puestoService.getPuestos());
+        mav.addObject("puestos", puestoService.getPuestosEnable());
         mav.addObject("estadosCiviles", estadoCivilService.getAllCivilStates());
         mav.addObject("generos", generoService.getAllGeneros());
         mav.addObject("municipios", municipioService.getMunicipiosByDepartamento(e.getDireccion().getMunicipio().getDepartamento()));
@@ -571,7 +571,7 @@ public class EmpleadoController {
         Empleado e = empleadoService.findEmployeeById(id);
 
         //List de profesiones que pueden ser agregados al empleado
-        List<Profesion> profesiones = profesionService.getProfesiones();
+        List<Profesion> profesiones = profesionService.getProfesionesEnable();
         List<EmpleadoProfesion> empleadoProfesiones = e.getProfesionesEmpleado();
         int contador = 0;
         for (EmpleadoProfesion ep : empleadoProfesiones) {

@@ -68,7 +68,7 @@
                                    <h5 th:text="${unidad.tipoUnidadOrganizacional.tipoUnidadOrganizacional}"></h5>
                                </div>
                            </div>
-                           <div class="row" th:if="${presupuestoPadreDisponible>0}">
+                           <div class="row" th:if="${presupuestoPadreDisponible>=0}">
                                <div class="col-6">
                                    <label><strong>Presupuesto disponible de unidad padre:</strong></label>
                                </div>
@@ -87,14 +87,6 @@
                            </div>
                            <div class="row">
                                <div class="col-8">
-                                   <label><strong>Presupuesto anterior: </strong></label>
-                               </div>
-                               <div class="col-4">
-                                   <h5 th:text="'$ '+${#numbers.formatDecimal(centroCosto.presupuestoAnterior,1,'COMMA',2,'POINT')}"></h5>
-                               </div>
-                           </div>
-                           <div class="row">
-                               <div class="col-8">
                                    <label><strong>Presupuesto devengado: </strong></label>
                                </div>
                                <div class="col-4">
@@ -103,10 +95,35 @@
                            </div>
                            <div class="row">
                                <div class="col-8">
+                                   <label><strong>Presupuesto disponible: </strong></label>
+                               </div>
+                               <div class="col-4">
+                                   <h5 th:text="'$ '+${#numbers.formatDecimal(presupuestoUnidadDisponible,1,'COMMA',2,'POINT')}"></h5>
+                               </div>
+                           </div>
+                           <div class="row">
+                               <div class="col-8">
+                                   <label><strong>Presupuesto anterior: </strong></label>
+                               </div>
+                               <div class="col-4">
+                                   <h5 th:text="'$ '+${#numbers.formatDecimal(centroCosto.presupuestoAnterior,1,'COMMA',2,'POINT')}"></h5>
+                               </div>
+                           </div>
+                           <div class="row">
+                               <div class="col-8">
                                    <label><strong>Año laboral: </strong></label>
                                </div>
                                <div class="col-4">
                                    <h5 th:text="${anio.anioLaboral}"></h5>
+                               </div>
+                           </div>
+                           <div class="row">
+                               <div class="col-8">
+                                   <label><strong>Asignaciones de presupuesto: </strong></label>
+                               </div>
+                               <div class="col-4">
+                                   <a class="badge badge-info"
+                                      th:href="@{/presupuesto/centro-costo/{id}(id=${uo.idUnidadOrganizacional})}">Ver centro de costo</a>
                                </div>
                            </div>
                        </div>
@@ -152,7 +169,7 @@
 
     <script>
         $("#btn_registrar").on("click", function () {
-
+            $(this).attr("disabled","disabled");
             $.ajax({
                 type: "POST",
                 url: "/presupuesto/store",
@@ -167,6 +184,7 @@
                 },
                 error: function (data) {
                     $("#errors").removeAttr("hidden");
+                    $("#btn_registrar").removeAttr("disabled");
                     var m = "";
                     $.each(data.responseJSON, function (key, value) {
                         m += "<i class='icon fas fa-ban mr-2' style='color:red;'></i><span style='text-size=4px'>" + value + "</span>";

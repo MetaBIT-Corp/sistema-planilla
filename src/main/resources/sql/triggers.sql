@@ -243,3 +243,91 @@ END LOOP;
 
 END;
 ;;
+
+/*---TRIGGER PARA LA CREACION DE CENTRO DE COSTO POR CADA UNIDAD ORGANIZACIONAL QUE SE INSERTA R. E.---*/
+CREATE OR REPLACE TRIGGER create_centro_costo AFTER
+    INSERT ON unidades_organizacionales
+    FOR EACH ROW
+DECLARE
+    v_anio_id anios_laborales.id_anio_laboral%TYPE;
+BEGIN
+    --Recuperacion del año laboral actual, segun fecha actual
+    SELECT id_anio_laboral INTO v_anio_id FROM anios_laborales
+    WHERE anio_laboral = TO_CHAR(SYSDATE,'yyyy');
+
+    -- Insercion de centro costo por unidad y por año actual
+    INSERT INTO centros_costos(
+        id_centro_costo,
+        presupuesto_anterior,
+        presupuesto_asignado,
+        presupuesto_devengado,
+        id_anio,
+        id_unidad_organizacional
+    )
+    VALUES(centro_costo_seq.NEXTVAL,0.0,0.0,0.0,v_anio_id,:NEW.id_unidad_organizacional);
+END;
+;;
+
+/*---TRIGGER PARA LA ASIGNACION DE PRESUPUESTO A UNIDAD ORGANIZACIONAL R. E.---*/
+CREATE OR REPLACE TRIGGER asignacion_presupuesto_before_insert BEFORE
+    INSERT ON planilla.asignaciones_presupuestos
+    FOR EACH ROW
+DECLARE
+    v_id_unidad_org planilla.unidades_organizacionales.id_unidad_organizacional%TYPE;
+    v_id_unidad_org_padre planilla.unidades_organizacionales.id_unidad_organizacional%TYPE DEFAULT NULL;
+    v_id_anio_laboral planilla.anios_laborales.id_anio_laboral%TYPE;
+    v_monto planilla.asignaciones_presupuestos.monto_asignacion%TYPE;
+    rec_centro_costo_padre planilla.centros_costos%ROWTYPE;
+    rec_centro_costo planilla.centros_costos%ROWTYPE;
+BEGIN
+
+    --Asignamos la fecha actual a la asignacion de presupuesto
+    :NEW.fecha_asignacion := SYSDATE;
+
+    --Recuperacion de anio actual
+    SELECT id_anio_laboral INTO v_id_anio_laboral
+    FROM planilla.anios_laborales
+    WHERE anio_laboral = TO_CHAR(SYSDATE,'yyyy');
+
+    -- Recuperacion de centro de costo para asignacion de presupuesto
+    SELECT * INTO rec_centro_costo
+    FROM planilla.centros_costos
+    WHERE id_centro_costo = :NEW.id_centro_costo;
+
+    -- Recuperacion de unidad organizacional padre para poder recuperar el centro de costo de la unidad padre en año actual
+    SELECT id_unidad_organizacional_padre INTO v_id_unidad_org_padre
+    FROM planilla.unidades_organizacionales
+    WHERE id_unidad_organizacional = rec_centro_costo.id_unidad_organizacional;
+
+
+    -- Verificacion de si posee unidad padre
+    IF v_id_unidad_org_padre IS NOT NULL THEN
+        -- Recuperacion de centro de costo padre, para efectuarle el respectivo incremento o decremento
+        SELECT * INTO rec_centro_costo_padre
+        FROM planilla.centros_costos
+        WHERE id_unidad_organizacional = v_id_unidad_org_padre AND id_anio = v_id_anio_laboral;
+
+        -- Modificamos el monto devengado en la unidad padre
+        IF :NEW.es_incremento = 1 THEN
+            rec_centro_costo_padre.presupuesto_devengado := rec_centro_costo_padre.presupuesto_devengado + :NEW.monto_asignacion;
+        ELSE
+            rec_centro_costo_padre.presupuesto_devengado := rec_centro_costo_padre.presupuesto_devengado - :NEW.monto_asignacion;
+        END IF;
+
+        -- Persistimos los datos de la unidad organizacional a la que se le efectua la asignacion
+        UPDATE planilla.centros_costos SET ROW = rec_centro_costo_padre WHERE id_centro_costo = rec_centro_costo_padre.id_centro_costo;
+    END IF;
+
+    -- Efectuamos la asignacion de presupuesto en la unidad correspondiente
+    IF :NEW.es_incremento = 1 THEN
+        rec_centro_costo.presupuesto_asignado := rec_centro_costo.presupuesto_asignado + :NEW.monto_asignacion;
+    ELSE
+        rec_centro_costo.presupuesto_asignado := rec_centro_costo.presupuesto_asignado - :NEW.monto_asignacion;
+    END IF;
+
+    -- Persistimos los datos de la unidad organizacional a la que se le efectua la asignacion
+    UPDATE planilla.centros_costos SET ROW = rec_centro_costo WHERE id_centro_costo = rec_centro_costo.id_centro_costo;
+
+END;
+;;
+

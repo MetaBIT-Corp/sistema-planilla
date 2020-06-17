@@ -150,7 +150,6 @@ public class UnidadOrganizacionalController {
         List<UnidadOrganizacional> unidad = new ArrayList<>();
         if(unidadOrganizacionalService.getAllHijas(uo).size()==0){
             unidad.add(uo);
-            LOGGER.info(unidad.get(0).getUnidadOrganizacional());
             jsonResponse.setResult(unidad);
         }else{
             jsonResponse.setResult(unidadOrganizacionalService.getAllHijas(uo));
@@ -197,16 +196,6 @@ public class UnidadOrganizacionalController {
 
         uo.setTipoUnidadOrganizacional(tipoUnidadOrganizacionalService.getOne(Integer.parseInt(allParams.get("idTipoUnidadOrganizacional"))));
         unidadOrganizacionalService.addOrUpdateUnidadOrganizaional(uo);
-
-        //CREACION DE CENTRO DE COSTOS
-        CentroCosto centroCosto = new CentroCosto();
-        AnioLaboral anioLaboral = anioLaboralService.getAnioLaboral(LocalDate.now().getYear());
-        centroCosto.setAnioLaboral(anioLaboral);
-        centroCosto.setPresupuestoAnterior(0.0);
-        centroCosto.setPresupuestoAsignado(0.0);
-        centroCosto.setPresupuestoDevengado(0.0);
-        centroCosto.setUnidadOrganizacional(uo);
-        centroCostoService.creatOrUpdate(centroCosto);
 
         return new ResponseEntity<>("Se creo correctamente la unidad organzacional.", HttpStatus.OK);
     }

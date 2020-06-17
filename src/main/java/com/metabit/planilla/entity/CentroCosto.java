@@ -1,6 +1,10 @@
 package com.metabit.planilla.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "centros_costos")
@@ -27,6 +31,11 @@ public class CentroCosto {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="id_anio")
     private AnioLaboral anioLaboral;
+
+    //Asignaciones de presupuesto
+    @JsonIgnore
+    @OneToMany(mappedBy="centroCosto",cascade=CascadeType.ALL)
+    private List<AsignacionPresupuesto> asignacionesPresupuesto=new ArrayList<>();
 
     public CentroCosto(){}
     public CentroCosto(int id_centro_costo, double presupuestoAsignado, double presupuestoDevengado, double presupuestoAnterior, UnidadOrganizacional unidadOrganizacional) {
@@ -82,6 +91,12 @@ public class CentroCosto {
 	public void setAnioLaboral(AnioLaboral anioLaboral) {
 		this.anioLaboral = anioLaboral;
 	}
-    
-    
+
+    public List<AsignacionPresupuesto> getAsignacionesPresupuesto() {
+        return asignacionesPresupuesto;
+    }
+
+    public void setAsignacionesPresupuesto(List<AsignacionPresupuesto> asignacionesPresupuesto) {
+        this.asignacionesPresupuesto = asignacionesPresupuesto;
+    }
 }

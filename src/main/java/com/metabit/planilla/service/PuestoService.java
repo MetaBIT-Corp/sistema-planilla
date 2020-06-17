@@ -7,6 +7,7 @@ import com.metabit.planilla.entity.Puesto;
 public interface PuestoService {
 	
 	public abstract List<Puesto> getPuestos();
+	public abstract List<Puesto> getPuestosEnable();
 	public abstract Puesto getPuesto(int id);
 	public abstract Puesto storePuesto(Puesto puesto);
 	public abstract Puesto updatePuesto(Puesto puesto);
