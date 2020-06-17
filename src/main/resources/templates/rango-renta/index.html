@@ -75,9 +75,9 @@
 										<td th:case="7">Semanalmente</td>
 									</th:block>
 									<td class="text-center">
-										<button class="btn btn-sm btn-primary mr-2" title="Editar">
+										<a class="btn btn-sm btn-primary mr-2" title="Editar" th:href="@{/rango-renta/edit/{id}(id=${rango_renta.idRangoRenta})}">
 											<i class="fas fa-pencil-alt"></i>
-										</button>	
+										</a>	
 									</td>
 								</tr>
 								<tr th:if="${#lists.isEmpty(rangos_renta)}">
