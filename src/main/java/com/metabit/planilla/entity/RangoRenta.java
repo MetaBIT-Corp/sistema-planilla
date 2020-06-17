@@ -5,6 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "rangos_renta")
@@ -15,21 +18,28 @@ public class RangoRenta {
 	@Column(name = "id_rango_renta")
 	private int idRangoRenta;
 	
+	@Min(value = 0, message = "El salario mínimo no puede ser negativo")
 	@Column(name = "salario_min", nullable = false)
 	private float salarioMin;
 	
+	@Min(value = 0, message = "El salario máximo no puede ser negativo")
 	@Column(name = "salario_max", nullable = false)
 	private float salarioMax;
 	
+	@Min(value = 0, message = "El porcentaje de renta no puede ser negativo")
+	@Max(value = 100, message = "El porcentaje de renta no puede ser mayor a 100")
 	@Column(name = "porcentaje_renta", nullable = false)
 	private float porcentajeRenta;
 	
+	@Min(value = 0, message = "El exceso de renta no puede ser negativo")
 	@Column(name = "exceso", nullable = false)
 	private float exceso;
 	
+	@Min(value = 0, message = "La cuota fija no puede ser negativa")
 	@Column(name = "cuota_fija", nullable = false)
 	private float cuotaFija;
 	
+	//@Pattern(regexp = "15|30", message = "La peridicidad solo puede ser mensual o quincenal")
 	@Column(name = "periodicidad_renta", nullable = false)
 	private int periodicidadRenta;
 	
