@@ -69,14 +69,6 @@ public class PlanillaController {
 			planillaService.updatePlanilla(planilla);
 		}
 		model.addAttribute("planillas", planillas);
-		
-		try {
-			String p_message = "Esta es una prueba";
-			model.addAttribute("message", planillaService.pagarPlanilla(501));
-		}catch(Exception e) {
-			model.addAttribute("message", "No se ha podido realizar el pago, Por favor vuelva a intentar");
-		}
-		
 		return INDEX_VIEW;
 	}
 	
@@ -353,13 +345,18 @@ public class PlanillaController {
 	public String pagoPlanilla(@RequestParam("idUnidadOrganizacional") int id, RedirectAttributes redirectAttrs) {
 		String mensajeResultado = "";
 		try {
-			mensajeResultado = planillaService.pagarPlanilla(501);
+			mensajeResultado = planillaService.pagarPlanilla(id);
 			redirectAttrs.addFlashAttribute("mensaje", mensajeResultado)
-			.addFlashAttribute("clase", "info");
+						 .addFlashAttribute("clase", "info");
 		}catch(Exception e) {
 			mensajeResultado = "No se ha podido realizar el pago, Por favor vuelva a intentar";
 			redirectAttrs.addFlashAttribute("mensaje", mensajeResultado)
-			.addFlashAttribute("clase", "danger");
+						 .addFlashAttribute("clase", "danger");
+		}
+		try {   
+			Thread.sleep(5*1000);
+		} catch (Exception e) {
+		    System.out.println(e);
 		}
 		return "redirect:/planilla/index";
 	}

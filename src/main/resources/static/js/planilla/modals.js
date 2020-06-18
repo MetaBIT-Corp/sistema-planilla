@@ -34,4 +34,20 @@ function renderSelect(unidades){
 	 $('.select2').select2();
 }
 
+//Activar loading con overlay 
+
+const $button = document.querySelector('#submitPago')
+const $overlay = document.querySelector('#overlay')
+const $loading = document.querySelector('#loading')
+const $wrapLoad = document.querySelector('.wrap-load')
+const $wrapper = document.querySelector('.wrapper')
+
+
+$button.addEventListener('click', (event) => {
+    $overlay.classList.add('is-active')
+    $loading.classList.add('sk-chase')
+    $wrapLoad.classList.add('is-active')
+    $wrapper.classList.add('ocultar')
+})
+
 
