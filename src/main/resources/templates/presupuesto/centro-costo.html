@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layouts/layout}">
+
+<head>
+
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" th:href="@{/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css}">
+    <!-- Toastr -->
+    <link rel="stylesheet" th:href="@{/plugins/toastr/toastr.min.css}">
+
+</head>
+
+<body>
+<h1 class="ml-4 text-dark" layout:fragment="titulo_seccion"></h1>
+<ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
+    <li class="breadcrumb-item"><a th:href="@{/unidades-organizacionales/index}">Unidades Organizacionales</a></li>
+    <li class="breadcrumb-item"><a th:href="@{/presupuesto/edit/{id}(id=${uo.idUnidadOrganizacional})}">Asignacion de Presupuesto</a></li>
+    <li class="breadcrumb-item active">Centro de Costo</li>
+
+</ol>
+
+<div layout:fragment="content">
+    <div class="row ml-3 mr-3">
+
+        <div class="col-md-12 ">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h5 th:text="'Centro de Costo de la Unidad '+ ${uo.unidadOrganizacional}+', Año '+${anio.anioLaboral}"></h5>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <table id="example1" class="table table-bordered table-striped text-center">
+                        <thead>
+                        <tr>
+                            <th>Monto de asignacion de presupuesto</th>
+                            <th>Tipo de asignacion de presupuesto</th>
+                            <th>Fecha de asigacion de presupuesto</th>
+                            <th>Usuario que realizo la asignacion</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="asignacion: ${asignaciones}">
+                            <td><span th:text="'$' + ${#numbers.formatDecimal(asignacion.montoAsignacion, 0, 'COMMA', 2, 'POINT')}"></span></td>
+                            <td><span th:if="${asignacion.esIncremento}" class="badge badge-success">Incremento de Presupuesto</span>
+                                <span th:unless="${asignacion.esIncremento}" class="badge badge-danger">Decremento de Prespuesto</span ></td>
+                            <td><span th:text="${#temporals.format(asignacion.fechaAsignacion)}"></span></td>
+                            <td><span th:text="${asignacion.usuario.username}"></span></td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <th>Monto de asignacion de presupuesto</th>
+                            <th>Tipo de asignacion de presupuesto</th>
+                            <th>Fecha de asigacion de presupuesto</th>
+                            <th>Usuario que realizo la asignacion</th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
+
+</div>
+
+
+<section layout:fragment="scripts">
+    <!-- DataTables -->
+    <script th:src="@{/plugins/datatables/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
+    <script th:src="@{/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
+    <script th:src="@{/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
+    <script th:src="@{/js/datatable/datatable.js}"></script>
+</section>
+</body>
+</html>

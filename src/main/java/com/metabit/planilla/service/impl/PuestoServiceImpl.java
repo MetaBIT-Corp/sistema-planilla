@@ -24,6 +24,11 @@ public class PuestoServiceImpl implements PuestoService{
 	}
 
 	@Override
+	public List<Puesto> getPuestosEnable() {
+		return puestoJpaRepository.findAllByPuestoHabilitadoIsTrue();
+	}
+
+	@Override
 	public Puesto getPuesto(int id) {
 		return puestoJpaRepository.findById(id).get();
 	}

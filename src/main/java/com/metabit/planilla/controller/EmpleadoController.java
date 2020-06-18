@@ -120,11 +120,10 @@ public class EmpleadoController {
         mav.addObject("empleado", new Empleado());
         mav.addObject("direccion", new Direccion());
         mav.addObject("user", new Usuario());
-        //mav.addObject("roles", );
-        mav.addObject("puestos", puestoService.getPuestos());
+        mav.addObject("puestos", puestoService.getPuestosEnable());
         mav.addObject("unidades", unidadOrganizacionalService.getAllUnidadesOrganizacionales());
         mav.addObject("estadosCiviles", estadoCivilService.getAllCivilStates());
-        mav.addObject("profesiones", profesionService.getProfesiones());
+        mav.addObject("profesiones", profesionService.getProfesionesEnable());
         mav.addObject("documentos", tipoDocumentoService.getTipoDocHabilitado());
         mav.addObject("generos", generoService.getAllGeneros());
         mav.addObject("municipios", departamentoService.getAllDepartamentos().get(0).getMunicipios());
@@ -318,11 +317,12 @@ public class EmpleadoController {
         mav.addObject("empleado", e);
         mav.addObject("direccion", e.getDireccion());
         mav.addObject("unidades", unidadOrganizacionalService.getAllUnidadesOrganizacionales());
-        mav.addObject("puestos", puestoService.getPuestos());
+        mav.addObject("puestos", puestoService.getPuestosEnable());
         mav.addObject("estadosCiviles", estadoCivilService.getAllCivilStates());
         mav.addObject("generos", generoService.getAllGeneros());
         mav.addObject("municipios", municipioService.getMunicipiosByDepartamento(e.getDireccion().getMunicipio().getDepartamento()));
         mav.addObject("departamentos", departamentoService.getAllDepartamentos());
+        mav.addObject("epu",empleadosPuestosUnidadesService.getByEmpleadoAndFechaFinIsNull(e));
 
         return mav;
     }
@@ -381,12 +381,17 @@ public class EmpleadoController {
         empleado.setDireccion(direccion);
 
         //ACTUALIZANDO PUESTO UNIDAD EMPLEADO
-        EmpleadosPuestosUnidades epu = empleado.getEmpleadosPuestosUnidades();
-        epu.setPuesto(puesto);
-        epu.setUnidadOrganizacional(unidadOrganizacionalService.getOneUnidadOrganizacional(Integer.parseInt(allParams.get("idUnidadOrganizacional"))));
-        empleado.setEmpleadosPuestosUnidades(epu);
-        
-        System.out.println("--------------------------------0");
+        EmpleadosPuestosUnidades epu = empleadosPuestosUnidadesService.getByEmpleadoAndFechaFinIsNull(empleado);
+        UnidadOrganizacional unit = unidadOrganizacionalService.getOneUnidadOrganizacional(Integer.parseInt(allParams.get("idUnidadOrganizacional")));
+        if(puesto != epu.getPuesto() || epu.getUnidadOrganizacional() != unit){
+            EmpleadosPuestosUnidades epuNew = new EmpleadosPuestosUnidades(
+                    empleado,
+                    puesto,
+                    unit
+            );
+            empleadosPuestosUnidadesService.createOrUpdate(epuNew);
+        }
+
         //Actualizando usuario
         if(puesto.isUsuarioRequerido()){
         	/*-------------------------CÓDIGO PARA AGREGAR ROLES AL EMPLEADO-------------------*/
@@ -571,7 +576,7 @@ public class EmpleadoController {
         Empleado e = empleadoService.findEmployeeById(id);
 
         //List de profesiones que pueden ser agregados al empleado
-        List<Profesion> profesiones = profesionService.getProfesiones();
+        List<Profesion> profesiones = profesionService.getProfesionesEnable();
         List<EmpleadoProfesion> empleadoProfesiones = e.getProfesionesEmpleado();
         int contador = 0;
         for (EmpleadoProfesion ep : empleadoProfesiones) {
@@ -691,7 +696,7 @@ public class EmpleadoController {
     private Map<String, String> validationEmptyFields(Map<String, String> allParams, List<Integer> profesiones) {
         //VALIDACION DE CAMPOS REQUERIDOS EN SECCION PERSONAL
         Map<String, String> mensajes = new HashMap<String, String>();
-        if (allParams.get("nombrePrimero").isEmpty() || allParams.get("nombreSegundo").isEmpty() || allParams.get("fechaNacimiento").isEmpty() || allParams.get("apellidoMaterno").isEmpty()) {
+        if (allParams.get("nombrePrimero").isEmpty()  || allParams.get("fechaNacimiento").isEmpty() || allParams.get("apellidoMaterno").isEmpty()) {
             mensajes.put("error_sec1", "Error en la seccion Informacion Personal. Llenar todos los campos requeridos.");
         }else{
             //Fecha de nacimiento

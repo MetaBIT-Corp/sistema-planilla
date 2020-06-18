@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layouts/layout}">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<!-- Tell the browser to be responsive to screen width -->
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	
+	<!-- SweetAlert2 -->
+  <link rel="stylesheet" th:href="@{/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css}">
+	<!-- Toastr -->
+  <link rel="stylesheet" th:href="@{/plugins/toastr/toastr.min.css}">
+  <!-- Select2 -->
+  <link rel="stylesheet" th:href="@{/plugins/select2/css/select2.min.css}">
+  <link rel="stylesheet" th:href="@{/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css}">
+</head>
+<body>
+
+	<h1 class="m-0 text-dark" layout:fragment="titulo_seccion">Rangos de Renta</h1>
+
+	<ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
+		<li class="breadcrumb-item">
+			<a href="#" th:href="@{/index}">Home</a>
+		</li>
+		<li class="breadcrumb-item">
+			<a href="#" th:href="@{/rango-renta/index}">Rangos de Renta</a>
+		</li>
+		<li class="breadcrumb-item active">Editar Rango de Renta</li>
+	</ol>
+	
+	<div layout:fragment="content">	
+		
+		<div class="container">
+			<div class="row ml-5">
+				<div class="col-md-1"></div>
+				<div class="col-md-9">
+					<ul th:if="${!#lists.isEmpty(errors)}" class="alert alert-danger ml-2 mr-2" role="alert">
+						<li  class="ml-2" th:each="error : ${errors}" th:text="${error.defaultMessage}"></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		
+		<div class="container">
+			<div class="row ml-5">
+				<div class="col-md-1"></div>
+				<div class="col-md-9">
+					<div class="card">
+					  <div class="card-header">
+					    <h5 class="card-title">Editar Rango de Renta</h5>
+					  </div>
+					  
+					<form method="post" th:action="@{/rango-renta/update}" th:object="${rango_renta}" novalidate>
+						<input type="hidden" th:field="*{idRangoRenta}">
+						<div class="card-body">
+
+						<div class="form-group row">
+		                  <div class="col-sm-6 mb-3 mb-sm-0">
+		                    <label for="">Desde*</label>
+						  	<input type="number" min="0" step="0.01" th:field="*{salarioMin}" class="form-control form-control-user" required>
+		                  </div>
+		                  <div class="col-sm-6">
+		                    <label for="">Hasta*</label>
+						  	<input type="number" min="0" step="0.01" th:field="*{salarioMax}" class="form-control form-control-user" required>
+		                  </div>
+		                </div>
+
+						<div class="form-group row">
+		                  <div class="col-sm-6 mb-3 mb-sm-0">
+		                    <label for="">Porcentaje*</label>
+						  	<input type="number" step="0.01" th:field="*{porcentajeRenta}" min="0" max="100" class="form-control form-control-user" required>
+		                  </div>
+		                  <div class="col-sm-6">
+		                    <label for="">Exceso*</label>
+						  <input type="number" step="0.01" th:field="*{exceso}" min="0" class="form-control form-control-user" required>
+		                  </div>
+		                </div>
+
+						<div class="form-group row">
+		                  <div class="col-sm-6 mb-3 mb-sm-0">
+		                      <label for="">Cuota fija*</label>
+							  <input type="number" step="0.01" th:field="*{cuotaFija}" min="0" class="form-control form-control-user" required>
+		                  </div>
+		                  <div class="col-sm-6">
+		                  	<label for="">Periodicidad*</label>
+							  <select th:switch="*{periodicidadRenta}" class="form-control" style="width: 100%;" readonly>
+							  	<option th:case="30" th:value="${rango_renta.periodicidadRenta}">Mensualmente</option>
+							  	<option th:case="15" th:value="${rango_renta.periodicidadRenta}">Quincenalmente</option>
+							  	<option th:case="7" th:value="${rango_renta.periodicidadRenta}">Semanalmente</option>
+		                	</select>
+		                  </div>
+		                </div>
+					  </div>
+			            <div class="card-footer text-right">
+					        <a class="btn btn-default mr-3" th:href="@{/rango-renta/index}">Cancelar</a>
+					        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+					    </div>
+					</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<section layout:fragment="scripts">
+
+		<!-- DataTables -->
+		<script th:src="@{/plugins/datatables/jquery.dataTables.min.js}"></script>
+		<script th:src="@{/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
+		<script th:src="@{/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
+		<script th:src="@{/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
+		<!-- Toastr -->
+		<script th:src="@{/plugins/toastr/toastr.min.js}"></script>
+		<!-- SweetAlert2 -->
+		<script th:src="@{/plugins/sweetalert2/sweetalert2.min.js}"></script>
+
+		<!-- page script -->
+		<script>
+
+		</script>
+		<!-- Scripts-->
+	</section>
+
+</body>
+</html>
