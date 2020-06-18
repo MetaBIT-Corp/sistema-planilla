@@ -56,6 +56,10 @@ public class UnidadOrganizacionalController {
     @Qualifier("anioLaboralServiceImpl")
     private AnioLaboralService anioLaboralService;
 
+    @Autowired
+    @Qualifier("empleadosPuestosUnidadesServiceImpl")
+    private EmpleadosPuestosUnidadesService empleadosPuestosUnidadesService;
+
     private static final String INDEX_VIEW = "unidad-organizacional/index";
     private static final String SHOW_VIEW = "unidad-organizacional/show";
     private static final Log LOGGER = LogFactory.getLog(UnidadOrganizacionalController.class);
@@ -111,7 +115,7 @@ public class UnidadOrganizacionalController {
         if (jefeUnidad) {
             Empleado empleado = empleadoService.findByUsuario(usuario);
             mav.addObject("unidades",
-                    empleado.getEmpleadosPuestosUnidades().getUnidadOrganizacional().getSubunidades()
+                    empleadosPuestosUnidadesService.getByEmpleadoAndFechaFinIsNull(empleado).getUnidadOrganizacional().getSubunidades()
             );
         } else {
             mav.addObject("unidades", unidadOrganizacionalService.getAllUnidadesOrganizacionales());
@@ -184,7 +188,7 @@ public class UnidadOrganizacionalController {
 
         if (jefeUnidad) {
             Empleado empleado = empleadoService.findByUsuario(usuario);
-            uo.setUnidadPadre(empleado.getEmpleadosPuestosUnidades().getUnidadOrganizacional());
+            uo.setUnidadPadre(empleadosPuestosUnidadesService.getByEmpleadoAndFechaFinIsNull(empleado).getUnidadOrganizacional());
         } else {
             int idUnidadPadre = Integer.parseInt(allParams.get("idUnidadPadre"));
             if (idUnidadPadre == -1) {
@@ -236,7 +240,7 @@ public class UnidadOrganizacionalController {
 
         if (jefeUnidad) {
             Empleado empleado = empleadoService.findByUsuario(usuario);
-            uo.setUnidadPadre(empleado.getEmpleadosPuestosUnidades().getUnidadOrganizacional());
+            uo.setUnidadPadre(empleadosPuestosUnidadesService.getByEmpleadoAndFechaFinIsNull(empleado).getUnidadOrganizacional());
         } else {
             int idUnidadPadre = Integer.parseInt(allParams.get("idUnidadPadre"));
 

@@ -92,8 +92,8 @@ public class Empleado {
 	@OneToMany(mappedBy="empleado",cascade=CascadeType.ALL)
 	private List<EmpleadoProfesion> profesionesEmpleado=new ArrayList<>();
 
-	@OneToOne(fetch = FetchType.LAZY,cascade =  CascadeType.ALL, mappedBy = "empleado")
-	EmpleadosPuestosUnidades empleadosPuestosUnidades;
+	@OneToMany(fetch = FetchType.LAZY,cascade =  CascadeType.ALL, mappedBy = "empleado")
+	List<EmpleadosPuestosUnidades> empleadosPuestosUnidades;
 
 	public Empleado() {
 		super();
@@ -121,11 +121,11 @@ public class Empleado {
 		this.genero=genero;
 	}
 
-	public EmpleadosPuestosUnidades getEmpleadosPuestosUnidades() {
+	public List<EmpleadosPuestosUnidades> getEmpleadosPuestosUnidades() {
 		return empleadosPuestosUnidades;
 	}
 
-	public void setEmpleadosPuestosUnidades(EmpleadosPuestosUnidades empleadosPuestosUnidades) {
+	public void setEmpleadosPuestosUnidades(List<EmpleadosPuestosUnidades> empleadosPuestosUnidades) {
 		this.empleadosPuestosUnidades = empleadosPuestosUnidades;
 	}
 

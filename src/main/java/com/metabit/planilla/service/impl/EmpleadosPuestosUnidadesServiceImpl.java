@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service("empleadosPuestosUnidadesServiceImpl")
 public class EmpleadosPuestosUnidadesServiceImpl implements EmpleadosPuestosUnidadesService {
 
@@ -16,12 +18,17 @@ public class EmpleadosPuestosUnidadesServiceImpl implements EmpleadosPuestosUnid
     private EmpleadosPuestosUnidadesJpaRepository empleadosPuestosUnidadesJpaRepository;
 
     @Override
-    public EmpleadosPuestosUnidades getByEmployee(Empleado empleado) {
+    public List<EmpleadosPuestosUnidades> getByEmployee(Empleado empleado) {
         return empleadosPuestosUnidadesJpaRepository.findByEmpleado(empleado);
     }
 
     @Override
     public EmpleadosPuestosUnidades createOrUpdate(EmpleadosPuestosUnidades empleadosPuestosUnidades) {
         return empleadosPuestosUnidadesJpaRepository.save(empleadosPuestosUnidades);
+    }
+
+    @Override
+    public EmpleadosPuestosUnidades getByEmpleadoAndFechaFinIsNull(Empleado empleado) {
+        return empleadosPuestosUnidadesJpaRepository.findByEmpleadoAndFechaFinIsNull(empleado);
     }
 }

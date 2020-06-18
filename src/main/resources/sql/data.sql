@@ -280,10 +280,10 @@ insert into centros_costos values(510,0.0,0.0,0.0,102,510);;
 insert into centros_costos values(511,0.0,0.0,0.0,102,511);;
 
 --Empleado Puesto Unidad
-insert into empleados_puestos_unidades  (id_empleado_puesto_unidad, id_empleado, id_puesto,id_unidad_organizacional)
-                 values (100, 300, 1,501);;
-insert into empleados_puestos_unidades  (id_empleado_puesto_unidad, id_empleado, id_puesto,id_unidad_organizacional)
-                 values (101, 301, 2,502);;
+insert into empleados_puestos_unidades  (id_empleado_puesto_unidad, id_empleado, id_puesto,id_unidad_organizacional,fecha_inicio,fecha_fin)
+                 values (100, 300, 1,501, '28-JUN-2016',null);;
+insert into empleados_puestos_unidades  (id_empleado_puesto_unidad, id_empleado, id_puesto,id_unidad_organizacional,fecha_inicio,fecha_fin)
+                 values (101, 301, 2,502,'30-MAR-2017',null);;
 
 
 /*----------------------PERIODO----------------------*/
