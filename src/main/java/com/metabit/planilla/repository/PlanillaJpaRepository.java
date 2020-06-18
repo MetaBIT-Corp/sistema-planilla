@@ -22,4 +22,7 @@ public interface PlanillaJpaRepository extends JpaRepository<Planilla, Serializa
 	
 	@Procedure(name = "show")
 	String showMessage(@Param("p_message") String p_message);
+	
+	@Procedure(name = "pagoPlanilla")
+	String pagarPlanilla(@Param("p_id_unidad") int idUnidadOrganizacional);
 }

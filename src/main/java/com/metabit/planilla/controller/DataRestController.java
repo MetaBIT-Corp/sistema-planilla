@@ -1,5 +1,6 @@
 package com.metabit.planilla.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.metabit.planilla.entity.Genero;
@@ -16,7 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.metabit.planilla.entity.Departamento;
+import com.metabit.planilla.entity.EmpleadosPuestosUnidades;
 import com.metabit.planilla.entity.Municipio;
+import com.metabit.planilla.entity.Planilla;
 import com.metabit.planilla.entity.Rol;
 import com.metabit.planilla.entity.UnidadOrganizacional;
 import com.metabit.planilla.service.DepartamentoService;
@@ -65,6 +68,23 @@ public class DataRestController {
 	
 	@GetMapping("/unidades-organizacionales")
 	public List<UnidadOrganizacional> getUnidadesOrganizacionales(){
-		return unidadOrganizacionalService.getAllUnidadesOrganizacionales();
+		List<UnidadOrganizacional> unidadesAll = unidadOrganizacionalService.getAllUnidadesOrganizacionales();
+		List<UnidadOrganizacional> unidadesSinPagar = new ArrayList<UnidadOrganizacional>();
+		Boolean unidadPagada = true;
+		
+		for(int i = 0; i < unidadesAll.size(); i++) {
+			unidadPagada = true;
+			List<EmpleadosPuestosUnidades> epu = unidadesAll.get(i).getEmpleadosPuestosUnidades();
+			for(int j = 0; j < epu.size(); j++) {
+				List<Planilla> planillas = epu.get(j).getEmpleado().getPlanillasEmpleado();
+				for(int k = 0; k < planillas.size(); k++) {
+					if(planillas.get(k).getFechaEmision() == null) unidadPagada = false;
+				}
+			}
+			if(!unidadPagada) {
+				unidadesSinPagar.add(unidadesAll.get(i));
+			}
+		}
+		return unidadesSinPagar;
 	}
 }

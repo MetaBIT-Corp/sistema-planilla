@@ -25,7 +25,11 @@
     </ol>
 
 	<div layout:fragment="content">
-		<!-- <p th:text="${message}"></p> -->
+		<div
+		th:classappend="'alert-' + (${clase != null} ? ${clase} : info)"
+		th:if="${mensaje != null}" th:text="${mensaje}"
+		class="alert"></div>
+		 
 		<!-- DataTable de Empleados Planilla -->
 		<div class="row ml-1 mr-1">
 			
@@ -116,7 +120,7 @@
 		          <span aria-hidden="true">&times;</span>
 		        </button>
 		      </div>
-		      <form action="#">  
+		      <form action="#" th:action="@{/planilla/pago-planilla}" method="POST">  
 				<div class="form-group ml-5 mr-5 mt-4 mb-5" id="divBodyDesplegarUnidades"></div> 
 				<div class="modal-footer">
 				  <button type="submit" id="submitPago" class="btn btn-info">Pagar planilla</button>

@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -67,8 +69,14 @@ public class PlanillaController {
 			planillaService.updatePlanilla(planilla);
 		}
 		model.addAttribute("planillas", planillas);
-		String p_message = "Esta es una prueba";
-		model.addAttribute("message", planillaService.showMessage(p_message));
+		
+		try {
+			String p_message = "Esta es una prueba";
+			model.addAttribute("message", planillaService.pagarPlanilla(501));
+		}catch(Exception e) {
+			model.addAttribute("message", "No se ha podido realizar el pago, Por favor vuelva a intentar");
+		}
+		
 		return INDEX_VIEW;
 	}
 	
@@ -332,5 +340,27 @@ public class PlanillaController {
 		
 		redirAttrs.addFlashAttribute("success_planilla", "success");
 		return "redirect:/anio-laboral/index";
+	}
+	
+	/**
+ 	 * Metodo que permite realizar el pago de planilla
+ 	 * @author Edwin Palacios
+ 	 * @param id: id de unidad organizacional
+ 	 * @return String
+ 	 */
+	@PreAuthorize("permitAll()")
+	@PostMapping("/pago-planilla")
+	public String pagoPlanilla(@RequestParam("idUnidadOrganizacional") int id, RedirectAttributes redirectAttrs) {
+		String mensajeResultado = "";
+		try {
+			mensajeResultado = planillaService.pagarPlanilla(501);
+			redirectAttrs.addFlashAttribute("mensaje", mensajeResultado)
+			.addFlashAttribute("clase", "info");
+		}catch(Exception e) {
+			mensajeResultado = "No se ha podido realizar el pago, Por favor vuelva a intentar";
+			redirectAttrs.addFlashAttribute("mensaje", mensajeResultado)
+			.addFlashAttribute("clase", "danger");
+		}
+		return "redirect:/planilla/index";
 	}
 }

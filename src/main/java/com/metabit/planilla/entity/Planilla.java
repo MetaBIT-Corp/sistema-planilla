@@ -34,6 +34,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 		parameters = {
 				@StoredProcedureParameter(mode = ParameterMode.IN, name="p_message", type = String.class),
 				@StoredProcedureParameter(mode = ParameterMode.OUT, name="p_message_completo", type = String.class)
+		}),
+	@NamedStoredProcedureQuery(
+		name = "pagoPlanilla",
+		procedureName = "PAGO_PLANILLA",
+		parameters = {
+				@StoredProcedureParameter(mode = ParameterMode.IN, name="p_id_unidad", type = Integer.class),
+				@StoredProcedureParameter(mode = ParameterMode.OUT, name="p_message", type = String.class)
 		})
 })
 public class Planilla{

@@ -94,11 +94,38 @@ public class Empleado {
 
 	@OneToOne(fetch = FetchType.LAZY,cascade =  CascadeType.ALL, mappedBy = "empleado")
 	EmpleadosPuestosUnidades empleadosPuestosUnidades;
+	
+	//Planillas
+	@OneToMany(mappedBy="empleado",cascade=CascadeType.ALL)
+	private List<Planilla> planillasEmpleado =new ArrayList<>();
 
 	public Empleado() {
 		super();
 	}
 
+	public Empleado(String codigo, String nombrePrimero, String nombreSegundo, String apellidoPaterno, String apellidoMaterno, String apellidoCasada, LocalDate fechaNacimiento, String correoPersonal, String correoInstitucional, double salarioBaseMensual, int horasTrabajo, Boolean esAdministrativo, Boolean empleadoHabilitado, List<EmpleadoDocumento> documentosEmpleado, Usuario usuario, EstadoCivil estadoCivil, Direccion direccion, List<EmpleadoProfesion> profesionesEmpleado,Genero genero, List<Planilla> planillasEmpleado) {
+		this.codigo = codigo;
+		this.nombrePrimero = nombrePrimero;
+		this.nombreSegundo = nombreSegundo;
+		this.apellidoPaterno = apellidoPaterno;
+		this.apellidoMaterno = apellidoMaterno;
+		this.apellidoCasada = apellidoCasada;
+		this.fechaNacimiento = fechaNacimiento;
+		this.correoPersonal = correoPersonal;
+		this.correoInstitucional = correoInstitucional;
+		this.salarioBaseMensual = salarioBaseMensual;
+		this.horasTrabajo = horasTrabajo;
+		this.esAdministrativo = esAdministrativo;
+		this.empleadoHabilitado = empleadoHabilitado;
+		this.documentosEmpleado = documentosEmpleado;
+		this.usuario = usuario;
+		this.estadoCivil = estadoCivil;
+		this.direccion = direccion;
+		this.profesionesEmpleado = profesionesEmpleado;
+		this.genero=genero;
+		this.planillasEmpleado=planillasEmpleado;
+	}
+	
 	public Empleado(String codigo, String nombrePrimero, String nombreSegundo, String apellidoPaterno, String apellidoMaterno, String apellidoCasada, LocalDate fechaNacimiento, String correoPersonal, String correoInstitucional, double salarioBaseMensual, int horasTrabajo, Boolean esAdministrativo, Boolean empleadoHabilitado, List<EmpleadoDocumento> documentosEmpleado, Usuario usuario, EstadoCivil estadoCivil, Direccion direccion, List<EmpleadoProfesion> profesionesEmpleado,Genero genero) {
 		this.codigo = codigo;
 		this.nombrePrimero = nombrePrimero;
@@ -286,5 +313,13 @@ public class Empleado {
 
 	public void setProfesionesEmpleado(List<EmpleadoProfesion> profesionesEmpleado) {
 		this.profesionesEmpleado = profesionesEmpleado;
+	}
+
+	public List<Planilla> getPlanillasEmpleado() {
+		return planillasEmpleado;
+	}
+
+	public void setPlanillasEmpleado(List<Planilla> planillasEmpleado) {
+		this.planillasEmpleado = planillasEmpleado;
 	}
 }

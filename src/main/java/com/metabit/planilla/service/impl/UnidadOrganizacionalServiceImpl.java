@@ -9,8 +9,15 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Query;
+
 @Service("unidadOrganizacionalServiceImpl")
 public class UnidadOrganizacionalServiceImpl implements UnidadOrganizacionalService {
+	
+	@Autowired
+    EntityManagerFactory emf;
 
     @Autowired
     @Qualifier("unidadOrganizacionalJpaRepository")

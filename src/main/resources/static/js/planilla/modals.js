@@ -11,11 +11,12 @@ function desplegarUnidades(){
 }
 
 function renderSelect(unidades){
+	console.log(unidades);
 	 $('#submitPago').show();
 	 var html = '';
 	 if(unidades.length>0){
 		 html = `<label>Seleccione la Unidad que desea pagar planilla</label>
-				 <select class="form-control select2" style="width: 100%;" aria-hidden="true">`;
+				 <select class="form-control select2" style="width: 100%;" aria-hidden="true" id="idUnidadOrganizacional" name="idUnidadOrganizacional">`;
 		 for (var i = 0; i < unidades.length; ++i) {
 			 html += `<option value=${unidades[i].idUnidadOrganizacional}>${unidades[i].unidadOrganizacional}</option>`;
 	     }
