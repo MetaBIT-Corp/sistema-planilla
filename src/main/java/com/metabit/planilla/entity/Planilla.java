@@ -81,6 +81,9 @@ public class Planilla{
 	@Column(name = "monto_horas_extra", columnDefinition="FLOAT(126) DEFAULT 0.0")
 	private float montoHorasExtra;
 	
+	@Column(name = "monto_dias_festivos", columnDefinition="FLOAT(126) DEFAULT 0.0")
+	private float montoDiasFestivos;
+	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_empleado", nullable = false)
 	private Empleado empleado;
@@ -93,13 +96,20 @@ public class Planilla{
 	@Fetch(value = FetchMode.SUBSELECT)
 	@JsonIgnore
     private List<PlanillaMovimiento> planillaMovimientos =  new ArrayList<>();
-		
+	
+	
+	@OneToMany(mappedBy = "planilla", fetch = FetchType.EAGER)
+	@Fetch(value = FetchMode.SUBSELECT)
+	@JsonIgnore
+    private List<PlanillaDiaFestivo> planillaDiaFestivo =  new ArrayList<>();
+	
 	public Planilla() {
 	}
 
 	public Planilla(int idPlanilla, Date fechaEmision, float montoVentas, float montoComision, float totalIngresos,
 			float totalDescuentos, float renta, float salarioNeto, int horasExtraDiurnas, int horasExtraNocturnas,
-			float montoHorasExtra, Empleado empleado, Periodo periodo, List<PlanillaMovimiento> planillaMovimientos) {
+			float montoHorasExtra, Empleado empleado, Periodo periodo, List<PlanillaMovimiento> planillaMovimientos,
+			float montoDiasFestivos) {
 		super();
 		this.idPlanilla = idPlanilla;
 		this.fechaEmision = fechaEmision;
@@ -115,6 +125,7 @@ public class Planilla{
 		this.empleado = empleado;
 		this.periodo = periodo;
 		this.planillaMovimientos = planillaMovimientos;
+		this.montoDiasFestivos = montoDiasFestivos;
 	}
 
 	public int getIdPlanilla() {
@@ -229,4 +240,20 @@ public class Planilla{
 		this.planillaMovimientos = planillaMovimientos;
 	}
 	
+	public List<PlanillaDiaFestivo> getPlanillaDiaFestivo() {
+		return planillaDiaFestivo;
+	}
+
+	public void setPlanillaDiaFestivo(List<PlanillaDiaFestivo> planillaDiaFestivo) {
+		this.planillaDiaFestivo = planillaDiaFestivo;
+	}
+
+	public float getMontoDiasFestivos() {
+		return montoDiasFestivos;
+	}
+
+	public void setMontoDiasFestivos(float montoDiasFestivos) {
+		this.montoDiasFestivos = montoDiasFestivos;
+	}
+
 }
