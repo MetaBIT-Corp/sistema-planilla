@@ -17,4 +17,5 @@ public interface EmpleadoService {
     public abstract Boolean existInstitucionalEmail(String correo,int idEmp);
     public abstract Boolean existPersonalEmail(String correo,int idEmp);
     public abstract Empleado findByUsuario (Usuario usuario);
+    public abstract List<Empleado> getAllHabilitados();
 }

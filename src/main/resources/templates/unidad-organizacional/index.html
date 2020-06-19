@@ -40,9 +40,10 @@
                     <table id="example1" class="table table-bordered table-striped">
                         <thead>
                         <tr>
-                            <th>Nombre Unidad Organizacional</th>
-                            <th>Unidad Organizacional Padre</th>
-                            <th>Tipo de Unidad Organizacional</th>
+                            <th>Nombre Unidad</th>
+                            <th>Unidad Padre</th>
+                            <th>Tipo de Unidad</th>
+                            <th>Jefe de Unidad</th>
                             <th>Acciones</th>
                         </tr>
                         </thead>
@@ -52,8 +53,9 @@
                             <td><span
                                     th:text="${uo.unidadPadre==null} ? 'Ninguna' : ${uo.unidadPadre.unidadOrganizacional}"></span>
                             </td>
-                            <td><span th:text="${uo.tipoUnidadOrganizacional.tipoUnidadOrganizacional}"></span></td>
-
+                            <td class="text-center"><span th:text="${uo.tipoUnidadOrganizacional.tipoUnidadOrganizacional}"></span></td>
+                            <td><span th:if="${uo.empleadoJefe != null}"  th:text="${uo.empleadoJefe.nombrePrimero}+' '+${uo.empleadoJefe.apellidoMaterno}" class="badge badge-info">Habilitado</span>
+                                <span th:unless="${uo.empleadoJefe != null}" class="badge badge-danger">No hay jefe asignado</span ></td>
                             <td class="text-center text-white">
                                 <a class="btn btn-info btn-sm" title="Ver Unidad Organizacional"
                                    th:if="${show == true}" th:href="@{/unidades-organizacionales/show/{id}(id=${uo.idUnidadOrganizacional})}">
@@ -80,6 +82,7 @@
                             <th>Nombre Unidad Organizacional</th>
                             <th>Unidad Organizacional Padre</th>
                             <th>Tipo de Unidad Organizacional</th>
+                            <th>Jefe de Unidad</th>
                             <th>Acciones</th>
                         </tr>
                         </tfoot>
@@ -130,7 +133,16 @@
     <script th:src="@{/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
     <script th:src="@{/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
     <script th:src="@{/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
-    <script th:src="@{/js/datatable/datatable.js}"></script>
+    <script >
+        $("#example1").DataTable({
+            "responsive": true,
+            "autoWidth": false,
+            "columnDefs": [
+                { "width": "20%", "targets": 4 }
+            ]
+        });
+
+    </script>
     <!-- Toastr -->
     <script th:src="@{/plugins/toastr/toastr.min.js}"></script>
     <!-- SweetAlert2 -->
@@ -139,6 +151,7 @@
     <script>
         $("#crear_unidad_btn").on("click", function () {
             $("#error").attr("hidden", "hidden");
+            $("#nombreUnidad").val("");
             $("#create_modal").modal("show");
         });
 
@@ -177,7 +190,33 @@
                 } else {
                     $("#edit_unidadPadre option[value='-1']").attr("selected", "selected");
                 }
+
+                //Empleados para asignar jefe de unidad
+                $.get('/api/empleados-unidad/' + idUnidad, function (data_emp) {
+                    var options = "";
+                    if(data_emp.length !=0){
+                        for (var i = 0; i < data_emp.length; i++) {
+                            var empleado = data_emp[i];
+                            options += '<option value="' + empleado.idEmpleado + '">'
+                                +empleado.codigo+' ' + empleado.nombrePrimero +' '+empleado.apellidoMaterno
+                                + '</option>';
+                        }
+                    }else{
+                        options = '<option value="' + -1 + '">'
+                            +'No hay empleados'+'</option>';
+                    }
+                    document.getElementById("empleado_jefe_select").innerHTML = options;
+                    console.log(data.result);
+                    if(data.result.empleadoJefe!=null){
+                        $("#empleado_jefe_select option[value='"+data.result.empleadoJefe.idEmpleado+"']").attr("selected", "selected");
+                    }else{
+                        $("#empleado_jefe_select option[value='"+-1+"']").attr("selected", "selected");
+                    }
+                });
             });
+
+
+
             $("#error_edit").attr("hidden", "hidden");
             $("#edit_unidad").modal("show");
         });

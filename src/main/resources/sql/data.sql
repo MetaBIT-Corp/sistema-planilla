@@ -209,11 +209,11 @@ insert into estados_civiles values(5,'Union Libre');;
 
 
 --Empleados
-insert into empleados(ID_EMPLEADO,APELLIDO_CASADA,APELLIDO_MATERNO,APELLIDO_PATERNO,CODIGO,CORREO_INSTITUCIONAL,CORREO_PERSONAL,EMPLEADO_HABILITADO,ES_ADMINISTRATIVO,FECHA_NACIMIENTO,HORAS_TRABAJO,NOMBRE_PRIMERO,NOMBRE_SEGUNDO,SALARIO_BASE_MENSUAL,ID_DIRECCION,ID_ESTADO_CIVIL,ID_GENERO,ID_USUARIO) 
-values(300,null,'Lopez','Estupinian','EL16002','el16002@metabit.tech.sv','el16002@gmail.com',1,0,'28-JUN-97',20,'Ricardo','Bladimir',2000,78,1,1,5);;
+insert into empleados(ID_EMPLEADO,APELLIDO_CASADA,APELLIDO_MATERNO,APELLIDO_PATERNO,CODIGO,CORREO_INSTITUCIONAL,CORREO_PERSONAL,EMPLEADO_HABILITADO,FECHA_NACIMIENTO,HORAS_TRABAJO,NOMBRE_PRIMERO,NOMBRE_SEGUNDO,SALARIO_BASE_MENSUAL,ID_DIRECCION,ID_ESTADO_CIVIL,ID_GENERO,ID_USUARIO)
+values(300,null,'Lopez','Estupinian','EL16002','el16002@metabit.tech.sv','el16002@gmail.com',1,'28-JUN-97',20,'Ricardo','Bladimir',2000,78,1,1,5);;
 
-insert into empleados(ID_EMPLEADO,APELLIDO_CASADA,APELLIDO_MATERNO,APELLIDO_PATERNO,CODIGO,CORREO_INSTITUCIONAL,CORREO_PERSONAL,EMPLEADO_HABILITADO,ES_ADMINISTRATIVO,FECHA_NACIMIENTO,HORAS_TRABAJO,NOMBRE_PRIMERO,NOMBRE_SEGUNDO,SALARIO_BASE_MENSUAL,ID_DIRECCION,ID_ESTADO_CIVIL,ID_GENERO,ID_USUARIO) 
-values(301,null,'Palacios','Amaya','EP16014','el16007@metabit.tech.sv','el16007@hotmail.com',1,0,'28-JUN-97',20,'Edwin','Joel',2000,78,1,1,null);;
+insert into empleados(ID_EMPLEADO,APELLIDO_CASADA,APELLIDO_MATERNO,APELLIDO_PATERNO,CODIGO,CORREO_INSTITUCIONAL,CORREO_PERSONAL,EMPLEADO_HABILITADO,FECHA_NACIMIENTO,HORAS_TRABAJO,NOMBRE_PRIMERO,NOMBRE_SEGUNDO,SALARIO_BASE_MENSUAL,ID_DIRECCION,ID_ESTADO_CIVIL,ID_GENERO,ID_USUARIO)
+values(301,null,'Palacios','Amaya','EP16014','el16007@metabit.tech.sv','el16007@hotmail.com',1,'28-JUN-97',20,'Edwin','Joel',2000,78,1,1,null);;
 
 insert into empleados_documentos(ID_EMPLEADO_DOCUMENTO, CODIGO_DOCUMENTO, ID_EMPLEADO, ID_TIPO_DOCUMENTO) values (101,'15840523-1',300,1);;
 insert into empleados_documentos(ID_EMPLEADO_DOCUMENTO, CODIGO_DOCUMENTO, ID_EMPLEADO, ID_TIPO_DOCUMENTO) values (102,'0810-123321-100-4',301,2);;
@@ -248,18 +248,18 @@ insert into tipos_unidad_organizacional values(502,3,'Areas',1);;
 insert into tipos_unidad_organizacional values(503,4,'Secciones',1);;
 
 --Unidades organizacionales
-insert into unidades_organizacionales(id_unidad_organizacional, unidad_organizacional, id_tipo_unidad_organizacional) values(500, 'Gerencia General', 500);;
-insert into unidades_organizacionales values(501,'Departamento de RRHH',501,500);;
-insert into unidades_organizacionales values(502,'Departamento de Ventas',501,500);;
-insert into unidades_organizacionales values(503,'Departamento de Informatica',501,500);;
-insert into unidades_organizacionales values(504,'Departamento de Administrativo',501,500);;
-insert into unidades_organizacionales values(505,'Departamento Financiero',501,500);;
-insert into unidades_organizacionales values(506,'Area de Tecnologias de Informacion',502,503);;
-insert into unidades_organizacionales values(507,'Area de Desarrollo de Software',502,503);;
-insert into unidades_organizacionales values(508,'Area de Redes Informaticas',502,503);;
-insert into unidades_organizacionales values(509,'Seccion de Testing/QA',503,507);;
-insert into unidades_organizacionales values(510,'Seccion de Desarrolladores Backend',503,507);;
-insert into unidades_organizacionales values(511,'Seccion de Desarrolladores Frontend',503,507);;
+insert into unidades_organizacionales(id_unidad_organizacional, unidad_organizacional, id_tipo_unidad_organizacional, id_unidad_organizacional_padre, id_empleado_jefe) values(500, 'Gerencia General',500,null,300);;
+insert into unidades_organizacionales(id_unidad_organizacional, unidad_organizacional, id_tipo_unidad_organizacional, id_unidad_organizacional_padre,id_empleado_jefe) values(501,'Departamento de RRHH',501,500,301);;
+insert into unidades_organizacionales (id_unidad_organizacional, unidad_organizacional, id_tipo_unidad_organizacional, id_unidad_organizacional_padre) values(502,'Departamento de Ventas',501,500);;
+insert into unidades_organizacionales (id_unidad_organizacional, unidad_organizacional, id_tipo_unidad_organizacional, id_unidad_organizacional_padre) values(503,'Departamento de Informatica',501,500);;
+insert into unidades_organizacionales (id_unidad_organizacional, unidad_organizacional, id_tipo_unidad_organizacional, id_unidad_organizacional_padre) values(504,'Departamento de Administrativo',501,500);;
+insert into unidades_organizacionales (id_unidad_organizacional, unidad_organizacional, id_tipo_unidad_organizacional, id_unidad_organizacional_padre) values(505,'Departamento Financiero',501,500);;
+insert into unidades_organizacionales (id_unidad_organizacional, unidad_organizacional, id_tipo_unidad_organizacional, id_unidad_organizacional_padre) values(506,'Area de Tecnologias de Informacion',502,503);;
+insert into unidades_organizacionales (id_unidad_organizacional, unidad_organizacional, id_tipo_unidad_organizacional, id_unidad_organizacional_padre) values(507,'Area de Desarrollo de Software',502,503);;
+insert into unidades_organizacionales (id_unidad_organizacional, unidad_organizacional, id_tipo_unidad_organizacional, id_unidad_organizacional_padre)values(508,'Area de Redes Informaticas',502,503);;
+insert into unidades_organizacionales (id_unidad_organizacional, unidad_organizacional, id_tipo_unidad_organizacional, id_unidad_organizacional_padre) values(509,'Seccion de Testing/QA',503,507);;
+insert into unidades_organizacionales (id_unidad_organizacional, unidad_organizacional, id_tipo_unidad_organizacional, id_unidad_organizacional_padre) values(510,'Seccion de Desarrolladores Backend',503,507);;
+insert into unidades_organizacionales (id_unidad_organizacional, unidad_organizacional, id_tipo_unidad_organizacional, id_unidad_organizacional_padre) values(511,'Seccion de Desarrolladores Frontend',503,507);;
 
 /*----------------------ANIO LABORAL----------------------*/
 INSERT INTO anios_laborales VALUES(100, 2018, 30);;
@@ -281,9 +281,9 @@ insert into centros_costos values(511,0.0,0.0,0.0,102,511);;
 
 --Empleado Puesto Unidad
 insert into empleados_puestos_unidades  (id_empleado_puesto_unidad, id_empleado, id_puesto,id_unidad_organizacional,fecha_inicio,fecha_fin)
-                 values (100, 300, 1,501, '28-JUN-2016',null);;
+                 values (100, 300, 1,500, '28-JUN-2016',null);;
 insert into empleados_puestos_unidades  (id_empleado_puesto_unidad, id_empleado, id_puesto,id_unidad_organizacional,fecha_inicio,fecha_fin)
-                 values (101, 301, 2,502,'30-MAR-2017',null);;
+                 values (101, 301, 2,501,'30-MAR-2017',null);;
 
 
 /*----------------------PERIODO----------------------*/
