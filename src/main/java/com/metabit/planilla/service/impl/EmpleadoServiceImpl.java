@@ -1,6 +1,7 @@
 package com.metabit.planilla.service.impl;
 
 import com.metabit.planilla.entity.Empleado;
+import com.metabit.planilla.entity.EstadoCivil;
 import com.metabit.planilla.entity.Genero;
 import com.metabit.planilla.entity.Usuario;
 import com.metabit.planilla.repository.EmpleadoJpaRepository;
@@ -96,9 +97,14 @@ public class EmpleadoServiceImpl implements EmpleadoService {
         return empleadoJpaRepository.findByUsuario(usuario);
     }
 
+
     @Override
     public List<Empleado> getAllHabilitados() {
         return empleadoJpaRepository.findAllByEmpleadoHabilitadoIsTrue();
     }
 
+	@Override
+	public List<Empleado> findByEstadoCivil(EstadoCivil estadoCivil) {
+		return empleadoJpaRepository.findByEstadoCivil(estadoCivil);
+	}
 }

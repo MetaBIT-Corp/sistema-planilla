@@ -11,11 +11,12 @@ function desplegarUnidades(){
 }
 
 function renderSelect(unidades){
+	console.log(unidades);
 	 $('#submitPago').show();
 	 var html = '';
 	 if(unidades.length>0){
 		 html = `<label>Seleccione la Unidad que desea pagar planilla</label>
-				 <select class="form-control select2" style="width: 100%;" aria-hidden="true">`;
+				 <select class="form-control select2" style="width: 100%;" aria-hidden="true" id="idUnidadOrganizacional" name="idUnidadOrganizacional">`;
 		 for (var i = 0; i < unidades.length; ++i) {
 			 html += `<option value=${unidades[i].idUnidadOrganizacional}>${unidades[i].unidadOrganizacional}</option>`;
 	     }
@@ -32,5 +33,21 @@ function renderSelect(unidades){
 	 $('#divBodyDesplegarUnidades').html(html);
 	 $('.select2').select2();
 }
+
+//Activar loading con overlay 
+
+const $button = document.querySelector('#submitPago')
+const $overlay = document.querySelector('#overlay')
+const $loading = document.querySelector('#loading')
+const $wrapLoad = document.querySelector('.wrap-load')
+const $wrapper = document.querySelector('.wrapper')
+
+
+$button.addEventListener('click', (event) => {
+    $overlay.classList.add('is-active')
+    $loading.classList.add('sk-chase')
+    $wrapLoad.classList.add('is-active')
+    $wrapper.classList.add('ocultar')
+})
 
 

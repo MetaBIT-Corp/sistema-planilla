@@ -51,6 +51,11 @@ public class PlanillaServiceImpl implements PlanillaService {
 	public String showMessage(String p_message) {
 		return planillaJpaRepository.showMessage(p_message);
 	}
+
+	@Override
+	public String pagarPlanilla(int idUnidadOrganizacional) {
+		return planillaJpaRepository.pagarPlanilla(idUnidadOrganizacional);
+	}
 	
 	
 	

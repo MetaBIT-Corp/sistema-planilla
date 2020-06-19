@@ -97,8 +97,14 @@ public class Empleado {
 	@JsonIgnore
 	@OneToMany(mappedBy="empleado",cascade=CascadeType.ALL)
 	private List<EmpleadoProfesion> profesionesEmpleado=new ArrayList<>();
+	
+	//Planillas
+	@OneToMany(mappedBy="empleado",cascade=CascadeType.ALL)
+	private List<Planilla> planillasEmpleado =new ArrayList<>();
+
 
 	@JsonIgnore
+	//Empleados puestos unidades
 	@OneToMany(fetch = FetchType.LAZY,cascade =  CascadeType.ALL, mappedBy = "empleado")
 	List<EmpleadosPuestosUnidades> empleadosPuestosUnidades;
 
@@ -106,7 +112,8 @@ public class Empleado {
 		super();
 	}
 
-	public Empleado(String codigo, String nombrePrimero, String nombreSegundo, String apellidoPaterno, String apellidoMaterno, String apellidoCasada, LocalDate fechaNacimiento, String correoPersonal, String correoInstitucional, double salarioBaseMensual, int horasTrabajo, Boolean empleadoHabilitado, List<EmpleadoDocumento> documentosEmpleado, Usuario usuario, EstadoCivil estadoCivil, Direccion direccion, List<EmpleadoProfesion> profesionesEmpleado,Genero genero) {
+	public Empleado(String codigo, String nombrePrimero, String nombreSegundo, String apellidoPaterno, String apellidoMaterno, String apellidoCasada, LocalDate fechaNacimiento, String correoPersonal, String correoInstitucional, double salarioBaseMensual, int horasTrabajo, Boolean empleadoHabilitado, List<EmpleadoDocumento> documentosEmpleado, Usuario usuario, EstadoCivil estadoCivil, Direccion direccion, List<EmpleadoProfesion> profesionesEmpleado,Genero genero,List<Planilla> planillasEmpleado) {
+
 		this.codigo = codigo;
 		this.nombrePrimero = nombrePrimero;
 		this.nombreSegundo = nombreSegundo;
@@ -125,6 +132,7 @@ public class Empleado {
 		this.direccion = direccion;
 		this.profesionesEmpleado = profesionesEmpleado;
 		this.genero=genero;
+		this.planillasEmpleado=planillasEmpleado;
 	}
 
 	public List<EmpleadosPuestosUnidades> getEmpleadosPuestosUnidades() {
@@ -284,5 +292,13 @@ public class Empleado {
 
 	public void setProfesionesEmpleado(List<EmpleadoProfesion> profesionesEmpleado) {
 		this.profesionesEmpleado = profesionesEmpleado;
+	}
+
+	public List<Planilla> getPlanillasEmpleado() {
+		return planillasEmpleado;
+	}
+
+	public void setPlanillasEmpleado(List<Planilla> planillasEmpleado) {
+		this.planillasEmpleado = planillasEmpleado;
 	}
 }

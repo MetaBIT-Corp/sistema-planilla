@@ -14,5 +14,6 @@ public interface PlanillaService {
 	public abstract void updatePlanillaMovimientos(int id_planilla);
 	public abstract List<Planilla> getPlanillasByPeriodo(Periodo periodo);
 	public abstract String showMessage(String p_message);
+	public abstract String pagarPlanilla(int idUnidadOrganizacional);
 
 }

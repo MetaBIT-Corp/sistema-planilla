@@ -220,7 +220,8 @@ public class EmpleadoController {
                 estadoCivil,
                 direccion,
                 null,
-                genero
+                genero,
+                null
         );
         empleado = empleadoService.addEmployee(empleado);
 
