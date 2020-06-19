@@ -19,6 +19,8 @@ import com.metabit.planilla.entity.Departamento;
 import com.metabit.planilla.entity.Municipio;
 import com.metabit.planilla.entity.Rol;
 import com.metabit.planilla.entity.UnidadOrganizacional;
+import com.metabit.planilla.entity.Usuario;
+import com.metabit.planilla.repository.UserJpaRepository;
 import com.metabit.planilla.service.DepartamentoService;
 import com.metabit.planilla.service.MunicipioService;
 import com.metabit.planilla.service.RolService;
@@ -48,6 +50,10 @@ public class DataRestController {
 	@Qualifier("unidadOrganizacionalServiceImpl")
 	private UnidadOrganizacionalService unidadOrganizacionalService;
 	
+	@Autowired
+    @Qualifier("userJpaRepository")
+    private UserJpaRepository userJpaRepository;
+	
 	@GetMapping("/municipios/{idDepartamento}")
 	public List<Municipio> getMunicipiosByDepto(@PathVariable("idDepartamento") int idDepartamento){
 		Departamento depto = departmentoService.getDepartamento(idDepartamento);
@@ -66,5 +72,10 @@ public class DataRestController {
 	@GetMapping("/unidades-organizacionales")
 	public List<UnidadOrganizacional> getUnidadesOrganizacionales(){
 		return unidadOrganizacionalService.getAllUnidadesOrganizacionales();
+	}
+	
+	@GetMapping("/user/{username}")
+	public Usuario getUsername(@PathVariable("username") String username) {
+		return userJpaRepository.findByUsername(username);
 	}
 }

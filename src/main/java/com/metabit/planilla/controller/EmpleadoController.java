@@ -3,25 +3,37 @@ package com.metabit.planilla.controller;
 import com.metabit.planilla.entity.*;
 import com.metabit.planilla.repository.UserJpaRepository;
 import com.metabit.planilla.service.*;
+import com.metabit.planilla.service.impl.EmailServiceImpl;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.thymeleaf.spring5.SpringTemplateEngine;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
+
+import org.thymeleaf.context.Context;
 
 @SuppressWarnings("ALL")
 @Controller
@@ -87,6 +99,14 @@ public class EmpleadoController {
     @Autowired
 	@Qualifier("rolServiceImpl")
 	private RolService rolService;
+
+    @Autowired
+	@Qualifier("emailServiceImpl")
+	private EmailService emailService;
+    
+    @Autowired
+    @Qualifier("usuarioServiceImpl")
+    private UsuarioService usuarioService;
 
     private static final String INDEX_VIEW = "empleado/index";
     private static final String EDIT_VIEW = "empleado/edit";
@@ -833,19 +853,51 @@ public class EmpleadoController {
         }
         return "redirect:/empleado/index?unlock_success=true";
     }
+    
+    @PostMapping("/send-unlock-email")
+    public String sendUnlockEmail(HttpServletRequest request, @RequestParam("username") String username) {
+    	
+    	Email email = new Email();
+        Map<String, Object> model = new HashMap<>();
+        
+        Usuario usuario = userJpaRepository.findByUsername(username);
+        Empleado empleado = empleadoService.findByUsuario(usuario);
+        
+        if(usuario != null) {
+        	List<Usuario> admin_users = usuarioService.getAdminUsers();
+        	
+        	String email_personal = empleado.getCorreoPersonal();
+            String email_institucional = empleado.getCorreoInstitucional();
+            String nombre = empleado.getNombrePrimero() + " " +
+            				empleado.getNombreSegundo() + " " +
+            				empleado.getApellidoPaterno() + " " +
+            				empleado.getApellidoMaterno();
+            
+            
+        	String  url_base = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort(); 
+            String 	url_unlock = url_base + "/empleado/unlock-user";
+        	
+        	model.put("email_per", email_personal);
+        	model.put("email_ins", email_institucional);
+        	model.put("nombre", nombre);
+        	model.put("username", username);
+        	model.put("id",empleado.getIdEmpleado());
+    		model.put("url_unlock", url_unlock);
+    		model.put("url_base", url_base);
 
-    @PostMapping("/test")
-    public String rolTest(@RequestParam(name = "roles[]") List<Integer> roles) {
-    	List<Rol> rolesList = new ArrayList<Rol>();
-    	Usuario usuario = userJpaRepository.findByUsername("admin");
-    	for (int idRol: roles) {
-        	Rol rol = rolService.getByIdRol(idRol);
-        	rolesList.add(rol);
+        	for(Usuario user : admin_users) {
+        		Empleado e = empleadoService.findByUsuario(user);
+        		email.setFrom("metabitCorp@gmail.com");
+                email.setTo(e.getCorreoPersonal());
+                email.setSubject("Desbloqueo de usario");
+                
+                email.setModel(model);
+                emailService.sendEmail(email);
+        	}
+
         }
-        usuario.setRoles(rolesList);
-
-        userJpaRepository.save(usuario);
-
-        return "redirect:/index";
+        
+        return "redirect:/login";
+        
     }
 }
