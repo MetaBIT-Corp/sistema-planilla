@@ -1,9 +1,16 @@
 package com.metabit.planilla.controller;
 
-import com.metabit.planilla.entity.*;
-import com.metabit.planilla.repository.UserJpaRepository;
-import com.metabit.planilla.service.*;
-import com.metabit.planilla.service.impl.EmailServiceImpl;
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -11,29 +18,49 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import org.thymeleaf.spring5.SpringTemplateEngine;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.text.ParseException;
-import java.time.LocalDate;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-import javax.servlet.http.HttpServletRequest;
-
-import org.thymeleaf.context.Context;
+import com.metabit.planilla.entity.Direccion;
+import com.metabit.planilla.entity.Email;
+import com.metabit.planilla.entity.Empleado;
+import com.metabit.planilla.entity.EmpleadoDocumento;
+import com.metabit.planilla.entity.EmpleadoProfesion;
+import com.metabit.planilla.entity.EmpleadosPuestosUnidades;
+import com.metabit.planilla.entity.EstadoCivil;
+import com.metabit.planilla.entity.Genero;
+import com.metabit.planilla.entity.Municipio;
+import com.metabit.planilla.entity.Profesion;
+import com.metabit.planilla.entity.Puesto;
+import com.metabit.planilla.entity.Rol;
+import com.metabit.planilla.entity.TipoDocumento;
+import com.metabit.planilla.entity.UnidadOrganizacional;
+import com.metabit.planilla.entity.Usuario;
+import com.metabit.planilla.repository.UserJpaRepository;
+import com.metabit.planilla.service.DepartamentoService;
+import com.metabit.planilla.service.DireccionService;
+import com.metabit.planilla.service.EmailService;
+import com.metabit.planilla.service.EmpleadoDocumentoService;
+import com.metabit.planilla.service.EmpleadoProfesionService;
+import com.metabit.planilla.service.EmpleadoService;
+import com.metabit.planilla.service.EmpleadosPuestosUnidadesService;
+import com.metabit.planilla.service.EstadoCivilService;
+import com.metabit.planilla.service.GeneroService;
+import com.metabit.planilla.service.MunicipioService;
+import com.metabit.planilla.service.ProfesionService;
+import com.metabit.planilla.service.PuestoService;
+import com.metabit.planilla.service.RolService;
+import com.metabit.planilla.service.TipoDocumentoService;
+import com.metabit.planilla.service.UnidadOrganizacionalService;
+import com.metabit.planilla.service.UsuarioService;
 
 @SuppressWarnings("ALL")
 @Controller

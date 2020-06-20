@@ -37,6 +37,12 @@ public class UserServiceImpl implements UserDetailsService{
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		
+		//Reinicia el contador de intentos para no mostrar el mensaje a usuarios que aún tienen intentos
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+		HttpSession session = request.getSession(true);
+		session.setAttribute("user_attemps", 0);
+		
 		com.metabit.planilla.entity.Usuario user = userJpaRepository.findByUsername(username);
 		List<GrantedAuthority> authorities = buildAuthorities(user.getRoles());
 		userAttemps(user);

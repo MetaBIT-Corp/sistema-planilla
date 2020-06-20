@@ -40,7 +40,6 @@ public class UnidadOrganizacional {
     private UnidadOrganizacional unidadPadre;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JsonIgnore
     @JoinColumn(name="id_tipo_unidad_organizacional")
     private TipoUnidadOrganizacional tipoUnidadOrganizacional;
 

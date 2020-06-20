@@ -99,6 +99,7 @@ public class Empleado {
 	private List<EmpleadoProfesion> profesionesEmpleado=new ArrayList<>();
 	
 	//Planillas
+	@JsonIgnore
 	@OneToMany(mappedBy="empleado",cascade=CascadeType.ALL)
 	private List<Planilla> planillasEmpleado =new ArrayList<>();
 
