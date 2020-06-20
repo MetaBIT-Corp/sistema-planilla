@@ -3,10 +3,8 @@ package com.metabit.planilla.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.metabit.planilla.entity.Genero;
-import com.metabit.planilla.entity.Puesto;
-import com.metabit.planilla.service.GeneroService;
-import com.metabit.planilla.service.PuestoService;
+import com.metabit.planilla.entity.*;
+import com.metabit.planilla.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -52,6 +50,11 @@ public class DataRestController {
 	@Autowired
 	@Qualifier("unidadOrganizacionalServiceImpl")
 	private UnidadOrganizacionalService unidadOrganizacionalService;
+
+	@Autowired
+	@Qualifier("empleadosPuestosUnidadesServiceImpl")
+	private EmpleadosPuestosUnidadesService empleadosPuestosUnidadesService;
+
 	
 	@Autowired
 	@Qualifier("diaFestivoServiceImpl")
@@ -93,10 +96,25 @@ public class DataRestController {
 		}
 		return unidadesSinPagar;
 	}
+
 		
 	@GetMapping("/dias-festivos")
 	public List<DiaFestivo> getDiasFestivos(){
 		List<DiaFestivo> diaFestivoList = diaFestivoService.getDiasFestivos();
 		return diaFestivoList;
+	}
+
+
+	@GetMapping("/empleados-unidad/{id}")
+	public List<Empleado> getEmpleadosByUnidad(@PathVariable("id") int idUnidad){
+		UnidadOrganizacional u = unidadOrganizacionalService.getOneUnidadOrganizacional(idUnidad);
+		List<EmpleadosPuestosUnidades> empleadosPuestosUnidades = empleadosPuestosUnidadesService.getAllByUnidadAndPuestoVigente(u);
+		List<Empleado> empleadoList = new ArrayList<>();
+		for (EmpleadosPuestosUnidades e: empleadosPuestosUnidades) {
+			if (e.getEmpleado().getEmpleadoHabilitado()){
+				empleadoList.add(e.getEmpleado());
+			}
+		}
+		return empleadoList;
 	}
 }

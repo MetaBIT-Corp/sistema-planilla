@@ -20,4 +20,5 @@ public interface EmpleadoJpaRepository extends JpaRepository<Empleado,Serializab
 	public abstract Empleado findByCorreoInstitucional(String correo);
 	public abstract Empleado findByCorreoPersonal(String correo);
 	public abstract Empleado findByUsuario(Usuario usuario);
+	public abstract List<Empleado> findAllByEmpleadoHabilitadoIsTrue();
 }

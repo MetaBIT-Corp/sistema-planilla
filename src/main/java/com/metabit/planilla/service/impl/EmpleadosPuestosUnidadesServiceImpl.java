@@ -2,6 +2,7 @@ package com.metabit.planilla.service.impl;
 
 import com.metabit.planilla.entity.Empleado;
 import com.metabit.planilla.entity.EmpleadosPuestosUnidades;
+import com.metabit.planilla.entity.UnidadOrganizacional;
 import com.metabit.planilla.repository.EmpleadosPuestosUnidadesJpaRepository;
 import com.metabit.planilla.service.EmpleadosPuestosUnidadesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,4 +32,10 @@ public class EmpleadosPuestosUnidadesServiceImpl implements EmpleadosPuestosUnid
     public EmpleadosPuestosUnidades getByEmpleadoAndFechaFinIsNull(Empleado empleado) {
         return empleadosPuestosUnidadesJpaRepository.findByEmpleadoAndFechaFinIsNull(empleado);
     }
+
+    @Override
+    public List<EmpleadosPuestosUnidades> getAllByUnidadAndPuestoVigente(UnidadOrganizacional unidad) {
+        return empleadosPuestosUnidadesJpaRepository.findAllByUnidadOrganizacionalAndFechaFinIsNull(unidad);
+    }
+
 }

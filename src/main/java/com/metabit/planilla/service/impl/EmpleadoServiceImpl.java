@@ -63,10 +63,14 @@ public class EmpleadoServiceImpl implements EmpleadoService {
         if(idEmp==0){
             return (empleadoJpaRepository.findByCorreoInstitucional(correo)!=null)?true:false;
         }else{
-            if(idEmp==empleadoJpaRepository.findByCorreoInstitucional(correo).getIdEmpleado()){
-                return false;
+            if(empleadoJpaRepository.findByCorreoInstitucional(correo)!=null){
+                if(idEmp==empleadoJpaRepository.findByCorreoInstitucional(correo).getIdEmpleado()){
+                    return false;
+                }else{
+                    return true;
+                }
             }else{
-                return true;
+                return false;
             }
         }
     }
@@ -76,10 +80,14 @@ public class EmpleadoServiceImpl implements EmpleadoService {
         if (idEmp==0){
             return (empleadoJpaRepository.findByCorreoPersonal(correo)!=null)?true:false;
         }else{
-            if(idEmp==empleadoJpaRepository.findByCorreoPersonal(correo).getIdEmpleado()){
-                return false;
+            if(empleadoJpaRepository.findByCorreoPersonal(correo)!=null){
+                if(idEmp==empleadoJpaRepository.findByCorreoPersonal(correo).getIdEmpleado()){
+                    return false;
+                }else{
+                    return true;
+                }
             }else{
-                return true;
+                return false;
             }
         }
     }
@@ -87,6 +95,12 @@ public class EmpleadoServiceImpl implements EmpleadoService {
     @Override
     public Empleado findByUsuario(Usuario usuario) {
         return empleadoJpaRepository.findByUsuario(usuario);
+    }
+
+
+    @Override
+    public List<Empleado> getAllHabilitados() {
+        return empleadoJpaRepository.findAllByEmpleadoHabilitadoIsTrue();
     }
 
 	@Override
