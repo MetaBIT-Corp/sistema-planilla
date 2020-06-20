@@ -12,4 +12,5 @@ import com.metabit.planilla.entity.TipoUnidadOrganizacional;
 public interface TipoUnidadOrganizacionalJpaRepository extends JpaRepository<TipoUnidadOrganizacional, Serializable> {
 	
 	public abstract List<TipoUnidadOrganizacional> findByTipoUnidadOrganizacionalHabilitado(Boolean estado);
+	public abstract TipoUnidadOrganizacional findByIdTipoUnidadOrganizacional(int id_tipo);
 }

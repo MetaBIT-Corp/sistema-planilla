@@ -360,17 +360,17 @@ INSERT ALL
   INTO RANGOS_RENTA(id_rango_renta, cuota_fija, exceso, periodicidad_renta, porcentaje_renta, rango_renta_habilitado, salario_min, salario_max) VALUES(100, 0, 0, 30, 0, 1, 0.01, 472.00)
   INTO RANGOS_RENTA(id_rango_renta, cuota_fija, exceso, periodicidad_renta, porcentaje_renta, rango_renta_habilitado, salario_min, salario_max) VALUES(101, 17.67, 472.00, 30, 10, 1, 472.01, 895.24)
   INTO RANGOS_RENTA(id_rango_renta, cuota_fija, exceso, periodicidad_renta, porcentaje_renta, rango_renta_habilitado, salario_min, salario_max) VALUES(102, 60.00, 895.24, 30, 20, 1, 895.25, 2038.10)
-  INTO RANGOS_RENTA(id_rango_renta, cuota_fija, exceso, periodicidad_renta, porcentaje_renta, rango_renta_habilitado, salario_min, salario_max) VALUES(103, 288.57, 2038.10, 30, 30, 1, 2038.11, 100000)
+  INTO RANGOS_RENTA(id_rango_renta, cuota_fija, exceso, periodicidad_renta, porcentaje_renta, rango_renta_habilitado, salario_min, salario_max) VALUES(103, 288.57, 2038.10, 30, 30, 1, 2038.11, 0)
 
   INTO RANGOS_RENTA(id_rango_renta, cuota_fija, exceso, periodicidad_renta, porcentaje_renta, rango_renta_habilitado, salario_min, salario_max) VALUES(104, 0, 0, 15, 0, 1, 0.01, 236.00)
   INTO RANGOS_RENTA(id_rango_renta, cuota_fija, exceso, periodicidad_renta, porcentaje_renta, rango_renta_habilitado, salario_min, salario_max) VALUES(105, 8.83, 236, 15, 10, 1, 236.01, 447.62)
   INTO RANGOS_RENTA(id_rango_renta, cuota_fija, exceso, periodicidad_renta, porcentaje_renta, rango_renta_habilitado, salario_min, salario_max) VALUES(106, 30.00, 446.62, 15, 20, 1, 447.63, 1019.05)
-  INTO RANGOS_RENTA(id_rango_renta, cuota_fija, exceso, periodicidad_renta, porcentaje_renta, rango_renta_habilitado, salario_min, salario_max) VALUES(107, 144.28, 1019.05, 15, 30, 1, 1019.06, 100000)
+  INTO RANGOS_RENTA(id_rango_renta, cuota_fija, exceso, periodicidad_renta, porcentaje_renta, rango_renta_habilitado, salario_min, salario_max) VALUES(107, 144.28, 1019.05, 15, 30, 1, 1019.06, 0)
 
   INTO RANGOS_RENTA(id_rango_renta, cuota_fija, exceso, periodicidad_renta, porcentaje_renta, rango_renta_habilitado, salario_min, salario_max) VALUES(108, 0, 0, 7, 0, 1, 0.01, 118.00)
   INTO RANGOS_RENTA(id_rango_renta, cuota_fija, exceso, periodicidad_renta, porcentaje_renta, rango_renta_habilitado, salario_min, salario_max) VALUES(109, 4.42, 118.00, 7, 10, 1, 118.01, 223.81)
   INTO RANGOS_RENTA(id_rango_renta, cuota_fija, exceso, periodicidad_renta, porcentaje_renta, rango_renta_habilitado, salario_min, salario_max) VALUES(110, 15.00, 223.81, 7, 20, 1, 223.82, 509.52)
-  INTO RANGOS_RENTA(id_rango_renta, cuota_fija, exceso, periodicidad_renta, porcentaje_renta, rango_renta_habilitado, salario_min, salario_max) VALUES(111, 72.14, 509.52, 7, 30, 1, 509.52, 100000)
+  INTO RANGOS_RENTA(id_rango_renta, cuota_fija, exceso, periodicidad_renta, porcentaje_renta, rango_renta_habilitado, salario_min, salario_max) VALUES(111, 72.14, 509.52, 7, 30, 1, 509.52, 0)
 SELECT * FROM DUAL;;
 
 /*------------------RANGOS COMISION----------------------------*/

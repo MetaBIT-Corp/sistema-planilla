@@ -56,11 +56,52 @@
           <div th:if="${logout != null}" class="alert alert-info text-center" role="alert">Vuelva pronto</div>
           <input type="submit" value="Login" class="btn btn-primary btn-user btn-block"/>
           <hr>
+          <div class="text-center">
+            <a id="btn_solicitud" href="#" class="text-danger">Solicitar desbloqueo de cuenta</a>
+          </div>
+          
       </form>
 
     </div>
     <!-- /.login-card-body -->
   </div>
+</div>
+
+<!-- Modal para envio de solicitud de desbloqueo de usuario -->
+<div class="modal fade" id="solicitudDesbloqueo" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Solicitar desbloqueo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="post" action="#" th:action="@{/empleado/send-unlock-email}">
+              <div class="modal-body">
+                <div class="form-group">
+                <div class="form-group col-10">
+                  <label for="nivel-jerarquico-edit" class="col-form-label">Ingrese su nombre de usuario:</label>
+                  <input type="text" class="form-control" name="username" id="unlock-username" required>
+                </div>
+              </div>
+              </div>
+              <div  class="callout callout-danger" id="messageError" style="display:none;">
+                <p  id="available-attemps" style="display:none;">
+                  <i class="icon fas fa-ban mr-2" style="color:red;"></i><span > El usuario ingresado no se encuentra bloqueado</span>
+                </p>
+                <p id="user-exists" style="display:none;">
+                  <i class="icon fas fa-ban mr-2" style="color:red;"></i><span > El usuario ingresado no existe</span>
+                </p>
+                
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary" id="btn-send" disabled>Enviar</button>
+              </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 <!-- jQuery -->
@@ -87,8 +128,48 @@ $(document).ready(function(){
   if(user_attemps > 3){
     toastr.error('Usuario bloqueado, usted ha consumido la cantidad máxima de intentos.<hr/> Favor contactar al Administrador')
   }
+
+
+  $('#btn_solicitud').on('click', function(){
+    $('#solicitudDesbloqueo').modal('show')
+  });
+
 })
 /*]]>*/
 </script>
 
+<script>
+
+  $('#unlock-username').on('keyup', function(){
+    var username = $('#unlock-username').val();
+    $.get('api/user/' + username, function(data){
+      
+      if(data != ""){
+      $('#user-exists').hide();
+        if(data.intentos < 3){
+          $('#messageError').show();
+          $('#available-attemps').show();
+          $('#btn-send').prop('disabled', true)
+        }else{
+          $('#btn-send').prop('disabled', false)
+          $('#messageError').hide();
+          $('#available-attemps').hide();
+      }
+      }else{
+        $('#messageError').show();
+        $('#available-attemps').hide();
+        $('#user-exists').show();
+        $('#btn-send').prop('disabled', true)
+      }
+      
+    }).fail(function(){ 
+      $('#messageError').hide();
+    });
+  });
+
+  $('#btn-send').on('click', function(){
+    $(this).text('Enviando...');
+  })
+</script>
 </html>
+

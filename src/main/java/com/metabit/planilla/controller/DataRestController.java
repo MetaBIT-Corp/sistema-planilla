@@ -3,28 +3,34 @@ package com.metabit.planilla.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.metabit.planilla.entity.*;
-import com.metabit.planilla.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.metabit.planilla.entity.AnioLaboral;
 import com.metabit.planilla.entity.Departamento;
 import com.metabit.planilla.entity.DiaFestivo;
+import com.metabit.planilla.entity.Empleado;
 import com.metabit.planilla.entity.EmpleadosPuestosUnidades;
+import com.metabit.planilla.entity.Genero;
 import com.metabit.planilla.entity.Municipio;
+import com.metabit.planilla.entity.Periodo;
 import com.metabit.planilla.entity.Planilla;
-import com.metabit.planilla.entity.Rol;
+import com.metabit.planilla.entity.TipoUnidadOrganizacional;
 import com.metabit.planilla.entity.UnidadOrganizacional;
+import com.metabit.planilla.entity.Usuario;
+import com.metabit.planilla.repository.UserJpaRepository;
+import com.metabit.planilla.service.AnioLaboralService;
 import com.metabit.planilla.service.DepartamentoService;
 import com.metabit.planilla.service.DiaFestivoService;
+import com.metabit.planilla.service.EmpleadosPuestosUnidadesService;
+import com.metabit.planilla.service.GeneroService;
 import com.metabit.planilla.service.MunicipioService;
-import com.metabit.planilla.service.RolService;
+import com.metabit.planilla.service.PuestoService;
+import com.metabit.planilla.service.TipoUnidadOrganizacionalService;
 import com.metabit.planilla.service.UnidadOrganizacionalService;
 
 @RestController
@@ -59,6 +65,18 @@ public class DataRestController {
 	@Autowired
 	@Qualifier("diaFestivoServiceImpl")
 	private DiaFestivoService diaFestivoService;
+	
+	@Autowired
+    @Qualifier("userJpaRepository")
+    private UserJpaRepository userJpaRepository;
+	
+	@Autowired
+	@Qualifier("anioLaboralServiceImpl")
+	private AnioLaboralService anioLaboralService;
+	
+	@Autowired
+	@Qualifier("tipoUnidadOrganizacionalServiceImpl")
+	private TipoUnidadOrganizacionalService tipoUnidadOrganizacionalService;
 	
 	@GetMapping("/municipios/{idDepartamento}")
 	public List<Municipio> getMunicipiosByDepto(@PathVariable("idDepartamento") int idDepartamento){
@@ -116,5 +134,24 @@ public class DataRestController {
 			}
 		}
 		return empleadoList;
+	}
+	
+	@GetMapping("/user/{username}")
+	public Usuario getUsername(@PathVariable("username") String username) {
+		return userJpaRepository.findByUsername(username);
+	}
+	
+	@GetMapping("/anio-laboral/{id_anio}/periodos")
+	public List<Periodo> periodosAnio(@PathVariable("id_anio") Integer id_anio) {
+		AnioLaboral anio_laboral = anioLaboralService.getByIdAnioLaboral(id_anio);
+		
+		return anio_laboral.getPeriodos();
+	}
+	
+	@GetMapping("/tipo-unidad/{id_tipo}/unidades")
+	public List<UnidadOrganizacional> unidadesTipoUnidad(@PathVariable("id_tipo") Integer id_tipo){
+		TipoUnidadOrganizacional tuo = tipoUnidadOrganizacionalService.getById(id_tipo);
+		
+		return tuo.getUnidades_organizacional();
 	}
 }
