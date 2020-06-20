@@ -24,6 +24,10 @@ public class PlanillaDiaFestivo {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_dia_festivo", nullable = false)
 	private DiaFestivo diaFestivo;
+	
+	public PlanillaDiaFestivo() {
+		super();
+	}
 
 	/**
 	 * @param idPlanillaDiaFestivo
@@ -37,9 +41,6 @@ public class PlanillaDiaFestivo {
 		this.diaFestivo = diaFestivo;
 	}
 
-	public PlanillaDiaFestivo() {
-		// TODO Auto-generated constructor stub
-	}
 
 	public int getIdPlanillaDiaFestivo() {
 		return idPlanillaDiaFestivo;

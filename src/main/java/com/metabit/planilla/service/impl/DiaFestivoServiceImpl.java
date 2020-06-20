@@ -1,5 +1,6 @@
 package com.metabit.planilla.service.impl;
 
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -25,10 +26,35 @@ public class DiaFestivoServiceImpl implements DiaFestivoService{
 	@Autowired
 	@Qualifier("diaFestivoJpaRepository")
 	private DiaFestivoJpaRepository diaFestivoJpaRepository;
-	
+
 	@Autowired
 	@Qualifier("periodoServiceImpl")
 	private PeriodoService periodoService;
+	
+	@Override
+	public List<DiaFestivo> getDiasFestivos() {
+		return diaFestivoJpaRepository.findAll();
+	}
+
+	@Override
+	public DiaFestivo storeDiaFestivo(DiaFestivo diaFestivo) {
+		return diaFestivoJpaRepository.save(diaFestivo);
+	}
+
+	@Override
+	public DiaFestivo updateDiaFestivo(DiaFestivo diaFestivo) {
+		return diaFestivoJpaRepository.save(diaFestivo);
+	}
+
+	@Override
+	public void deleteDiaFestivo(int idDiaFestivo) {
+		diaFestivoJpaRepository.deleteById(idDiaFestivo);
+	}
+
+	@Override
+	public DiaFestivo getDiaFestivo(int id) {
+		return diaFestivoJpaRepository.findById(id).get();
+	}
 
 	@Override
 	public List<DiaFestivo> getDiasFestivosDelPeriodoActivo() {
@@ -81,9 +107,5 @@ public class DiaFestivoServiceImpl implements DiaFestivoService{
 		return diasFestivosDelPeridoActivo;
 	}
 
-	@Override
-	public DiaFestivo getDiaFestivo(int idDiaFestivo) {
-		return diaFestivoJpaRepository.findById(idDiaFestivo).isPresent() ? diaFestivoJpaRepository.findById(idDiaFestivo).get() : null;
-	}
 	
 }

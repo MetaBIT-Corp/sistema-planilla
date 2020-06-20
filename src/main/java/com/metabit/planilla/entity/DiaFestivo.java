@@ -51,6 +51,9 @@ public class DiaFestivo {
 	@JsonIgnore
     private List<PlanillaDiaFestivo> planillaDiaFestivo =  new ArrayList<>();
     
+	public DiaFestivo() {
+		super();
+	}
 
 	/**
 	 * @param idDiaFestivo
@@ -69,7 +72,6 @@ public class DiaFestivo {
 		this.mes = mes;
 	}
 	
-	public DiaFestivo() {}
 
 	public int getIdDiaFestivo() {
 		return idDiaFestivo;
