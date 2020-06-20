@@ -22,6 +22,7 @@ import com.metabit.planilla.entity.Rol;
 import com.metabit.planilla.entity.RolRecursoPrivilegio;
 import com.metabit.planilla.entity.Usuario;
 import com.metabit.planilla.repository.UserJpaRepository;
+import com.metabit.planilla.service.UsuarioService;
 
 @Service("userServiceImpl")
 public class UserServiceImpl implements UserDetailsService{
@@ -30,8 +31,18 @@ public class UserServiceImpl implements UserDetailsService{
 	@Qualifier("userJpaRepository")
 	private UserJpaRepository userJpaRepository;
 	
+	@Autowired
+	@Qualifier("usuarioServiceImpl")
+	private UsuarioService usuarioService;
+	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		
+		//Reinicia el contador de intentos para no mostrar el mensaje a usuarios que aún tienen intentos
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+		HttpSession session = request.getSession(true);
+		session.setAttribute("user_attemps", 0);
+		
 		com.metabit.planilla.entity.Usuario user = userJpaRepository.findByUsername(username);
 		List<GrantedAuthority> authorities = buildAuthorities(user.getRoles());
 		userAttemps(user);
@@ -60,7 +71,11 @@ public class UserServiceImpl implements UserDetailsService{
 	
 	private void userAttemps(Usuario user) {
 		if(user != null) {
-			user.setIntentos(user.getIntentos()+1);
+			
+			if(!usuarioService.isAdminUser(user.getUsername())) {
+				user.setIntentos(user.getIntentos()+1);
+			}
+			
 			HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 			HttpSession session = request.getSession(true);
 			session.setAttribute("user_attemps",user.getIntentos());

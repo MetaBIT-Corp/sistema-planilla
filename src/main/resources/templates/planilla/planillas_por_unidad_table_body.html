@@ -1,0 +1,57 @@
+<table id="example1" class="table table-bordered table-striped">
+	<thead>
+		<tr>
+		  <th>Fecha de emisión</th>
+          <th>Monto de ventas</th>
+          <th>Monto de comisión</th>
+          <th>Total de ingresos</th>
+		  <th>Total de descuentos</th>
+		  <th>Total de renta</th>
+		  <th>Salario neto</th>
+		  <th>Horas extras diurnas</th>
+		  <th>Horas extras nocturnas</th>
+		  <th>Monto por horas extra</th>
+		  <th>Acciones</th>
+        </tr>
+	</thead>
+	<tbody>
+		<tr th:each="planilla : ${planillas_unidad}">
+			<th> [[ ${planilla.fechaEmision} ]] </th>
+			<th> [[ ${planilla.montoVentas} ]] </th>
+			<th> [[ ${planilla.montoComision} ]] </th>
+			<th> [[ ${planilla.totalIngresos} ]] </th>
+			<th> [[ ${planilla.totalDescuentos} ]] </th>
+			<th> [[ ${planilla.renta} ]] </th>
+			<th> [[ ${planilla.salarioNeto} ]] </th>
+			<th> [[ ${planilla.horasExtraDiurnas} ]] </th>
+			<th> [[ ${planilla.horasExtraNocturnas} ]] </th>
+			<th> [[ ${planilla.montoHorasExtra} ]] </th>
+			<th>
+				<a th:href="@{/planilla/index}" class="btn btn-sm btn-secondary" id="test" title="Ver detalle de la planilla">
+					<i class="far fa-eye"></i>
+				</a>
+			</th>
+		</tr>
+
+		<tr th:if="${#lists.isEmpty(planillas_unidad)}">
+        	<td colspan="11" class="text-center">
+        		Esta unidad no contiene planillas
+        	</td>
+        </tr>
+	</tbody>
+	<tfoot>
+		<tr>
+		  <th>Fecha de emisión</th>
+          <th>Monto de ventas</th>
+          <th>Monto de comisión</th>
+          <th>Total de ingresos</th>
+		  <th>Total de descuentos</th>
+		  <th>Total de renta</th>
+		  <th>Salario neto</th>
+		  <th>Horas extras diurnas</th>
+		  <th>Horas extras nocturnas</th>
+		  <th>Monto por horas extra</th>
+		  <th>Acciones</th>
+        </tr>
+	</tfoot>
+</table>

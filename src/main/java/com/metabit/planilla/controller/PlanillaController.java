@@ -12,11 +12,14 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.metabit.planilla.entity.AnioLaboral;
 import com.metabit.planilla.entity.DiaFestivo;
 import com.metabit.planilla.entity.Empleado;
 import com.metabit.planilla.entity.Periodo;
@@ -24,6 +27,8 @@ import com.metabit.planilla.entity.Planilla;
 import com.metabit.planilla.entity.PlanillaDiaFestivo;
 import com.metabit.planilla.entity.PlanillaMovimiento;
 import com.metabit.planilla.entity.TipoMovimiento;
+import com.metabit.planilla.entity.TipoUnidadOrganizacional;
+import com.metabit.planilla.service.AnioLaboralService;
 import com.metabit.planilla.service.DiaFestivoService;
 import com.metabit.planilla.service.EmpleadoService;
 import com.metabit.planilla.service.PeriodoService;
@@ -31,6 +36,7 @@ import com.metabit.planilla.service.PlanillaDiaFestivoService;
 import com.metabit.planilla.service.PlanillaMovimientosService;
 import com.metabit.planilla.service.PlanillaService;
 import com.metabit.planilla.service.TipoMovimientoService;
+import com.metabit.planilla.service.TipoUnidadOrganizacionalService;
 
 @Controller
 @RequestMapping("/planilla")
@@ -38,6 +44,8 @@ public class PlanillaController {
 	
 	private static String INDEX_VIEW = "planilla/index";
 	private static String SHOW_VIEW = "planilla/show";
+	private static final String PLANILLAS_POR_UNIDAD_VIEW = "planilla/planillas_por_unidad";
+	private static final String PLANILLAS_POR_UNIDAD_TABLE_DOBY_VIEW = "planilla/planillas_por_unidad_table_body";
 	
 	@Autowired
     @Qualifier("periodoServiceImpl")
@@ -58,6 +66,14 @@ public class PlanillaController {
 	@Autowired
     @Qualifier("tipoMovimientoServiceImpl")
     private TipoMovimientoService tipoMovimientoService;
+	
+	@Autowired
+	@Qualifier("anioLaboralServiceImpl")
+	private AnioLaboralService anioLaboralService;
+	
+	@Autowired
+	@Qualifier("tipoUnidadOrganizacionalServiceImpl")
+	private TipoUnidadOrganizacionalService tipoUnidadOrganizacionalService;
 	
 	@Autowired
 	@Qualifier("diaFestivoServiceImpl")
@@ -440,6 +456,30 @@ public class PlanillaController {
 		return "redirect:/anio-laboral/index";
 	}
 	
+	@GetMapping("/planillas-por-unidad")
+	public ModelAndView planillasPorUnidad() {
+		ModelAndView mav = new ModelAndView(PLANILLAS_POR_UNIDAD_VIEW);
+		AnioLaboral anio = periodoService.getPeriodoPrevio().getAnioLaboral();
+		List<TipoUnidadOrganizacional> tipos_unidad = tipoUnidadOrganizacionalService.getByTipoUnidadOrganizacionalHabilitado(true);
+		
+		mav.addObject("anios", anioLaboralService.getAllAniosLaborales());
+		mav.addObject("periodos", anio.getPeriodos());
+		mav.addObject("tipos_unidad", tipos_unidad);
+		mav.addObject("periodo_previo", periodoService.getPeriodoPrevio());
+		mav.addObject("unidades", tipos_unidad.get(0).getUnidades_organizacional());
+		
+		return mav;
+	}
+	
+	@GetMapping("/planillas-por-unidad-table-body/unidad/{id_unidad}/periodo/{id_periodo}")
+	public ModelAndView planillasPorUnidadTableBody(@PathVariable("id_unidad") int id_unidad, @PathVariable("id_periodo") int id_periodo) {
+		ModelAndView mav = new ModelAndView(PLANILLAS_POR_UNIDAD_TABLE_DOBY_VIEW);
+		List<Planilla> planillas_unidad = planillaService.getPlanillasUnidad(id_unidad, id_periodo);
+		
+		mav.addObject("planillas_unidad", planillas_unidad);
+		
+		return mav;
+	}
 	/**
  	 * Metodo que permite realizar el pago de planilla
  	 * @author Edwin Palacios

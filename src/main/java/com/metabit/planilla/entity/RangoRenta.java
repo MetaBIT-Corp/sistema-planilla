@@ -23,7 +23,7 @@ public class RangoRenta {
 	private float salarioMin;
 	
 	@Min(value = 0, message = "El salario máximo no puede ser negativo")
-	@Column(name = "salario_max", nullable = false)
+	@Column(name = "salario_max", nullable = true)
 	private float salarioMax;
 	
 	@Min(value = 0, message = "El porcentaje de renta no puede ser negativo")

@@ -73,6 +73,7 @@ INSERT ALL INTO RECURSOS VALUES(1, 'EMPLEADO')
 		   INTO	RECURSOS VALUES(9, 'UNIDADORGANIZACIONAL_JEFE')
 		   INTO	RECURSOS VALUES(10, 'PRESUPUESTO')
 		   INTO	RECURSOS VALUES(11, 'RANGO_COMISION')
+		   INTO	RECURSOS VALUES(12, 'DEPARTAMENTO')
 SELECT * FROM DUAL;;
 
 INSERT ALL INTO ROLES VALUES(1, 'ROLE_ADMIN')
@@ -157,6 +158,12 @@ INSERT ALL INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(1,1,1,1)
   		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(62,2,11,1)
   		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(63,3,11,1)
   		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(64,4,11,1)
+
+  		   --AGREGANDO PRIVILEGIOS AL ROL ADMIN PARA DEPARTAMENTO
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(65,1,12,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(66,2,12,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(67,3,12,1)
+  		   INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(68,4,12,1)
 SELECT * FROM DUAL;;
 
 INSERT ALL INTO USUARIOS VALUES(1,0,0,1,0,'$2a$10$.wYsFS0/zPkY3.LnN8F/reqimatDtOS71.5Uzh/RzlF718/aFO7oS',1,'admin')
@@ -287,7 +294,7 @@ insert into empleados_puestos_unidades  (id_empleado_puesto_unidad, id_empleado,
 
 
 /*----------------------PERIODO----------------------*/
-INSERT ALL
+/*INSERT ALL
   INTO PERIODOS VALUES(100, 0, '30/01/18', '01/01/18', 100)
   INTO PERIODOS VALUES(101, 0, '28/02/18', '01/02/18', 100)
   INTO PERIODOS VALUES(102, 0, '30/03/18', '01/03/18', 100)
@@ -326,16 +333,16 @@ INSERT ALL
   INTO PERIODOS VALUES(133, 0, '30/10/20', '01/10/20', 102)
   INTO PERIODOS VALUES(134, 0, '30/11/20', '01/11/20', 102)
   INTO PERIODOS VALUES(135, 0, '30/12/20', '01/12/20', 102)
-SELECT * FROM DUAL;;
+SELECT * FROM DUAL;;*/
 
 /*----------------------PLANILLA----------------------*/
-INSERT ALL
+/*INSERT ALL
   INTO PLANILLAS(ID_PLANILLA, TOTAL_DESCUENTOS, TOTAL_INGRESOS, ID_EMPLEADO, ID_PERIODO) VALUES(100, 90, 150, 300, 129)
   INTO PLANILLAS(ID_PLANILLA, TOTAL_DESCUENTOS, TOTAL_INGRESOS, ID_EMPLEADO, ID_PERIODO) VALUES(101, 75, 225, 301, 129)
-SELECT * FROM DUAL;;
+SELECT * FROM DUAL;;*/
 
 /*----------------------PLANILLA MOVIMIENTOS----------------------*/
-INSERT ALL
+/*INSERT ALL
   INTO PLANILLA_MOVIMIENTOS VALUES(100, 150, 100, 1)
   INTO PLANILLA_MOVIMIENTOS VALUES(101, 150, 100, 2)
   INTO PLANILLA_MOVIMIENTOS VALUES(102, 150, 100, 3)
@@ -346,24 +353,24 @@ INSERT ALL
   INTO PLANILLA_MOVIMIENTOS VALUES(107, 150, 100, 3)
   INTO PLANILLA_MOVIMIENTOS VALUES(108, 150, 100, 4)
   INTO PLANILLA_MOVIMIENTOS VALUES(109, 150, 100, 5)
-SELECT * FROM DUAL;;
+SELECT * FROM DUAL;;*/
 
 /*----------------------RANGOS RENTA----------------------*/
 INSERT ALL
   INTO RANGOS_RENTA(id_rango_renta, cuota_fija, exceso, periodicidad_renta, porcentaje_renta, rango_renta_habilitado, salario_min, salario_max) VALUES(100, 0, 0, 30, 0, 1, 0.01, 472.00)
   INTO RANGOS_RENTA(id_rango_renta, cuota_fija, exceso, periodicidad_renta, porcentaje_renta, rango_renta_habilitado, salario_min, salario_max) VALUES(101, 17.67, 472.00, 30, 10, 1, 472.01, 895.24)
   INTO RANGOS_RENTA(id_rango_renta, cuota_fija, exceso, periodicidad_renta, porcentaje_renta, rango_renta_habilitado, salario_min, salario_max) VALUES(102, 60.00, 895.24, 30, 20, 1, 895.25, 2038.10)
-  INTO RANGOS_RENTA(id_rango_renta, cuota_fija, exceso, periodicidad_renta, porcentaje_renta, rango_renta_habilitado, salario_min, salario_max) VALUES(103, 288.57, 2038.10, 30, 30, 1, 2038.11, 100000)
+  INTO RANGOS_RENTA(id_rango_renta, cuota_fija, exceso, periodicidad_renta, porcentaje_renta, rango_renta_habilitado, salario_min, salario_max) VALUES(103, 288.57, 2038.10, 30, 30, 1, 2038.11, 0)
 
   INTO RANGOS_RENTA(id_rango_renta, cuota_fija, exceso, periodicidad_renta, porcentaje_renta, rango_renta_habilitado, salario_min, salario_max) VALUES(104, 0, 0, 15, 0, 1, 0.01, 236.00)
   INTO RANGOS_RENTA(id_rango_renta, cuota_fija, exceso, periodicidad_renta, porcentaje_renta, rango_renta_habilitado, salario_min, salario_max) VALUES(105, 8.83, 236, 15, 10, 1, 236.01, 447.62)
   INTO RANGOS_RENTA(id_rango_renta, cuota_fija, exceso, periodicidad_renta, porcentaje_renta, rango_renta_habilitado, salario_min, salario_max) VALUES(106, 30.00, 446.62, 15, 20, 1, 447.63, 1019.05)
-  INTO RANGOS_RENTA(id_rango_renta, cuota_fija, exceso, periodicidad_renta, porcentaje_renta, rango_renta_habilitado, salario_min, salario_max) VALUES(107, 144.28, 1019.05, 15, 30, 1, 1019.06, 100000)
+  INTO RANGOS_RENTA(id_rango_renta, cuota_fija, exceso, periodicidad_renta, porcentaje_renta, rango_renta_habilitado, salario_min, salario_max) VALUES(107, 144.28, 1019.05, 15, 30, 1, 1019.06, 0)
 
   INTO RANGOS_RENTA(id_rango_renta, cuota_fija, exceso, periodicidad_renta, porcentaje_renta, rango_renta_habilitado, salario_min, salario_max) VALUES(108, 0, 0, 7, 0, 1, 0.01, 118.00)
   INTO RANGOS_RENTA(id_rango_renta, cuota_fija, exceso, periodicidad_renta, porcentaje_renta, rango_renta_habilitado, salario_min, salario_max) VALUES(109, 4.42, 118.00, 7, 10, 1, 118.01, 223.81)
   INTO RANGOS_RENTA(id_rango_renta, cuota_fija, exceso, periodicidad_renta, porcentaje_renta, rango_renta_habilitado, salario_min, salario_max) VALUES(110, 15.00, 223.81, 7, 20, 1, 223.82, 509.52)
-  INTO RANGOS_RENTA(id_rango_renta, cuota_fija, exceso, periodicidad_renta, porcentaje_renta, rango_renta_habilitado, salario_min, salario_max) VALUES(111, 72.14, 509.52, 7, 30, 1, 509.52, 100000)
+  INTO RANGOS_RENTA(id_rango_renta, cuota_fija, exceso, periodicidad_renta, porcentaje_renta, rango_renta_habilitado, salario_min, salario_max) VALUES(111, 72.14, 509.52, 7, 30, 1, 509.52, 0)
 SELECT * FROM DUAL;;
 
 /*------------------RANGOS COMISION----------------------------*/

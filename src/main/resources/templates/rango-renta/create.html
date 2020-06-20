@@ -25,7 +25,7 @@
 		<li class="breadcrumb-item">
 			<a href="#" th:href="@{/rango-renta/index}">Rangos de Renta</a>
 		</li>
-		<li class="breadcrumb-item active">Editar Rango de Renta</li>
+		<li class="breadcrumb-item active">Crear Rango de Renta</li>
 	</ol>
 	
 	<div layout:fragment="content">	
@@ -47,13 +47,12 @@
 				<div class="col-md-9">
 					<div class="card">
 					  <div class="card-header">
-					    <h5 class="card-title">Editar Rango de Renta</h5>
+					    <h5 class="card-title">Crear Rango de Renta</h5>
 					  </div>
 					  
-					<form method="post" th:action="@{/rango-renta/update}" th:object="${rango_renta}" novalidate>
-						<input type="hidden" th:field="*{idRangoRenta}">
+					<form method="post" th:action="@{/rango-renta/store}" th:object="${rango_renta}" novalidate>
+						
 						<div class="card-body">
-
 						<div class="form-group row">
 		                  <div class="col-sm-6 mb-3 mb-sm-0">
 		                    <label for="">Desde*</label>
@@ -83,22 +82,16 @@
 		                  </div>
 		                  <div class="col-sm-6">
 		                  	<label for="">Periodicidad*</label>
-							 <select th:switch="*{periodicidadRenta}" th:field="${rango_renta.periodicidadRenta}" class="form-control" style="width: 100%;" readonly>
-							  	<option th:case="30" th:value="${rango_renta.periodicidadRenta}">Mensualmente</option>
-							  	<option th:case="15" th:value="${rango_renta.periodicidadRenta}">Quincenalmente</option>
-							  	<option th:case="7" th:value="${rango_renta.periodicidadRenta}">Semanalmente</option>
+							 <select th:field="*{periodicidadRenta}" class="form-control" style="width: 100%;">
+							  	<option th:value="30">Mensualmente</option>
+							  	<option th:value="15">Quincenalmente</option>
 		                	</select>
-		                	<!--<select th:field="${rango_renta.periodicidadRenta}" class="form-control" style="width: 100%;" readonly>
-							  	<option th:value="${rango_renta.periodicidadRenta}">Mensualmente</option>
-							  	<option th:value="${rango_renta.periodicidadRenta}">Quincenalmente</option>
-							  	<option th:value="${rango_renta.periodicidadRenta}">Semanalmente</option>
-		                	</select>-->
 		                  </div>
 		                </div>
 					  </div>
 			            <div class="card-footer text-right">
 					        <a class="btn btn-default mr-3" th:href="@{/rango-renta/index}">Cancelar</a>
-					        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+					        <button type="submit" class="btn btn-primary">Guardar</button>
 					    </div>
 					</form>
 					</div>

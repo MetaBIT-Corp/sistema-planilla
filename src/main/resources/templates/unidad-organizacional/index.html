@@ -228,7 +228,7 @@
                 url: "/unidades-organizacionales/update",
                 data: $("#update_form").serialize(),
                 success: function (data) {
-                    $("#error").attr("hidden", "hidden");
+                    $("#error_edit").attr("hidden", "hidden");
                     $("#edit_unidad").modal("hide");
                     toastr.success(data);
                     setTimeout(function () {

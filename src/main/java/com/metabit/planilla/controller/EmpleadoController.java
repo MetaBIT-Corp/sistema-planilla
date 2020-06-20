@@ -1,8 +1,18 @@
 package com.metabit.planilla.controller;
 
-import com.metabit.planilla.entity.*;
-import com.metabit.planilla.repository.UserJpaRepository;
-import com.metabit.planilla.service.*;
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,15 +23,46 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.text.ParseException;
-import java.time.LocalDate;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import com.metabit.planilla.entity.Direccion;
+import com.metabit.planilla.entity.Email;
+import com.metabit.planilla.entity.Empleado;
+import com.metabit.planilla.entity.EmpleadoDocumento;
+import com.metabit.planilla.entity.EmpleadoProfesion;
+import com.metabit.planilla.entity.EmpleadosPuestosUnidades;
+import com.metabit.planilla.entity.EstadoCivil;
+import com.metabit.planilla.entity.Genero;
+import com.metabit.planilla.entity.Municipio;
+import com.metabit.planilla.entity.Profesion;
+import com.metabit.planilla.entity.Puesto;
+import com.metabit.planilla.entity.Rol;
+import com.metabit.planilla.entity.TipoDocumento;
+import com.metabit.planilla.entity.UnidadOrganizacional;
+import com.metabit.planilla.entity.Usuario;
+import com.metabit.planilla.repository.UserJpaRepository;
+import com.metabit.planilla.service.DepartamentoService;
+import com.metabit.planilla.service.DireccionService;
+import com.metabit.planilla.service.EmailService;
+import com.metabit.planilla.service.EmpleadoDocumentoService;
+import com.metabit.planilla.service.EmpleadoProfesionService;
+import com.metabit.planilla.service.EmpleadoService;
+import com.metabit.planilla.service.EmpleadosPuestosUnidadesService;
+import com.metabit.planilla.service.EstadoCivilService;
+import com.metabit.planilla.service.GeneroService;
+import com.metabit.planilla.service.MunicipioService;
+import com.metabit.planilla.service.ProfesionService;
+import com.metabit.planilla.service.PuestoService;
+import com.metabit.planilla.service.RolService;
+import com.metabit.planilla.service.TipoDocumentoService;
+import com.metabit.planilla.service.UnidadOrganizacionalService;
+import com.metabit.planilla.service.UsuarioService;
 
 @SuppressWarnings("ALL")
 @Controller
@@ -87,6 +128,14 @@ public class EmpleadoController {
     @Autowired
 	@Qualifier("rolServiceImpl")
 	private RolService rolService;
+
+    @Autowired
+	@Qualifier("emailServiceImpl")
+	private EmailService emailService;
+    
+    @Autowired
+    @Qualifier("usuarioServiceImpl")
+    private UsuarioService usuarioService;
 
     private static final String INDEX_VIEW = "empleado/index";
     private static final String EDIT_VIEW = "empleado/edit";
@@ -271,9 +320,11 @@ public class EmpleadoController {
 
             /*-------------------------CÓDIGO PARA AGREGAR ROLES AL EMPLEADO-------------------*/
         	List<Rol> rolesList = new ArrayList<Rol>();
-            for (int idRol: roles) {
-            	Rol rol = rolService.getByIdRol(idRol);
-            	rolesList.add(rol);
+            if(roles != null) {
+            	for (int idRol: roles) {
+                	Rol rol = rolService.getByIdRol(idRol);
+                	rolesList.add(rol);
+                }
             }
             usuario.setRoles(rolesList);
             /*------------------FIN DEL CÓDIGO PARA AGREGAR ROLES AL EMPLEADO-------------------*/
@@ -402,9 +453,11 @@ public class EmpleadoController {
         if(puesto.isUsuarioRequerido()){
         	/*-------------------------CÓDIGO PARA AGREGAR ROLES AL EMPLEADO-------------------*/
         	List<Rol> rolesList = new ArrayList<Rol>();
-            for (int idRol: roles) {
-            	Rol rol = rolService.getByIdRol(idRol);
-            	rolesList.add(rol);
+            if(roles != null) {
+            	for (int idRol: roles) {
+                	Rol rol = rolService.getByIdRol(idRol);
+                	rolesList.add(rol);
+                }
             }
             /*------------------FIN DEL CÓDIGO PARA AGREGAR ROLES AL EMPLEADO-------------------*/
             
@@ -845,19 +898,55 @@ public class EmpleadoController {
         }
         return "redirect:/empleado/index?unlock_success=true";
     }
+    
+    @PostMapping("/send-unlock-email")
+    public String sendUnlockEmail(HttpServletRequest request, @RequestParam("username") String username, RedirectAttributes redirAttrs) {
+    	
+    	Email email = new Email();
+        Map<String, Object> model = new HashMap<>();
+    	
+    	HttpSession session = request.getSession(true);
+    	session.setAttribute("user_attemps", 0);
+    	
+        Usuario usuario = userJpaRepository.findByUsername(username);
+        Empleado empleado = empleadoService.findByUsuario(usuario);
+        
+        if(usuario != null) {
+        	List<Usuario> admin_users = usuarioService.getAdminUsers();
+        	
+        	String email_personal = empleado.getCorreoPersonal();
+            String email_institucional = empleado.getCorreoInstitucional();
+            String nombre = empleado.getNombrePrimero() + " " +
+            				empleado.getNombreSegundo() + " " +
+            				empleado.getApellidoPaterno() + " " +
+            				empleado.getApellidoMaterno();
+            
+            
+        	String  url_base = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort(); 
+            String 	url_unlock = url_base + "/empleado/unlock-user";
+        	
+        	model.put("email_per", email_personal);
+        	model.put("email_ins", email_institucional);
+        	model.put("nombre", nombre);
+        	model.put("username", username);
+        	model.put("id",empleado.getIdEmpleado());
+    		model.put("url_unlock", url_unlock);
+    		model.put("url_base", url_base);
 
-    @PostMapping("/test")
-    public String rolTest(@RequestParam(name = "roles[]") List<Integer> roles) {
-    	List<Rol> rolesList = new ArrayList<Rol>();
-    	Usuario usuario = userJpaRepository.findByUsername("admin");
-    	for (int idRol: roles) {
-        	Rol rol = rolService.getByIdRol(idRol);
-        	rolesList.add(rol);
+        	for(Usuario user : admin_users) {
+        		Empleado e = empleadoService.findByUsuario(user);
+        		email.setFrom("metabitCorp@gmail.com");
+                email.setTo(e.getCorreoPersonal());
+                email.setSubject("Desbloqueo de usario");
+                
+                email.setModel(model);
+                emailService.sendEmail(email);
+        	}
+        	
+        	redirAttrs.addFlashAttribute("email_success", "success");
         }
-        usuario.setRoles(rolesList);
-
-        userJpaRepository.save(usuario);
-
-        return "redirect:/index";
+        
+        return "redirect:/login";
+        
     }
 }
