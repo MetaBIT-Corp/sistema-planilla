@@ -24,4 +24,19 @@ public class EstadoCivilServiceImpl implements EstadoCivilService {
     public EstadoCivil getCivilState(int id) {
         return estadoCivilJpaRepository.getOne(id);
     }
+
+	@Override
+	public EstadoCivil addCivilState(EstadoCivil estadoCivil) {
+		return estadoCivilJpaRepository.save(estadoCivil);
+	}
+
+	@Override
+	public EstadoCivil updateCivilState(EstadoCivil estadoCivil) {
+		return estadoCivilJpaRepository.save(estadoCivil);
+	}
+
+	@Override
+	public void deleteEstadoCivil(int idEstadoCivil) {
+		estadoCivilJpaRepository.deleteById(idEstadoCivil);
+	}
 }

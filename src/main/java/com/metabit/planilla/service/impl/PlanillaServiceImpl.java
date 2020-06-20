@@ -57,6 +57,11 @@ public class PlanillaServiceImpl implements PlanillaService {
 		// TODO Auto-generated method stub
 		return planillaJpaRepository.findPlanillasUnidad(id_unidad, id_periodo);
 	}
+
+	@Override
+	public String pagarPlanilla(int idUnidadOrganizacional) {
+		return planillaJpaRepository.pagarPlanilla(idUnidadOrganizacional);
+	}
 	
 	
 	

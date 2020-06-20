@@ -1,5 +1,6 @@
 package com.metabit.planilla.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,15 +12,21 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.metabit.planilla.entity.AnioLaboral;
 import com.metabit.planilla.entity.Departamento;
+import com.metabit.planilla.entity.DiaFestivo;
+import com.metabit.planilla.entity.Empleado;
+import com.metabit.planilla.entity.EmpleadosPuestosUnidades;
 import com.metabit.planilla.entity.Genero;
 import com.metabit.planilla.entity.Municipio;
 import com.metabit.planilla.entity.Periodo;
+import com.metabit.planilla.entity.Planilla;
 import com.metabit.planilla.entity.TipoUnidadOrganizacional;
 import com.metabit.planilla.entity.UnidadOrganizacional;
 import com.metabit.planilla.entity.Usuario;
 import com.metabit.planilla.repository.UserJpaRepository;
 import com.metabit.planilla.service.AnioLaboralService;
 import com.metabit.planilla.service.DepartamentoService;
+import com.metabit.planilla.service.DiaFestivoService;
+import com.metabit.planilla.service.EmpleadosPuestosUnidadesService;
 import com.metabit.planilla.service.GeneroService;
 import com.metabit.planilla.service.MunicipioService;
 import com.metabit.planilla.service.PuestoService;
@@ -49,6 +56,15 @@ public class DataRestController {
 	@Autowired
 	@Qualifier("unidadOrganizacionalServiceImpl")
 	private UnidadOrganizacionalService unidadOrganizacionalService;
+
+	@Autowired
+	@Qualifier("empleadosPuestosUnidadesServiceImpl")
+	private EmpleadosPuestosUnidadesService empleadosPuestosUnidadesService;
+
+	
+	@Autowired
+	@Qualifier("diaFestivoServiceImpl")
+	private DiaFestivoService diaFestivoService;
 	
 	@Autowired
     @Qualifier("userJpaRepository")
@@ -79,7 +95,45 @@ public class DataRestController {
 	
 	@GetMapping("/unidades-organizacionales")
 	public List<UnidadOrganizacional> getUnidadesOrganizacionales(){
-		return unidadOrganizacionalService.getAllUnidadesOrganizacionales();
+		List<UnidadOrganizacional> unidadesAll = unidadOrganizacionalService.getAllUnidadesOrganizacionales();
+		List<UnidadOrganizacional> unidadesSinPagar = new ArrayList<UnidadOrganizacional>();
+		Boolean unidadPagada = true;
+		
+		for(int i = 0; i < unidadesAll.size(); i++) {
+			unidadPagada = true;
+			List<EmpleadosPuestosUnidades> epu = unidadesAll.get(i).getEmpleadosPuestosUnidades();
+			for(int j = 0; j < epu.size(); j++) {
+				List<Planilla> planillas = epu.get(j).getEmpleado().getPlanillasEmpleado();
+				for(int k = 0; k < planillas.size(); k++) {
+					if(planillas.get(k).getFechaEmision() == null) unidadPagada = false;
+				}
+			}
+			if(!unidadPagada) {
+				unidadesSinPagar.add(unidadesAll.get(i));
+			}
+		}
+		return unidadesSinPagar;
+	}
+
+		
+	@GetMapping("/dias-festivos")
+	public List<DiaFestivo> getDiasFestivos(){
+		List<DiaFestivo> diaFestivoList = diaFestivoService.getDiasFestivos();
+		return diaFestivoList;
+	}
+
+
+	@GetMapping("/empleados-unidad/{id}")
+	public List<Empleado> getEmpleadosByUnidad(@PathVariable("id") int idUnidad){
+		UnidadOrganizacional u = unidadOrganizacionalService.getOneUnidadOrganizacional(idUnidad);
+		List<EmpleadosPuestosUnidades> empleadosPuestosUnidades = empleadosPuestosUnidadesService.getAllByUnidadAndPuestoVigente(u);
+		List<Empleado> empleadoList = new ArrayList<>();
+		for (EmpleadosPuestosUnidades e: empleadosPuestosUnidades) {
+			if (e.getEmpleado().getEmpleadoHabilitado()){
+				empleadoList.add(e.getEmpleado());
+			}
+		}
+		return empleadoList;
 	}
 	
 	@GetMapping("/user/{username}")

@@ -15,5 +15,6 @@ public interface PlanillaService {
 	public abstract List<Planilla> getPlanillasByPeriodo(Periodo periodo);
 	public abstract List<Planilla> getPlanillasUnidad(int id_unidad, int id_periodo);
 	public abstract String showMessage(String p_message);
+	public abstract String pagarPlanilla(int idUnidadOrganizacional);
 
 }

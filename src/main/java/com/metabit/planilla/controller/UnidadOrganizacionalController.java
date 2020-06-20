@@ -56,6 +56,10 @@ public class UnidadOrganizacionalController {
     @Qualifier("anioLaboralServiceImpl")
     private AnioLaboralService anioLaboralService;
 
+    @Autowired
+    @Qualifier("empleadosPuestosUnidadesServiceImpl")
+    private EmpleadosPuestosUnidadesService empleadosPuestosUnidadesService;
+
     private static final String INDEX_VIEW = "unidad-organizacional/index";
     private static final String SHOW_VIEW = "unidad-organizacional/show";
     private static final Log LOGGER = LogFactory.getLog(UnidadOrganizacionalController.class);
@@ -108,15 +112,21 @@ public class UnidadOrganizacionalController {
             }
         }
 
+        List<UnidadOrganizacional> unidadOrganizacionalList = null;
+
         if (jefeUnidad) {
             Empleado empleado = empleadoService.findByUsuario(usuario);
-            mav.addObject("unidades",
-                    empleado.getEmpleadosPuestosUnidades().getUnidadOrganizacional().getSubunidades()
-            );
+            unidadOrganizacionalList = empleadosPuestosUnidadesService.getByEmpleadoAndFechaFinIsNull(empleado).getUnidadOrganizacional().getSubunidades();
+            mav.addObject("unidades",unidadOrganizacionalList);
         } else {
-            mav.addObject("unidades", unidadOrganizacionalService.getAllUnidadesOrganizacionales());
+            unidadOrganizacionalList = unidadOrganizacionalService.getAllUnidadesOrganizacionales();
+            mav.addObject("unidades", unidadOrganizacionalList);
         }
 
+        //Recuperacion de todos los empleados que no sean jefes en alguna otra unidad organizacional
+        /*List<Empleado> empleadoList= empleadoService.ge;
+
+        mav.addObject("empleados",empleadoList);*/
         mav.addObject("create", create);
         mav.addObject("edit", edit);
         mav.addObject("delete", delete);
@@ -163,11 +173,13 @@ public class UnidadOrganizacionalController {
     @PostMapping("/store")
     public ResponseEntity<?> store(@RequestParam Map<String, String> allParams) {
 
+        TipoUnidadOrganizacional tipo = tipoUnidadOrganizacionalService.getOne(Integer.parseInt(allParams.get("idTipoUnidadOrganizacional")));
+        int idUnidadPadre = 0;
+
         if (allParams.get("unidadOrganizacional").isEmpty()) {
             return new ResponseEntity<>("Campo requerido. Ingrese nombre de unidad.", HttpStatus.BAD_REQUEST);
         }
 
-        //CREACION DE UNIDAD ORGANIZACIONAL
         Boolean jefeUnidad = false;
         Usuario usuario = getUserLogueado();
         for (Rol rol : rolService.getUserRoles(usuario.getIdUsuario())) {
@@ -179,22 +191,35 @@ public class UnidadOrganizacionalController {
             }
         }
 
+        //CREACION DE UNIDAD ORGANIZACIONAL
         UnidadOrganizacional uo = new UnidadOrganizacional();
         uo.setUnidadOrganizacional(allParams.get("unidadOrganizacional"));
 
         if (jefeUnidad) {
             Empleado empleado = empleadoService.findByUsuario(usuario);
-            uo.setUnidadPadre(empleado.getEmpleadosPuestosUnidades().getUnidadOrganizacional());
+            idUnidadPadre = empleadosPuestosUnidadesService.getByEmpleadoAndFechaFinIsNull(empleado).getUnidadOrganizacional().getIdUnidadOrganizacional();
+
+            //Validacion de jerarquia
+            if(!validarJerarquia(tipo,idUnidadPadre)){
+                return new ResponseEntity<>("El tipo de unidad padre es de una jerarquia inferior o igual a la de la unidad nueva. Cambiar el tipo de unidad o unidad padre.", HttpStatus.BAD_REQUEST);
+            }
+
+            uo.setUnidadPadre(empleadosPuestosUnidadesService.getByEmpleadoAndFechaFinIsNull(empleado).getUnidadOrganizacional());
         } else {
-            int idUnidadPadre = Integer.parseInt(allParams.get("idUnidadPadre"));
+            idUnidadPadre = Integer.parseInt(allParams.get("idUnidadPadre"));
             if (idUnidadPadre == -1) {
                 uo.setUnidadPadre(null);
             } else {
                 uo.setUnidadPadre(unidadOrganizacionalService.getOneUnidadOrganizacional(idUnidadPadre));
             }
+
+            if(!validarJerarquia(tipo,idUnidadPadre)){
+                return new ResponseEntity<>("El tipo de unidad padre es de una jerarquia inferior o igual a la de la unidad nueva. Cambiar el tipo de unidad o unidad padre.", HttpStatus.BAD_REQUEST);
+            }
         }
 
-        uo.setTipoUnidadOrganizacional(tipoUnidadOrganizacionalService.getOne(Integer.parseInt(allParams.get("idTipoUnidadOrganizacional"))));
+
+        uo.setTipoUnidadOrganizacional(tipo);
         unidadOrganizacionalService.addOrUpdateUnidadOrganizaional(uo);
 
         return new ResponseEntity<>("Se creo correctamente la unidad organzacional.", HttpStatus.OK);
@@ -215,9 +240,13 @@ public class UnidadOrganizacionalController {
     @PostMapping("/update")
     public ResponseEntity<?> update(@RequestParam Map<String, String> allParams) {
 
+        TipoUnidadOrganizacional tipo = tipoUnidadOrganizacionalService.getOne(Integer.parseInt(allParams.get("idTipoUnidadOrganizacional")));
+        int idUnidadPadre = 0;
+
         if (allParams.get("unidadOrganizacional").isEmpty()) {
             return new ResponseEntity<>("Campo requerido. Ingrese nombre de unidad.", HttpStatus.BAD_REQUEST);
         }
+
 
         Boolean jefeUnidad = false;
         Usuario usuario = getUserLogueado();
@@ -236,15 +265,29 @@ public class UnidadOrganizacionalController {
 
         if (jefeUnidad) {
             Empleado empleado = empleadoService.findByUsuario(usuario);
-            uo.setUnidadPadre(empleado.getEmpleadosPuestosUnidades().getUnidadOrganizacional());
-        } else {
-            int idUnidadPadre = Integer.parseInt(allParams.get("idUnidadPadre"));
+            idUnidadPadre = empleadosPuestosUnidadesService.getByEmpleadoAndFechaFinIsNull(empleado).getUnidadOrganizacional().getIdUnidadOrganizacional();
 
+            //Validacion de jerarquia
+            if(!validarJerarquia(tipo,idUnidadPadre)){
+                return new ResponseEntity<>("El tipo de unidad padre es de una jerarquia inferior o igual a la de la unidad nueva. Cambiar el tipo de unidad o unidad padre.", HttpStatus.BAD_REQUEST);
+            }
+            uo.setUnidadPadre(empleadosPuestosUnidadesService.getByEmpleadoAndFechaFinIsNull(empleado).getUnidadOrganizacional());
+        } else {
+            idUnidadPadre = Integer.parseInt(allParams.get("idUnidadPadre"));
             if (idUnidadPadre == -1) {
                 uo.setUnidadPadre(null);
             } else {
                 uo.setUnidadPadre(unidadOrganizacionalService.getOneUnidadOrganizacional(idUnidadPadre));
             }
+
+            if(!validarJerarquia(tipo,idUnidadPadre)){
+                return new ResponseEntity<>("El tipo de unidad padre es de una jerarquia inferior o igual a la de la unidad nueva. Cambiar el tipo de unidad o unidad padre.", HttpStatus.BAD_REQUEST);
+            }
+        }
+
+        int idEmpleado = Integer.parseInt(allParams.get("idEmpleado"));
+        if(idEmpleado!=-1){
+            uo.setEmpleadoJefe(empleadoService.findEmployeeById(idEmpleado));
         }
 
         uo.setTipoUnidadOrganizacional(tipoUnidadOrganizacionalService.getOne(Integer.parseInt(allParams.get("idTipoUnidadOrganizacional"))));
@@ -269,5 +312,15 @@ public class UnidadOrganizacionalController {
         UserDetails userDetail = (UserDetails) auth.getPrincipal();
         Usuario usuario = userJpaRepository.findByUsername(userDetail.getUsername());
         return usuario;
+    }
+
+    public Boolean validarJerarquia(TipoUnidadOrganizacional tipo,int idPadre){
+       if(idPadre==-1){
+           return true;
+       }
+        if(tipo.getNivelJerarquico() > unidadOrganizacionalService.getOneUnidadOrganizacional(idPadre).getTipoUnidadOrganizacional().getNivelJerarquico()){
+            return true;
+        }
+        return false;
     }
 }

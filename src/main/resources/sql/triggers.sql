@@ -358,3 +358,31 @@ BEGIN
 END;
 ;;
 
+/*Trigger para actualizar la fecha de inicio y de finalizacion de un empleado en un puesto dentro de una unidad organizacional*/
+CREATE OR REPLACE TRIGGER  empleado_puesto_unidad_before_insert BEFORE
+    INSERT ON planilla.empleados_puestos_unidades
+    FOR EACH ROW
+DECLARE
+    -- Variable que almacenara el id del empleado_puesto_unidad vigente del empleado requerido
+    v_id_epu_old planilla.empleados_puestos_unidades.id_empleado_puesto_unidad%TYPE;
+BEGIN
+    --Recuperamos el empleado_puesto_unidad vigente del empleado requerido
+    SELECT id_empleado_puesto_unidad INTO v_id_epu_old
+    FROM planilla.empleados_puestos_unidades
+    WHERE id_empleado = :NEW.id_empleado AND fecha_fin IS NULL;
+
+    -- Se agrega la fecha actual en fecha inicio de nuevo registro
+    :NEW.fecha_inicio := SYSDATE;
+
+    -- Realizamos el update al puesto anterior
+    UPDATE planilla.empleados_puestos_unidades
+    SET fecha_fin = SYSDATE
+    WHERE id_empleado_puesto_unidad = v_id_epu_old;
+
+    -- Controlando excepcion de NOT_DATA FOUND
+    EXCEPTION
+        WHEN no_data_found THEN
+        :NEW.fecha_inicio := SYSDATE;
+END;
+;;
+

@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.metabit.planilla.entity.Periodo;
 import com.metabit.planilla.entity.Planilla;
@@ -34,4 +33,7 @@ public interface PlanillaJpaRepository extends JpaRepository<Planilla, Serializa
 			")\n" + 
 			"AND id_periodo = ?2", nativeQuery = true)
 	public abstract List<Planilla> findPlanillasUnidad(int id_unidad, int id_periodo);
+
+	@Procedure(name = "pagoPlanilla")
+	String pagarPlanilla(@Param("p_id_unidad") int idUnidadOrganizacional);
 }
