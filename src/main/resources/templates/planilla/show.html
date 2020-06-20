@@ -15,7 +15,6 @@
   <!-- Bootstrap4 Duallistbox -->
   <link rel="stylesheet" th:href="@{/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css}">
   
-    
 </head>
 
 <body>
@@ -103,11 +102,11 @@
 							  <div class="form-row">
 							  	<div class="col-md-6 mb-3">
 								    <label>Total de Ingresos:</label><br>
-								    <span th:text="'$' + ${#numbers.formatDecimal(planilla.totalIngresos, 1, 'COMMA', 2, 'POINT')}"></span>
+								    <span class="totalIngresos" th:text="'$' + ${#numbers.formatDecimal(planilla.totalIngresos, 1, 'COMMA', 2, 'POINT')}"></span>
 								  </div>
 								  <div class="col-md-6 mb-3">
 								    <label>Total de Descuentos:</label><br>
-								    <span th:text="'$' + ${#numbers.formatDecimal(planilla.totalDescuentos, 1, 'COMMA', 2, 'POINT')}"></span>
+								    <span class="totalDescuentos" th:text="'$' + ${#numbers.formatDecimal(planilla.totalDescuentos, 1, 'COMMA', 2, 'POINT')}"></span>
 								  </div>
 							  </div>
 							  <!--<div class="form-row" th:if="${planilla.empleado.esAdministrativo == false}">-->
@@ -127,7 +126,7 @@
 								  </div>
 								  <div class="col-md-6 mb-3">
 								    <label>Monto por Comisión:</label><br>
-								    <span th:text="'$' + ${#numbers.formatDecimal(planilla.montoComision, 1, 'COMMA', 2, 'POINT')}"></span>
+								    <span class="montoVentas" th:text="'$' + ${#numbers.formatDecimal(planilla.montoComision, 1, 'COMMA', 2, 'POINT')}"></span>
 								  </div>
 							  </div>
 							  <div class="form-row">
@@ -163,9 +162,9 @@
 								  </div>
 								  <div class="col-md-6 mb-3">
 								    <label>Monto por Horas Extras:</label><br>
-								    <span th:text="'$' + ${#numbers.formatDecimal(planilla.montoHorasExtra, 1, 'COMMA', 2, 'POINT')}"></span> <br/><br/>
+								    <span class="horasExtra" th:text="'$' + ${#numbers.formatDecimal(planilla.montoHorasExtra, 1, 'COMMA', 2, 'POINT')}"></span> <br/><br/>
 								    <label>Monto por Dias Festivos:</label><br>
-								    <span th:text="'$' + ${#numbers.formatDecimal(planilla.montoDiasFestivos, 1, 'COMMA', 2, 'POINT')}"></span>
+								    <span class="diasFestivos" th:text="'$' + ${#numbers.formatDecimal(planilla.montoDiasFestivos, 1, 'COMMA', 2, 'POINT')}"></span>
 								  </div>
 							  </div>
                          </div>
@@ -392,9 +391,9 @@
 		        </button>
 		      </div>
 		      <div class="modal-body">
-			      <form method="post" action="#" th:action="@{/planilla/agregar-movimientos}">
+			      <form th:if="${#lists.isEmpty(ingresosPendientes) == false}" method="post" action="#" th:action="@{/planilla/agregar-movimientos}">
 			      	  <input type="hidden" id="inputIngresosPlanilla" name="id_planilla" th:value="${planilla.idPlanilla}">
-	                  	<div th:if="${#lists.isEmpty(ingresosPendientes) == false}" class="card-body">
+	                  	<div class="card-body">
 					      <table id="example3" class="table table-bordered table-striped">
 		                      <thead>
 			                      <tr>
@@ -426,17 +425,17 @@
 		                      </tbody>
 		                  </table>
 		                </div>
-		                <div th:if="${#lists.isEmpty(ingresosPendientes)}" id="divError" class="callout callout-danger">
-	                          <p class="my-0"><i class="fas fa-exclamation-circle mr-2"></i><strong>Mensaje de Información:</strong></p>
-	                          <ul id="ulError" class="mb-0">
-	                          	<li>Ya no hay Ingresos Pendientes.</li>
-	                          </ul>
-	                      </div>
 	                  <div class="modal-footer">
 				        <button type="submit" class="btn btn-primary">Guardar</button>
 				        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
 				      </div>
 			      </form>
+			      <div th:if="${#lists.isEmpty(ingresosPendientes)}" id="divError" class="callout callout-danger">
+                      <p class="my-0"><i class="fas fa-exclamation-circle mr-2"></i><strong>Mensaje de Información:</strong></p>
+                      <ul id="ulError" class="mb-0">
+                      	<li>Ya no hay Ingresos Pendientes.</li>
+                      </ul>
+                  </div>
 		      </div>
 		    </div>
 		  </div>
@@ -452,8 +451,8 @@
 		          <span aria-hidden="true">&times;</span>
 		        </button>
 		      </div>
-		      <div th:if="${#lists.isEmpty(descuentosPendientes) == false}" class="modal-body">
-			      <form method="post" action="#" th:action="@{/planilla/agregar-movimientos}">
+		      <div class="modal-body">
+			      <form th:if="${#lists.isEmpty(descuentosPendientes) == false}" method="post" action="#" th:action="@{/planilla/agregar-movimientos}">
 			     	  <input type="hidden" id="inputDescuentosPlanilla" name="id_planilla" th:value="${planilla.idPlanilla}">
 	                  	<div class="card-body">
 					      <table id="example4" class="table table-bordered table-striped">
@@ -492,13 +491,13 @@
 				        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
 				      </div>
 			      </form>
+			      <div th:if="${#lists.isEmpty(descuentosPendientes)}" id="divError" class="callout callout-danger">
+	                  <p class="my-0"><i class="fas fa-exclamation-circle mr-2"></i><strong>Mensaje de Información:</strong></p>
+	                  <ul id="ulError" class="mb-0">
+	                  	<li>Ya no hay Descuentos Pendientes.</li>
+	                  </ul>
+	              </div>
 		      </div>
-		      <div th:if="${#lists.isEmpty(descuentosPendientes)}" id="divError" class="callout callout-danger">
-                  <p class="my-0"><i class="fas fa-exclamation-circle mr-2"></i><strong>Mensaje de Información:</strong></p>
-                  <ul id="ulError" class="mb-0">
-                  	<li>Ya no hay Descuentos Pendientes.</li>
-                  </ul>
-              </div>
 		    </div>
 		  </div>
 		</div>
@@ -686,29 +685,36 @@
 				  },3000);
 				  
 				  if(asignacionIngresos === 'true'){
-					 toastr.success("Ingresos Asignados con Éxito!"); 
+					 toastr.success("Ingresos Asignados con Éxito!");
+					 $(".totalIngresos").effect( "highlight", {color:"#04B404"}, 3000 );
 				  }
 				  
 				  if(asignacionDescuentos === 'true'){
 					 toastr.success("Descuentos Asignados con Éxito!"); 
+					 $(".totalDescuentos").effect( "highlight", {color:"#04B404"}, 3000 );
 				  }
 				  if(deleteIngresos === 'true'){
 					 toastr.success("Ingreso Eliminado con Éxito!"); 
+					 $(".totalIngresos").effect( "highlight", {color:"#04B404"}, 3000 );
 				  }
 				  
 				  if(deleteDescuentos === 'true'){
-					 toastr.success("Descuento Eliminado con Éxito!"); 
+					 toastr.success("Descuento Eliminado con Éxito!");
+					 $(".totalDescuentos").effect( "highlight", {color:"#04B404"}, 3000 );
 				  }
 				  if(updateHorasExtras === 'true'){
 					 toastr.success("Horas Extras actualizadas con Éxito!"); 
+					 $(".horasExtra").effect( "highlight", {color:"#04B404"}, 3000 );
 				  }
 				  
 				  if(updateMontoVentas === 'true'){
 					 toastr.success("Monto de Ventas actualizado con Éxito!"); 
+					 $(".montoVentas").effect( "highlight", {color:"#04B404"}, 3000 );
 				  }
 				  
 				  if(updateDiasFestivos === 'true'){
-					 toastr.success("Dias Festivos actualizados con Éxito!"); 
+					 toastr.success("Dias Festivos actualizados con Éxito!");
+					 $(".diasFestivos").effect( "highlight", {color:"#04B404"}, 3000 );
 				  }
 				  
 				  if(updateDiasFestivos === 'false'){

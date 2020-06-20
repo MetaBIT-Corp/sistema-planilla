@@ -211,20 +211,22 @@ DECLARE
     v_id_empleado           planillas.id_empleado%TYPE := :old.id_empleado;
     v_salario_base_mensual  empleados.salario_base_mensual%TYPE;
     v_salario_hora          FLOAT(126);
+    v_horas_trabajo_diarias empleados.horas_trabajo%TYPE;
 BEGIN
 	--Obtenemos el salario base mensual del empleado
     SELECT
-        salario_base_mensual
-    INTO v_salario_base_mensual
+        salario_base_mensual,
+        horas_trabajo
+    INTO v_salario_base_mensual,
+         v_horas_trabajo_diarias
     FROM
         empleados
     WHERE
         id_empleado = v_id_empleado;
 
 	--Calculamos el salario por hora
-	--Son 44 horas de trabajo semanales y 4 semanas de trabajo, 44*4=176
-
-    v_salario_hora := v_salario_base_mensual / 176;
+	--5: dias de trabajo a la semana, 4: semanas del mes:
+    v_salario_hora := v_salario_base_mensual / ( v_horas_trabajo_diarias * 5 * 4 ); 
 
 	--Monto Horas Extra Diurnas; Se pagan con un 100% de recargo, o sea el doble
     v_monto_horas_extra := v_salario_hora * v_horas_extras_d * 2;
@@ -235,7 +237,7 @@ BEGIN
 	--Actualizamos el Monto Horas Extra en la Planilla    
     :new.monto_horas_extra := v_monto_horas_extra;
 
-END;
+END calcularmontohorasextra;
 ;;
 
 /*--------- Trigger para Calcular el Monto Comisión ---------*/
@@ -397,13 +399,17 @@ COMPOUND TRIGGER
     v_horas_trabajo_diarias  empleados.horas_trabajo%TYPE;
     v_salario_base_hora      FLOAT(126);
     AFTER EACH ROW IS BEGIN
+        --Obtenemos el id de planilla a la que se le agrego o elimino un dia festivo 
 	    CASE
+            --En caso de Insercion
 	    	WHEN INSERTING THEN
         		v_planilla_id := :new.id_planilla;
+            --En caso de Eliminar    
         	WHEN DELETING THEN
         		v_planilla_id := :old.id_planilla;
         END CASE;
         
+        --Ahora obtenemos el Empleado (id_empleado) al que pertenece la Planilla
         SELECT
             id_empleado
         INTO v_empleado_id
@@ -411,9 +417,9 @@ COMPOUND TRIGGER
             planillas
         WHERE
             id_planilla = v_planilla_id;
-            
-        ---Posible funcion----    
-
+              
+        --De Este empleado obtenemos el salario base mensual y las horas de trabajo diarias
+        --Esto con el fin de calcular el Salario base por Hora
         SELECT
             salario_base_mensual,
             horas_trabajo
@@ -424,21 +430,25 @@ COMPOUND TRIGGER
             empleados
         WHERE
             id_empleado = v_empleado_id;
-            
-        --5: dias de trabajo a la semana, 4: semanas del mes:
+        
+        --Procedemos a calcular el Salario base por hora    
+        --5: dias de trabajo a la semana, 4: semanas del mes.
         v_salario_base_hora := v_salario_base_mensual / ( v_horas_trabajo_diarias * 5 * 4 ); 
         
-        ---End posible funcion---
-        
+        --Ahora calculamos cuanto es el monto por un dia festivo trabajado por el Empleado
+        --Este es el monto que se sumara o restara al monto de dias festivos de Planilla, ya que
+        --esto se va a ejecutar por cada INSERT o DELETE
         v_monto_dia_festivo := v_horas_trabajo_diarias * v_salario_base_hora;
         
         CASE
+            --En el caso de INSERT este monto se suma al monto total de Dias Festivos
         	WHEN INSERTING THEN
 		        UPDATE planillas
 		        SET
 		            monto_dias_festivos = monto_dias_festivos + v_monto_dia_festivo
 		        WHERE
 		            id_planilla = v_planilla_id;
+            --En el caso de DELETE este monto se resta al monto total de Dias Festivos        
 		    WHEN DELETING THEN
 		    	UPDATE planillas
 		        SET
