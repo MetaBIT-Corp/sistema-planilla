@@ -832,6 +832,7 @@ public class EmpleadoController {
         if (empleado.getUsuario() != null) {
             Usuario usuario = empleado.getUsuario();
             usuario.setEnabled(true);
+            usuario.setIntentos(0);
             userJpaRepository.save(usuario);
         } else {
             return "redirect:/empleado/index?unlock_success=false";

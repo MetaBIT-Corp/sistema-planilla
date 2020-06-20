@@ -370,3 +370,10 @@ SELECT * FROM DUAL;;
 INSERT INTO RANGOS_COMISION (id_rango_comision, venta_min, venta_max, tasa_comision, rango_comision_habilitado) VALUES (101,500.00,1000.00,0.15,1);;
 INSERT INTO RANGOS_COMISION (id_rango_comision, venta_min, venta_max, tasa_comision, rango_comision_habilitado) VALUES (102,1500.00,2000.00,0.25,1);;
 INSERT INTO RANGOS_COMISION (id_rango_comision, venta_min, venta_max, tasa_comision, rango_comision_habilitado) VALUES (103,2500.00,3000.00,0.35,1);;
+
+/*------------------ DIAS FESTIVOS ----------------------------*/
+INSERT INTO DIAS_FESTIVOS (id_dia_festivo, dia, dia_descripcion, mes) VALUES (1, 1, 'Día del trabajo', 5);;
+INSERT INTO DIAS_FESTIVOS (id_dia_festivo, dia, dia_descripcion, mes) VALUES (2, 10, 'Día de la madre', 5);;
+INSERT INTO DIAS_FESTIVOS (id_dia_festivo, dia, dia_descripcion, mes) VALUES (3, 17, 'Día del padre', 6);;
+INSERT INTO DIAS_FESTIVOS (id_dia_festivo, dia, dia_descripcion, mes) VALUES (4, 22, 'Día del maestro', 6);;
+INSERT INTO DIAS_FESTIVOS (id_dia_festivo, dia, dia_descripcion, mes) VALUES (5, 15, 'Día de la independencia', 8);;

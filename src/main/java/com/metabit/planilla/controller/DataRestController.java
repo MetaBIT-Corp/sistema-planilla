@@ -17,12 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.metabit.planilla.entity.Departamento;
+import com.metabit.planilla.entity.DiaFestivo;
 import com.metabit.planilla.entity.EmpleadosPuestosUnidades;
 import com.metabit.planilla.entity.Municipio;
 import com.metabit.planilla.entity.Planilla;
 import com.metabit.planilla.entity.Rol;
 import com.metabit.planilla.entity.UnidadOrganizacional;
 import com.metabit.planilla.service.DepartamentoService;
+import com.metabit.planilla.service.DiaFestivoService;
 import com.metabit.planilla.service.MunicipioService;
 import com.metabit.planilla.service.RolService;
 import com.metabit.planilla.service.UnidadOrganizacionalService;
@@ -50,6 +52,10 @@ public class DataRestController {
 	@Autowired
 	@Qualifier("unidadOrganizacionalServiceImpl")
 	private UnidadOrganizacionalService unidadOrganizacionalService;
+	
+	@Autowired
+	@Qualifier("diaFestivoServiceImpl")
+	private DiaFestivoService diaFestivoService;
 	
 	@GetMapping("/municipios/{idDepartamento}")
 	public List<Municipio> getMunicipiosByDepto(@PathVariable("idDepartamento") int idDepartamento){
@@ -86,5 +92,11 @@ public class DataRestController {
 			}
 		}
 		return unidadesSinPagar;
+	}
+		
+	@GetMapping("/dias-festivos")
+	public List<DiaFestivo> getDiasFestivos(){
+		List<DiaFestivo> diaFestivoList = diaFestivoService.getDiasFestivos();
+		return diaFestivoList;
 	}
 }

@@ -24,6 +24,10 @@ public class PlanillaDiaFestivo {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_dia_festivo", nullable = false)
 	private DiaFestivo diaFestivo;
+	
+	public PlanillaDiaFestivo() {
+		super();
+	}
 
 	/**
 	 * @param idPlanillaDiaFestivo

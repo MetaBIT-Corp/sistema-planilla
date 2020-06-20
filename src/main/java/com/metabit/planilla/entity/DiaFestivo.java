@@ -51,6 +51,9 @@ public class DiaFestivo {
 	@JsonIgnore
     private List<PlanillaDiaFestivo> planillaDiaFestivo =  new ArrayList<>();
     
+	public DiaFestivo() {
+		super();
+	}
 
 	/**
 	 * @param idDiaFestivo
