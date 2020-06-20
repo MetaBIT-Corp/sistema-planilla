@@ -68,6 +68,8 @@ public class DiaFestivo {
 		this.dia = dia;
 		this.mes = mes;
 	}
+	
+	public DiaFestivo() {}
 
 	public int getIdDiaFestivo() {
 		return idDiaFestivo;

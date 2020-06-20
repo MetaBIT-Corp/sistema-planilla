@@ -17,13 +17,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.metabit.planilla.entity.DiaFestivo;
 import com.metabit.planilla.entity.Empleado;
 import com.metabit.planilla.entity.Periodo;
 import com.metabit.planilla.entity.Planilla;
+import com.metabit.planilla.entity.PlanillaDiaFestivo;
 import com.metabit.planilla.entity.PlanillaMovimiento;
 import com.metabit.planilla.entity.TipoMovimiento;
+import com.metabit.planilla.service.DiaFestivoService;
 import com.metabit.planilla.service.EmpleadoService;
 import com.metabit.planilla.service.PeriodoService;
+import com.metabit.planilla.service.PlanillaDiaFestivoService;
 import com.metabit.planilla.service.PlanillaMovimientosService;
 import com.metabit.planilla.service.PlanillaService;
 import com.metabit.planilla.service.TipoMovimientoService;
@@ -55,6 +59,14 @@ public class PlanillaController {
     @Qualifier("tipoMovimientoServiceImpl")
     private TipoMovimientoService tipoMovimientoService;
 	
+	@Autowired
+	@Qualifier("diaFestivoServiceImpl")
+	private DiaFestivoService diaFestivoService;
+	
+	@Autowired
+	@Qualifier("planillaDiaFestivoServiceImpl")
+	private PlanillaDiaFestivoService planillaDiaFestivoService;
+	
 	@GetMapping("/index")
 	public String index(Model model) {
 		Periodo periodo_activo = periodoService.getPeriodoActivo();
@@ -79,7 +91,8 @@ public class PlanillaController {
 			@RequestParam(name = "deleteIngresos", required = false) String deleteIngresos,
 			@RequestParam(name = "deleteDescuentos", required = false) String deleteDescuentos,
 			@RequestParam(name = "updateMontoVentas", required = false) String updateMontoVentas,
-			@RequestParam(name = "updateHorasExtras", required = false) String updateHorasExtras) {
+			@RequestParam(name = "updateHorasExtras", required = false) String updateHorasExtras,
+			@RequestParam(name = "updateDiasFestivos", required = false) String updateDiasFestivos) {
 		
 		Optional<Planilla> planilla = planillaService.getPlanillaById(id_planilla);
 		
@@ -115,6 +128,43 @@ public class PlanillaController {
 			model.addAttribute("deleteDescuentos", deleteDescuentos);
 			model.addAttribute("updateMontoVentas", updateMontoVentas);
 			model.addAttribute("updateHorasExtras", updateHorasExtras);
+			
+			//Obtenemos los PlanillaDiaFestivos que ya posee Planilla
+			List<PlanillaDiaFestivo> planillaDiaFestivosActuales = planillaDiaFestivoService.findByPlanilla(planilla.get());
+			
+			//Obtenemos todos los Dias Festivos del Periodo
+			List<DiaFestivo> diasFestivosPeriodo = diaFestivoService.getDiasFestivosDelPeriodoActivo();
+			
+			//Ahora creamos una lista de DiaFestivo en donde vamos a agregar
+			//los DiaFestivo que aun no han sido asignados a planilla
+			List<DiaFestivo> diasFestivosPeriodoRestantes = new ArrayList<DiaFestivo>();
+					
+			//Recorremos todos los DiaFestivo del Periodo
+			for (DiaFestivo diaFestivo : diasFestivosPeriodo) {
+				boolean seleccionado = false;
+				
+				//Recorremos todos los DiaFestivo que ya estan asignados a Planilla
+				for(PlanillaDiaFestivo planillaDiaFestivo: planillaDiaFestivosActuales) {
+					//Si el DiaFestivo es igual a uno de los que ya estan asignados a planilla
+					//entonces ponemos la bandera a true, indicado que ya esta seleccionado
+					if(diaFestivo == planillaDiaFestivo.getDiaFestivo())
+						seleccionado = true;
+				}
+				
+				//Si no esta seleccionado, entonces lo agregamos a la lista de 
+				//DiaFestivo restantes
+				if(! seleccionado)
+					diasFestivosPeriodoRestantes.add(diaFestivo);
+				
+			}
+			//Agregamos los DiaFestivo restantes
+			model.addAttribute("diasFestivosRestantes", diasFestivosPeriodoRestantes);
+			
+			//Agregamos los PlanillaDiaFestivo seleccionados
+			model.addAttribute("diasFestivosSeleccionados", planillaDiaFestivosActuales);
+			
+			//Variable que determina el resultado de Actualizar los Dias Festivos a la planilla
+			model.addAttribute("updateDiasFestivos", updateDiasFestivos);
 			
 			if(updateMontoVentas != null || updateHorasExtras != null || deleteIngresos != null || deleteDescuentos != null) {
 				planilla.get().setSalarioNeto(calcularSalarioNeto(planilla.get()));
@@ -283,6 +333,62 @@ public class PlanillaController {
 		
 		
 		return "redirect:/planilla/show?planilla=" + planilla.get().getIdPlanilla() + "&updateHorasExtras=true";
+	}
+	
+	@PostMapping("/agregar-dias-festivos")
+	public String agregarDiasFestivos(@RequestParam(name = "diasFestivos[]", required = false) Optional<List<String>> idDiasFestivos,
+			@RequestParam(name = "id_planilla", required = true) int id_planilla) {
+		
+		//Obtenemos la Planilla en la que se esta editando
+		Planilla planilla = planillaService.getPlanillaById(id_planilla).isPresent() ? planillaService.getPlanillaById(id_planilla).get() : null;
+		
+		//Si Planilla es Null Detenemos la Ejecucion
+		if(planilla == null) {
+		
+			return "redirect:/planilla/show?planilla=" + planilla.getIdPlanilla() + "&updateDiasFestivos=false";
+
+		}
+		
+		//Creamos una lista de PlanillaDiaFestivo, los cuales se crearan y se insertaran 
+		//todos en la misma transaccion 
+		List<PlanillaDiaFestivo> planillaDiaFestivoNuevos = new ArrayList<PlanillaDiaFestivo>();
+		
+		//Obtenemos los PlanillaDiaFestivo que ya existen actualmente, esto para eliminarlos
+		List<PlanillaDiaFestivo> planillaDiasFestivosActuales = planillaDiaFestivoService.findByPlanilla(planilla);
+		
+		//Eliminamos los PlanillaDiaFestivo existentes
+		planillaDiaFestivoService.deleteAllPlanillaDiasFestivos(planillaDiasFestivosActuales);
+		
+		//Si la lista de IDs esta vacia es porque no se desea agregar Dias Festivos a la Planilla
+		if(idDiasFestivos.isPresent()) {
+			
+			//Procedemos a recorrer la lista de Dias Festivos que se seleccionaron en esta ocacion
+			//Aqui crearemos una Instancia de PlanillaDiaFestivo para cada iteracion y
+			//esta instancia la agregaremos a la lista de PlanillaDiaFestivo nuevos
+			for (String idDiaFestivo : idDiasFestivos.get()) {
+				//Obtenemos el Dia Festivo
+				DiaFestivo diaFestivo = diaFestivoService.getDiaFestivo(Integer.parseInt(idDiaFestivo));
+				
+				//Creamos una instancia de PlanillaDiaFestivo
+				PlanillaDiaFestivo planillaDiaFestivo = new PlanillaDiaFestivo();
+				
+				//Le seteamos la Planilla
+				planillaDiaFestivo.setPlanilla(planilla);
+				
+				//Le seteamos el Dia Festivo
+				planillaDiaFestivo.setDiaFestivo(diaFestivo);
+				
+				//Agregamos la instancia de PlanillaDiaFestivo a la lista
+				planillaDiaFestivoNuevos.add(planillaDiaFestivo);
+			}
+			
+			//Procedemos a guardar la lista de PlanillaDiaFestivo
+			List<PlanillaDiaFestivo> planillaDFG = planillaDiaFestivoService.addAllPlanillaDiasFestivos(planillaDiaFestivoNuevos);
+			//Feedback
+			System.out.println("GUARDADOS: " + planillaDFG.size());
+		}
+		
+		return "redirect:/planilla/show?planilla=" + planilla.getIdPlanilla() + "&updateDiasFestivos=true";
 	}
 
 	@PostMapping("/store")

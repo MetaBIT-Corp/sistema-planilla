@@ -12,6 +12,9 @@
   <link rel="stylesheet" th:href="@{/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css}">
   <!-- Toastr -->
   <link rel="stylesheet" th:href="@{/plugins/toastr/toastr.min.css}">
+  <!-- Bootstrap4 Duallistbox -->
+  <link rel="stylesheet" th:href="@{/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css}">
+  
     
 </head>
 
@@ -33,6 +36,7 @@
 			<input type="hidden" id="deleteDescuentos" th:if="${deleteDescuentos != null}" value="true">
 			<input type="hidden" id="updateMontoVentas" th:if="${updateMontoVentas != null}" value="true">
 			<input type="hidden" id="updateHorasExtras" th:if="${updateHorasExtras != null}" value="true">
+			<input type="hidden" id="updateDiasFestivos" th:if="${updateDiasFestivos != null}" th:value="${updateDiasFestivos}">
 			
 		    <!-- general form elements -->
 		    <div class="offset-1 col-md-10">
@@ -62,6 +66,10 @@
                        
                     <a th:if="${asignacionDescuentos != null}" class="nav-link" id="descuentos-tab" data-toggle="tab" href="#descuentos" role="tab"
                     aria-controls="descuentos" aria-selected="true">Descuentos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="dias-festivos-tab" data-toggle="tab" href="#dias-festivos" role="tab"
+                    	aria-controls="dias-festivos" aria-selected="true">Dias Festivos</a>
                 </li>
             </ul>
             
@@ -102,7 +110,8 @@
 								    <span th:text="'$' + ${#numbers.formatDecimal(planilla.totalDescuentos, 1, 'COMMA', 2, 'POINT')}"></span>
 								  </div>
 							  </div>
-							  <div class="form-row" th:if="${planilla.empleado.esAdministrativo == false}">
+							  <!--<div class="form-row" th:if="${planilla.empleado.esAdministrativo == false}">-->
+							  <div class="form-row">
 							  	 <div class="col-md-6 mb-3">
 								    <label>
 								    	Monto de Ventas:
@@ -314,6 +323,58 @@
                        </div> 
                     </div>
                 </div>
+                
+                <!--DIAS FESTIVOS-->
+                <div class="tab-pane fade" id="dias-festivos" role="tabpanel"
+                     aria-labelledby="dias-festivos-tab" style="margin-top: 10px;">
+                    <div class="container">
+	                    <div class="card">
+		                    <form action="#" method="post"  th:action="@{/planilla/agregar-dias-festivos}">
+		                    <input type="hidden" name="id_planilla" th:value="${planilla.idPlanilla}">
+					            <div class="card-header text-right" style="background-color: #E6E6E6;">
+						            <button type="submit" class="btn btn-md btn-primary" title="Agregar a Planilla">
+										<span class="text-white">Agregar a Planilla</span>
+									</button>
+					            </div>
+	                       		 <!----------------CÓDIGO PARA LA ASIGNACIÓN DE DIAS FESTIVOS--------------------->
+	                                <br>
+	                                <div class="card card-default">
+	                                  <div class="card-header">
+	                                    <h3 class="card-title">Asignación de Dias Festivos</h3>
+	
+	                                    <div class="card-tools">
+	                                      <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+	                                    </div>
+	                                  </div>
+	                                  <!-- /.card-header -->
+	                                  <div class="card-body">
+	                                    <div class="row">
+	                                      <div class="col-12">
+	                                        <div class="form-group">
+	                                          <label>De clic sobre los dias festivos que le desea asignar a la planilla</label>
+	                                          <select class="duallistbox" multiple="multiple" name="diasFestivos[]">
+	                                            <div th:each="diaFestivo : ${diasFestivosRestantes}">
+	                                                <option th:value="${diaFestivo.idDiaFestivo}" th:text="${diaFestivo.diaDescripcion}">No hay dias festivos</option>
+	                                            </div>
+	                                            <div th:each="diaFestivoSeleccionado : ${diasFestivosSeleccionados}">
+	                                                <option th:value="${diaFestivoSeleccionado.diaFestivo.idDiaFestivo}" th:text="${diaFestivoSeleccionado.diaFestivo.diaDescripcion}" selected="selected">No hay dias festivos</option>
+	                                            </div>
+	                                          </select>
+	                                        </div>
+	                                        <!-- /.form-group -->
+	                                      </div>
+	                                      <!-- /.col -->
+	                                    </div>
+	                                    <!-- /.row -->
+	                                  </div>
+	                                  <!-- /.card-body -->
+	                                </div>
+	                                <!----------------FIN COÓDIGO PARA LA ASIGNACIÓN DE DIAS FESTIVOS--------------------->
+	                        	</form>
+                       </div> 
+                    </div>
+                </div>
+                
             </div>
         </div>
 	</div>
@@ -536,7 +597,8 @@
 	  	<script th:src="@{/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
 		<script th:src="@{/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
 		<script th:src="@{/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
-		
+		<!-- Duallistbox Bootstrap -->
+		<script th:src="@{/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js}"></script>
 		<!-- Toastr -->
 		<script th:src="@{/plugins/toastr/toastr.min.js}"></script>
 		<!-- SweetAlert2 -->
@@ -558,6 +620,8 @@
 				    }); 
 				    
 			});
+			
+			$('.duallistbox').bootstrapDualListbox();
 		</script>
 		
 		<script type="text/javascript">
@@ -613,7 +677,8 @@
 				  
 				  var updateHorasExtras = $('#updateHorasExtras').val();
 				  var updateMontoVentas = $('#updateMontoVentas').val();
-				 
+				  var updateDiasFestivos = $('#updateDiasFestivos').val();
+				  
 				  setTimeout(function() {
 				    $(".alert").fadeOut();           
 				  },3000);
@@ -638,6 +703,14 @@
 				  
 				  if(updateMontoVentas === 'true'){
 					 toastr.success("Monto de Ventas actualizado con Éxito!"); 
+				  }
+				  
+				  if(updateDiasFestivos === 'true'){
+					 toastr.success("Dias Festivos actualizados con Éxito!"); 
+				  }
+				  
+				  if(updateDiasFestivos === 'false'){
+					 toastr.warning("No se actualizaron los Dias Festivos, no se logro identificar la Planilla"); 
 				  }
 			    
 			});

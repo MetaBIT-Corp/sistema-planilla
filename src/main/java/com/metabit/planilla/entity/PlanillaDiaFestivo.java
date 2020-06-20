@@ -37,6 +37,10 @@ public class PlanillaDiaFestivo {
 		this.diaFestivo = diaFestivo;
 	}
 
+	public PlanillaDiaFestivo() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public int getIdPlanillaDiaFestivo() {
 		return idPlanillaDiaFestivo;
 	}
