@@ -50,6 +50,12 @@ public class TipoUnidadOrganizacionalServiceImpl implements TipoUnidadOrganizaci
 		// TODO Auto-generated method stub
 		return tipoUnidadOrganizacionalJpaRepository.findByTipoUnidadOrganizacionalHabilitado(estado);
 	}
+
+	@Override
+	public TipoUnidadOrganizacional getById(int id_tipo) {
+		// TODO Auto-generated method stub
+		return tipoUnidadOrganizacionalJpaRepository.findByIdTipoUnidadOrganizacional(id_tipo);
+	}
     
     
 }

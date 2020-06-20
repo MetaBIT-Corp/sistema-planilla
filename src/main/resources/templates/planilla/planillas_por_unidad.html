@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layouts/layout}">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<!-- Tell the browser to be responsive to screen width -->
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	
+	<!-- SweetAlert2 -->
+  <link rel="stylesheet" th:href="@{/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css}">
+	<!-- Toastr -->
+  <link rel="stylesheet" th:href="@{/plugins/toastr/toastr.min.css}">
+  <!-- Select2 -->
+  <link rel="stylesheet" th:href="@{/plugins/select2/css/select2.min.css}">
+  <link rel="stylesheet" th:href="@{/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css}">
+</head>
+<body>
+
+	<h1 class="m-0 text-dark" layout:fragment="titulo_seccion">Planillas por Unidad</h1>
+
+	<ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
+		<li class="breadcrumb-item">
+			<a href="#" th:href="@{/index}">Home</a>
+		</li>
+		<li class="breadcrumb-item active">Planillas por Unidad</li>
+	</ol>
+	
+	<div layout:fragment="content">	
+		<div class="row ml-3 mr-3">
+			<div class="col-md-12">
+				<div class="card">
+					<div class="card-header">
+						<div class="row">
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="aniosLaborales">Años laborales</label>
+									<select id="aniosLaborales" class="form-control select2bs4" style="width: 100%;">
+					                    <th:block th:if="${!#lists.isEmpty(anios)}" th:each="anio : ${anios}">
+					                    	<option th:if="${periodo_previo.anioLaboral.anioLaboral}==${anio.anioLaboral}"
+				                    		th:text="|Año Laboral ${anio.anioLaboral}|" th:value="${anio.idAnioLaboral}" selected>
+				                    		</option>
+					                    	<option th:unless="${periodo_previo.anioLaboral.anioLaboral}==${anio.anioLaboral}"
+					                    	th:text="|Año Laboral ${anio.anioLaboral}|" th:value="${anio.idAnioLaboral}">
+					                    	</option>
+				                    	</th:block>
+				                  	</select>
+			                  	</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="periodos">Periodos</label>
+									<select id="periodos" class="form-control select2bs4" style="width: 100%;">
+										<th:block th:if="${!#lists.isEmpty(periodos)}" th:each="periodo : ${periodos}">
+					                    	<option th:if="${periodo_previo.idPeriodo}==${periodo.idPeriodo}"
+					                    	th:text="| Del ${periodo.fechaInicio} al ${periodo.fechaFinal} |" th:value="${periodo.idPeriodo}" selected>
+				                    		</option>
+					                    	<option th:unless="${periodo_previo.idPeriodo}==${periodo.idPeriodo}"
+					                    	th:text="| Del ${periodo.fechaInicio} al ${periodo.fechaFinal} |" th:value="${periodo.idPeriodo}">
+					                    	</option>
+				                    	</th:block>
+				                  	</select>
+			                  	</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="tipoUnidad">Tipo de Unidad</label>
+									<select id="tipoUnidad" class="form-control select2bs4" style="width: 100%;">
+										<option id="emptyOption" value="empty"> Seleccione el tipo de unidad </option>
+					                    <th:block th:if="${!#lists.isEmpty(tipos_unidad)}" th:each="tu, state : ${tipos_unidad}">
+					                    	<option th:if="${state.index == 0}"
+					                    	th:text="${tu.tipoUnidadOrganizacional}" th:value="${tu.idTipoUnidadOrganizacional}" selected>
+				                    		</option>
+					                    	<option th:unless="${state.index == 0}"
+					                    	th:text="${tu.tipoUnidadOrganizacional}" th:value="${tu.idTipoUnidadOrganizacional}">
+					                    	</option>
+				                    	</th:block>
+				                  	</select>
+			                  	</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label for="unidad">Unidad</label>
+									<select id="unidad" class="form-control select2bs4" style="width: 100%;">
+										<th:block th:if="${!#lists.isEmpty(unidades)}" th:each="unidad : ${unidades}">
+					                    	<option th:text="${unidad.unidadOrganizacional}" th:value="${unidad.idUnidadOrganizacional}">
+					                    	</option>
+				                    	</th:block>
+				                  	</select>
+			                  	</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="card-body" id="planillaBody">
+
+					</div>
+					<!-- /.card-body -->
+				</div>
+				<!-- /.card -->
+			</div>
+		</div>
+
+	</div>
+	<!-- Scripts-->
+	<section layout:fragment="scripts">
+
+		<!-- DataTables -->
+		<script th:src="@{/plugins/datatables/jquery.dataTables.min.js}"></script>
+		<script th:src="@{/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
+		<script th:src="@{/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
+		<script th:src="@{/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
+		<!-- Toastr -->
+		<script th:src="@{/plugins/toastr/toastr.min.js}"></script>
+		<!-- SweetAlert2 -->
+		<script th:src="@{/plugins/sweetalert2/sweetalert2.min.js}"></script>
+		<!-- Select2 -->
+		<script th:src="@{/plugins/select2/js/select2.full.min.js}"></script>
+
+		<!-- page script -->
+		<script>
+			$(function() {
+				//Initialize Select2 Elements
+			    $('.select2bs4').select2({
+			      theme: 'bootstrap4'
+			    })
+			});	
+
+		</script>
+		<!-- Scripts-->
+
+		<script>
+			
+			//Obtener los periodos del año laboral
+			$('#aniosLaborales').on('change', function(){
+				var id_anio = $(this).val();
+				var html = '';
+
+				$.get('/api/anio-laboral/' + id_anio + '/periodos', function(data){
+					
+					for (var i = 0; i < data.length; i++) {
+						html += '<option value="' + data[i].idPeriodo + '">Del ' + data[i].fechaInicio + ' al ' + data[i].fechaFinal + '</option>';
+					}
+
+					$('#periodos').html("<option> Seleccionar periodo </option>" + html);
+				})
+
+			});
+
+			//Poner a opción por default cuando el combo box de periodos cambie
+			$('#periodos').on('change', function(){
+				$('#tipoUnidad').val("empty").change();
+			})
+
+			//Obtener las unidades del tipo de unidad
+			$('#tipoUnidad').on('change', function(){
+				var id_tipo = $(this).val();
+				var html = '';
+
+				$.get('/api/tipo-unidad/' + id_tipo + '/unidades', function(data){
+
+					for (var i = 0; i < data.length; i++) {
+						html += '<option value="' + data[i].idUnidadOrganizacional + '">' + data[i].unidadOrganizacional + '</option>';
+					}
+
+					$('#unidad').html("<option> Seleccionar la unidad </option>" + html);
+				});
+			})
+
+			//Traer las planillas de la unidad y el periodo seleccionado en base al evento change
+			$('#unidad').on('change', function(){
+				var id_unidad = $('#unidad').val();
+				var id_periodo = $('#periodos').val();
+
+				$.get('/planilla/planillas-por-unidad-table-body/unidad/' + id_unidad + '/periodo/' + id_periodo, function(data){
+					$('#planillaBody').html(data)
+				});
+			});
+
+			//Traer las planillas de la unidad y el periodo seleccionado cuando el documento esté listo
+			$(document).ready(function(){
+				var id_unidad = $('#unidad').val();
+				var id_periodo = $('#periodos').val();
+
+				$.get('/planilla/planillas-por-unidad-table-body/unidad/' + id_unidad + '/periodo/' + id_periodo, function(data){
+					$('#planillaBody').html(data)
+				});
+			});
+
+		</script>
+	</section>
+
+</body>
+</html>

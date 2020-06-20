@@ -51,6 +51,12 @@ public class PlanillaServiceImpl implements PlanillaService {
 	public String showMessage(String p_message) {
 		return planillaJpaRepository.showMessage(p_message);
 	}
+
+	@Override
+	public List<Planilla> getPlanillasUnidad(int id_unidad, int id_periodo) {
+		// TODO Auto-generated method stub
+		return planillaJpaRepository.findPlanillasUnidad(id_unidad, id_periodo);
+	}
 	
 	
 	

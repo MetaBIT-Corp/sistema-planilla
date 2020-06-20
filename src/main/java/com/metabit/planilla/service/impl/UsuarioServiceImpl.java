@@ -22,6 +22,17 @@ public class UsuarioServiceImpl implements UsuarioService{
 		// TODO Auto-generated method stub
 		return userJpaRepository.findAdminUsers();
 	}
+
+	@Override
+	public Boolean isAdminUser(String username) {
+		// TODO Auto-generated method stub
+		if(userJpaRepository.isAdminUser(username) != null) {
+			return true;
+		}else {
+			return false;
+		}
+			
+	}
 	
 	
 }

@@ -22,4 +22,16 @@ public interface PlanillaJpaRepository extends JpaRepository<Planilla, Serializa
 	
 	@Procedure(name = "show")
 	String showMessage(@Param("p_message") String p_message);
+	
+	@Query(value = "SELECT * FROM planillas\n" + 
+			"WHERE id_empleado IN (\n" + 
+			"    SELECT id_empleado FROM tipos_unidad_organizacional\n" + 
+			"        NATURAL JOIN unidades_organizacionales\n" + 
+			"        NATURAL JOIN empleados_puestos_unidades\n" + 
+			"        NATURAL JOIN empleados\n" + 
+			"        NATURAL JOIN planillas\n" + 
+			"    WHERE id_unidad_organizacional = ?1\n" + 
+			")\n" + 
+			"AND id_periodo = ?2", nativeQuery = true)
+	public abstract List<Planilla> findPlanillasUnidad(int id_unidad, int id_periodo);
 }

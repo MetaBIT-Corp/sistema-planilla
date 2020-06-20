@@ -6,4 +6,5 @@ import com.metabit.planilla.entity.Usuario;
 
 public interface UsuarioService {
 	public abstract List<Usuario> getAdminUsers();
+	public abstract Boolean isAdminUser(String username);
 }
