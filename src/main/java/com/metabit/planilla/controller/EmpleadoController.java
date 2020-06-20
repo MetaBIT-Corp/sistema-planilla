@@ -318,9 +318,11 @@ public class EmpleadoController {
 
             /*-------------------------CÓDIGO PARA AGREGAR ROLES AL EMPLEADO-------------------*/
         	List<Rol> rolesList = new ArrayList<Rol>();
-            for (int idRol: roles) {
-            	Rol rol = rolService.getByIdRol(idRol);
-            	rolesList.add(rol);
+            if(roles != null) {
+            	for (int idRol: roles) {
+                	Rol rol = rolService.getByIdRol(idRol);
+                	rolesList.add(rol);
+                }
             }
             usuario.setRoles(rolesList);
             /*------------------FIN DEL CÓDIGO PARA AGREGAR ROLES AL EMPLEADO-------------------*/
@@ -449,9 +451,11 @@ public class EmpleadoController {
         if(puesto.isUsuarioRequerido()){
         	/*-------------------------CÓDIGO PARA AGREGAR ROLES AL EMPLEADO-------------------*/
         	List<Rol> rolesList = new ArrayList<Rol>();
-            for (int idRol: roles) {
-            	Rol rol = rolService.getByIdRol(idRol);
-            	rolesList.add(rol);
+            if(roles != null) {
+            	for (int idRol: roles) {
+                	Rol rol = rolService.getByIdRol(idRol);
+                	rolesList.add(rol);
+                }
             }
             /*------------------FIN DEL CÓDIGO PARA AGREGAR ROLES AL EMPLEADO-------------------*/
             
