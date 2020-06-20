@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layouts/layout}">
+
+<head>
+
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" th:href="@{/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css}">
+    <!-- Toastr -->
+    <link rel="stylesheet" th:href="@{/plugins/toastr/toastr.min.css}">
+
+</head>
+
+<body>
+
+<h1 class="ml-4 text-dark" layout:fragment="titulo_seccion">Departamentos de El Salvador</h1>
+
+<ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
+    <li class="breadcrumb-item"><a th:href="@{/index}">Home</a></li>
+    <li class="breadcrumb-item active">Departamentos</li>
+</ol>
+
+<div layout:fragment="content">
+    <div class="row ml-3 mr-3">
+        <div class="col-md-1"></div>
+        <div class="col-md-10 ">
+            <div class="card">
+                <div class="card-header text-right">
+                    <a type="button" class="btn btn-sm btn-primary" id="crear_depto_btn" th:if="${create == true}">
+                        <i class="fas fa-plus-circle mr-1 text-white"></i>
+                        <span class="text-white">Nuevo Departamento</span>
+                    </a>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <table id="example1" class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Departamento</th>
+                            <th>Cantidad de municipios</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="depto, contador: ${departamentos}">
+                            <td><span th:text="${contador.count}"></span></td>
+                            <td><span th:text="${depto.departamento}"></span></td>
+                            <td class="text-center"><span th:text="${#lists.size(depto.municipios)+' Municipios'}" class="badge badge-info"></span></td>
+                            <td class="text-center text-white">
+                                <a class="btn btn-primary btn-sm edit-depto" title="Editar Departamento"
+                                   th:if="${edit == true}" th:attr="data-id=${depto.idDepartamento}">
+                                    <i class="fas fa-pen"></i>
+                                </a>&nbsp;
+                                <a class="btn btn-danger btn-sm delete-depto" title="Eliminar Unidad Organizacional"
+                                   th:if="${delete == true}" th:attr="data-id=${depto.idDepartamento}">
+                                    <i class="far fa-trash-alt"></i>
+                                </a>&nbsp;
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <th>#</th>
+                            <th>Departamento</th>
+                            <th>Cantidad de municipios</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
+
+    <!-- MODAL CREAR UNIDAD-->
+    <div th:insert="departamento/create :: create_depto"></div>
+
+    <!-- MODAL EDITAR UNIDAD-->
+    <div th:insert="departamento/edit :: edit_depto"></div>
+
+    <!-- MODAL ELIMINAR UNIDAD -->
+    <div class="modal" id="delete_modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Eliminar Departamento</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="delete_form">
+                        <input type="text" name="idDepartamento" hidden id="idDepartamento_delete">
+                    </form>
+                    ¿Desea eliminar el departamento seleccionado? Si el departamento ha sido asignado en alguna direccion de algun empleado, no se permitira eliminar.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="delete" class="btn btn-danger">Eliminar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<section layout:fragment="scripts">
+    <!-- DataTables -->
+    <script th:src="@{/plugins/datatables/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
+    <script th:src="@{/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
+    <script th:src="@{/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
+    <script >
+        $("#example1").DataTable({
+            "responsive": true,
+            "autoWidth": false,
+            "columnDefs": [
+                { "width": "30%", "targets": 2 }
+            ]
+        });
+
+    </script>
+    <!-- Toastr -->
+    <script th:src="@{/plugins/toastr/toastr.min.js}"></script>
+    <!-- SweetAlert2 -->
+    <script th:src="@{/plugins/sweetalert2/sweetalert2.min.js}"></script>
+
+    <script>
+        $("#crear_depto_btn").on("click", function () {
+            $("#error").attr("hidden", "hidden");
+            $("#departamento").val("");
+            $("#create_modal").modal("show");
+        });
+
+        $("#btn_registrar").on("click", function () {
+
+            $.ajax({
+                type: "POST",
+                url: "/departamentos/store",
+                data: $("#create_form").serialize(),
+                success: function (data) {
+                    $("#error").attr("hidden", "hidden");
+                    $("#create_modal").modal("hide");
+                    toastr.success(data);
+                    setTimeout(function () {
+                        location.reload();
+                    }, 2000);
+                },
+                error: function (data) {
+                    $("#error").removeAttr("hidden");
+                    $("#error").text(data.responseText);
+                }
+            });
+        });
+
+        $(".edit-depto").on("click", function () {
+            var idDepto = $(this).data("id");
+            $("#idDepartamento_edit").val(idDepto);
+            $.get('/departamentos/edit/' + idDepto, function (data) {
+                $("#departamento_edit").val(data.result.departamento + "");
+            });
+            $("#error_edit").attr("hidden", "hidden");
+            $("#edit_modal").modal("show");
+        });
+
+        $("#btn_actualizar").on("click", function () {
+
+            $.ajax({
+                type: "POST",
+                url: "/departamentos/update",
+                data: $("#update_form").serialize(),
+                success: function (data) {
+                    $("#error_edit").attr("hidden", "hidden");
+                    $("#edit_modal").modal("hide");
+                    toastr.success(data);
+                    setTimeout(function () {
+                        location.reload();
+                    }, 2000);
+                },
+                error: function (data) {
+                    $("#error_edit").removeAttr("hidden");
+                    $("#error_edit").text(data.responseText);
+                }
+            });
+        });
+
+        $(".delete-depto").on("click", function () {
+            var id = $(this).data("id");
+            $("#idDepartamento_delete").val(id);
+            $("#delete_modal").modal("show");
+            $("#delete").on("click", function () {
+                $.ajax({
+                    type: "POST",
+                    url: "/departamentos/delete",
+                    data: $("#delete_form").serialize(),
+                    success: function (data) {
+                        $("#delete_modal").modal("hide");
+                        toastr.success(data);
+                        setTimeout(function () {
+                            location.reload();
+                        }, 2000);
+                    },
+                    error: function (data) {
+                        $("#delete_modal").modal("hide");
+                        toastr.error(data.responseText);
+                        setTimeout(function () {
+                            location.reload();
+                        }, 2000);
+                    }
+                });
+            });
+        });
+    </script>
+
+</section>
+</body>
+</html>

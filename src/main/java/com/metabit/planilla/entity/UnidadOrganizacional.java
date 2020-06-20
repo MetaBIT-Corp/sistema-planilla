@@ -25,7 +25,6 @@ public class UnidadOrganizacional {
 
 
     @OneToOne(fetch=FetchType.EAGER)
-    @JsonIgnore
     @JoinColumn(name = "id_empleado_jefe")
     private Empleado empleadoJefe;
 
@@ -35,7 +34,6 @@ public class UnidadOrganizacional {
     private List<CentroCosto> centroCostos=new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JsonIgnore
     @JoinColumn(name="id_unidad_organizacional_padre")
     private UnidadOrganizacional unidadPadre;
 

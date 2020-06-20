@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service("direccionServiceImpl")
 public class DireccionServiceImpl implements DireccionService {
@@ -29,6 +31,11 @@ public class DireccionServiceImpl implements DireccionService {
     @Override
     public Direccion getDirection(int id) {
         return direccionJpaRepository.getOne(id);
+    }
+
+    @Override
+    public List<Direccion> getAllDirecciones() {
+        return direccionJpaRepository.findAll();
     }
 
 }
