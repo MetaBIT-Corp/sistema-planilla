@@ -166,7 +166,7 @@ public class PlanillaController {
 			//Variable que determina el resultado de Actualizar los Dias Festivos a la planilla
 			model.addAttribute("updateDiasFestivos", updateDiasFestivos);
 			
-			if(updateMontoVentas != null || updateHorasExtras != null || deleteIngresos != null || deleteDescuentos != null) {
+			if(updateMontoVentas != null || updateHorasExtras != null || deleteIngresos != null || deleteDescuentos != null || updateDiasFestivos != null) {
 				planilla.get().setSalarioNeto(calcularSalarioNeto(planilla.get()));
 				planillaService.updatePlanilla(planilla.get());
 			}
@@ -267,9 +267,9 @@ public class PlanillaController {
 		
 		//Si la periodicidad es Quincenal, solo se considerara la mitad del Salaria Base de los empleados para los calculos
 		if(planilla.getPeriodo().getAnioLaboral().getPeriodicidad() == 15)
-			salarioNeto = ((float) planilla.getEmpleado().getSalarioBaseMensual()/2) + planilla.getTotalIngresos() - planilla.getTotalDescuentos() + planilla.getMontoComision() + planilla.getMontoHorasExtra() - planilla.getRenta();
+			salarioNeto = ((float) planilla.getEmpleado().getSalarioBaseMensual()/2) + planilla.getTotalIngresos() - planilla.getTotalDescuentos() + planilla.getMontoComision() + planilla.getMontoHorasExtra() - planilla.getRenta() + planilla.getMontoDiasFestivos();
 		else
-			salarioNeto = ((float) planilla.getEmpleado().getSalarioBaseMensual()) + planilla.getTotalIngresos() - planilla.getTotalDescuentos() + planilla.getMontoComision() + planilla.getMontoHorasExtra() - planilla.getRenta();
+			salarioNeto = ((float) planilla.getEmpleado().getSalarioBaseMensual()) + planilla.getTotalIngresos() - planilla.getTotalDescuentos() + planilla.getMontoComision() + planilla.getMontoHorasExtra() - planilla.getRenta() + planilla.getMontoDiasFestivos();
 		
 		return salarioNeto;
 	}

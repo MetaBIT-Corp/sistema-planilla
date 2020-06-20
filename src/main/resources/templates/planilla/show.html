@@ -163,7 +163,9 @@
 								  </div>
 								  <div class="col-md-6 mb-3">
 								    <label>Monto por Horas Extras:</label><br>
-								    <span th:text="'$' + ${#numbers.formatDecimal(planilla.montoHorasExtra, 1, 'COMMA', 2, 'POINT')}"></span>
+								    <span th:text="'$' + ${#numbers.formatDecimal(planilla.montoHorasExtra, 1, 'COMMA', 2, 'POINT')}"></span> <br/><br/>
+								    <label>Monto por Dias Festivos:</label><br>
+								    <span th:text="'$' + ${#numbers.formatDecimal(planilla.montoDiasFestivos, 1, 'COMMA', 2, 'POINT')}"></span>
 								  </div>
 							  </div>
                          </div>

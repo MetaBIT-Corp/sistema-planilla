@@ -359,3 +359,67 @@ BEGIN
 END;
 ;;
 
+/*----------------------Trigger para Actualizar Monto por Dias Festivos Trabajados ------------------*/
+CREATE OR REPLACE TRIGGER actualizar_monto_dias_festivos FOR
+    INSERT OR DELETE ON planillas_dias_festivos
+COMPOUND TRIGGER
+    v_monto_dia_festivo      planillas.monto_dias_festivos%TYPE;
+    v_planilla_id            planillas.id_planilla%TYPE;
+    v_empleado_id            empleados.id_empleado%TYPE;
+    v_salario_base_mensual   empleados.salario_base_mensual%TYPE;
+    v_horas_trabajo_diarias  empleados.horas_trabajo%TYPE;
+    v_salario_base_hora      FLOAT(126);
+    AFTER EACH ROW IS BEGIN
+	    CASE
+	    	WHEN INSERTING THEN
+        		v_planilla_id := :new.id_planilla;
+        	WHEN DELETING THEN
+        		v_planilla_id := :old.id_planilla;
+        END CASE;
+        
+        SELECT
+            id_empleado
+        INTO v_empleado_id
+        FROM
+            planillas
+        WHERE
+            id_planilla = v_planilla_id;
+            
+        ---Posible funcion----    
+
+        SELECT
+            salario_base_mensual,
+            horas_trabajo
+        INTO
+            v_salario_base_mensual,
+            v_horas_trabajo_diarias
+        FROM
+            empleados
+        WHERE
+            id_empleado = v_empleado_id;
+            
+        --5: dias de trabajo a la semana, 4: semanas del mes:
+        v_salario_base_hora := v_salario_base_mensual / ( v_horas_trabajo_diarias * 5 * 4 ); 
+        
+        ---End posible funcion---
+        
+        v_monto_dia_festivo := v_horas_trabajo_diarias * v_salario_base_hora;
+        
+        CASE
+        	WHEN INSERTING THEN
+		        UPDATE planillas
+		        SET
+		            monto_dias_festivos = monto_dias_festivos + v_monto_dia_festivo
+		        WHERE
+		            id_planilla = v_planilla_id;
+		    WHEN DELETING THEN
+		    	UPDATE planillas
+		        SET
+		            monto_dias_festivos = monto_dias_festivos - v_monto_dia_festivo
+		        WHERE
+		            id_planilla = v_planilla_id;
+        END CASE;    
+
+    END AFTER EACH ROW;
+END actualizar_monto_dias_festivos;
+;;
