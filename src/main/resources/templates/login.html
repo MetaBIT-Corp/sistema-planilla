@@ -25,12 +25,12 @@
 
 <body class="hold-transition login-page">
 <div class="login-box">
-
+<input type="hidden" name="" th:if="${email_success}" id="email_success" th:value="${email_success}">
   <!-- /.login-logo -->
   <div class="card">
     <div class="card-body login-card-body">
       <p class="login-box-msg">Bienvenido</p>
-
+    
       <form class="user" th:action="@{/login-check}" method="POST">
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <div class="input-group mb-3">
@@ -170,6 +170,13 @@ $(document).ready(function(){
   $('#btn-send').on('click', function(){
     $(this).text('Enviando...');
   })
+
+  var email_success = $('#email_success').val();
+  if(email_success != null){
+	  console.log("entró");
+          toastr.success('El correo electrónico fue enviado con éxito');
+     }
+
 </script>
 </html>
 

@@ -11,6 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.metabit.planilla.entity.Direccion;
 import com.metabit.planilla.entity.Email;
@@ -898,11 +900,14 @@ public class EmpleadoController {
     }
     
     @PostMapping("/send-unlock-email")
-    public String sendUnlockEmail(HttpServletRequest request, @RequestParam("username") String username) {
+    public String sendUnlockEmail(HttpServletRequest request, @RequestParam("username") String username, RedirectAttributes redirAttrs) {
     	
     	Email email = new Email();
         Map<String, Object> model = new HashMap<>();
-        
+    	
+    	HttpSession session = request.getSession(true);
+    	session.setAttribute("user_attemps", 0);
+    	
         Usuario usuario = userJpaRepository.findByUsername(username);
         Empleado empleado = empleadoService.findByUsuario(usuario);
         
@@ -937,7 +942,8 @@ public class EmpleadoController {
                 email.setModel(model);
                 emailService.sendEmail(email);
         	}
-
+        	
+        	redirAttrs.addFlashAttribute("email_success", "success");
         }
         
         return "redirect:/login";
