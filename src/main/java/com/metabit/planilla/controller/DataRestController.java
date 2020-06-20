@@ -104,7 +104,6 @@ public class DataRestController {
 		return diaFestivoList;
 	}
 
-
 	@GetMapping("/empleados-unidad/{id}")
 	public List<Empleado> getEmpleadosByUnidad(@PathVariable("id") int idUnidad){
 		UnidadOrganizacional u = unidadOrganizacionalService.getOneUnidadOrganizacional(idUnidad);
