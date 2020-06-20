@@ -31,7 +31,12 @@ public class PeriodoServiceImpl implements PeriodoService{
 	public Periodo getPeriodoActivo() {
 		return periodoJpaRepository.findByActivo(true);
 	}
-	
-	
 
+	@Override
+	public Periodo getPeriodoPrevio() {
+		// TODO Auto-generated method stub
+		return periodoJpaRepository.findPeriodoPrevio();
+	}
+	
+	
 }

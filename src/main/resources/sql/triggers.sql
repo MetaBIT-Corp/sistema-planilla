@@ -1,5 +1,5 @@
  /*----TRIGGER PARA CREAR LOS PERIODOS CUANDO SE CREA UN ANIO LABORAL----*/
-CREATE OR REPLACE TRIGGER anio_laboral_after_insert AFTER
+CREATE OR REPLACE TRIGGER CREAR_PERIODOS_AI AFTER
     INSERT ON anios_laborales
     FOR EACH ROW
 DECLARE
@@ -76,6 +76,33 @@ BEGIN
                 v_fecha_final := last_day(v_fecha_inicio);
             END LOOP;
     END CASE;
+END;
+;;
+
+/*----TRIGGER PARA ACTUALIZAR EL SALARIO MÁXIMO DEL NIVEL MAYOR DE UN RANGO DE RENTA EN BASE A UNA PERIODICIDAD----*/
+CREATE OR REPLACE TRIGGER ACTUALIZAR_SALARIO_MAX_BI BEFORE
+    INSERT ON rangos_renta
+    FOR EACH ROW
+DECLARE
+    v_salario_min rangos_renta.salario_min%TYPE;
+BEGIN
+    SELECT
+        MAX(salario_min)
+    INTO v_salario_min
+    FROM
+        rangos_renta renta
+    WHERE
+        periodicidad_renta = :new.periodicidad_renta;
+
+    IF :new.salario_min > v_salario_min THEN
+        UPDATE rangos_renta
+        SET
+            salario_max = :new.salario_min - 0.01
+        WHERE
+            salario_min = v_salario_min;
+
+    END IF;
+
 END;
 ;;
 

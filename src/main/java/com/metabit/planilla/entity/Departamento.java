@@ -3,13 +3,7 @@ package com.metabit.planilla.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name="departamentos")
@@ -22,8 +16,8 @@ public class Departamento {
 	
 	@Column(name="departamento")
 	private String departamento;
-	
-	@OneToMany(mappedBy="departamento",cascade=CascadeType.ALL)
+
+	@OneToMany(mappedBy="departamento",cascade=CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Municipio> municipios=new ArrayList<>();
 	
 

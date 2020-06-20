@@ -13,7 +13,7 @@ import com.metabit.planilla.repository.DepartamentoJpaRepository;
 import com.metabit.planilla.service.DepartamentoService;
 
 @Service("departamentoServiceImpl")
-public class DepartamentoServiceImpl implements DepartamentoService{
+public class DepartamentoServiceImpl implements DepartamentoService {
 
 	@Autowired
 	@Qualifier("departamentoJpaRepository")
@@ -24,7 +24,17 @@ public class DepartamentoServiceImpl implements DepartamentoService{
 	}
 	@Override
 	public Departamento getDepartamento(int idDepartamento) {
-		return departamentoJpaRepository.getOne(idDepartamento);
+		return departamentoJpaRepository.findByIdDepartamento(idDepartamento);
+	}
+
+	@Override
+	public Departamento createOrUpdateDepartamento(Departamento departamento) {
+		return departamentoJpaRepository.save(departamento);
+	}
+
+	@Override
+	public void deleteDepartamento(Departamento departamento) {
+		departamentoJpaRepository.delete(departamento);
 	}
 
 
