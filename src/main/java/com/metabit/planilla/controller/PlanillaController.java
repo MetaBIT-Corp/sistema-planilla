@@ -499,8 +499,9 @@ public class PlanillaController {
 			redirectAttrs.addFlashAttribute("mensaje", mensajeResultado)
 						 .addFlashAttribute("clase", "danger");
 		}
+		
 		try {   
-			Thread.sleep(5*1000);
+			Thread.sleep(2*1000);
 		} catch (Exception e) {
 		    System.out.println(e);
 		}
