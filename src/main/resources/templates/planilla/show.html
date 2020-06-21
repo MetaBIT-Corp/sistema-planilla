@@ -110,23 +110,25 @@
 								  </div>
 							  </div>
 							  <!--<div class="form-row" th:if="${planilla.empleado.esAdministrativo == false}">-->
-							  <div class="form-row">
-							  	 <div class="col-md-6 mb-3">
-								    <label>
-								    	Monto de Ventas:
-								    	<button class="btn btn-sm btn-light" style="text-decoration: none; color: black; border-radius: 50%;"
-												title="Editar Monto de Ventas" onclick="activateModalEditMontoVentas(this);"
-												th:attr="data-idPlanilla=${planilla.idPlanilla}, data-montoVentas=${planilla.montoVentas}">
+							  <div th:each="empPuestoUnidad, iterStat : ${planilla.empleado.empleadosPuestosUnidades}" th:if="${iterStat.index == iterStat.size-1 && empPuestoUnidad.puesto.esAdministrativo == false}">
+								  <div class="form-row">
+								  	 <div class="col-md-6 mb-3">
+									    <label>
+									    	Monto de Ventas:
+									    	<button class="btn btn-sm btn-light" style="text-decoration: none; color: black; border-radius: 50%;"
+													title="Editar Monto de Ventas" onclick="activateModalEditMontoVentas(this);"
+													th:attr="data-idPlanilla=${planilla.idPlanilla}, data-montoVentas=${planilla.montoVentas}">
+													
+												<span><i class="fas fa-pencil-alt"></i></span>
 												
-											<span><i class="fas fa-pencil-alt"></i></span>
-											
-										</button>
-								    </label><br>
-								    <span th:text="'$' + ${#numbers.formatDecimal(planilla.montoVentas, 1, 'COMMA', 2, 'POINT')}"></span>
-								  </div>
-								  <div class="col-md-6 mb-3">
-								    <label>Monto por Comisión:</label><br>
-								    <span class="montoVentas" th:text="'$' + ${#numbers.formatDecimal(planilla.montoComision, 1, 'COMMA', 2, 'POINT')}"></span>
+											</button>
+									    </label><br>
+									    <span th:text="'$' + ${#numbers.formatDecimal(planilla.montoVentas, 1, 'COMMA', 2, 'POINT')}"></span>
+									  </div>
+									  <div class="col-md-6 mb-3">
+									    <label>Monto por Comisión:</label><br>
+									    <span class="montoVentas" th:text="'$' + ${#numbers.formatDecimal(planilla.montoComision, 1, 'COMMA', 2, 'POINT')}"></span>
+									  </div>
 								  </div>
 							  </div>
 							  <div class="form-row">
