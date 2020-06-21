@@ -71,13 +71,12 @@ END;
  * @parametro: mensaje que indica el resultado de la ejecución del procedimiento (Parametro de salida)
  * Realizado por: Edwin Palacios
  * Fecha de creación 18/06/2020
- * Ultima modificación: 18/06/2020
+ * Ultima modificación: 21/06/2020
  * */
 
 CREATE OR REPLACE PROCEDURE PAGO_PLANILLA
     (p_id_unidad IN NUMBER, p_message OUT varchar2) -- parametros
     IS
-    -- declaracion de variables
     
     -- obtenemos las planillas sobre las que se calculará el salario neto 
     CURSOR cur_planillas (p_id_unidad NUMBER) IS  
@@ -86,33 +85,43 @@ CREATE OR REPLACE PROCEDURE PAGO_PLANILLA
         JOIN empleados_puestos_unidades epu ON (u.id_unidad_organizacional = epu.id_unidad_organizacional)
         JOIN empleados e ON (epu.id_empleado=e.id_empleado)
         JOIN planillas p ON (e.id_empleado=p.id_empleado)
-        WHERE (u.id_unidad_organizacional= p_id_unidad AND e.empleado_habilitado = 1);  
+        WHERE (u.id_unidad_organizacional= p_id_unidad AND e.empleado_habilitado = 1 AND epu.fecha_fin IS NULL);  
     
-    v_periodicidad          anios_laborales.periodicidad%TYPE;
-    v_periodo_fecha_final   periodos.fecha_final%type;
-    v_periodo_fecha_inicio  periodos.fecha_inicio%type;
-    v_presupuesto_unidad    centros_costos.presupuesto_asignado%type := 0;
+    -- periodo actual y siguiente     
+    TYPE rec_periodo IS RECORD (
+        v_periodo_actual      periodos%rowtype,
+        v_periodo_siguiente      periodos%rowtype
+    );
+    
+    -- declaracion de variables
+    
+    v_periodos_rec          rec_periodo;    -- registro para manejar los periodos (actual para cerrarlo y siguiente para abrirlo)
+    v_periodicidad          anios_laborales.periodicidad%TYPE;  -- el tipo de periodicidad: si es mensual(30) o quincenal (15)
+    v_presupuesto_unidad    centros_costos.presupuesto_asignado%type := 0;  -- presupuesto actual de la unidad
     
     -- Por empleado
-    v_salario_base          empleados.salario_base_mensual%type := 0; 
-    v_pago_patronal         empleados.salario_base_mensual%type := 0; 
-    v_plan_ingreso          empleados.salario_base_mensual%type := 0; 
-    v_plan_descuento        empleados.salario_base_mensual%type := 0; 
+    v_salario_base          empleados.salario_base_mensual%type := 0; -- Salario base con el que cuenta el empleado
+    v_plan_ingreso          empleados.salario_base_mensual%type := 0; -- monto de plan de ingreso (si cuenta con uno)
+    v_plan_descuento        empleados.salario_base_mensual%type := 0; -- monto de plan descuento (si cuenta con uno)
+    v_salario_devengado     empleados.salario_base_mensual%type := 0; -- salario base + ingresos(ingresos comunes, horas extra, comision, dias festivos, plan de ingreso, etc)
+    v_aportacion_patronal   empleados.salario_base_mensual%type := 0; -- sumatorioa de isss patronal, afp patronal y otros movimientos patronales  
+    v_descuentos_empleado   empleados.salario_base_mensual%type := 0; -- sumatoria de isss + afp + renta + plan de descuentos + otros descuentos  
+    v_valor_neto_a_pagar    empleados.salario_base_mensual%type := 0; -- salario devengado - descuentos de empleado
     
     -- Global
-    v_total_pago_planilla   empleados.salario_base_mensual%type := 0;
+    v_total_pago_planilla   empleados.salario_base_mensual%type := 0; -- Es el gasto patronal: (valor neto a pagar + aportacion patronal) por cada empleado
 BEGIN
 
-    -- Obtenemos la periodicidad, fecha inicial y final del periodo
-    SELECT a.periodicidad, p.fecha_final, p.fecha_inicio
-    INTO v_periodicidad, v_periodo_fecha_final, v_periodo_fecha_inicio
-    FROM anios_laborales a
-         NATURAL JOIN periodos p
-    WHERE p.activo = 1;
+    -- Obtenemos el periodo actual
+        SELECT p.* 
+        INTO v_periodos_rec.v_periodo_actual
+        FROM anios_laborales a
+             JOIN periodos p ON (a.id_anio_laboral = p.id_anio_laboral)
+        WHERE p.activo = 1; 
     
-    -- Obtenemos el presupuesto actual de la unidad
-    SELECT (c.presupuesto_anterior + c.presupuesto_asignado - c.presupuesto_devengado) as "presupuesto_actual"
-    INTO v_presupuesto_unidad
+    -- Obtenemos el presupuesto actual de la unidad y la periodicidad 
+    SELECT (c.presupuesto_anterior + c.presupuesto_asignado - c.presupuesto_devengado) as "presupuesto_actual", a.periodicidad
+    INTO v_presupuesto_unidad, v_periodicidad
     FROM unidades_organizacionales u
         JOIN centros_costos c ON (u.id_unidad_organizacional = c.id_unidad_organizacional)
         JOIN anios_laborales a ON (c.id_anio = a.id_anio_laboral)
@@ -128,13 +137,25 @@ BEGIN
             v_salario_base := rec_planilla.salario_base_mensual/2;
         END IF;
         
-        v_total_pago_planilla := v_total_pago_planilla 
-                                + v_salario_base 
-                                + v_pago_patronal 
+        v_plan_ingreso := obtener_plan(rec_planilla.id_empleado,v_periodicidad ,0); 
+        v_plan_descuento := obtener_plan(rec_planilla.id_empleado,v_periodicidad ,1);       
+        v_salario_devengado :=  + v_salario_base  
                                 + v_plan_ingreso
-                                + rec_planilla.total_ingresos
                                 + rec_planilla.monto_comision
-                                + rec_planilla.monto_horas_extra;
+                                + rec_planilla.monto_horas_extra
+                                + rec_planilla.monto_dias_festivos
+                                + rec_planilla.total_ingresos;
+                                
+        v_aportacion_patronal := 0; -- pendiente 
+        
+        v_descuentos_empleado := rec_planilla.renta 
+                                + (rec_planilla.total_descuentos-v_aportacion_patronal); -- pendiente
+        
+        v_valor_neto_a_pagar := v_salario_devengado - v_descuentos_empleado; 
+                               
+        v_total_pago_planilla := v_total_pago_planilla 
+                                + v_valor_neto_a_pagar
+                                + v_aportacion_patronal;
                                 
         DBMS_OUTPUT.PUT_LINE(rec_planilla.id_planilla 
                          || ' ' 
@@ -159,8 +180,16 @@ BEGIN
                      || v_presupuesto_unidad 
                      || ' y el pago requerido consta de $'
                      || v_total_pago_planilla;
+        ROLLBACK;
     ELSE
+        -- Obtenemos el periodo siguiente 
+        SELECT p.* 
+        INTO v_periodos_rec.v_periodo_siguiente
+        FROM periodos p 
+        WHERE p.id_periodo = (v_periodos_rec.v_periodo_actual.id_periodo + 1); -- EXISTS
+        
         p_message := 'Sigue';
+        COMMIT;
     END IF;
 END;
 ;;

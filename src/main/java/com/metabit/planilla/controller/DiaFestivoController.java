@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.metabit.planilla.entity.DiaFestivo;
+import com.metabit.planilla.entity.Periodo;
 import com.metabit.planilla.entity.Puesto;
 import com.metabit.planilla.service.DiaFestivoService;
 import com.metabit.planilla.service.PeriodoService;
@@ -41,7 +42,6 @@ public class DiaFestivoController {
 
 	/**
 	 * Método para visualizar el calendario de días festivos
-	 * 
 	 * @author Edwin Palacios
 	 * @param String *_success: permite mostrar los toast-mensajes según la accion ejecutada anteriormente
 	 * @return ModelAndView
@@ -55,10 +55,13 @@ public class DiaFestivoController {
 		mav.addObject("store_success", store_success);
 		mav.addObject("update_success", update_success);
 		mav.addObject("delete_success", delete_success);
-		mav.addObject("fecha_inicio", periodoService.getPeriodoActivo().getFechaInicio());
-		mav.addObject("fecha_pago", periodoService.getPeriodoActivo().getFechaFinal());
-		//sumamos 1 a la fecha final para que se muestre todo el rango sombreado en el mapa, si no lo hacemos no se sombrea el ultimo dia
-		mav.addObject("fecha_final", sumarRestarDiasFecha(periodoService.getPeriodoActivo().getFechaFinal(),1));
+		//se valida de que exista un periodo
+		if(periodoService.getPeriodoActivo() != null) {
+			mav.addObject("fecha_inicio", periodoService.getPeriodoActivo().getFechaInicio());
+			mav.addObject("fecha_pago", periodoService.getPeriodoActivo().getFechaFinal());
+			//sumamos 1 a la fecha final para que se muestre todo el rango sombreado en el mapa, si no lo hacemos no se sombrea el ultimo dia
+			mav.addObject("fecha_final", sumarRestarDiasFecha(periodoService.getPeriodoActivo().getFechaFinal(),1));
+		}
 		return mav;
 	}
 
