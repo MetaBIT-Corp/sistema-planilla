@@ -107,6 +107,7 @@ public class Empleado {
 	@JsonIgnore
 	//Empleados puestos unidades
 	@OneToMany(fetch = FetchType.LAZY,cascade =  CascadeType.ALL, mappedBy = "empleado")
+	@OrderBy("fecha_inicio ASC")
 	List<EmpleadosPuestosUnidades> empleadosPuestosUnidades;
 
 	public Empleado() {
