@@ -60,6 +60,7 @@ INSERT ALL INTO PRIVILEGIOS VALUES(1, 'INDEX')
            INTO PRIVILEGIOS VALUES(3, 'CREATE') 
            INTO PRIVILEGIOS VALUES(4, 'DELETE')
            INTO PRIVILEGIOS VALUES(5, 'SHOW')
+
 SELECT * FROM DUAL;;
 
 INSERT ALL INTO RECURSOS VALUES(1, 'EMPLEADO')
@@ -74,14 +75,15 @@ INSERT ALL INTO RECURSOS VALUES(1, 'EMPLEADO')
 		   INTO	RECURSOS VALUES(10, 'PRESUPUESTO')
 		   INTO	RECURSOS VALUES(11, 'RANGO_COMISION')
 		   INTO	RECURSOS VALUES(12, 'DEPARTAMENTO')
+		   INTO	RECURSOS VALUES(13, 'DIAFESTIVO')
+		   INTO	RECURSOS VALUES(14, 'PLANILLA')
 SELECT * FROM DUAL;;
 
-INSERT ALL INTO ROLES VALUES(1, 'ROLE_ADMIN')
-       INTO ROLES VALUES(2, 'ROLE_JEFE')
-       INTO ROLES VALUES(3, 'ROLE_AUXILIAR')
-       INTO ROLES VALUES(4, 'ROLE_PRESUPUESTO')
-       INTO ROLES VALUES(5, 'ROLE_USER')
-       INTO ROLES VALUES(6, 'ROLE_JEFEUNIDAD')
+INSERT ALL INTO ROLES VALUES(500, 'ROLE_ADMIN')
+       INTO ROLES VALUES(501, 'ROLE_JEFE_PLANILLA')
+       INTO ROLES VALUES(502, 'ROLE_AUXILIAR')
+       INTO ROLES VALUES(503, 'ROLE_PRESUPUESTO')
+       INTO ROLES VALUES(504, 'ROLE_JEFE_UNIDAD')
 SELECT * FROM DUAL;;
 
 INSERT ALL INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(1,1,1,1)
@@ -288,12 +290,12 @@ insert into centros_costos values(511,0.0,0.0,0.0,102,511);;
 
 --Empleado Puesto Unidad
 insert into empleados_puestos_unidades  (id_empleado_puesto_unidad, id_empleado, id_puesto,id_unidad_organizacional,fecha_inicio,fecha_fin)
-                 values (100, 300, 1,500, '28-JUN-2016',null);;
+       values (100, 300, 1,500,'28-JUN-2016',null);;
 insert into empleados_puestos_unidades  (id_empleado_puesto_unidad, id_empleado, id_puesto,id_unidad_organizacional,fecha_inicio,fecha_fin)
-                 values (101, 301, 2,501,'30-MAR-2017',null);;
+       values (101, 301, 2,501,'30-MAR-2017',null);;
 
 
-/*----------------------PERIODO----------------------*/
+----------------------PERIODO----------------------*/
 INSERT ALL
   INTO PERIODOS VALUES(100, 0, '30/01/18', '01/01/18', 100)
   INTO PERIODOS VALUES(101, 0, '28/02/18', '01/02/18', 100)
@@ -374,15 +376,15 @@ INSERT ALL
 SELECT * FROM DUAL;;
 
 /*------------------RANGOS COMISION----------------------------*/
-INSERT INTO RANGOS_COMISION (id_rango_comision, venta_min, venta_max, tasa_comision, rango_comision_habilitado) VALUES (101,500.00,1000.00,0.15,1);;
-INSERT INTO RANGOS_COMISION (id_rango_comision, venta_min, venta_max, tasa_comision, rango_comision_habilitado) VALUES (102,1500.00,2000.00,0.25,1);;
-INSERT INTO RANGOS_COMISION (id_rango_comision, venta_min, venta_max, tasa_comision, rango_comision_habilitado) VALUES (103,2500.00,3000.00,0.35,1);;
+INSERT INTO RANGOS_COMISION (id_rango_comision, venta_min, venta_max, tasa_comision, rango_comision_habilitado) VALUES (101,500.00,999.99,0.15,1);;
+INSERT INTO RANGOS_COMISION (id_rango_comision, venta_min, venta_max, tasa_comision, rango_comision_habilitado) VALUES (102,1000.00,1499.99,0.25,1);;
+INSERT INTO RANGOS_COMISION (id_rango_comision, venta_min, venta_max, tasa_comision, rango_comision_habilitado) VALUES (103,1500.00,1999.99,0.35,1);;
 
 
 /*------------------ DIAS FESTIVOS ----------------------------*/
-INSERT INTO DIAS_FESTIVOS (id_dia_festivo, dia, dia_descripcion, mes) VALUES (1, 1, 'Día del trabajo', 5);;
+INSERT INTO DIAS_FESTIVOS (id_dia_festivo, dia, dia_descripcion, mes) VALUES (1, 1,  'Día del trabajo', 5);;
 INSERT INTO DIAS_FESTIVOS (id_dia_festivo, dia, dia_descripcion, mes) VALUES (2, 10, 'Día de la madre', 5);;
 INSERT INTO DIAS_FESTIVOS (id_dia_festivo, dia, dia_descripcion, mes) VALUES (3, 17, 'Día del padre', 6);;
 INSERT INTO DIAS_FESTIVOS (id_dia_festivo, dia, dia_descripcion, mes) VALUES (4, 22, 'Día del maestro', 6);;
-INSERT INTO DIAS_FESTIVOS (id_dia_festivo, dia, dia_descripcion, mes) VALUES (5, 15, 'Día de la independencia', 8);;
+INSERT INTO DIAS_FESTIVOS (id_dia_festivo, dia, dia_descripcion, mes) VALUES (5, 15, 'Día de la independencia', 9);;
 

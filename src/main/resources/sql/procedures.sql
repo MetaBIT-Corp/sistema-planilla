@@ -100,7 +100,7 @@ CREATE OR REPLACE PROCEDURE PAGO_PLANILLA
     v_plan_ingreso          empleados.salario_base_mensual%type := 0; -- monto de plan de ingreso (si cuenta con uno)
     v_plan_descuento        empleados.salario_base_mensual%type := 0; -- monto de plan descuento (si cuenta con uno)
     v_salario_devengado     empleados.salario_base_mensual%type := 0; -- salario base + ingresos(ingresos comunes, horas extra, comision, dias festivos, plan de ingreso, etc)
-    v_aportacion_patronal   empleados.salario_base_mensual%type := 0; -- sumatorioa de isss patronal, afp patronal y otros movimientos patronales  
+    v_aportacion_patronal   empleados.salario_base_mensual%type := 0; -- sumatoria de isss patronal, afp patronal y otros movimientos patronales  
     v_descuentos_empleado   empleados.salario_base_mensual%type := 0; -- sumatoria de isss + afp + renta + plan de descuentos + otros descuentos  
     v_valor_neto_a_pagar    empleados.salario_base_mensual%type := 0; -- salario devengado - descuentos de empleado
     
