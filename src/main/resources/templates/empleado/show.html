@@ -44,7 +44,7 @@
 	/* Timeline item circle marker */
 	li.timeline-item::before {
 	    content: ' ';
-	    background: #2EFE2E;
+	    background: #FF8000;
 	    display: inline-block;
 	    position: absolute;
 	    border-radius: 50%;
@@ -52,6 +52,20 @@
 	    left: 11px;
 	    width: 14px;
 	    height: 14px;
+	    z-index: 400;
+	    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+	}
+	
+	li.timeline-item-active::before {
+	    content: ' ';
+	    background: #2EFE2E;
+	    display: inline-block;
+	    position: absolute;
+	    border-radius: 50%;
+	    border: 3px solid #000;
+	    left: 9px;
+	    width: 18px;
+	    height: 18px;
 	    z-index: 400;
 	    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 	}
@@ -248,7 +262,27 @@
 	                                            <label>Correo Personal:</label><br/>
 	                                            <span th:text="${empleado.correoPersonal}"></span>
 	                                        </div>
-	
+	                                        <div class="form-group">
+	                                            <label>Jefe Inmediato:</label><br/>
+	                                            <div th:each="empPuestoUnidad, iterStat : ${empleado.empleadosPuestosUnidades}" th:if="${iterStat.index == iterStat.size-1}">
+												    <div th:if="${empPuestoUnidad.unidadOrganizacional.empleadoJefe.codigo != empleado.codigo}">
+												    	<a th:href="@{/empleado/show?id={id}(id=${empPuestoUnidad.unidadOrganizacional.empleadoJefe.idEmpleado})}" th:text="${empPuestoUnidad.unidadOrganizacional.empleadoJefe.codigo}"></a><span th:text="${' - ' + empPuestoUnidad.unidadOrganizacional.empleadoJefe.nombrePrimero + ' ' + empPuestoUnidad.unidadOrganizacional.empleadoJefe.apellidoMaterno}"></span>
+												    </div>
+												    <div th:if="${empPuestoUnidad.unidadOrganizacional.empleadoJefe.codigo == empleado.codigo}">
+												    	<div th:if="${empPuestoUnidad.unidadOrganizacional.unidadPadre}">
+												    		<div th:if="${empPuestoUnidad.unidadOrganizacional.unidadPadre.empleadoJefe}">
+												    			<a th:href="@{/empleado/show?id={id}(id=${empPuestoUnidad.unidadOrganizacional.unidadPadre.empleadoJefe.idEmpleado})}" th:text="${empPuestoUnidad.unidadOrganizacional.unidadPadre.empleadoJefe.codigo}"></a><span th:text="${' - ' + empPuestoUnidad.unidadOrganizacional.unidadPadre.empleadoJefe.nombrePrimero + ' ' + empPuestoUnidad.unidadOrganizacional.unidadPadre.empleadoJefe.apellidoMaterno}"></span>
+												    		</div>
+												    		<div th:if="${empPuestoUnidad.unidadOrganizacional.unidadPadre.empleadoJefe == null}">
+												    			<span>No posee actualmente.</span>
+												    		</div>
+												    	</div>
+												    	<div th:if="${empPuestoUnidad.unidadOrganizacional.unidadPadre == null}">
+												    		<span>No posee actualmente.</span>
+												    	</div>
+												    </div>
+												</div>
+	                                        </div>
 	                                    </div>
 	                                    <!--FIN PRIMER COLUMNA-->
 	                                    <!--SEGUNDA COLUMNA-->
@@ -317,11 +351,18 @@
 		                        <div class="card-body">
 		                            <!-- Timeline -->
 					                <ul class="timeline">
-					                    <li th:each="empPuestoUnidad : ${empleado.empleadosPuestosUnidades}" class="timeline-item bg-info rounded ml-3 p-4 shadow">
+					                    <li th:each="empPuestoUnidad, iterStat : ${empleado.empleadosPuestosUnidades}" th:if="${iterStat.index < iterStat.size-1}" class="timeline-item bg-info rounded ml-3 p-4 shadow">
 					                        <div class="timeline-arrow"></div>
 					                        <h2 class="h5 mb-0" th:text="${empPuestoUnidad.puesto.puesto}"></h2>
 					                        <h3 class="h5 mb-0" th:text="${empPuestoUnidad.unidadOrganizacional.unidadOrganizacional}"></h3>
-					                        <span class="medium text-dark" th:text="${#temporals.format(empPuestoUnidad.fechaInicio)}"></span>
+					                        <label class="small text-dark"><b>Desde:</b></label><span class="medium text-dark" th:text="' ' + ${#temporals.format(empPuestoUnidad.fechaInicio)}"></span><br/>
+					                        <label class="small text-dark"><b>Hasta:</b></label><span class="medium text-dark" th:text="' ' + ${#temporals.format(empPuestoUnidad.fechaFin)}"></span>
+					                    </li>
+					                    <li th:each="empPuestoUnidad, iterStat : ${empleado.empleadosPuestosUnidades}" th:if="${iterStat.index == iterStat.size-1}" class="timeline-item-active bg-info rounded ml-3 p-4 shadow">
+					                        <div class="timeline-arrow"></div>
+					                        <h2 class="h5 mb-0" th:text="${empPuestoUnidad.puesto.puesto}"></h2>
+					                        <h3 class="h5 mb-0" th:text="${empPuestoUnidad.unidadOrganizacional.unidadOrganizacional}"></h3>
+					                        <label class="small text-dark"><b>Desde:</b></label> <span class="medium text-dark" th:text="' ' + ${#temporals.format(empPuestoUnidad.fechaInicio)}"></span>
 					                    </li>
 					                </ul>
 					                <!-- End -->
