@@ -1,5 +1,8 @@
 package com.metabit.planilla.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +12,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "empleados")
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 public class Empleado {
 	
 	@Id
@@ -57,49 +61,61 @@ public class Empleado {
 	@Column(name = "horas_trabajo", nullable = false)
 	private int horasTrabajo;
 
-	@Column(name = "es_administrativo")
-	private Boolean esAdministrativo;
-
 	@Column(name = "empleado_habilitado")
 	private Boolean empleadoHabilitado;
 	
 	//Personals Documents
+	@JsonIgnore
 	@OneToMany(mappedBy="empleado",cascade=CascadeType.ALL)
 	private List<EmpleadoDocumento> documentosEmpleado=new ArrayList<>();
 	
 	//User
 	@OneToOne
+	@JsonIgnore
 	@JoinColumn(name="id_usuario")
 	private Usuario usuario;
 		
 	//Gender
 	@ManyToOne
+	@JsonIgnore
 	@JoinColumn(name="id_genero")
 	private Genero genero;
 	
 	//Civil State
 	@ManyToOne
+	@JsonIgnore
 	@JoinColumn(name="id_estado_civil")
 	private EstadoCivil estadoCivil;
-	
 
 	//Direction
 	@OneToOne
+	@JsonIgnore
 	@JoinColumn(name="id_direccion")
 	private Direccion direccion;
 	
 	//Professions
+	@JsonIgnore
 	@OneToMany(mappedBy="empleado",cascade=CascadeType.ALL)
 	private List<EmpleadoProfesion> profesionesEmpleado=new ArrayList<>();
+	
+	//Planillas
+	@JsonIgnore
+	@OneToMany(mappedBy="empleado",cascade=CascadeType.ALL)
+	private List<Planilla> planillasEmpleado =new ArrayList<>();
 
-	@OneToOne(fetch = FetchType.LAZY,cascade =  CascadeType.ALL, mappedBy = "empleado")
-	EmpleadosPuestosUnidades empleadosPuestosUnidades;
+
+	@JsonIgnore
+	//Empleados puestos unidades
+	@OneToMany(fetch = FetchType.LAZY,cascade =  CascadeType.ALL, mappedBy = "empleado")
+	@OrderBy("fecha_inicio ASC")
+	List<EmpleadosPuestosUnidades> empleadosPuestosUnidades;
 
 	public Empleado() {
 		super();
 	}
 
-	public Empleado(String codigo, String nombrePrimero, String nombreSegundo, String apellidoPaterno, String apellidoMaterno, String apellidoCasada, LocalDate fechaNacimiento, String correoPersonal, String correoInstitucional, double salarioBaseMensual, int horasTrabajo, Boolean esAdministrativo, Boolean empleadoHabilitado, List<EmpleadoDocumento> documentosEmpleado, Usuario usuario, EstadoCivil estadoCivil, Direccion direccion, List<EmpleadoProfesion> profesionesEmpleado,Genero genero) {
+	public Empleado(String codigo, String nombrePrimero, String nombreSegundo, String apellidoPaterno, String apellidoMaterno, String apellidoCasada, LocalDate fechaNacimiento, String correoPersonal, String correoInstitucional, double salarioBaseMensual, int horasTrabajo, Boolean empleadoHabilitado, List<EmpleadoDocumento> documentosEmpleado, Usuario usuario, EstadoCivil estadoCivil, Direccion direccion, List<EmpleadoProfesion> profesionesEmpleado,Genero genero,List<Planilla> planillasEmpleado) {
+
 		this.codigo = codigo;
 		this.nombrePrimero = nombrePrimero;
 		this.nombreSegundo = nombreSegundo;
@@ -111,7 +127,6 @@ public class Empleado {
 		this.correoInstitucional = correoInstitucional;
 		this.salarioBaseMensual = salarioBaseMensual;
 		this.horasTrabajo = horasTrabajo;
-		this.esAdministrativo = esAdministrativo;
 		this.empleadoHabilitado = empleadoHabilitado;
 		this.documentosEmpleado = documentosEmpleado;
 		this.usuario = usuario;
@@ -119,13 +134,14 @@ public class Empleado {
 		this.direccion = direccion;
 		this.profesionesEmpleado = profesionesEmpleado;
 		this.genero=genero;
+		this.planillasEmpleado=planillasEmpleado;
 	}
 
-	public EmpleadosPuestosUnidades getEmpleadosPuestosUnidades() {
+	public List<EmpleadosPuestosUnidades> getEmpleadosPuestosUnidades() {
 		return empleadosPuestosUnidades;
 	}
 
-	public void setEmpleadosPuestosUnidades(EmpleadosPuestosUnidades empleadosPuestosUnidades) {
+	public void setEmpleadosPuestosUnidades(List<EmpleadosPuestosUnidades> empleadosPuestosUnidades) {
 		this.empleadosPuestosUnidades = empleadosPuestosUnidades;
 	}
 
@@ -232,14 +248,6 @@ public class Empleado {
 		this.horasTrabajo = horasTrabajo;
 	}
 
-	public Boolean getEsAdministrativo() {
-		return esAdministrativo;
-	}
-
-	public void setEsAdministrativo(Boolean esAdministrativo) {
-		this.esAdministrativo = esAdministrativo;
-	}
-
 	public Boolean getEmpleadoHabilitado() {
 		return empleadoHabilitado;
 	}
@@ -286,5 +294,13 @@ public class Empleado {
 
 	public void setProfesionesEmpleado(List<EmpleadoProfesion> profesionesEmpleado) {
 		this.profesionesEmpleado = profesionesEmpleado;
+	}
+
+	public List<Planilla> getPlanillasEmpleado() {
+		return planillasEmpleado;
+	}
+
+	public void setPlanillasEmpleado(List<Planilla> planillasEmpleado) {
+		this.planillasEmpleado = planillasEmpleado;
 	}
 }

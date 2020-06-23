@@ -23,6 +23,11 @@ public class UnidadOrganizacional {
     @OneToMany(mappedBy="unidadPadre",cascade=CascadeType.ALL)
     private List<UnidadOrganizacional> subunidades=new ArrayList<>();
 
+
+    @OneToOne(fetch=FetchType.EAGER)
+    @JoinColumn(name = "id_empleado_jefe")
+    private Empleado empleadoJefe;
+
     //Centros de costos
     @JsonIgnore
     @OneToMany(mappedBy="unidadOrganizacional",cascade=CascadeType.ALL)
@@ -104,5 +109,13 @@ public class UnidadOrganizacional {
 
     public void setUnidadPadre(UnidadOrganizacional unidadPadre) {
         this.unidadPadre = unidadPadre;
+    }
+
+    public Empleado getEmpleadoJefe() {
+        return empleadoJefe;
+    }
+
+    public void setEmpleadoJefe(Empleado empleadoJefe) {
+        this.empleadoJefe = empleadoJefe;
     }
 }

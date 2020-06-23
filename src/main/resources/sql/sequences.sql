@@ -1,7 +1,7 @@
 /*-----PROCEDIMIENTO PARA BORRAR TODOS LOS SEQUENCES (AGREGAR SUS SEQUENCES AL ARRAY)---------*/
 DECLARE
    TYPE array_sequences IS VARRAY(3) OF VARCHAR2(30);
-   ARRAY array_sequences := array_sequences('periodos_seq', 'cuotas_seq');
+   ARRAY array_sequences := array_sequences('periodos_seq', 'cuotas_seq','centro_costo_seq');
 BEGIN
   FOR i IN 1..ARRAY.COUNT
     Loop
@@ -20,3 +20,6 @@ CREATE SEQUENCE periodos_seq START WITH 1 INCREMENT BY 1 NOCACHE NOCYCLE;;
 
 /*---SEQUENCE PARA EL ID DE LA TABLA CUOTAS*/
 CREATE SEQUENCE cuotas_seq START WITH 1 INCREMENT BY 1 NOCACHE NOCYCLE;;
+
+/*---SECUENCIA PARA CENTRO DE COSTOS R. E.---*/
+CREATE SEQUENCE centro_costo_seq START WITH 1 INCREMENT BY 1 NOCACHE NOCYCLE;;

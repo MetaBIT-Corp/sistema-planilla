@@ -1,8 +1,18 @@
 package com.metabit.planilla.controller;
 
-import com.metabit.planilla.entity.*;
-import com.metabit.planilla.repository.UserJpaRepository;
-import com.metabit.planilla.service.*;
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,15 +23,46 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.text.ParseException;
-import java.time.LocalDate;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import com.metabit.planilla.entity.Direccion;
+import com.metabit.planilla.entity.Email;
+import com.metabit.planilla.entity.Empleado;
+import com.metabit.planilla.entity.EmpleadoDocumento;
+import com.metabit.planilla.entity.EmpleadoProfesion;
+import com.metabit.planilla.entity.EmpleadosPuestosUnidades;
+import com.metabit.planilla.entity.EstadoCivil;
+import com.metabit.planilla.entity.Genero;
+import com.metabit.planilla.entity.Municipio;
+import com.metabit.planilla.entity.Profesion;
+import com.metabit.planilla.entity.Puesto;
+import com.metabit.planilla.entity.Rol;
+import com.metabit.planilla.entity.TipoDocumento;
+import com.metabit.planilla.entity.UnidadOrganizacional;
+import com.metabit.planilla.entity.Usuario;
+import com.metabit.planilla.repository.UserJpaRepository;
+import com.metabit.planilla.service.DepartamentoService;
+import com.metabit.planilla.service.DireccionService;
+import com.metabit.planilla.service.EmailService;
+import com.metabit.planilla.service.EmpleadoDocumentoService;
+import com.metabit.planilla.service.EmpleadoProfesionService;
+import com.metabit.planilla.service.EmpleadoService;
+import com.metabit.planilla.service.EmpleadosPuestosUnidadesService;
+import com.metabit.planilla.service.EstadoCivilService;
+import com.metabit.planilla.service.GeneroService;
+import com.metabit.planilla.service.MunicipioService;
+import com.metabit.planilla.service.ProfesionService;
+import com.metabit.planilla.service.PuestoService;
+import com.metabit.planilla.service.RolService;
+import com.metabit.planilla.service.TipoDocumentoService;
+import com.metabit.planilla.service.UnidadOrganizacionalService;
+import com.metabit.planilla.service.UsuarioService;
 
 @SuppressWarnings("ALL")
 @Controller
@@ -88,6 +129,14 @@ public class EmpleadoController {
 	@Qualifier("rolServiceImpl")
 	private RolService rolService;
 
+    @Autowired
+	@Qualifier("emailServiceImpl")
+	private EmailService emailService;
+    
+    @Autowired
+    @Qualifier("usuarioServiceImpl")
+    private UsuarioService usuarioService;
+
     private static final String INDEX_VIEW = "empleado/index";
     private static final String EDIT_VIEW = "empleado/edit";
     private static final String CREATE_VIEW = "empleado/create";
@@ -120,11 +169,10 @@ public class EmpleadoController {
         mav.addObject("empleado", new Empleado());
         mav.addObject("direccion", new Direccion());
         mav.addObject("user", new Usuario());
-        //mav.addObject("roles", );
-        mav.addObject("puestos", puestoService.getPuestos());
+        mav.addObject("puestos", puestoService.getPuestosEnable());
         mav.addObject("unidades", unidadOrganizacionalService.getAllUnidadesOrganizacionales());
         mav.addObject("estadosCiviles", estadoCivilService.getAllCivilStates());
-        mav.addObject("profesiones", profesionService.getProfesiones());
+        mav.addObject("profesiones", profesionService.getProfesionesEnable());
         mav.addObject("documentos", tipoDocumentoService.getTipoDocHabilitado());
         mav.addObject("generos", generoService.getAllGeneros());
         mav.addObject("municipios", departamentoService.getAllDepartamentos().get(0).getMunicipios());
@@ -215,14 +263,14 @@ public class EmpleadoController {
                 allParams.get("correoInstitucional"),
                 Double.parseDouble(allParams.get("salarioBaseMensual")),
                 Integer.parseInt(allParams.get("horasTrabajo")),
-                false,
                 true,
                 null,
                 null,
                 estadoCivil,
                 direccion,
                 null,
-                genero
+                genero,
+                null
         );
         empleado = empleadoService.addEmployee(empleado);
 
@@ -272,9 +320,11 @@ public class EmpleadoController {
 
             /*-------------------------CÓDIGO PARA AGREGAR ROLES AL EMPLEADO-------------------*/
         	List<Rol> rolesList = new ArrayList<Rol>();
-            for (int idRol: roles) {
-            	Rol rol = rolService.getByIdRol(idRol);
-            	rolesList.add(rol);
+            if(roles != null) {
+            	for (int idRol: roles) {
+                	Rol rol = rolService.getByIdRol(idRol);
+                	rolesList.add(rol);
+                }
             }
             usuario.setRoles(rolesList);
             /*------------------FIN DEL CÓDIGO PARA AGREGAR ROLES AL EMPLEADO-------------------*/
@@ -318,11 +368,12 @@ public class EmpleadoController {
         mav.addObject("empleado", e);
         mav.addObject("direccion", e.getDireccion());
         mav.addObject("unidades", unidadOrganizacionalService.getAllUnidadesOrganizacionales());
-        mav.addObject("puestos", puestoService.getPuestos());
+        mav.addObject("puestos", puestoService.getPuestosEnable());
         mav.addObject("estadosCiviles", estadoCivilService.getAllCivilStates());
         mav.addObject("generos", generoService.getAllGeneros());
         mav.addObject("municipios", municipioService.getMunicipiosByDepartamento(e.getDireccion().getMunicipio().getDepartamento()));
         mav.addObject("departamentos", departamentoService.getAllDepartamentos());
+        mav.addObject("epu",empleadosPuestosUnidadesService.getByEmpleadoAndFechaFinIsNull(e));
 
         return mav;
     }
@@ -333,7 +384,15 @@ public class EmpleadoController {
         Map<String, String> mensajes = validationEmptyFields(allParams, null);
 
         Puesto puesto = puestoService.getPuesto(Integer.parseInt(allParams.get("idPuesto")));
-        Empleado empleado = empleadoService.findEmployeeById(Integer.parseInt(allParams.get("idEmpleado")));//Validacion de usuario campos requeridos
+        Empleado empleado = empleadoService.findEmployeeById(Integer.parseInt(allParams.get("idEmpleado")));
+        EmpleadosPuestosUnidades epu = empleadosPuestosUnidadesService.getByEmpleadoAndFechaFinIsNull(empleado);
+        UnidadOrganizacional unit = unidadOrganizacionalService.getOneUnidadOrganizacional(Integer.parseInt(allParams.get("idUnidadOrganizacional")));
+
+        //Verificamos si es jefe de una unidad
+        if(empleado.equals(epu.getUnidadOrganizacional().getEmpleadoJefe())&&!unit.equals(epu.getUnidadOrganizacional())){
+            mensajes.put("error_jefe", "ERROR. El empleado actualmente es JEFE DE UNIDAD, para poder cambiarlo de unidad organizacional debe de asignar un nuevo jefe y luego realizr el cambio.");
+            return new ResponseEntity<>(mensajes, HttpStatus.BAD_REQUEST);
+        }
 
         //Validacion de usuario campos requeridos por si no posee usuario
         if(puesto.isUsuarioRequerido() && empleado.getUsuario() == null) {
@@ -381,19 +440,24 @@ public class EmpleadoController {
         empleado.setDireccion(direccion);
 
         //ACTUALIZANDO PUESTO UNIDAD EMPLEADO
-        EmpleadosPuestosUnidades epu = empleado.getEmpleadosPuestosUnidades();
-        epu.setPuesto(puesto);
-        epu.setUnidadOrganizacional(unidadOrganizacionalService.getOneUnidadOrganizacional(Integer.parseInt(allParams.get("idUnidadOrganizacional"))));
-        empleado.setEmpleadosPuestosUnidades(epu);
-        
-        System.out.println("--------------------------------0");
+        if(puesto != epu.getPuesto() || epu.getUnidadOrganizacional() != unit){
+            EmpleadosPuestosUnidades epuNew = new EmpleadosPuestosUnidades(
+                    empleado,
+                    puesto,
+                    unit
+            );
+            empleadosPuestosUnidadesService.createOrUpdate(epuNew);
+        }
+
         //Actualizando usuario
         if(puesto.isUsuarioRequerido()){
         	/*-------------------------CÓDIGO PARA AGREGAR ROLES AL EMPLEADO-------------------*/
         	List<Rol> rolesList = new ArrayList<Rol>();
-            for (int idRol: roles) {
-            	Rol rol = rolService.getByIdRol(idRol);
-            	rolesList.add(rol);
+            if(roles != null) {
+            	for (int idRol: roles) {
+                	Rol rol = rolService.getByIdRol(idRol);
+                	rolesList.add(rol);
+                }
             }
             /*------------------FIN DEL CÓDIGO PARA AGREGAR ROLES AL EMPLEADO-------------------*/
             
@@ -571,7 +635,7 @@ public class EmpleadoController {
         Empleado e = empleadoService.findEmployeeById(id);
 
         //List de profesiones que pueden ser agregados al empleado
-        List<Profesion> profesiones = profesionService.getProfesiones();
+        List<Profesion> profesiones = profesionService.getProfesionesEnable();
         List<EmpleadoProfesion> empleadoProfesiones = e.getProfesionesEmpleado();
         int contador = 0;
         for (EmpleadoProfesion ep : empleadoProfesiones) {
@@ -691,7 +755,7 @@ public class EmpleadoController {
     private Map<String, String> validationEmptyFields(Map<String, String> allParams, List<Integer> profesiones) {
         //VALIDACION DE CAMPOS REQUERIDOS EN SECCION PERSONAL
         Map<String, String> mensajes = new HashMap<String, String>();
-        if (allParams.get("nombrePrimero").isEmpty() || allParams.get("nombreSegundo").isEmpty() || allParams.get("fechaNacimiento").isEmpty() || allParams.get("apellidoMaterno").isEmpty()) {
+        if (allParams.get("nombrePrimero").isEmpty()  || allParams.get("fechaNacimiento").isEmpty() || allParams.get("apellidoMaterno").isEmpty()) {
             mensajes.put("error_sec1", "Error en la seccion Informacion Personal. Llenar todos los campos requeridos.");
         }else{
             //Fecha de nacimiento
@@ -711,14 +775,14 @@ public class EmpleadoController {
 
         if (profesiones != null) {
             //VALIDACION DE CAMPOS REQUERIDOS PARA SECCION INFORMACION PROFESIONAL
-            if (allParams.get("codigo").isEmpty() || allParams.get("correoInstitucional").isEmpty() || allParams.get("salarioBaseMensual").isEmpty() || allParams.get("horasTrabajo").isEmpty() || profesiones.get(0) == 0) {
+            if (allParams.get("codigo").isEmpty() || allParams.get("correoPersonal").isEmpty()|| allParams.get("correoInstitucional").isEmpty() || allParams.get("salarioBaseMensual").isEmpty() || allParams.get("horasTrabajo").isEmpty() || profesiones.get(0) == 0) {
                 mensajes.put("error_sec3", "Error en la seccion Informacion Profesional. Llenar todos los campos requeridos.");
             }
             //Otras validaciones
             mensajes = validacionUniqueAndOthers(allParams, mensajes, 0);
         } else {
             //VALIDACION DE CAMPOS REQUERIDOS PARA SECCION INFORMACION PROFESIONAL
-            if (allParams.get("codigo").isEmpty() || allParams.get("correoInstitucional").isEmpty() || allParams.get("salarioBaseMensual").isEmpty() || allParams.get("horasTrabajo").isEmpty()) {
+            if (allParams.get("codigo").isEmpty() || allParams.get("correoPersonal").isEmpty() || allParams.get("correoInstitucional").isEmpty() || allParams.get("salarioBaseMensual").isEmpty() || allParams.get("horasTrabajo").isEmpty()) {
                 mensajes.put("error_sec3", "Error en la seccion Informacion Profesional. Llenar todos los campos requeridos.");
             } else {
                 mensajes = validacionUniqueAndOthers(allParams, mensajes, Integer.parseInt(allParams.get("idEmpleado")));
@@ -827,25 +891,62 @@ public class EmpleadoController {
         if (empleado.getUsuario() != null) {
             Usuario usuario = empleado.getUsuario();
             usuario.setEnabled(true);
+            usuario.setIntentos(0);
             userJpaRepository.save(usuario);
         } else {
             return "redirect:/empleado/index?unlock_success=false";
         }
         return "redirect:/empleado/index?unlock_success=true";
     }
+    
+    @PostMapping("/send-unlock-email")
+    public String sendUnlockEmail(HttpServletRequest request, @RequestParam("username") String username, RedirectAttributes redirAttrs) {
+    	
+    	Email email = new Email();
+        Map<String, Object> model = new HashMap<>();
+    	
+    	HttpSession session = request.getSession(true);
+    	session.setAttribute("user_attemps", 0);
+    	
+        Usuario usuario = userJpaRepository.findByUsername(username);
+        Empleado empleado = empleadoService.findByUsuario(usuario);
+        
+        if(usuario != null) {
+        	List<Usuario> admin_users = usuarioService.getAdminUsers();
+        	
+        	String email_personal = empleado.getCorreoPersonal();
+            String email_institucional = empleado.getCorreoInstitucional();
+            String nombre = empleado.getNombrePrimero() + " " +
+            				empleado.getNombreSegundo() + " " +
+            				empleado.getApellidoPaterno() + " " +
+            				empleado.getApellidoMaterno();
+            
+            
+        	String  url_base = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort(); 
+            String 	url_unlock = url_base + "/empleado/unlock-user";
+        	
+        	model.put("email_per", email_personal);
+        	model.put("email_ins", email_institucional);
+        	model.put("nombre", nombre);
+        	model.put("username", username);
+        	model.put("id",empleado.getIdEmpleado());
+    		model.put("url_unlock", url_unlock);
+    		model.put("url_base", url_base);
 
-    @PostMapping("/test")
-    public String rolTest(@RequestParam(name = "roles[]") List<Integer> roles) {
-    	List<Rol> rolesList = new ArrayList<Rol>();
-    	Usuario usuario = userJpaRepository.findByUsername("admin");
-    	for (int idRol: roles) {
-        	Rol rol = rolService.getByIdRol(idRol);
-        	rolesList.add(rol);
+        	for(Usuario user : admin_users) {
+        		Empleado e = empleadoService.findByUsuario(user);
+        		email.setFrom("metabitCorp@gmail.com");
+                email.setTo(e.getCorreoPersonal());
+                email.setSubject("Desbloqueo de usario");
+                
+                email.setModel(model);
+                emailService.sendEmail(email);
+        	}
+        	
+        	redirAttrs.addFlashAttribute("email_success", "success");
         }
-        usuario.setRoles(rolesList);
-
-        userJpaRepository.save(usuario);
-
-        return "redirect:/index";
+        
+        return "redirect:/login";
+        
     }
 }

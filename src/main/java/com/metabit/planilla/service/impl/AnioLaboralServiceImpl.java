@@ -34,5 +34,12 @@ public class AnioLaboralServiceImpl implements AnioLaboralService {
 		// TODO Auto-generated method stub
 		return anioLaboralJpaRepository.save(anioLaboral);
 	}
+
+	@Override
+	public AnioLaboral getByIdAnioLaboral(int id_anio) {
+		// TODO Auto-generated method stub
+		return anioLaboralJpaRepository.findByIdAnioLaboral(id_anio);
+	}
+
 	
 }

@@ -7,4 +7,7 @@ import java.util.List;
 public interface EstadoCivilService {
     public abstract List<EstadoCivil> getAllCivilStates();
     public abstract EstadoCivil getCivilState(int id);
+    public abstract EstadoCivil addCivilState(EstadoCivil estadoCivil);
+    public abstract EstadoCivil updateCivilState(EstadoCivil estadoCivil); 
+    public abstract void deleteEstadoCivil(int idEstadoCivil);
 }

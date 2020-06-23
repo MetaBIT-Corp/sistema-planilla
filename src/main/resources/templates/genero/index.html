@@ -42,7 +42,7 @@
 		      <form method="post" action="#" th:action="@{/genero/store}" th:object="${generoEntity}">
 			      <div class="modal-body">
 			        <div class="form-group">
-					    <label for="generoInput">Genero:</label>
+					    <label for="generoInput">Genero: *</label>
 					    <input type="text" th:field="*{genero}" class="form-control" id="generoInput" placeholder="Ingrese el titulo del genero..." required="required">
 					  </div>
 			      </div>
@@ -124,7 +124,7 @@
 									onclick="activateModalDestroy(this);" title="Eliminar"
 									style="text-decoration: none; color: white;">
 									
-								<i class="fas fa-lock"></i>
+								<i class="fas fa-trash"></i>
 								
 							</button>
 						</td>
@@ -283,19 +283,17 @@
 				 toastr.success("Genero actualizado con éxito"); 
 			  }
 			  if(delete_success === 'true'){
-				 toastr.error("Genero eliminado"); 
+				 toastr.success("Genero eliminado"); 
 			  }
 			  if(delete_restricted === 'true'){
 				 toastr.warning("No es posible eliminar el Genero, ya que hay Empleados que lo poseen!"); 
 			  }
 			  if (update_restricted === 'true' || store_restricted === 'true'){
-				 toastr.warning("Genero no puede quedar vacio");  
+				 toastr.warning("El campo Genero no puede quedar vacio");  
 			  }
 			
 			});
-		  
-		  
-		  
+		 
 		</script>
 	</section>
 

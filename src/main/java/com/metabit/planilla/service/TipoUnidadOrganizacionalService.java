@@ -7,6 +7,7 @@ import java.util.List;
 public interface TipoUnidadOrganizacionalService {
     public abstract List<TipoUnidadOrganizacional> getAll();
     public abstract List<TipoUnidadOrganizacional> getByTipoUnidadOrganizacionalHabilitado(boolean estado);
+    public abstract TipoUnidadOrganizacional getById(int id_tipo);
     public abstract TipoUnidadOrganizacional getOne(int id);
     public abstract TipoUnidadOrganizacional store(TipoUnidadOrganizacional tuo);
     public abstract TipoUnidadOrganizacional update(TipoUnidadOrganizacional tuo);

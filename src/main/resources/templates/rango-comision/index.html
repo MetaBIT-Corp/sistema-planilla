@@ -54,7 +54,7 @@
 	                <tr th:each="rangoComision: ${rangosComision}">
 	                  <td><span th:text="'$' + ${#numbers.formatDecimal(rangoComision.ventaMin, 0, 'COMMA', 2, 'POINT')}"></span></td>
 	                  <td><span th:text="'$' + ${#numbers.formatDecimal(rangoComision.ventaMax, 0, 'COMMA', 2, 'POINT')}"></span></td>
-	                  <td><span th:text="${rangoComision.tasaComision*100} + '%'"></span></td>
+	                  <td><span th:text="${#numbers.formatDecimal(rangoComision.tasaComision*100, 0, 2)} + '%'"></span></td>
 						<td>						
 							<button class="btn btn-sm btn-primary btn_edit" th:if="${edit == true}" th:attr="data-id=${rangoComision.id}" style="text-decoration: none; color: white;"
 									title="Editar">

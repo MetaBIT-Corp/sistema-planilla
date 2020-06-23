@@ -12,7 +12,9 @@
   <link rel="stylesheet" th:href="@{/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css}">
   <!-- Toastr -->
   <link rel="stylesheet" th:href="@{/plugins/toastr/toastr.min.css}">
-    
+  <!-- Bootstrap4 Duallistbox -->
+  <link rel="stylesheet" th:href="@{/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css}">
+  
 </head>
 
 <body>
@@ -33,6 +35,7 @@
 			<input type="hidden" id="deleteDescuentos" th:if="${deleteDescuentos != null}" value="true">
 			<input type="hidden" id="updateMontoVentas" th:if="${updateMontoVentas != null}" value="true">
 			<input type="hidden" id="updateHorasExtras" th:if="${updateHorasExtras != null}" value="true">
+			<input type="hidden" id="updateDiasFestivos" th:if="${updateDiasFestivos != null}" th:value="${updateDiasFestivos}">
 			
 		    <!-- general form elements -->
 		    <div class="offset-1 col-md-10">
@@ -62,6 +65,10 @@
                        
                     <a th:if="${asignacionDescuentos != null}" class="nav-link" id="descuentos-tab" data-toggle="tab" href="#descuentos" role="tab"
                     aria-controls="descuentos" aria-selected="true">Descuentos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="dias-festivos-tab" data-toggle="tab" href="#dias-festivos" role="tab"
+                    	aria-controls="dias-festivos" aria-selected="true">Dias Festivos</a>
                 </li>
             </ul>
             
@@ -95,30 +102,33 @@
 							  <div class="form-row">
 							  	<div class="col-md-6 mb-3">
 								    <label>Total de Ingresos:</label><br>
-								    <span th:text="'$' + ${#numbers.formatDecimal(planilla.totalIngresos, 1, 'COMMA', 2, 'POINT')}"></span>
+								    <span class="totalIngresos" th:text="'$' + ${#numbers.formatDecimal(planilla.totalIngresos, 1, 'COMMA', 2, 'POINT')}"></span>
 								  </div>
 								  <div class="col-md-6 mb-3">
 								    <label>Total de Descuentos:</label><br>
-								    <span th:text="'$' + ${#numbers.formatDecimal(planilla.totalDescuentos, 1, 'COMMA', 2, 'POINT')}"></span>
+								    <span class="totalDescuentos" th:text="'$' + ${#numbers.formatDecimal(planilla.totalDescuentos, 1, 'COMMA', 2, 'POINT')}"></span>
 								  </div>
 							  </div>
-							  <div class="form-row" th:if="${planilla.empleado.esAdministrativo == false}">
-							  	 <div class="col-md-6 mb-3">
-								    <label>
-								    	Monto de Ventas:
-								    	<button class="btn btn-sm btn-light" style="text-decoration: none; color: black; border-radius: 50%;"
-												title="Editar Monto de Ventas" onclick="activateModalEditMontoVentas(this);"
-												th:attr="data-idPlanilla=${planilla.idPlanilla}, data-montoVentas=${planilla.montoVentas}">
+							  <!--<div class="form-row" th:if="${planilla.empleado.esAdministrativo == false}">-->
+							  <div th:each="empPuestoUnidad, iterStat : ${planilla.empleado.empleadosPuestosUnidades}" th:if="${iterStat.index == iterStat.size-1 && empPuestoUnidad.puesto.esAdministrativo == false}">
+								  <div class="form-row">
+								  	 <div class="col-md-6 mb-3">
+									    <label>
+									    	Monto de Ventas:
+									    	<button class="btn btn-sm btn-light" style="text-decoration: none; color: black; border-radius: 50%;"
+													title="Editar Monto de Ventas" onclick="activateModalEditMontoVentas(this);"
+													th:attr="data-idPlanilla=${planilla.idPlanilla}, data-montoVentas=${planilla.montoVentas}">
+													
+												<span><i class="fas fa-pencil-alt"></i></span>
 												
-											<span><i class="fas fa-pencil-alt"></i></span>
-											
-										</button>
-								    </label><br>
-								    <span th:text="'$' + ${#numbers.formatDecimal(planilla.montoVentas, 1, 'COMMA', 2, 'POINT')}"></span>
-								  </div>
-								  <div class="col-md-6 mb-3">
-								    <label>Monto por Comisión:</label><br>
-								    <span th:text="'$' + ${#numbers.formatDecimal(planilla.montoComision, 1, 'COMMA', 2, 'POINT')}"></span>
+											</button>
+									    </label><br>
+									    <span th:text="'$' + ${#numbers.formatDecimal(planilla.montoVentas, 1, 'COMMA', 2, 'POINT')}"></span>
+									  </div>
+									  <div class="col-md-6 mb-3">
+									    <label>Monto por Comisión:</label><br>
+									    <span class="montoVentas" th:text="'$' + ${#numbers.formatDecimal(planilla.montoComision, 1, 'COMMA', 2, 'POINT')}"></span>
+									  </div>
 								  </div>
 							  </div>
 							  <div class="form-row">
@@ -154,7 +164,9 @@
 								  </div>
 								  <div class="col-md-6 mb-3">
 								    <label>Monto por Horas Extras:</label><br>
-								    <span th:text="'$' + ${#numbers.formatDecimal(planilla.montoHorasExtra, 1, 'COMMA', 2, 'POINT')}"></span>
+								    <span class="horasExtra" th:text="'$' + ${#numbers.formatDecimal(planilla.montoHorasExtra, 1, 'COMMA', 2, 'POINT')}"></span> <br/><br/>
+								    <label>Monto por Dias Festivos:</label><br>
+								    <span class="diasFestivos" th:text="'$' + ${#numbers.formatDecimal(planilla.montoDiasFestivos, 1, 'COMMA', 2, 'POINT')}"></span>
 								  </div>
 							  </div>
                          </div>
@@ -314,6 +326,58 @@
                        </div> 
                     </div>
                 </div>
+                
+                <!--DIAS FESTIVOS-->
+                <div class="tab-pane fade" id="dias-festivos" role="tabpanel"
+                     aria-labelledby="dias-festivos-tab" style="margin-top: 10px;">
+                    <div class="container">
+	                    <div class="card">
+		                    <form action="#" method="post"  th:action="@{/planilla/agregar-dias-festivos}">
+		                    <input type="hidden" name="id_planilla" th:value="${planilla.idPlanilla}">
+					            <div class="card-header text-right" style="background-color: #E6E6E6;">
+						            <button type="submit" class="btn btn-md btn-primary" title="Agregar a Planilla">
+										<span class="text-white">Agregar a Planilla</span>
+									</button>
+					            </div>
+	                       		 <!----------------CÓDIGO PARA LA ASIGNACIÓN DE DIAS FESTIVOS--------------------->
+	                                <br>
+	                                <div class="card card-default">
+	                                  <div class="card-header">
+	                                    <h3 class="card-title">Asignación de Dias Festivos</h3>
+	
+	                                    <div class="card-tools">
+	                                      <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+	                                    </div>
+	                                  </div>
+	                                  <!-- /.card-header -->
+	                                  <div class="card-body">
+	                                    <div class="row">
+	                                      <div class="col-12">
+	                                        <div class="form-group">
+	                                          <label>De clic sobre los dias festivos que le desea asignar a la planilla</label>
+	                                          <select class="duallistbox" multiple="multiple" name="diasFestivos[]">
+	                                            <div th:each="diaFestivo : ${diasFestivosRestantes}">
+	                                                <option th:value="${diaFestivo.idDiaFestivo}" th:text="${diaFestivo.diaDescripcion}">No hay dias festivos</option>
+	                                            </div>
+	                                            <div th:each="diaFestivoSeleccionado : ${diasFestivosSeleccionados}">
+	                                                <option th:value="${diaFestivoSeleccionado.diaFestivo.idDiaFestivo}" th:text="${diaFestivoSeleccionado.diaFestivo.diaDescripcion}" selected="selected">No hay dias festivos</option>
+	                                            </div>
+	                                          </select>
+	                                        </div>
+	                                        <!-- /.form-group -->
+	                                      </div>
+	                                      <!-- /.col -->
+	                                    </div>
+	                                    <!-- /.row -->
+	                                  </div>
+	                                  <!-- /.card-body -->
+	                                </div>
+	                                <!----------------FIN COÓDIGO PARA LA ASIGNACIÓN DE DIAS FESTIVOS--------------------->
+	                        	</form>
+                       </div> 
+                    </div>
+                </div>
+                
             </div>
         </div>
 	</div>
@@ -329,9 +393,9 @@
 		        </button>
 		      </div>
 		      <div class="modal-body">
-			      <form method="post" action="#" th:action="@{/planilla/agregar-movimientos}">
+			      <form th:if="${#lists.isEmpty(ingresosPendientes) == false}" method="post" action="#" th:action="@{/planilla/agregar-movimientos}">
 			      	  <input type="hidden" id="inputIngresosPlanilla" name="id_planilla" th:value="${planilla.idPlanilla}">
-	                  	<div th:if="${#lists.isEmpty(ingresosPendientes) == false}" class="card-body">
+	                  	<div class="card-body">
 					      <table id="example3" class="table table-bordered table-striped">
 		                      <thead>
 			                      <tr>
@@ -363,17 +427,17 @@
 		                      </tbody>
 		                  </table>
 		                </div>
-		                <div th:if="${#lists.isEmpty(ingresosPendientes)}" id="divError" class="callout callout-danger">
-	                          <p class="my-0"><i class="fas fa-exclamation-circle mr-2"></i><strong>Mensaje de Información:</strong></p>
-	                          <ul id="ulError" class="mb-0">
-	                          	<li>Ya no hay Ingresos Pendientes.</li>
-	                          </ul>
-	                      </div>
 	                  <div class="modal-footer">
 				        <button type="submit" class="btn btn-primary">Guardar</button>
 				        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
 				      </div>
 			      </form>
+			      <div th:if="${#lists.isEmpty(ingresosPendientes)}" id="divError" class="callout callout-danger">
+                      <p class="my-0"><i class="fas fa-exclamation-circle mr-2"></i><strong>Mensaje de Información:</strong></p>
+                      <ul id="ulError" class="mb-0">
+                      	<li>Ya no hay Ingresos Pendientes.</li>
+                      </ul>
+                  </div>
 		      </div>
 		    </div>
 		  </div>
@@ -389,8 +453,8 @@
 		          <span aria-hidden="true">&times;</span>
 		        </button>
 		      </div>
-		      <div th:if="${#lists.isEmpty(descuentosPendientes) == false}" class="modal-body">
-			      <form method="post" action="#" th:action="@{/planilla/agregar-movimientos}">
+		      <div class="modal-body">
+			      <form th:if="${#lists.isEmpty(descuentosPendientes) == false}" method="post" action="#" th:action="@{/planilla/agregar-movimientos}">
 			     	  <input type="hidden" id="inputDescuentosPlanilla" name="id_planilla" th:value="${planilla.idPlanilla}">
 	                  	<div class="card-body">
 					      <table id="example4" class="table table-bordered table-striped">
@@ -429,13 +493,13 @@
 				        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
 				      </div>
 			      </form>
+			      <div th:if="${#lists.isEmpty(descuentosPendientes)}" id="divError" class="callout callout-danger">
+	                  <p class="my-0"><i class="fas fa-exclamation-circle mr-2"></i><strong>Mensaje de Información:</strong></p>
+	                  <ul id="ulError" class="mb-0">
+	                  	<li>Ya no hay Descuentos Pendientes.</li>
+	                  </ul>
+	              </div>
 		      </div>
-		      <div th:if="${#lists.isEmpty(descuentosPendientes)}" id="divError" class="callout callout-danger">
-                  <p class="my-0"><i class="fas fa-exclamation-circle mr-2"></i><strong>Mensaje de Información:</strong></p>
-                  <ul id="ulError" class="mb-0">
-                  	<li>Ya no hay Descuentos Pendientes.</li>
-                  </ul>
-              </div>
 		    </div>
 		  </div>
 		</div>
@@ -536,7 +600,8 @@
 	  	<script th:src="@{/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
 		<script th:src="@{/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
 		<script th:src="@{/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
-		
+		<!-- Duallistbox Bootstrap -->
+		<script th:src="@{/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js}"></script>
 		<!-- Toastr -->
 		<script th:src="@{/plugins/toastr/toastr.min.js}"></script>
 		<!-- SweetAlert2 -->
@@ -558,6 +623,8 @@
 				    }); 
 				    
 			});
+			
+			$('.duallistbox').bootstrapDualListbox();
 		</script>
 		
 		<script type="text/javascript">
@@ -613,31 +680,47 @@
 				  
 				  var updateHorasExtras = $('#updateHorasExtras').val();
 				  var updateMontoVentas = $('#updateMontoVentas').val();
-				 
+				  var updateDiasFestivos = $('#updateDiasFestivos').val();
+				  
 				  setTimeout(function() {
 				    $(".alert").fadeOut();           
 				  },3000);
 				  
 				  if(asignacionIngresos === 'true'){
-					 toastr.success("Ingresos Asignados con Éxito!"); 
+					 toastr.success("Ingresos Asignados con Éxito!");
+					 $(".totalIngresos").effect( "highlight", {color:"#04B404"}, 3000 );
 				  }
 				  
 				  if(asignacionDescuentos === 'true'){
 					 toastr.success("Descuentos Asignados con Éxito!"); 
+					 $(".totalDescuentos").effect( "highlight", {color:"#04B404"}, 3000 );
 				  }
 				  if(deleteIngresos === 'true'){
-					 toastr.error("Ingreso Eliminado con Éxito!"); 
+					 toastr.success("Ingreso Eliminado con Éxito!"); 
+					 $(".totalIngresos").effect( "highlight", {color:"#04B404"}, 3000 );
 				  }
 				  
 				  if(deleteDescuentos === 'true'){
-					 toastr.error("Descuento Eliminado con Éxito!"); 
+					 toastr.success("Descuento Eliminado con Éxito!");
+					 $(".totalDescuentos").effect( "highlight", {color:"#04B404"}, 3000 );
 				  }
 				  if(updateHorasExtras === 'true'){
 					 toastr.success("Horas Extras actualizadas con Éxito!"); 
+					 $(".horasExtra").effect( "highlight", {color:"#04B404"}, 3000 );
 				  }
 				  
 				  if(updateMontoVentas === 'true'){
 					 toastr.success("Monto de Ventas actualizado con Éxito!"); 
+					 $(".montoVentas").effect( "highlight", {color:"#04B404"}, 3000 );
+				  }
+				  
+				  if(updateDiasFestivos === 'true'){
+					 toastr.success("Dias Festivos actualizados con Éxito!");
+					 $(".diasFestivos").effect( "highlight", {color:"#04B404"}, 3000 );
+				  }
+				  
+				  if(updateDiasFestivos === 'false'){
+					 toastr.warning("No se actualizaron los Dias Festivos, no se logro identificar la Planilla"); 
 				  }
 			    
 			});

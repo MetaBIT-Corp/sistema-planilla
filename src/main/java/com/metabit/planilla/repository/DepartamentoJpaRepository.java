@@ -8,5 +8,5 @@ import com.metabit.planilla.entity.Departamento;
 @Repository("departamentoJpaRepository")
 public interface DepartamentoJpaRepository extends JpaRepository<Departamento, Serializable> {
 
-
+    public abstract Departamento findByIdDepartamento(int id);
 }

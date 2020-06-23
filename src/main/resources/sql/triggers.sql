@@ -1,5 +1,5 @@
  /*----TRIGGER PARA CREAR LOS PERIODOS CUANDO SE CREA UN ANIO LABORAL----*/
-CREATE OR REPLACE TRIGGER anio_laboral_after_insert AFTER
+CREATE OR REPLACE TRIGGER CREAR_PERIODOS_AI AFTER
     INSERT ON anios_laborales
     FOR EACH ROW
 DECLARE
@@ -76,6 +76,33 @@ BEGIN
                 v_fecha_final := last_day(v_fecha_inicio);
             END LOOP;
     END CASE;
+END;
+;;
+
+/*----TRIGGER PARA ACTUALIZAR EL SALARIO MÁXIMO DEL NIVEL MAYOR DE UN RANGO DE RENTA EN BASE A UNA PERIODICIDAD----*/
+CREATE OR REPLACE TRIGGER ACTUALIZAR_SALARIO_MAX_BI BEFORE
+    INSERT ON rangos_renta
+    FOR EACH ROW
+DECLARE
+    v_salario_min rangos_renta.salario_min%TYPE;
+BEGIN
+    SELECT
+        MAX(salario_min)
+    INTO v_salario_min
+    FROM
+        rangos_renta renta
+    WHERE
+        periodicidad_renta = :new.periodicidad_renta;
+
+    IF :new.salario_min > v_salario_min THEN
+        UPDATE rangos_renta
+        SET
+            salario_max = :new.salario_min - 0.01
+        WHERE
+            salario_min = v_salario_min;
+
+    END IF;
+
 END;
 ;;
 
@@ -184,20 +211,22 @@ DECLARE
     v_id_empleado           planillas.id_empleado%TYPE := :old.id_empleado;
     v_salario_base_mensual  empleados.salario_base_mensual%TYPE;
     v_salario_hora          FLOAT(126);
+    v_horas_trabajo_diarias empleados.horas_trabajo%TYPE;
 BEGIN
 	--Obtenemos el salario base mensual del empleado
     SELECT
-        salario_base_mensual
-    INTO v_salario_base_mensual
+        salario_base_mensual,
+        horas_trabajo
+    INTO v_salario_base_mensual,
+         v_horas_trabajo_diarias
     FROM
         empleados
     WHERE
         id_empleado = v_id_empleado;
 
 	--Calculamos el salario por hora
-	--Son 44 horas de trabajo semanales y 4 semanas de trabajo, 44*4=176
-
-    v_salario_hora := v_salario_base_mensual / 176;
+	--5: dias de trabajo a la semana, 4: semanas del mes:
+    v_salario_hora := v_salario_base_mensual / ( v_horas_trabajo_diarias * 5 * 4 ); 
 
 	--Monto Horas Extra Diurnas; Se pagan con un 100% de recargo, o sea el doble
     v_monto_horas_extra := v_salario_hora * v_horas_extras_d * 2;
@@ -208,7 +237,7 @@ BEGIN
 	--Actualizamos el Monto Horas Extra en la Planilla    
     :new.monto_horas_extra := v_monto_horas_extra;
 
-END;
+END calcularmontohorasextra;
 ;;
 
 /*--------- Trigger para Calcular el Monto Comisión ---------*/
@@ -242,4 +271,192 @@ LOOP
 END LOOP;
 
 END;
+;;
+
+/*---TRIGGER PARA LA CREACION DE CENTRO DE COSTO POR CADA UNIDAD ORGANIZACIONAL QUE SE INSERTA R. E.---*/
+CREATE OR REPLACE TRIGGER create_centro_costo AFTER
+    INSERT ON unidades_organizacionales
+    FOR EACH ROW
+DECLARE
+    v_anio_id anios_laborales.id_anio_laboral%TYPE;
+BEGIN
+    --Recuperacion del año laboral actual, segun fecha actual
+    SELECT id_anio_laboral INTO v_anio_id FROM anios_laborales
+    WHERE anio_laboral = TO_CHAR(SYSDATE,'yyyy');
+
+    -- Insercion de centro costo por unidad y por año actual
+    INSERT INTO centros_costos(
+        id_centro_costo,
+        presupuesto_anterior,
+        presupuesto_asignado,
+        presupuesto_devengado,
+        id_anio,
+        id_unidad_organizacional
+    )
+    VALUES(centro_costo_seq.NEXTVAL,0.0,0.0,0.0,v_anio_id,:NEW.id_unidad_organizacional);
+END;
+;;
+
+/*---TRIGGER PARA LA ASIGNACION DE PRESUPUESTO A UNIDAD ORGANIZACIONAL R. E.---*/
+CREATE OR REPLACE TRIGGER asignacion_presupuesto_before_insert BEFORE
+    INSERT ON planilla.asignaciones_presupuestos
+    FOR EACH ROW
+DECLARE
+    v_id_unidad_org planilla.unidades_organizacionales.id_unidad_organizacional%TYPE;
+    v_id_unidad_org_padre planilla.unidades_organizacionales.id_unidad_organizacional%TYPE DEFAULT NULL;
+    v_id_anio_laboral planilla.anios_laborales.id_anio_laboral%TYPE;
+    v_monto planilla.asignaciones_presupuestos.monto_asignacion%TYPE;
+    rec_centro_costo_padre planilla.centros_costos%ROWTYPE;
+    rec_centro_costo planilla.centros_costos%ROWTYPE;
+BEGIN
+
+    --Asignamos la fecha actual a la asignacion de presupuesto
+    :NEW.fecha_asignacion := SYSDATE;
+
+    --Recuperacion de anio actual
+    SELECT id_anio_laboral INTO v_id_anio_laboral
+    FROM planilla.anios_laborales
+    WHERE anio_laboral = TO_CHAR(SYSDATE,'yyyy');
+
+    -- Recuperacion de centro de costo para asignacion de presupuesto
+    SELECT * INTO rec_centro_costo
+    FROM planilla.centros_costos
+    WHERE id_centro_costo = :NEW.id_centro_costo;
+
+    -- Recuperacion de unidad organizacional padre para poder recuperar el centro de costo de la unidad padre en año actual
+    SELECT id_unidad_organizacional_padre INTO v_id_unidad_org_padre
+    FROM planilla.unidades_organizacionales
+    WHERE id_unidad_organizacional = rec_centro_costo.id_unidad_organizacional;
+
+
+    -- Verificacion de si posee unidad padre
+    IF v_id_unidad_org_padre IS NOT NULL THEN
+        -- Recuperacion de centro de costo padre, para efectuarle el respectivo incremento o decremento
+        SELECT * INTO rec_centro_costo_padre
+        FROM planilla.centros_costos
+        WHERE id_unidad_organizacional = v_id_unidad_org_padre AND id_anio = v_id_anio_laboral;
+
+        -- Modificamos el monto devengado en la unidad padre
+        IF :NEW.es_incremento = 1 THEN
+            rec_centro_costo_padre.presupuesto_devengado := rec_centro_costo_padre.presupuesto_devengado + :NEW.monto_asignacion;
+        ELSE
+            rec_centro_costo_padre.presupuesto_devengado := rec_centro_costo_padre.presupuesto_devengado - :NEW.monto_asignacion;
+        END IF;
+
+        -- Persistimos los datos de la unidad organizacional a la que se le efectua la asignacion
+        UPDATE planilla.centros_costos SET ROW = rec_centro_costo_padre WHERE id_centro_costo = rec_centro_costo_padre.id_centro_costo;
+    END IF;
+
+    -- Efectuamos la asignacion de presupuesto en la unidad correspondiente
+    IF :NEW.es_incremento = 1 THEN
+        rec_centro_costo.presupuesto_asignado := rec_centro_costo.presupuesto_asignado + :NEW.monto_asignacion;
+    ELSE
+        rec_centro_costo.presupuesto_asignado := rec_centro_costo.presupuesto_asignado - :NEW.monto_asignacion;
+    END IF;
+
+    -- Persistimos los datos de la unidad organizacional a la que se le efectua la asignacion
+    UPDATE planilla.centros_costos SET ROW = rec_centro_costo WHERE id_centro_costo = rec_centro_costo.id_centro_costo;
+
+END;
+;;
+
+/*Trigger para actualizar la fecha de inicio y de finalizacion de un empleado en un puesto dentro de una unidad organizacional*/
+CREATE OR REPLACE TRIGGER  empleado_puesto_unidad_before_insert BEFORE
+    INSERT ON planilla.empleados_puestos_unidades
+    FOR EACH ROW
+DECLARE
+    -- Variable que almacenara el id del empleado_puesto_unidad vigente del empleado requerido
+    v_id_epu_old planilla.empleados_puestos_unidades.id_empleado_puesto_unidad%TYPE;
+BEGIN
+    --Recuperamos el empleado_puesto_unidad vigente del empleado requerido
+    SELECT id_empleado_puesto_unidad INTO v_id_epu_old
+    FROM planilla.empleados_puestos_unidades
+    WHERE id_empleado = :NEW.id_empleado AND fecha_fin IS NULL;
+
+    -- Se agrega la fecha actual en fecha inicio de nuevo registro
+    :NEW.fecha_inicio := SYSDATE;
+
+    -- Realizamos el update al puesto anterior
+    UPDATE planilla.empleados_puestos_unidades
+    SET fecha_fin = SYSDATE
+    WHERE id_empleado_puesto_unidad = v_id_epu_old;
+
+    -- Controlando excepcion de NOT_DATA FOUND
+    EXCEPTION
+        WHEN no_data_found THEN
+        :NEW.fecha_inicio := SYSDATE;
+END;
+;;
+
+/*----------------------Trigger para Actualizar Monto por Dias Festivos Trabajados ------------------*/
+CREATE OR REPLACE TRIGGER actualizar_monto_dias_festivos FOR
+    INSERT OR DELETE ON planillas_dias_festivos
+COMPOUND TRIGGER
+    v_monto_dia_festivo      planillas.monto_dias_festivos%TYPE;
+    v_planilla_id            planillas.id_planilla%TYPE;
+    v_empleado_id            empleados.id_empleado%TYPE;
+    v_salario_base_mensual   empleados.salario_base_mensual%TYPE;
+    v_horas_trabajo_diarias  empleados.horas_trabajo%TYPE;
+    v_salario_base_hora      FLOAT(126);
+    AFTER EACH ROW IS BEGIN
+        --Obtenemos el id de planilla a la que se le agrego o elimino un dia festivo 
+	    CASE
+            --En caso de Insercion
+	    	WHEN INSERTING THEN
+        		v_planilla_id := :new.id_planilla;
+            --En caso de Eliminar    
+        	WHEN DELETING THEN
+        		v_planilla_id := :old.id_planilla;
+        END CASE;
+        
+        --Ahora obtenemos el Empleado (id_empleado) al que pertenece la Planilla
+        SELECT
+            id_empleado
+        INTO v_empleado_id
+        FROM
+            planillas
+        WHERE
+            id_planilla = v_planilla_id;
+              
+        --De Este empleado obtenemos el salario base mensual y las horas de trabajo diarias
+        --Esto con el fin de calcular el Salario base por Hora
+        SELECT
+            salario_base_mensual,
+            horas_trabajo
+        INTO
+            v_salario_base_mensual,
+            v_horas_trabajo_diarias
+        FROM
+            empleados
+        WHERE
+            id_empleado = v_empleado_id;
+        
+        --Procedemos a calcular el Salario base por hora    
+        --5: dias de trabajo a la semana, 4: semanas del mes.
+        v_salario_base_hora := v_salario_base_mensual / ( v_horas_trabajo_diarias * 5 * 4 ); 
+        
+        --Ahora calculamos cuanto es el monto por un dia festivo trabajado por el Empleado
+        --Este es el monto que se sumara o restara al monto de dias festivos de Planilla, ya que
+        --esto se va a ejecutar por cada INSERT o DELETE
+        v_monto_dia_festivo := v_horas_trabajo_diarias * v_salario_base_hora;
+        
+        CASE
+            --En el caso de INSERT este monto se suma al monto total de Dias Festivos
+        	WHEN INSERTING THEN
+		        UPDATE planillas
+		        SET
+		            monto_dias_festivos = monto_dias_festivos + v_monto_dia_festivo
+		        WHERE
+		            id_planilla = v_planilla_id;
+            --En el caso de DELETE este monto se resta al monto total de Dias Festivos        
+		    WHEN DELETING THEN
+		    	UPDATE planillas
+		        SET
+		            monto_dias_festivos = monto_dias_festivos - v_monto_dia_festivo
+		        WHERE
+		            id_planilla = v_planilla_id;
+        END CASE;    
+
+    END AFTER EACH ROW;
+END actualizar_monto_dias_festivos;
 ;;

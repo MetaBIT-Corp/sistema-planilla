@@ -5,13 +5,17 @@
 
   <meta charset="utf-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-  <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-
   <!-- Select2 -->
-  <link rel="stylesheet" href="../../plugins/select2/css/select2.min.css">
+  <link rel="stylesheet" href="#" th:href="@{/plugins/select2/css/select2.min.css}">
   <!-- Theme style -->
-  <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="#" th:href="@{/dist/css/adminlte.min.css}">
+  <!-- loading con SpinKit -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spinkit/2.0.1/spinkit.min.css" integrity="sha256-uQUuacFaggjnFXpMbaw733DSDsZKQ14La00aGbEvDIk=" crossorigin="anonymous" />
+  <!-- animate.css -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.0/animate.min.css" integrity="sha256-6hqHMqXTVEds1R8HgKisLm3l/doneQs+rS1a5NLmwwo=" crossorigin="anonymous" />
+  <!-- Overlay -->
+  <link rel="stylesheet" href="#" th:href="@{/dist/css/loading-overlay.css}">
   
 </head>
 
@@ -25,7 +29,9 @@
     </ol>
 
 	<div layout:fragment="content">
-		<!-- <p th:text="${message}"></p> -->
+		<div th:classappend="'alert-' + (${clase != null} ? ${clase} : info)" th:if="${mensaje != null}" th:text="${mensaje}" class="alert">
+		</div>
+		 
 		<!-- DataTable de Empleados Planilla -->
 		<div class="row ml-1 mr-1">
 			
@@ -66,8 +72,10 @@
 	                  <td><span th:text="${planilla.empleado.horasTrabajo}"></span></td>
 	                  <td><span th:text="'$' + ${#numbers.formatDecimal(planilla.salarioNeto, 0, 'COMMA', 2, 'POINT')}"></span></td>
 	                  <td>
-	                  	<span th:if="${planilla.empleado.esAdministrativo}">Administrativo</span>
-	                  	<span th:if="${planilla.empleado.esAdministrativo == false}">Vendedor</span>
+	                  	<div th:each="empPuestoUnidad, iterStat : ${planilla.empleado.empleadosPuestosUnidades}" th:if="${iterStat.index == iterStat.size-1}">
+						    <span th:if="${empPuestoUnidad.puesto.esAdministrativo}">Administrativo</span>
+	                  		<span th:if="${empPuestoUnidad.puesto.esAdministrativo == false}">Vendedor</span>
+						</div>	          
 	                  </td>
 						<td>						
 							<a class="btn btn-sm btn-primary" style="text-decoration: none; color: white;"
@@ -116,7 +124,7 @@
 		          <span aria-hidden="true">&times;</span>
 		        </button>
 		      </div>
-		      <form action="#">  
+		      <form action="#" th:action="@{/planilla/pago-planilla}" method="POST">  
 				<div class="form-group ml-5 mr-5 mt-4 mb-5" id="divBodyDesplegarUnidades"></div> 
 				<div class="modal-footer">
 				  <button type="submit" id="submitPago" class="btn btn-info">Pagar planilla</button>
@@ -128,9 +136,23 @@
 		</div>	
 		<!-- Modal para elección de unidades -->
 		
+		<!-- Loading  -->
+		<div class="wrap-load animate__animated animate__rollIn animate__slow" id="wrapLoad">
+		    <div class="sk-chase" id="loading">
+		      <div class="sk-chase-dot"></div>
+		      <div class="sk-chase-dot"></div>
+		      <div class="sk-chase-dot"></div>
+		      <div class="sk-chase-dot"></div>
+		      <div class="sk-chase-dot"></div>
+		      <div class="sk-chase-dot"></div>
+		    </div>
+	    <div class="mt-3 ml-n4" style="color: white">EJECUTANDO PAGO ...</div>
+	  	</div>
+	  	<div class="overlay" id="overlay"></div>
+	  	<!-- Loading  -->
+	  	
 	</div>
-	
-	
+
 	<section layout:fragment="scripts">
 	
 		<!-- DataTables -->
@@ -142,7 +164,7 @@
 		<!-- para uso de modals -->
 		<script th:src="@{/js/planilla/modals.js}"></script>
 		<!-- Select2 -->
-		<script src="../../plugins/select2/js/select2.full.min.js"></script>
+		<script th:src="@{/plugins/select2/js/select2.full.min.js}"></script>
 		
 		<script type="text/javascript">
 			$(function () {

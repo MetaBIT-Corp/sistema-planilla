@@ -25,7 +25,11 @@
 		<li class="breadcrumb-item active">Rangos Renta</li>
 	</ol>
 	
-	<div layout:fragment="content">	
+	<div layout:fragment="content">
+		<input type="hidden" th:if="${success_store}" id="success_store">
+		<input type="hidden" th:if="${success_update}" id="success_update">
+		<input type="hidden" th:if="${success_state != null}" id="success_state" th:value="${success_state}">
+
 		<div class="container">
 			<div class="row ml-5">
 				<div class="col-md-1"></div>
@@ -41,10 +45,10 @@
 			<div class="col-md-10 ">
 				<div class="card">
 	            <div class="card-header text-right">
-		            <button class="btn btn-sm btn-primary" title="Agregar Rango de Renta">
+		            <a class="btn btn-sm btn-primary" title="Agregar Rango de Renta" th:href="@{/rango-renta/create}">
 						<i class="fas fa-plus-circle mr-1 text-white"></i>
 						<span class="text-white">Nuevo Rango de Renta</span>
-					</button>
+					</a>
 	              <h3 class="card-title"></h3>
 	            </div>
 					
@@ -64,8 +68,9 @@
 							<tbody>
 
 								<tr th:each="rango_renta: ${rangos_renta}">
-									<td th:text="${#numbers.formatCurrency(rango_renta.salarioMin)}"></td>
-									<td th:text="${#numbers.formatCurrency(rango_renta.salarioMax)}"></td>
+									<td class="min" th:text="${#numbers.formatCurrency(rango_renta.salarioMin)}"></td>
+									<td class="text-center" th:if="${rango_renta.salarioMax == 0}"> - </td>
+									<td class="max" th:unless="${rango_renta.salarioMax == 0}" th:text="${#numbers.formatCurrency(rango_renta.salarioMax)}"></td>
 									<td th:text="${rango_renta.porcentajeRenta}"></td>
 									<td th:text="${#numbers.formatCurrency(rango_renta.exceso)}"></td>
 									<td th:text="${#numbers.formatCurrency(rango_renta.cuotaFija)}"></td>
@@ -75,9 +80,19 @@
 										<td th:case="7">Semanalmente</td>
 									</th:block>
 									<td class="text-center">
-										<button class="btn btn-sm btn-primary mr-2" title="Editar">
+										<a class="btn btn-sm btn-primary mr-2" title="Editar" th:href="@{/rango-renta/edit/{id}(id=${rango_renta.idRangoRenta})}">
 											<i class="fas fa-pencil-alt"></i>
-										</button>	
+										</a>
+										<th:block th:if="${rango_renta.rangoRentaHabilitado}">
+											<button class="btn btn-sm btn-danger mr-2" title="Deshabilitar" th:attr="data-change-state=${rango_renta.idRangoRenta}, data-state=false">
+												<i class="fas fa-lock"></i>
+											</button>
+										</th:block>
+										<th:block th:unless="${rango_renta.rangoRentaHabilitado}">
+											<button class="btn btn-sm btn-success mr-2" title="Habilitar" th:attr="data-change-state=${rango_renta.idRangoRenta}, data-state=true">
+												<i class="fas fa-unlock-alt"></i>
+											</button>
+										</th:block>	
 									</td>
 								</tr>
 								<tr th:if="${#lists.isEmpty(rangos_renta)}">
@@ -105,7 +120,35 @@
 			</div>
 		</div>
 
+		<!-- Modal para deshabilitar un Rango de Renta -->
+		<div class="modal fade" id="changeStateRR" tabindex="-1" role="dialog" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title">Rango de Renta</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <form method="POST" action="#" th:action="@{/rango-renta/destroy}">
+		      	<input type="hidden" id="id-rr-destroy" name="id_rango_renta">
+		      	<input type="hidden" id="state-rr" name="state">
+			      <div class="modal-body">
+			        <div class="form-group">
+			            <p id="msg-destroy"></p>
+			        </div>
+			      </div>
+			      <div class="modal-footer">
+			      	<button id="btn-state" type="submit" class="btn btn-danger">Aceptar</button>
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+			      </div>
+		      </form>
+		    </div>
+		  </div>
+		</div>
+
 	</div>
+
 	<!-- Scripts-->
 	<section layout:fragment="scripts">
 
@@ -131,6 +174,50 @@
 
 			});
 
+			$('[data-change-state]').on('click', function(){
+				var id_rr = $(this).data('change-state');
+				var state = $(this).data('state');
+				var message = $('#msg-destroy');
+				var sal_min = $(this).parent().siblings('td.min').text();
+				var sal_max = $(this).parent().siblings('td.max').text();
+
+				console.log(sal_max);
+				if(state==true){
+					$('#btn-state').attr('class', 'btn btn-primary')
+					if(sal_max == ""){
+						message.html("¿Desea habilitar el Rango de Renta con salario desde " + sal_min + " en adelante?");
+					}else{
+						message.html("¿Desea habilitar el Rango de Renta con salario desde " + sal_min + " hasta " + sal_max + "?");
+					}
+				}else{
+					$('#btn-state').attr('class', 'btn btn-danger')
+					if(sal_max == ""){
+						message.html("¿Desea deshabilitar el Rango de Renta con salario desde " + sal_min + " en adelante?");
+					}else{
+						message.html("¿Desea deshabilitar el Rango de Renta con salario desde " + sal_min + " hasta " + sal_max + "?");
+					}
+				}
+
+				$('#id-rr-destroy').val(id_rr);
+				$('#state-rr').val(state);
+
+				$('#changeStateRR').modal('show');
+			});
+
+			var success = $('#success_store').val();
+			if(success != null){
+			    toastr.success('El Rango de Renta fue registrado con éxito');
+			}
+			var success = $('#success_update').val();
+			if(success != null){
+			    toastr.success('Los cambios fueron guardados con éxito');
+			}
+			var success = $('#success_state').val();
+			if(success != null){
+				var state = success == 'true' ? 'habilitado' : ' deshabilitado';
+				
+			    toastr.success('El Rango de Renta fue '+state+' con éxito');
+			}
 		</script>
 		<!-- Scripts-->
 	</section>

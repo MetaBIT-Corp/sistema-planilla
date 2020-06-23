@@ -5,26 +5,38 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.metabit.planilla.entity.AnioLaboral;
+import com.metabit.planilla.entity.DiaFestivo;
 import com.metabit.planilla.entity.Empleado;
 import com.metabit.planilla.entity.Periodo;
 import com.metabit.planilla.entity.Planilla;
+import com.metabit.planilla.entity.PlanillaDiaFestivo;
 import com.metabit.planilla.entity.PlanillaMovimiento;
 import com.metabit.planilla.entity.TipoMovimiento;
+import com.metabit.planilla.entity.TipoUnidadOrganizacional;
+import com.metabit.planilla.service.AnioLaboralService;
+import com.metabit.planilla.service.DiaFestivoService;
 import com.metabit.planilla.service.EmpleadoService;
 import com.metabit.planilla.service.PeriodoService;
+import com.metabit.planilla.service.PlanillaDiaFestivoService;
 import com.metabit.planilla.service.PlanillaMovimientosService;
 import com.metabit.planilla.service.PlanillaService;
 import com.metabit.planilla.service.TipoMovimientoService;
+import com.metabit.planilla.service.TipoUnidadOrganizacionalService;
 
 @Controller
 @RequestMapping("/planilla")
@@ -32,6 +44,8 @@ public class PlanillaController {
 	
 	private static String INDEX_VIEW = "planilla/index";
 	private static String SHOW_VIEW = "planilla/show";
+	private static final String PLANILLAS_POR_UNIDAD_VIEW = "planilla/planillas_por_unidad";
+	private static final String PLANILLAS_POR_UNIDAD_TABLE_DOBY_VIEW = "planilla/planillas_por_unidad_table_body";
 	
 	@Autowired
     @Qualifier("periodoServiceImpl")
@@ -53,6 +67,22 @@ public class PlanillaController {
     @Qualifier("tipoMovimientoServiceImpl")
     private TipoMovimientoService tipoMovimientoService;
 	
+	@Autowired
+	@Qualifier("anioLaboralServiceImpl")
+	private AnioLaboralService anioLaboralService;
+	
+	@Autowired
+	@Qualifier("tipoUnidadOrganizacionalServiceImpl")
+	private TipoUnidadOrganizacionalService tipoUnidadOrganizacionalService;
+	
+	@Autowired
+	@Qualifier("diaFestivoServiceImpl")
+	private DiaFestivoService diaFestivoService;
+	
+	@Autowired
+	@Qualifier("planillaDiaFestivoServiceImpl")
+	private PlanillaDiaFestivoService planillaDiaFestivoService;
+	
 	@GetMapping("/index")
 	public String index(Model model) {
 		Periodo periodo_activo = periodoService.getPeriodoActivo();
@@ -65,10 +95,11 @@ public class PlanillaController {
 			planilla.setSalarioNeto(calcularSalarioNeto(planilla));
 			
 			planillaService.updatePlanilla(planilla);
+			
+			//Actualizar ISSS y AFP
+			//planillaService.updatePlanillaMovimientos(planilla.getIdPlanilla());
 		}
 		model.addAttribute("planillas", planillas);
-		String p_message = "Esta es una prueba";
-		model.addAttribute("message", planillaService.showMessage(p_message));
 		return INDEX_VIEW;
 	}
 	
@@ -79,7 +110,8 @@ public class PlanillaController {
 			@RequestParam(name = "deleteIngresos", required = false) String deleteIngresos,
 			@RequestParam(name = "deleteDescuentos", required = false) String deleteDescuentos,
 			@RequestParam(name = "updateMontoVentas", required = false) String updateMontoVentas,
-			@RequestParam(name = "updateHorasExtras", required = false) String updateHorasExtras) {
+			@RequestParam(name = "updateHorasExtras", required = false) String updateHorasExtras,
+			@RequestParam(name = "updateDiasFestivos", required = false) String updateDiasFestivos) {
 		
 		Optional<Planilla> planilla = planillaService.getPlanillaById(id_planilla);
 		
@@ -116,9 +148,49 @@ public class PlanillaController {
 			model.addAttribute("updateMontoVentas", updateMontoVentas);
 			model.addAttribute("updateHorasExtras", updateHorasExtras);
 			
-			if(updateMontoVentas != null || updateHorasExtras != null || deleteIngresos != null || deleteDescuentos != null) {
+			//Obtenemos los PlanillaDiaFestivos que ya posee Planilla
+			List<PlanillaDiaFestivo> planillaDiaFestivosActuales = planillaDiaFestivoService.findByPlanilla(planilla.get());
+			
+			//Obtenemos todos los Dias Festivos del Periodo
+			List<DiaFestivo> diasFestivosPeriodo = diaFestivoService.getDiasFestivosDelPeriodoActivo();
+			
+			//Ahora creamos una lista de DiaFestivo en donde vamos a agregar
+			//los DiaFestivo que aun no han sido asignados a planilla
+			List<DiaFestivo> diasFestivosPeriodoRestantes = new ArrayList<DiaFestivo>();
+					
+			//Recorremos todos los DiaFestivo del Periodo
+			for (DiaFestivo diaFestivo : diasFestivosPeriodo) {
+				boolean seleccionado = false;
+				
+				//Recorremos todos los DiaFestivo que ya estan asignados a Planilla
+				for(PlanillaDiaFestivo planillaDiaFestivo: planillaDiaFestivosActuales) {
+					//Si el DiaFestivo es igual a uno de los que ya estan asignados a planilla
+					//entonces ponemos la bandera a true, indicado que ya esta seleccionado
+					if(diaFestivo == planillaDiaFestivo.getDiaFestivo())
+						seleccionado = true;
+				}
+				
+				//Si no esta seleccionado, entonces lo agregamos a la lista de 
+				//DiaFestivo restantes
+				if(! seleccionado)
+					diasFestivosPeriodoRestantes.add(diaFestivo);
+				
+			}
+			//Agregamos los DiaFestivo restantes
+			model.addAttribute("diasFestivosRestantes", diasFestivosPeriodoRestantes);
+			
+			//Agregamos los PlanillaDiaFestivo seleccionados
+			model.addAttribute("diasFestivosSeleccionados", planillaDiaFestivosActuales);
+			
+			//Variable que determina el resultado de Actualizar los Dias Festivos a la planilla
+			model.addAttribute("updateDiasFestivos", updateDiasFestivos);
+			
+			if(updateMontoVentas != null || updateHorasExtras != null || deleteIngresos != null || deleteDescuentos != null || updateDiasFestivos != null) {
 				planilla.get().setSalarioNeto(calcularSalarioNeto(planilla.get()));
 				planillaService.updatePlanilla(planilla.get());
+				
+				//Actualizar ISSS y AFP
+				//planillaService.updatePlanillaMovimientos(planilla.get().getIdPlanilla());
 			}
 			
 			model.addAttribute("planilla", planilla.get());
@@ -197,6 +269,9 @@ public class PlanillaController {
 			
 			planilla.setSalarioNeto(calcularSalarioNeto(planilla));
 			planillaService.updatePlanilla(planilla);
+			
+			//Actualizar ISSS y AFP
+			//planillaService.updatePlanillaMovimientos(planilla.getIdPlanilla());
 				
 			PlanillaMovimiento planillaMovimiento = new PlanillaMovimiento();
 			planillaMovimiento.setPlanilla(planilla);
@@ -217,9 +292,9 @@ public class PlanillaController {
 		
 		//Si la periodicidad es Quincenal, solo se considerara la mitad del Salaria Base de los empleados para los calculos
 		if(planilla.getPeriodo().getAnioLaboral().getPeriodicidad() == 15)
-			salarioNeto = ((float) planilla.getEmpleado().getSalarioBaseMensual()/2) + planilla.getTotalIngresos() - planilla.getTotalDescuentos() + planilla.getMontoComision() + planilla.getMontoHorasExtra() - planilla.getRenta();
+			salarioNeto = ((float) planilla.getEmpleado().getSalarioBaseMensual()/2) + planilla.getTotalIngresos() - planilla.getTotalDescuentos() + planilla.getMontoComision() + planilla.getMontoHorasExtra() - planilla.getRenta() + planilla.getMontoDiasFestivos();
 		else
-			salarioNeto = ((float) planilla.getEmpleado().getSalarioBaseMensual()) + planilla.getTotalIngresos() - planilla.getTotalDescuentos() + planilla.getMontoComision() + planilla.getMontoHorasExtra() - planilla.getRenta();
+			salarioNeto = ((float) planilla.getEmpleado().getSalarioBaseMensual()) + planilla.getTotalIngresos() - planilla.getTotalDescuentos() + planilla.getMontoComision() + planilla.getMontoHorasExtra() - planilla.getRenta() + planilla.getMontoDiasFestivos();
 		
 		return salarioNeto;
 	}
@@ -284,6 +359,62 @@ public class PlanillaController {
 		
 		return "redirect:/planilla/show?planilla=" + planilla.get().getIdPlanilla() + "&updateHorasExtras=true";
 	}
+	
+	@PostMapping("/agregar-dias-festivos")
+	public String agregarDiasFestivos(@RequestParam(name = "diasFestivos[]", required = false) Optional<List<String>> idDiasFestivos,
+			@RequestParam(name = "id_planilla", required = true) int id_planilla) {
+		
+		//Obtenemos la Planilla en la que se esta editando
+		Planilla planilla = planillaService.getPlanillaById(id_planilla).isPresent() ? planillaService.getPlanillaById(id_planilla).get() : null;
+		
+		//Si Planilla es Null Detenemos la Ejecucion
+		if(planilla == null) {
+		
+			return "redirect:/planilla/show?planilla=" + planilla.getIdPlanilla() + "&updateDiasFestivos=false";
+
+		}
+		
+		//Creamos una lista de PlanillaDiaFestivo, los cuales se crearan y se insertaran 
+		//todos en la misma transaccion 
+		List<PlanillaDiaFestivo> planillaDiaFestivoNuevos = new ArrayList<PlanillaDiaFestivo>();
+		
+		//Obtenemos los PlanillaDiaFestivo que ya existen actualmente, esto para eliminarlos
+		List<PlanillaDiaFestivo> planillaDiasFestivosActuales = planillaDiaFestivoService.findByPlanilla(planilla);
+		
+		//Eliminamos los PlanillaDiaFestivo existentes
+		planillaDiaFestivoService.deleteAllPlanillaDiasFestivos(planillaDiasFestivosActuales);
+		
+		//Si la lista de IDs esta vacia es porque no se desea agregar Dias Festivos a la Planilla
+		if(idDiasFestivos.isPresent()) {
+			
+			//Procedemos a recorrer la lista de Dias Festivos que se seleccionaron en esta ocacion
+			//Aqui crearemos una Instancia de PlanillaDiaFestivo para cada iteracion y
+			//esta instancia la agregaremos a la lista de PlanillaDiaFestivo nuevos
+			for (String idDiaFestivo : idDiasFestivos.get()) {
+				//Obtenemos el Dia Festivo
+				DiaFestivo diaFestivo = diaFestivoService.getDiaFestivo(Integer.parseInt(idDiaFestivo));
+				
+				//Creamos una instancia de PlanillaDiaFestivo
+				PlanillaDiaFestivo planillaDiaFestivo = new PlanillaDiaFestivo();
+				
+				//Le seteamos la Planilla
+				planillaDiaFestivo.setPlanilla(planilla);
+				
+				//Le seteamos el Dia Festivo
+				planillaDiaFestivo.setDiaFestivo(diaFestivo);
+				
+				//Agregamos la instancia de PlanillaDiaFestivo a la lista
+				planillaDiaFestivoNuevos.add(planillaDiaFestivo);
+			}
+			
+			//Procedemos a guardar la lista de PlanillaDiaFestivo
+			List<PlanillaDiaFestivo> planillaDFG = planillaDiaFestivoService.addAllPlanillaDiasFestivos(planillaDiaFestivoNuevos);
+			//Feedback
+			System.out.println("GUARDADOS: " + planillaDFG.size());
+		}
+		
+		return "redirect:/planilla/show?planilla=" + planilla.getIdPlanilla() + "&updateDiasFestivos=true";
+	}
 
 	@PostMapping("/store")
 	public String store(@RequestParam(name =  "id_periodo", required = false) Integer id_periodo, RedirectAttributes redirAttrs) {
@@ -332,5 +463,57 @@ public class PlanillaController {
 		
 		redirAttrs.addFlashAttribute("success_planilla", "success");
 		return "redirect:/anio-laboral/index";
+	}
+	
+	@GetMapping("/planillas-por-unidad")
+	public ModelAndView planillasPorUnidad() {
+		ModelAndView mav = new ModelAndView(PLANILLAS_POR_UNIDAD_VIEW);
+		AnioLaboral anio = periodoService.getPeriodoPrevio().getAnioLaboral();
+		List<TipoUnidadOrganizacional> tipos_unidad = tipoUnidadOrganizacionalService.getByTipoUnidadOrganizacionalHabilitado(true);
+		
+		mav.addObject("anios", anioLaboralService.getAllAniosLaborales());
+		mav.addObject("periodos", anio.getPeriodos());
+		mav.addObject("tipos_unidad", tipos_unidad);
+		mav.addObject("periodo_previo", periodoService.getPeriodoPrevio());
+		mav.addObject("unidades", tipos_unidad.get(0).getUnidades_organizacional());
+		
+		return mav;
+	}
+	
+	@GetMapping("/planillas-por-unidad-table-body/unidad/{id_unidad}/periodo/{id_periodo}")
+	public ModelAndView planillasPorUnidadTableBody(@PathVariable("id_unidad") int id_unidad, @PathVariable("id_periodo") int id_periodo) {
+		ModelAndView mav = new ModelAndView(PLANILLAS_POR_UNIDAD_TABLE_DOBY_VIEW);
+		List<Planilla> planillas_unidad = planillaService.getPlanillasUnidad(id_unidad, id_periodo);
+		
+		mav.addObject("planillas_unidad", planillas_unidad);
+		
+		return mav;
+	}
+	/**
+ 	 * Metodo que permite realizar el pago de planilla
+ 	 * @author Edwin Palacios
+ 	 * @param id: id de unidad organizacional
+ 	 * @return String
+ 	 */
+	@PreAuthorize("permitAll()")
+	@PostMapping("/pago-planilla")
+	public String pagoPlanilla(@RequestParam("idUnidadOrganizacional") int id, RedirectAttributes redirectAttrs) {
+		String mensajeResultado = "";
+		try {
+			mensajeResultado = planillaService.pagarPlanilla(id);
+			redirectAttrs.addFlashAttribute("mensaje", mensajeResultado)
+						 .addFlashAttribute("clase", "info");
+		}catch(Exception e) {
+			mensajeResultado = "No se ha podido realizar el pago, Por favor vuelva a intentar";
+			redirectAttrs.addFlashAttribute("mensaje", mensajeResultado)
+						 .addFlashAttribute("clase", "danger");
+		}
+		
+		try {   
+			Thread.sleep(2*1000);
+		} catch (Exception e) {
+		    System.out.println(e);
+		}
+		return "redirect:/planilla/index";
 	}
 }

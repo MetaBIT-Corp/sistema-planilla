@@ -58,7 +58,7 @@ public class RolServiceImpl implements RolService{
 
 	@Override
 	public List<Rol> getAllUsedRoles() {
-		return rolJpaRepository.getAllUsedRoles();
+		return rolJpaRepository.getAllUserRoles();
 	}
 
 }

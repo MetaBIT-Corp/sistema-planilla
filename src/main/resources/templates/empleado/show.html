@@ -7,7 +7,69 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  
+  <style type="text/css">
+  	/* Timeline holder */
+	ul.timeline {
+	    list-style-type: none;
+	    position: relative;
+	    padding-left: 1.5rem;
+	}
+	
+	 /* Timeline vertical line */
+	ul.timeline:before {
+	    content: ' ';
+	    background: #000;
+	    display: inline-block;
+	    position: absolute;
+	    left: 16px;
+	    width: 4px;
+	    height: 100%;
+	    z-index: 400;
+	    border-radius: 1rem;
+	}
+	
+	li.timeline-item {
+	    margin: 20px 0;
+	}
+	
+	/* Timeline item arrow */
+	.timeline-arrow {
+	    border-top: 0.5rem solid transparent;
+	    border-right: 0.5rem solid #000;
+	    border-bottom: 0.5rem solid transparent;
+	    display: block;
+	    position: absolute;
+	    left: 2rem;
+	}
+	/* Timeline item circle marker */
+	li.timeline-item::before {
+	    content: ' ';
+	    background: #FF8000;
+	    display: inline-block;
+	    position: absolute;
+	    border-radius: 50%;
+	    border: 3px solid #000;
+	    left: 11px;
+	    width: 14px;
+	    height: 14px;
+	    z-index: 400;
+	    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+	}
+	
+	li.timeline-item-active::before {
+	    content: ' ';
+	    background: #2EFE2E;
+	    display: inline-block;
+	    position: absolute;
+	    border-radius: 50%;
+	    border: 3px solid #000;
+	    left: 9px;
+	    width: 18px;
+	    height: 18px;
+	    z-index: 400;
+	    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+	}
+  </style>
 </head>
 
 <body>
@@ -20,252 +82,307 @@
     </ol>
 
 	<div layout:fragment="content">
-		<div class="card card-primary">
-	        <div class="card-header">
-	            <h3 class="card-title">Detalles de Empleado - <span th:text="${empleado.codigo}"></span></h3>
+		<div class="offset-1 col-md-10">
+			<div class="card card-primary">
+		        <div class="card-header">
+		            <h3 class="card-title">Detalles de Empleado - <span th:text="${empleado.codigo}"></span></h3>
+		        </div>
+			        <div class="card-body">
+	            <ul class="nav nav-tabs" id="myTab" role="tablist">
+	                <li class="nav-item">
+	                    <a class="nav-link active" id="personales-tab" data-toggle="tab" href="#personales" role="tab"
+	                       aria-controls="personales" aria-selected="true">Informaci&oacute;n Personal</a>
+	                </li>
+	                <li class="nav-item">
+	                    <a class="nav-link" id="documento-tab" data-toggle="tab" href="#documento" role="tab"
+	                       aria-controls="documentos" aria-selected="false">Documentos</a>
+	                </li>
+	                <li class="nav-item">
+	                    <a class="nav-link" id="direccion-tab" data-toggle="tab" href="#direccion" role="tab"
+	                       aria-controls="trabajo" aria-selected="false">Direcci&oacute;n</a>
+	                </li>
+	                <li class="nav-item">
+	                    <a class="nav-link" id="trabajo-tab" data-toggle="tab" href="#trabajo" role="tab"
+	                       aria-controls="trabajo" aria-selected="false">Informaci&oacute;n Profesional</a>
+	                </li>
+					<li class="nav-item">
+	                    <a class="nav-link" id="historial-tab" data-toggle="tab" href="#historial" role="tab"
+	                       aria-controls="historial" aria-selected="false">Historial de Puestos</a>
+	                </li>
+	                <!--
+	                <li class="nav-item">
+	                    <a class="nav-link" id="usuario-tab" data-toggle="tab" href="#usuario" role="tab"
+	                       aria-controls="usuario" aria-selected="false">Usuario de Empleado</a>
+	                </li>
+	                -->
+	            </ul>
+	            <div class="tab-content" id="myTabContent">
+	                <!--DATOS PERSONALES-->
+	                <div class="tab-pane fade show active" id="personales" role="tabpanel"
+	                     aria-labelledby="personales-tab">
+	                    <div class="container">
+	                        <div class="card-body">
+	                            <!--PRIMER COLUMNA-->
+	                                <div class="row">
+	                                    <div class="col-lg-6">
+	                                        <div class="form-group">
+	                                            <label>Primer Nombre:</label><br/>
+	                                            <span th:text="${empleado.nombrePrimero}"></span>
+	                                        </div>
+	                                        <div class="form-group" th:if="${empleado.nombreSegundo}">
+	                                            <label for="secondName">Segundo Nombre:</label><br/>
+	                                            <span th:text="${empleado.nombreSegundo}"></span>
+	                                        </div>
+	                                        <div class="form-group">
+	                                            <label for="bornDate">Fecha de Nacimiento: </label><br/>
+	                                            <span th:text="${#temporals.format(empleado.fechaNacimiento)}"></span>
+	                                        </div>
+	                                        <div class="form-group">
+	                                            <label>Genero:</label><br/>
+	                                            <span th:text="${empleado.genero.genero}"></span>
+	                                        </div>
+	                                    </div>
+	                                    <!--FIN PRIMER COLUMNA-->
+	                                    <!--SEGUNDA COLUMNA-->
+	                                    <div class="col-lg-6">
+	                                        <div class="form-group">
+	                                            <label for="lastMName">Apellido Materno:</label><br/>
+	                                            <span th:text="${empleado.apellidoMaterno}"></span>
+	                                        </div>
+	                                        <div class="form-group" th:if="${empleado.apellidoPaterno}">
+	                                            <label for="lastPName">Apellido Paterno:</label><br/>
+	                                            <span th:text="${empleado.apellidoPaterno}"></span>
+	                                        </div>
+	                                        <div class="form-group">
+	                                            <label>Estado Civil:</label><br/>
+	                                            <span th:text="${empleado.estadoCivil.estadoCivil}"></span>
+	                                        </div>
+	                                        <!--Only Woman-->
+	                                        <div class="form-group" id="divCasada" th:if="${empleado.apellidoCasada}">
+	                                            <label for="lastCName">Apellido Casada:</label><br/>
+	                                            <span th:text="${empleado.apellidoCasada}"></span>
+	                                        </div>
+	                                    </div>
+	                                    <!--FIN SEGUNDA COLUMNA-->
+	                                </div>
+	                        </div>
+	                    </div>
+	                </div>
+	
+	                <!--DOCUMENTOS DE EMPLEADO-->
+	                <div class="tab-pane fade" id="documento" role="tabpanel"
+	                     aria-labelledby="personales-tab">
+	                    <div class="container">
+	                        <div class="card-body">
+	                            <table id="example1" class="table table-bordered table-striped">
+	
+	                                <thead>
+	                                <tr>
+	                                    <th>Tipo Documento</th>
+	                                    <th>Codigo Documento</th>
+	                                </tr>
+	
+	                                <tbody>
+	                                <tr th:each="tipoDocumento: ${documents}">
+	                                    <td><span th:text="${tipoDocumento.tipoDocumento.tipoDocumento}"></span></td>
+	                                    <td><span th:text="${tipoDocumento.codigoDocumento}"></span></td>
+	                                </tr>
+	                                </tbody>
+	
+	                                <tfoot>
+	                                <tr>
+	                                    <th>Tipo Documento</th>
+	                                    <th>Codigo Documento</th>
+	                                </tr>
+	                                </tfoot>
+	
+	                            </table>
+	                        </div>
+	                    </div>
+	                </div>
+	
+	                <!--DIRECCION DE EMPLEADO-->
+	                <div class="tab-pane fade" id="direccion" role="tabpanel" aria-labelledby="profile-tab">
+	                    <div class="container-fluid">
+	                        <div class="card-body">
+	                                <div class="row">
+	                                    <!--PRIMER COLUMNA-->
+	                                    <div class="col-lg-6">
+	                                        <div class="form-group">
+	                                            <label>Urbanizaci&oacute;n:</label><br/>
+	                                            <span th:text="${empleado.direccion.urbanizacion}"></span>
+	                                        </div>
+	                                        <div class="form-group" th:if="${empleado.direccion.calle}">
+	                                            <label>Calle:</label><br/>
+	                                            <span th:text="${empleado.direccion.calle}"></span>
+	                                        </div>
+	                                        <div class="form-group" th:if="${empleado.direccion.complemento}">
+	                                            <label>Complemento: </label><br/>
+	                                            <span th:text="${empleado.direccion.complemento}"></span>
+	                                        </div>
+	                                    </div>
+	                                    <!--FIN PRIMER COLUMNA-->
+	                                    <!--SEGUNDA COLUMNA-->
+	                                    <div class="col-lg-6">
+	                                        <div class="form-group" th:if="${empleado.direccion.numeroCasa}">
+	                                            <label>Numero de Casa: </label><br/>
+	                                            <span th:text="${empleado.direccion.numeroCasa}"></span>
+	                                        </div>
+	                                        <div class="form-group">
+	                                            <label>Departamento:</label><br/>
+	                                            <span th:text="${empleado.direccion.municipio.departamento.departamento}"></span>
+	                                        </div>
+	                                        <div class="form-group">
+	                                            <label>Municipio:</label><br/>
+	                                            <span th:text="${empleado.direccion.municipio.municipio}"></span>
+	                                        </div>
+	                                    </div>
+	                                    <!--FIN SEGUNDA COLUMNA-->
+	                                </div>
+	                        </div>
+	                    </div>
+	                </div>
+	
+	                <!--INFORMACION PROFESIONAL-->
+	                <div class="tab-pane fade" id="trabajo" role="tabpanel" aria-labelledby="profile-tab">
+	                    <div class="container-fluid">
+	                        <div class="card-body">
+	                                <div class="row">
+	                                    <!--PRIMER COLUMNA-->
+	                                    <div class="col-lg-6">
+	                                        <div class="form-group">
+	                                            <label>Codigo de Empleado:</label><br/>
+	                                            <span th:text="${empleado.codigo}"></span>
+	                                        </div>
+	                                        <div class="form-group">
+	                                            <label>Correo Institucional:</label><br/>
+	                                            <span th:text="${empleado.correoInstitucional}"></span>
+	                                        </div>
+	                                        <div class="form-group">
+	                                            <label>Correo Personal:</label><br/>
+	                                            <span th:text="${empleado.correoPersonal}"></span>
+	                                        </div>
+	                                        <div class="form-group">
+	                                            <label>Jefe Inmediato:</label><br/>
+	                                            <div th:each="empPuestoUnidad, iterStat : ${empleado.empleadosPuestosUnidades}" th:if="${iterStat.index == iterStat.size-1}">
+												    <div th:if="${empPuestoUnidad.unidadOrganizacional.empleadoJefe.codigo != empleado.codigo}">
+												    	<a th:href="@{/empleado/show?id={id}(id=${empPuestoUnidad.unidadOrganizacional.empleadoJefe.idEmpleado})}" th:text="${empPuestoUnidad.unidadOrganizacional.empleadoJefe.codigo}"></a><span th:text="${' - ' + empPuestoUnidad.unidadOrganizacional.empleadoJefe.nombrePrimero + ' ' + empPuestoUnidad.unidadOrganizacional.empleadoJefe.apellidoMaterno}"></span>
+												    </div>
+												    <div th:if="${empPuestoUnidad.unidadOrganizacional.empleadoJefe.codigo == empleado.codigo}">
+												    	<div th:if="${empPuestoUnidad.unidadOrganizacional.unidadPadre}">
+												    		<div th:if="${empPuestoUnidad.unidadOrganizacional.unidadPadre.empleadoJefe}">
+												    			<a th:href="@{/empleado/show?id={id}(id=${empPuestoUnidad.unidadOrganizacional.unidadPadre.empleadoJefe.idEmpleado})}" th:text="${empPuestoUnidad.unidadOrganizacional.unidadPadre.empleadoJefe.codigo}"></a><span th:text="${' - ' + empPuestoUnidad.unidadOrganizacional.unidadPadre.empleadoJefe.nombrePrimero + ' ' + empPuestoUnidad.unidadOrganizacional.unidadPadre.empleadoJefe.apellidoMaterno}"></span>
+												    		</div>
+												    		<div th:if="${empPuestoUnidad.unidadOrganizacional.unidadPadre.empleadoJefe == null}">
+												    			<span>No posee actualmente.</span>
+												    		</div>
+												    	</div>
+												    	<div th:if="${empPuestoUnidad.unidadOrganizacional.unidadPadre == null}">
+												    		<span>No posee actualmente.</span>
+												    	</div>
+												    </div>
+												</div>
+	                                        </div>
+	                                    </div>
+	                                    <!--FIN PRIMER COLUMNA-->
+	                                    <!--SEGUNDA COLUMNA-->
+	                                    <div class="col-lg-6">
+	                                        <div class="form-group">
+	                                            <label>Salario Base Mensual:</label><br/>
+	                                            <span th:text="'$' + ${#numbers.formatDecimal(empleado.salarioBaseMensual, 0, 'COMMA', 2, 'POINT')}"></span>
+	                                        </div>
+	                                        <div class="form-group">
+	                                            <label>Horas de Trabajo:</label><br/>
+	                                            <span th:text="${empleado.horasTrabajo}"></span>
+	                                        </div>
+	                                        <div class="form-group">
+	                                            <label>Puesto de Trabajo Actual</label><br/>
+	                                            <div th:each="empPuestoUnidad, iterStat : ${empleado.empleadosPuestosUnidades}" th:if="${iterStat.index == iterStat.size-1}">
+												    <span th:text="${empPuestoUnidad.puesto.puesto + ' - ' + empPuestoUnidad.unidadOrganizacional.unidadOrganizacional}"></span>
+												</div>
+	                                        </div>
+	                                    </div>
+	                                    <!--FIN SEGUNDA COLUMNA-->
+	                                </div>
+	                            <div class="row mt-4">
+	                                <div class="col-12">
+	                                    <div class="form-group">
+	                                        <label>Profesiones y Oficios:</label>
+	                                        <hr>
+	                                        <table id="example2" class="table table-bordered table-striped">
+	                                            <thead>
+	                                            <tr>
+	                                                <th>Nombre</th>
+	                                                <th>Profesi&oacute;n/Oficio</th>
+	                                            </tr>
+	                                            <tbody>
+	                                            <tr th:each="p: ${professions}">
+	
+	                                                <td><span th:text="${p.profesion.profesion}"></span></td>
+	
+	                                                <td>
+	                                                    <span th:if="${p.profesion.esProfesion}">Profesi&oacute;n</span>
+	                                                    <span th:unless="${p.profesion.esProfesion}">Oficio</span>
+	                                                </td>
+	
+	                                            </tr>
+	                                            </tbody>
+	
+	                                            <tfoot>
+	                                            <tr>
+	                                                <th>Nombre</th>
+	                                                <th>Profesi&oacute;n/Oficio</th>
+	                                            </tr>
+	                                            </tfoot>
+	
+	                                        </table>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	                
+	                <!-- Historial de Puestos -->
+	                <div class="tab-pane fade" id="historial" role="tabpanel"
+	                     aria-labelledby="historial-tab">
+	                    <div class="container">
+	                    	<div class="offset-3 col-md-6">
+		                        <div class="card-body">
+		                            <!-- Timeline -->
+					                <ul class="timeline">
+					                    <li th:each="empPuestoUnidad, iterStat : ${empleado.empleadosPuestosUnidades}" th:if="${iterStat.index < iterStat.size-1}" class="timeline-item bg-info rounded ml-3 p-4 shadow">
+					                        <div class="timeline-arrow"></div>
+					                        <h2 class="h5 mb-0" th:text="${empPuestoUnidad.puesto.puesto}"></h2>
+					                        <h3 class="h5 mb-0" th:text="${empPuestoUnidad.unidadOrganizacional.unidadOrganizacional}"></h3>
+					                        <label class="small text-dark"><b>Desde:</b></label><span class="medium text-dark" th:text="' ' + ${#temporals.format(empPuestoUnidad.fechaInicio)}"></span><br/>
+					                        <label class="small text-dark"><b>Hasta:</b></label><span class="medium text-dark" th:text="' ' + ${#temporals.format(empPuestoUnidad.fechaFin)}"></span>
+					                    </li>
+					                    <li th:each="empPuestoUnidad, iterStat : ${empleado.empleadosPuestosUnidades}" th:if="${iterStat.index == iterStat.size-1}" class="timeline-item-active bg-info rounded ml-3 p-4 shadow">
+					                        <div class="timeline-arrow"></div>
+					                        <h2 class="h5 mb-0" th:text="${empPuestoUnidad.puesto.puesto}"></h2>
+					                        <h3 class="h5 mb-0" th:text="${empPuestoUnidad.unidadOrganizacional.unidadOrganizacional}"></h3>
+					                        <label class="small text-dark"><b>Desde:</b></label> <span class="medium text-dark" th:text="' ' + ${#temporals.format(empPuestoUnidad.fechaInicio)}"></span>
+					                    </li>
+					                </ul>
+					                <!-- End -->
+		                        </div>
+	                        </div>
+	                    </div>
+	                </div>
+	
+	                <!--USUARIO DE EMPLEADO-->
+	                <!--
+	                <div class="tab-pane fade" id="usuario" role="tabpanel" aria-labelledby="contact-tab">
+	                    <div class="container-fluid">
+	                        Usuario
+	                    </div>
+	                </div>
+	                -->
+	            </div>
 	        </div>
-		        <div class="card-body">
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active" id="personales-tab" data-toggle="tab" href="#personales" role="tab"
-                       aria-controls="personales" aria-selected="true">Informaci&oacute;n Personal</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="documento-tab" data-toggle="tab" href="#documento" role="tab"
-                       aria-controls="documentos" aria-selected="false">Documentos de Empleado</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="direccion-tab" data-toggle="tab" href="#direccion" role="tab"
-                       aria-controls="trabajo" aria-selected="false">Direcci&oacute;n de Empleado</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="trabajo-tab" data-toggle="tab" href="#trabajo" role="tab"
-                       aria-controls="trabajo" aria-selected="false">Informaci&oacute;n Profesional</a>
-                </li>
-
-                <!--
-                <li class="nav-item">
-                    <a class="nav-link" id="usuario-tab" data-toggle="tab" href="#usuario" role="tab"
-                       aria-controls="usuario" aria-selected="false">Usuario de Empleado</a>
-                </li>
-                -->
-            </ul>
-            <div class="tab-content" id="myTabContent">
-                <!--DATOS PERSONALES-->
-                <div class="tab-pane fade show active" id="personales" role="tabpanel"
-                     aria-labelledby="personales-tab">
-                    <div class="container">
-                        <div class="card-body">
-                            <!--PRIMER COLUMNA-->
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label>Primer Nombre:</label><br/>
-                                            <span th:text="${empleado.nombrePrimero}"></span>
-                                        </div>
-                                        <div class="form-group" th:if="${empleado.nombreSegundo}">
-                                            <label for="secondName">Segundo Nombre:</label><br/>
-                                            <span th:text="${empleado.nombreSegundo}"></span>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="bornDate">Fecha de Nacimiento: </label><br/>
-                                            <span th:text="${#temporals.format(empleado.fechaNacimiento)}"></span>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Genero:</label><br/>
-                                            <span th:text="${empleado.genero.genero}"></span>
-                                        </div>
-                                    </div>
-                                    <!--FIN PRIMER COLUMNA-->
-                                    <!--SEGUNDA COLUMNA-->
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label for="lastMName">Apellido Materno:</label><br/>
-                                            <span th:text="${empleado.apellidoMaterno}"></span>
-                                        </div>
-                                        <div class="form-group" th:if="${empleado.apellidoPaterno}">
-                                            <label for="lastPName">Apellido Paterno:</label><br/>
-                                            <span th:text="${empleado.apellidoPaterno}"></span>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Estado Civil:</label><br/>
-                                            <span th:text="${empleado.estadoCivil.estadoCivil}"></span>
-                                        </div>
-                                        <!--Only Woman-->
-                                        <div class="form-group" id="divCasada" th:if="${empleado.apellidoCasada}">
-                                            <label for="lastCName">Apellido Casada:</label><br/>
-                                            <span th:text="${empleado.apellidoCasada}"></span>
-                                        </div>
-                                    </div>
-                                    <!--FIN SEGUNDA COLUMNA-->
-                                </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!--DOCUMENTOS DE EMPLEADO-->
-                <div class="tab-pane fade" id="documento" role="tabpanel"
-                     aria-labelledby="personales-tab">
-                    <div class="container">
-                        <div class="card-body">
-                            <table id="example1" class="table table-bordered table-striped">
-
-                                <thead>
-                                <tr>
-                                    <th>Tipo Documento</th>
-                                    <th>Codigo Documento</th>
-                                </tr>
-
-                                <tbody>
-                                <tr th:each="tipoDocumento: ${documents}">
-                                    <td><span th:text="${tipoDocumento.tipoDocumento.tipoDocumento}"></span></td>
-                                    <td><span th:text="${tipoDocumento.codigoDocumento}"></span></td>
-                                </tr>
-                                </tbody>
-
-                                <tfoot>
-                                <tr>
-                                    <th>Tipo Documento</th>
-                                    <th>Codigo Documento</th>
-                                </tr>
-                                </tfoot>
-
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <!--DIRECCION DE EMPLEADO-->
-                <div class="tab-pane fade" id="direccion" role="tabpanel" aria-labelledby="profile-tab">
-                    <div class="container-fluid">
-                        <div class="card-body">
-                                <div class="row">
-                                    <!--PRIMER COLUMNA-->
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label>Urbanizaci&oacute;n:</label><br/>
-                                            <span th:text="${empleado.direccion.urbanizacion}"></span>
-                                        </div>
-                                        <div class="form-group" th:if="${empleado.direccion.calle}">
-                                            <label>Calle:</label><br/>
-                                            <span th:text="${empleado.direccion.calle}"></span>
-                                        </div>
-                                        <div class="form-group" th:if="${empleado.direccion.complemento}">
-                                            <label>Complemento: </label><br/>
-                                            <span th:text="${empleado.direccion.complemento}"></span>
-                                        </div>
-                                    </div>
-                                    <!--FIN PRIMER COLUMNA-->
-                                    <!--SEGUNDA COLUMNA-->
-                                    <div class="col-lg-6">
-                                        <div class="form-group" th:if="${empleado.direccion.numeroCasa}">
-                                            <label>Numero de Casa: </label><br/>
-                                            <span th:text="${empleado.direccion.numeroCasa}"></span>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Departamento:</label><br/>
-                                            <span th:text="${empleado.direccion.municipio.departamento.departamento}"></span>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Municipio:</label><br/>
-                                            <span th:text="${empleado.direccion.municipio.municipio}"></span>
-                                        </div>
-                                    </div>
-                                    <!--FIN SEGUNDA COLUMNA-->
-                                </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!--INFORMACION PROFESIONAL-->
-                <div class="tab-pane fade" id="trabajo" role="tabpanel" aria-labelledby="profile-tab">
-                    <div class="container-fluid">
-                        <div class="card-body">
-                                <div class="row">
-                                    <!--PRIMER COLUMNA-->
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label>Codigo de Empleado:</label><br/>
-                                            <span th:text="${empleado.codigo}"></span>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Correo Institucional:</label><br/>
-                                            <span th:text="${empleado.correoInstitucional}"></span>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Correo Personal:</label><br/>
-                                            <span th:text="${empleado.correoPersonal}"></span>
-                                        </div>
-
-                                    </div>
-                                    <!--FIN PRIMER COLUMNA-->
-                                    <!--SEGUNDA COLUMNA-->
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label>Salario Base Mensual:</label><br/>
-                                            <span th:text="'$' + ${#numbers.formatDecimal(empleado.salarioBaseMensual, 0, 'COMMA', 2, 'POINT')}"></span>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Horas de Trabajo:</label><br/>
-                                            <span th:text="${empleado.horasTrabajo}"></span>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Puesto de Trabajo</label>
-                                            
-                                        </div>
-                                    </div>
-                                    <!--FIN SEGUNDA COLUMNA-->
-                                </div>
-                            <div class="row mt-4">
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label>Profesiones y Oficios:</label>
-                                        <hr>
-                                        <table id="example2" class="table table-bordered table-striped">
-                                            <thead>
-                                            <tr>
-                                                <th>Nombre</th>
-                                                <th>Profesi&oacute;n/Oficio</th>
-                                            </tr>
-                                            <tbody>
-                                            <tr th:each="p: ${professions}">
-
-                                                <td><span th:text="${p.profesion.profesion}"></span></td>
-
-                                                <td>
-                                                    <span th:if="${p.profesion.esProfesion}">Profesi&oacute;n</span>
-                                                    <span th:unless="${p.profesion.esProfesion}">Oficio</span>
-                                                </td>
-
-                                            </tr>
-                                            </tbody>
-
-                                            <tfoot>
-                                            <tr>
-                                                <th>Nombre</th>
-                                                <th>Profesi&oacute;n/Oficio</th>
-                                            </tr>
-                                            </tfoot>
-
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!--USUARIO DE EMPLEADO-->
-                <!--
-                <div class="tab-pane fade" id="usuario" role="tabpanel" aria-labelledby="contact-tab">
-                    <div class="container-fluid">
-                        Usuario
-                    </div>
-                </div>
-                -->
-            </div>
-        </div>
-	</div>
+		</div>
+	 </div>
 	</div>
 	
 	

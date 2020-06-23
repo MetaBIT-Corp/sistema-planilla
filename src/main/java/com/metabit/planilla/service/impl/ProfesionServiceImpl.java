@@ -23,6 +23,11 @@ public class ProfesionServiceImpl implements ProfesionService {
     }
 
     @Override
+    public List<Profesion> getProfesionesEnable() {
+        return profesionJpaRepository.findAllByProfesionHabilitadaIsTrue();
+    }
+
+    @Override
     public Profesion getProfesion(int id) {
         return profesionJpaRepository.findById(id).get();
     }

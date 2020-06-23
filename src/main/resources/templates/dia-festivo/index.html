@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layouts/layout}">
+
+<head>
+
+  <meta charset="utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  
+    <!-- fullCalendar -->
+  <link rel="stylesheet" th:href="@{/plugins/fullcalendar/main.min.css}">
+  <link rel="stylesheet" th:href="@{/plugins/fullcalendar-daygrid/main.min.css}">
+  <link rel="stylesheet" th:href="@{/plugins/fullcalendar-timegrid/main.min.css}">
+  <link rel="stylesheet" th:href="@{/plugins/fullcalendar-bootstrap/main.min.css}">
+  <!-- SweetAlert2 -->
+	<link rel="stylesheet" th:href="@{/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css}">
+	<!-- Toastr -->
+	<link rel="stylesheet" th:href="@{/plugins/toastr/toastr.min.css}">
+   
+</head>
+
+<body>
+	
+	
+	<h1 class="m-0 text-dark" layout:fragment="titulo_seccion">Días Festivos</h1>
+
+	<ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
+        <li class="breadcrumb-item"><a th:href="@{/index}">Home</a></li>
+        <li class="breadcrumb-item active">Días Festivos</li>
+    </ol>
+
+	<div layout:fragment="content">
+		<input type="hidden" id="store" th:value="${store_success}">
+		<input type="hidden" id="update" th:value="${update_success}">
+		<input type="hidden" id="delete" th:value="${delete_success}">
+		<input type="hidden" id="fechaFinal" th:value="${fecha_final}">
+		<input type="hidden" id="fechaInicio" th:value="${fecha_inicio}">
+		<input type="hidden" id="fechaPago" th:value="${fecha_pago}">
+		
+		<div class="row">       
+		  <div class="offset-1 col-md-10">
+		    <div class="card card-primary">
+		      <div class="card-body p-0">
+		        <!-- THE CALENDAR -->
+		        <div id="calendar"></div>
+		      </div>
+		      <!-- /.card-body -->
+		    </div>
+		    <!-- /.card -->
+		  </div>
+		  <!-- /.col -->
+		</div>
+		<!-- /.row -->   
+		
+		
+		<!-- Modal para gestion de dia festivo -->
+		<div class="modal" id="diaFestivoModal" tabindex="-1" role="dialog">
+		  <div class="modal-dialog  modal-dialog-centered" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="modalTitulo"></h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="row ml-3 mt-4">
+		      	<div class="col-md-10">
+		      		<div class="btn btn-block btn-outline-secondary mr-1" id="divFecha" align="center"></div>
+		      	</div>
+		      	<div class="col-md-2">
+		      		<form method="post" action="#" th:action="@{/dia-festivo/destroy}">
+		      			<input type="hidden" id="idDiaFestivoEliminar" name="idDiaFestivoEliminar" value="">
+		      			<button type="submit" class="btn  btn-outline-danger" id="btnEliminarDia"><i class="far fa-trash-alt"></i></button>
+		      		</form>
+		      	</div>
+		      </div>
+		      <form method="post" action="#" th:action="@{/dia-festivo/form-post}">
+			      <div class="modal-body">   	
+			        <div class="form-group mt-2 ml-2 mr-2 mb-2">
+					    <input type="text" class="form-control " id="descripcionDiaFestivo" name="descripcionDiaFestivo"> 				
+					</div>
+					<input type="hidden" class="form-control" id="idDiaFestivo" name="idDiaFestivo" value="">
+					<input type="hidden" class="form-control" id="mes" name="mes" value="">
+					<input type="hidden" class="form-control" id="dia" name="dia" value="">
+			      </div>
+			      <div class="modal-footer">
+			        <button type="submit" id="submitDiaFestivo" class="btn btn-success">Guardar</button>
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+			      </div>
+		      </form>
+		    </div>
+		  </div>
+		</div>
+		<!-- /MODALS -->	
+	</div>
+	
+	
+	<section layout:fragment="scripts">
+		<!-- fullCalendar 2.2.5 -->
+		<script th:src="@{/plugins/moment/moment.min.js}"></script>
+		<script th:src="@{/plugins/fullcalendar/main.min.js}"></script>
+		<script th:src="@{/plugins/fullcalendar-daygrid/main.min.js}"></script>
+		<script th:src="@{/plugins/fullcalendar-timegrid/main.min.js}"></script>
+		<script th:src="@{/plugins/fullcalendar-interaction/main.min.js}"></script>
+		<script th:src="@{/plugins/fullcalendar-bootstrap/main.min.js}"></script>
+		
+		<script th:src="@{/js/dia-festivo/main.js}"></script>
+		<!-- Page specific script -->
+		<script th:src="@{/js/dia-festivo/calendar.js}"></script>
+		<!-- mensajes de store, update y delete -->
+		<script th:src="@{/js/dia-festivo/mensajes.js}"></script>
+		<!-- Toastr -->
+		<script th:src="@{/plugins/toastr/toastr.min.js}"></script>
+		<!-- SweetAlert2 -->
+		<script th:src="@{/plugins/sweetalert2/sweetalert2.min.js}"></script>
+	</section>
+
+</body>
+</html>

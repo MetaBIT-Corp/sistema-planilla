@@ -22,6 +22,36 @@ public class RangoRentaServiceImpl implements RangoRentaService {
 		// TODO Auto-generated method stub
 		return rangoRentaJpaRepository.findAll();
 	}
+
+	@Override
+	public RangoRenta getOne(int id) {
+		// TODO Auto-generated method stub
+		return rangoRentaJpaRepository.getOne(id);
+	}
+
+	@Override
+	public RangoRenta update(RangoRenta rr) {
+		// TODO Auto-generated method stub
+		return rangoRentaJpaRepository.save(rr);
+	}
+
+	@Override
+	public List<RangoRenta> getByPeriodicidad(int periodicidad) {
+		// TODO Auto-generated method stub
+		return rangoRentaJpaRepository.findByPeriodicidadRenta(periodicidad);
+	}
+
+	@Override
+	public RangoRenta store(RangoRenta rr) {
+		// TODO Auto-generated method stub
+		return rangoRentaJpaRepository.save(rr);
+	}
+
+	@Override
+	public List<RangoRenta> getAllHabilitados(Boolean estado) {
+		// TODO Auto-generated method stub
+		return rangoRentaJpaRepository.findByRangoRentaHabilitado(estado);
+	}
 	
 	
 }
