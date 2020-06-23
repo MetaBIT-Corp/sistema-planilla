@@ -1,5 +1,9 @@
 $(document).ready(function(){
 
+    $('#errorDiv').hide();
+
+    /* Manejadores de eventos para asignar Recursos a un Rol */
+
     $('#rolRecursoAsignarModal').on("show.bs.modal", function(event) {
 
         $('#errorDiv').hide();
@@ -19,14 +23,12 @@ $(document).ready(function(){
         $.ajax({
 
             type : "GET",
-            url : "/rol-recurso-privilegio/recursos/"+idRol,
+            url : "/rol-recurso-privilegio/rol-recursos/"+idRol,
 
             success : function(data) {
 
                 data = $.parseJSON(data);
-
                 var i_no_asignados = 0;
-
                 var combobox = document.getElementById("idRecursoAsignacionInput");
 
                 for (i=0;i<data.length;i++){
@@ -47,13 +49,13 @@ $(document).ready(function(){
     });
 
     $("#rolRecursoAsignarModal").on("hide.bs.modal", function(){
-        $("#idRecursoAsignacionInput").html("");
+        $("#idRecursoAsignacionInput").val("");
         $("#rolRecursoAsignarModalTitle").html("");
     });
 
     $(".checkboxPrivilegio").change(function () {
 
-        var input = $("#idsPrivilegiosoAsignacionInput");
+        var input = $("#idsPrivilegiosAsignacionInput");
 
         input.val("");
 
@@ -71,15 +73,36 @@ $(document).ready(function(){
         var form = $(this).parents('form');
         var url = form.attr('action');
 
-        $(".checkboxPrivilegio").attr("disabled", true);
-
         $.ajax({
             type: "POST",
             url: url,
             data: form.serialize(),
-            dataType: "json",
-            success: function (data) {
-                window.location.href = document.location.origin + "/rol-recurso-privilegio/index/1";
+            success: function (response) {
+
+                if (response.status=="SUCCESS"){
+
+                    $('#rolRecursoAsignarSubmitBtn').attr('disabled',true);
+                    $('#errorDiv').hide();
+
+                    window.location.href = document.location.origin + "/rol-recurso-privilegio/index/"+response.result.idRol+"?store_success=true";
+
+                }else{
+
+                    $('#errorDiv').show();
+                    $("#errorDiv").attr("class","callout callout-danger")
+                    var child = document.getElementById("errorUl").lastElementChild;
+
+                    while (child) {
+                        document.getElementById("errorUl").removeChild(child);
+                        child = document.getElementById("errorUl").lastElementChild;
+                    }
+
+                    var li = document.createElement('li');
+                    var contentLi = document.createTextNode("Ingrese los privilegios a asignar.");
+                    li.appendChild(contentLi);
+                    document.getElementById("errorUl").appendChild(li);
+                }
+
             },
             error: conexionError()
         });
@@ -88,162 +111,325 @@ $(document).ready(function(){
 
     /* Manejadores de eventos para asignar/eliminar Privilegios a un Rol sobre un Recurso */
 
-    $('#rolRecursoPrivilegiosModal').on("show.bs.modal", function(event) {
+    /* Evento al mostrar el modal para asignar/eliminar Privilegios */
+    $('#rolRecursoPrivilegiosModal').on("show.bs.modal", function(event){
 
-        $('#errorDiv').hide();
+        var modal = $(this);
+        var link = $(event.relatedTarget);
+
+        // Obteniendo data definida en el botón que dispara evento del mostrar modal
+        var idRol = link.data("id-rol");
+        var rol = link.data("rol");
+        var idRecurso = link.data("id-recurso");
+        var recurso = link.data("recurso");
+
+        // Colocando el mensaje en el header del modal
+        modal.find(".modal-header #rolRecursoPrivilegiosModalTitle").append(
+            "<b>Privilegios</b> de rol <b>"+ rol.toString()+"</b> sobre recurso <b>"+ recurso.toString().charAt(0).toUpperCase()+recurso.toString().slice(1).toLowerCase()+"</b>"
+        );
+
+        //AJAX para recuperar y colocar los privilegios en tablas del modal
+        $.ajax({
+
+            type: "GET",
+            url: "/rol-recurso-privilegio/recurso-privilegios/"+idRol+"/"+idRecurso,
+
+            //Si petición es exitosa
+            success: function (response) {
+
+                response = $.parseJSON(response);
+
+                var iAsignados = 0;
+                var iNoAsignados = 0;
+
+                // Iteración para recorrer respuesta obtenida y colocar elementos en tabla e inputs
+                for (i=0;i<response.length;i++){
+
+                    /* Si elemento tiene como estado "1", colocar en tabla de asignados
+                     * De lo contrario colocarlo en tabla de no asignados
+                     */
+                    if(response[i].estado=="1"){
+
+                        //Obteniendo tabla de asignados
+                        var tabla = document.getElementById("privilegiosAsignadosTable");
+                        var fila = tabla.insertRow(iAsignados);
+
+                        // Colocando en primer celda el nombre del privilegio
+                        var celda1 = fila.insertCell(0);
+                        celda1.innerHTML = response[i].privilegio;
+
+                        // Colocando en segunda celda el botón para eliminarlo
+                        var celda2 = fila.insertCell(1);
+
+                        var btn = document.createElement("button");
+                        btn.id = "eliminarBtn"+i;   // Identificador de botón.
+                        btn.setAttribute("class", "btn btn-danger btn-sm cambiarClassBtn");
+                        btn.dataset["idRol"] = idRol.toString();  // Colocando data con ID de Rol
+                        btn.dataset["idRecurso"] = idRecurso.toString();  // Colocando data con ID de Recurso
+                        btn.dataset["idPrivilegio"] = response[i].idPrivilegio.toString();  // Colocando data con ID de Privilegio
+                        btn.dataset["estado"] = "1";
+
+                        // Ícono y texto de botón
+                        var ic = document.createElement("i");
+                        ic.setAttribute("class","fas fa-times");
+                        btn.appendChild(ic);
+                        btn.append(" Eliminar");
+                        celda2.appendChild(btn);
+
+                        iAsignados++;
+
+                    }else{
+
+                        //Obteniendo tabla de asignados
+                        var tabla = document.getElementById("privilegiosNoAsignadosTable");
+                        var fila = tabla.insertRow(iNoAsignados);
+
+                        // Colocando en primer celda el nombre del privilegio
+                        var celda1 = fila.insertCell(0);
+                        celda1.innerHTML = response[i].privilegio;
+
+                        // Colocando en segunda celda el botón para asignarlo
+                        var celda2 = fila.insertCell(1);
+
+                        var btn = document.createElement("button");
+                        btn.id = "asignarBtn"+i;    // Identificador de botón.
+                        btn.setAttribute("class", "btn btn-info btn-sm cambiarClassBtn");
+                        btn.dataset["idRol"] = idRol.toString();  // Colocando data con ID de Rol
+                        btn.dataset["idRecurso"] = idRecurso.toString();  // Colocando data con ID de Recurso
+                        btn.dataset["idPrivilegio"] = response[i].idPrivilegio.toString();  // Colocando data con ID de Privilegio
+                        btn.dataset["estado"] = "0";
+
+                        // Ícono y texto de botón
+                        var ic = document.createElement("i");
+                        ic.setAttribute("class","fas fa-check");
+                        btn.appendChild(ic);
+                        btn.append(" Asignar");
+                        celda2.appendChild(btn);
+
+                        iNoAsignados++;
+
+                    }
+
+                }
+
+                var asignadosTabla = document.getElementById("privilegiosAsignadosTable");
+                var asignadosHeader = asignadosTabla.createTHead();
+                var asignadosFila = asignadosHeader.insertRow(0);
+                var asignadosCelda1= asignadosFila.insertCell(0).innerHTML="<b>Nombres</b>";
+                var asignadosCelda2= asignadosFila.insertCell(1).innerHTML="<b>Acciones</b>";
+
+                var noAsignadosTabla = document.getElementById("privilegiosNoAsignadosTable");
+                var noAsignadosHeader = noAsignadosTabla.createTHead();
+                var noAsignadosFila = noAsignadosHeader.insertRow(0);
+                var noAsignadosCelda1= noAsignadosFila.insertCell(0).innerHTML="<b>Nombres</b>";
+                var noAsignadosCelda2= noAsignadosFila.insertCell(1).innerHTML="<b>Acciones</b>";
+
+            },
+
+            //Si petición falla
+            error: function (response) {}
+
+        });
+
+    });
+
+    /* Evento al ocultar el modal para asignar/eliminar Privilegios */
+    $("#rolRecursoPrivilegiosModal").on("hide.bs.modal", function(){
+
+        //Borrando contenido de título de modal
+        $("#rolRecursoPrivilegiosModalTitle").html("");
+
+        //Borrando contenido de tablas
+        $("#privilegiosAsignadosTable").html("");
+        $("#privilegiosNoAsignadosTable").html("");
+
+        //Borrando contenido de inputs de privilegios a asignar/eliminar
+        $("#idRolInput").val("");
+        $("#idRecursoInput").val("");
+        $("#idPrivilegioInput").val("");
+        $("#estadoInput").val("");
+
+    });
+
+    /* Manejadores de eventos para eliminar todos los privilegios a un Rol sobre un Recurso */
+
+    /* Evento al mostrar el modal para eliminar Privilegios */
+    $("#rolRecursoModalDestroy").on("show.bs.modal", function (event) {
 
         var modal = $(this);
         var link = $(event.relatedTarget);
 
         var idRol = link.data("id-rol");
+        var rol = link.data("rol");
         var idRecurso = link.data("id-recurso");
         var recurso = link.data("recurso");
 
-        modal.find(".modal-header #rolRecursoPrivilegiosModalTitle").append(
-            "Privilegios del Rol sobre el Recurso: "+
-            recurso.toString().charAt(0).toUpperCase()+recurso.toString().slice(1).toLowerCase()
-        );
+        modal.find(".modal-body #destroyMessage").text("¿Está seguro que desea eliminar los privilegios de '"+rol+"' sobre el recurso '"+recurso+"'?");
+        modal.find(".modal-body #destroyInfoMessage").text("Esta acción no es reversible");
 
-        modal.find("#asignarForm #idRolInput").val(idRol);
-        modal.find("#asignarForm #idRecursoInput").val(idRecurso);
+        modal.find(".modal-body #idRolDestroyInput").val(idRol);
+        modal.find(".modal-body #idRecursoDestroyInput").val(idRecurso);
 
-        modal.find("#eliminarForm #idRolEliminarInput").val(idRol);
-        modal.find("#eliminarForm #idRecursoEliminarInput").val(idRecurso);
 
-        $.ajax({
+    });
 
-            type : "GET",
-            url : "/rol-recurso-privilegio/privilegios/"+idRol+"/"+idRecurso,
 
-            success : function(data) {
+});
 
-                data = $.parseJSON(data);
+/* Evento al hacer clic en botón con clase 'cambiarClassBtn' */
+$(document).on('click', '.cambiarClassBtn', function() {
 
-                var i_asignados = 0;
-                var i_no_asignados = 0;
+    /* Obteniendo data del privilegio según el botón presionado */
+    var idRol = $(this).data("id-rol");
+    var idRecurso = $(this).data("id-recurso");
+    var idPrivilegio = $(this).data("id-privilegio");
+    var estado = $(this).data("estado");
 
-                for (i=0;i<data.length;i++){
+    /* Asignando valores a inputs para enviar datos a controller */
+    $("#idRolInput").val(idRol);
+    $("#idRecursoInput").val(idRecurso);
+    $("#idPrivilegioInput").val(idPrivilegio);
+    $("#estadoInput").val(estado);
 
-                    if(data[i].estado=="1"){
+    /* Haciendo clic sobre el botón del formulario para cambiar el estado del privilegio */
+    $("#cambiarSubmitBtn").click();
 
-                        var tabla = document.getElementById("tablaAsignados");
-                        var fila = tabla.insertRow(i_asignados);
-                        i_asignados++;
+});
 
-                        var celda1 = fila.insertCell(0);
-                        celda1.innerHTML = data[i].privilegio;
+/* Evento al para guardar cambios de cambio de privilegio y para mostrar la tabla de asignados y no asignados' */
+$(document).on('click', '#cambiarSubmitBtn', function(e) {
 
-                        var celda2 = fila.insertCell(1);
-                        var btn = document.createElement("button");
-                        btn.id = "btnQuitar"+i;
-                        btn.setAttribute("class", "btn btn-danger btn-sm btnQuitarClass");
-                        btn.dataset["idPrivilegio"] = data[i].idPrivilegio.toString();
-                        btn.onclick = function(){
-                            var privilegioInput = document.getElementById("idPrivilegioEliminarInput");
-                            privilegioInput.setAttribute("value",this.dataset["idPrivilegio"]);
-                            document.getElementById("btnSubmitEliminar").click();
+    e.preventDefault();
 
-                            setTimeout(function(){
-                                $("#rolRecursoPrivilegiosModal").modal("hide");
-                                document.getElementById("btnRecurso"+idRecurso).click();
-                            },300);
+    /* Obteniendo data del privilegio según el botón presionado */
+    var idRol = $("#idRolInput").val();
+    var idRecurso = $("#idRecursoInput").val();
 
-                            return false;
-                        };
-                        var ic = document.createElement("i");
-                        ic.setAttribute("class","fas fa-times");
-                        celda2.appendChild(btn);
-                        btn.appendChild(ic);
-                        btn.append(" Eliminar");
-                    }else{
-                        var tabla = document.getElementById("tablaNoAsignados");
-                        var fila = tabla.insertRow(i_no_asignados);
-                        i_no_asignados++;
+    var form = $(this).parents('form');
+    var url = form.attr('action');
 
-                        var celda1 = fila.insertCell(0);
-                        celda1.innerHTML = data[i].privilegio;
+    /* AJAX para enviar data al controller de cambio de privilegio */
+    $.ajax({
 
-                        var celda2 = fila.insertCell(1);
-                        var btn = document.createElement("button");
-                        btn.id = "btnAgregar"+i;
-                        btn.setAttribute("class", "btn btn-info btn-sm btnAgregarClass");
-                        btn.dataset["idPrivilegio"] = data[i].idPrivilegio.toString();
-                        btn.onclick = function(){
-                            var privilegioInput = document.getElementById("idPrivilegioInput");
-                            privilegioInput.setAttribute("value",this.dataset["idPrivilegio"]);
-                            document.getElementById("btnSubmitAsignar").click();
-                            setTimeout(function(){
-                                $("#rolRecursoPrivilegiosModal").modal("hide");
-                                document.getElementById("btnRecurso"+idRecurso).click();
-                            },300);
-                            return false;
-                        };
+        type: "POST",
+        url: url,
+        data: form.serialize(),
+        dataType: "json",
 
-                        var ic = document.createElement("i");
-                        ic.setAttribute("class","fas fa-check");
-                        celda2.appendChild(btn);
-                        btn.appendChild(ic);
-                        btn.append(" Asignar");
+        success: function (data) {
+
+            $("#privilegiosAsignadosTable").html("");
+            $("#privilegiosNoAsignadosTable").html("");
+
+            /* AJAX para recuperar y colocar los privilegios en tablas del modal */
+            $.ajax({
+
+                type: "GET",
+                url: "/rol-recurso-privilegio/recurso-privilegios/"+idRol+"/"+idRecurso,
+
+                //Si petición es exitosa
+                success: function (response) {
+
+                    response = $.parseJSON(response);
+
+                    var iAsignados = 0;
+                    var iNoAsignados = 0;
+
+                    // Iteración para recorrer respuesta obtenida y colocar elementos en tabla e inputs
+                    for (i=0;i<response.length;i++){
+
+                        /* Si elemento tiene como estado "1", colocar en tabla de asignados
+                         * De lo contrario colocarlo en tabla de no asignados
+                         */
+                        if(response[i].estado=="1"){
+
+                            //Obteniendo tabla de asignados
+                            var tabla = document.getElementById("privilegiosAsignadosTable");
+                            var fila = tabla.insertRow(iAsignados);
+
+                            // Colocando en primer celda el nombre del privilegio
+                            var celda1 = fila.insertCell(0);
+                            celda1.innerHTML = response[i].privilegio;
+
+                            // Colocando en segunda celda el botón para eliminarlo
+                            var celda2 = fila.insertCell(1);
+
+                            var btn = document.createElement("button");
+                            btn.id = "eliminarBtn"+i;   // Identificador de botón.
+                            btn.setAttribute("class", "btn btn-danger btn-sm cambiarClassBtn");
+                            btn.dataset["idRol"] = idRol.toString();  // Colocando data con ID de Rol
+                            btn.dataset["idRecurso"] = idRecurso.toString();  // Colocando data con ID de Recurso
+                            btn.dataset["idPrivilegio"] = response[i].idPrivilegio.toString();  // Colocando data con ID de Privilegio
+                            btn.dataset["estado"] = "1";
+
+                            // Ícono y texto de botón
+                            var ic = document.createElement("i");
+                            ic.setAttribute("class","fas fa-times");
+                            btn.appendChild(ic);
+                            btn.append(" Eliminar");
+                            celda2.appendChild(btn);
+
+                            iAsignados++;
+
+                        }else{
+
+                            //Obteniendo tabla de asignados
+                            var tabla = document.getElementById("privilegiosNoAsignadosTable");
+                            var fila = tabla.insertRow(iNoAsignados);
+
+                            // Colocando en primer celda el nombre del privilegio
+                            var celda1 = fila.insertCell(0);
+                            celda1.innerHTML = response[i].privilegio;
+
+                            // Colocando en segunda celda el botón para asignarlo
+                            var celda2 = fila.insertCell(1);
+
+                            var btn = document.createElement("button");
+                            btn.id = "asignarBtn"+i;    // Identificador de botón.
+                            btn.setAttribute("class", "btn btn-info btn-sm cambiarClassBtn");
+                            btn.dataset["idRol"] = idRol.toString();  // Colocando data con ID de Rol
+                            btn.dataset["idRecurso"] = idRecurso.toString();  // Colocando data con ID de Recurso
+                            btn.dataset["idPrivilegio"] = response[i].idPrivilegio.toString();  // Colocando data con ID de Privilegio
+                            btn.dataset["estado"] = "0";
+
+                            // Ícono y texto de botón
+                            var ic = document.createElement("i");
+                            ic.setAttribute("class","fas fa-check");
+                            btn.appendChild(ic);
+                            btn.append(" Asignar");
+                            celda2.appendChild(btn);
+
+                            iNoAsignados++;
+
+                        }
+
                     }
 
-                }
+                    var asignadosTabla = document.getElementById("privilegiosAsignadosTable");
+                    var asignadosHeader = asignadosTabla.createTHead();
+                    var asignadosFila = asignadosHeader.insertRow(0);
+                    var asignadosCelda1= asignadosFila.insertCell(0).innerHTML="<b>Nombres</b>";
+                    var asignadosCelda2= asignadosFila.insertCell(1).innerHTML="<b>Acciones</b>";
 
-                var tablaAsignados = document.getElementById("tablaAsignados");
-                var headerAsignados = tablaAsignados.createTHead();
-                var filaAsignados = headerAsignados.insertRow(0);
-                var celda1Asignados= filaAsignados.insertCell(0).innerHTML="<b>Nombres</b>";
-                var celda2Asignados= filaAsignados.insertCell(1).innerHTML="<b>Accione</b>";
+                    var noAsignadosTabla = document.getElementById("privilegiosNoAsignadosTable");
+                    var noAsignadosHeader = noAsignadosTabla.createTHead();
+                    var noAsignadosFila = noAsignadosHeader.insertRow(0);
+                    var noAsignadosCelda1= noAsignadosFila.insertCell(0).innerHTML="<b>Nombres</b>";
+                    var noAsignadosCelda2= noAsignadosFila.insertCell(1).innerHTML="<b>Acciones</b>";
 
-                var tablaNoAsignados = document.getElementById("tablaNoAsignados");
-                var headerNoAsignados = tablaNoAsignados.createTHead();
-                var filaNoAsignados = headerNoAsignados.insertRow(0);
-                var celda1NoAsignados= filaNoAsignados.insertCell(0).innerHTML="<b>Nombres</b>";
-                var celda2NoAsignados= filaNoAsignados.insertCell(1).innerHTML="<b>Accione</b>";
+                },
 
-            }
+                //Si petición falla
+                error: function (response) {}
 
-        });
+            });
 
-    });
 
-    $("#rolRecursoPrivilegiosModal").on("hide.bs.modal", function(){
-        $("#tablaAsignados").html("");
-        $("#tablaNoAsignados").html("");
-        $("#rolRecursoPrivilegiosModalTitle").html("");
-    });
+        },
 
-    $("#btnSubmitEliminar").on("click",function (e) {
-
-        e.preventDefault();
-        var form = $(this).parents('form');
-        var url = form.attr('action');
-
-        $.ajax({
-            type: "POST",
-            url: url,
-            data: form.serialize(),
-            dataType: "json",
-            success: function (data) {}
-        });
+        //Si petición falla
+        error: function (response) {}
 
     });
-
-    $("#btnSubmitAsignar").on("click",function (e) {
-
-        e.preventDefault();
-        var form = $(this).parents('form');
-        var url = form.attr('action');
-
-        $.ajax({
-            type: "POST",
-            url: url,
-            data: form.serialize(),
-            dataType: "json",
-            success: function (data) {}
-        });
-
-    });
-
-
 
 });

@@ -21,14 +21,16 @@
                 </div>
 
                 <!-- Formulario para asignación de RolRecursoPrivilegio -->
-                <form id="rolRecursoAsignarForm" method="post" th:action="@{/rol-recurso-privilegio/asignar-recurso}">
+                <form id="rolRecursoAsignarForm" method="post" th:action="@{/rol-recurso-privilegio/asignar-recurso}" th:object="${rolRecursoPrivilegioEntity}">
 
                     <!--Body del Modal-->
                     <div class="modal-body">
 
                         <div class="form-group">
                             <label for="idRecursoAsignacionInput">Recurso a asignar</label>
-                            <select id="idRecursoAsignacionInput" name="idRecursoAsignacion" class="form-control"></select>
+                            <select id="idRecursoAsignacionInput" name="idRecursoAsignacion" class="form-control">
+                                <option value="">-- Seleccione el recurso --</option>
+                            </select>
                         </div>
 
                         <div class="form-group d-none">
@@ -69,9 +71,12 @@
                                 </tbody>
                             </table>
 
-                            <label for="idsPrivilegiosoAsignacionInput">IDs de Privilegios a asignar</label>
-                            <input type="text" id="idsPrivilegiosoAsignacionInput" name="idsPrivilegiosoAsignacion" class="form-control" placeholder="IDs de Privilegios">
 
+                        </div>
+
+                        <div class="form-group d-none">
+                            <label for="idsPrivilegiosAsignacionInput">IDs de Privilegios a asignar</label>
+                            <input type="text" id="idsPrivilegiosAsignacionInput" name="idsPrivilegiosAsignacion" class="form-control" placeholder="IDs de Privilegios">
                         </div>
 
                         <!-- Sección para mostrar errores dinámicamente -->
@@ -95,8 +100,6 @@
         </div>
     </div>
 
-
-
     <!-- Modal para Gestionar Permisos de Recurso de Rol -->
     <div class="modal bd-example-modal-lg" id="rolRecursoPrivilegiosModal" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
@@ -110,85 +113,98 @@
                     </button>
                 </div>
 
-                <!--Body del Modal-->
+                <!-- Body del Modal -->
                 <div class="modal-body">
-                    <div class="card">
-                        <div class="card-body row pt-2">
 
-                            <!-- Tabla y formulario para privilegios asignados -->
-                            <div class="col-md-6 text-center">
+                    <div class="row">
 
-                                <span><b>Privilegios asignados</b></span>
-                                <table id="tablaAsignados" class="table mt-2"></table>
-
-                                <div id="eliminarFormDiv" class="d-none">
-                                    <form id="eliminarForm" method="post" th:action="@{/rol-recurso-privilegio/eliminar}">
-                                        <div class="card-body">
-                                            <div class="form-group">
-                                                <label for="idRolEliminarInput">Rol</label>
-                                                <input type="text" id="idRolEliminarInput" name="idRolEliminar" class="form-control" placeholder="ID de Rol">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="idRecursoInput">Recurso</label>
-                                                <input type="text" id="idRecursoEliminarInput" name="idRecursoEliminar" class="form-control" placeholder="ID de Recurso">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="idPrivilegioInput">Privilegio</label>
-                                                <input type="text" id="idPrivilegioEliminarInput" name="idPrivilegioEliminar" class="form-control" placeholder="ID de Privilegio">
-                                            </div>
-                                        </div>
-                                        <div class="card-footer">
-                                            <button type="submit" id="btnSubmitEliminar" class="btn btn-primary">Crear</button>
-                                        </div>
-                                    </form>
-                                </div>
-
-                            </div>
-
-                            <!-- Tabla y formulario para privilegios no asignados -->
-                            <div class="col-md-6 text-center border-left">
-
-                                <span class="pl-2"><b>Privilegios no asignados</b></span>
-                                <table id="tablaNoAsignados" class="table mt-2"></table>
-
-                                <div id="asignarFormDiv" class="d-none">
-                                    <form id="asignarForm" method="post" action="#" th:action="@{/rol-recurso-privilegio/asignar}">
-                                        <div class="card-body">
-                                            <div class="form-group">
-                                                <label for="idRolInput">Rol</label>
-                                                <input type="text" id="idRolInput" name="idRol" class="form-control" placeholder="ID de Rol">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="idRecursoInput">Recurso</label>
-                                                <input type="text" id="idRecursoInput" name="idRecurso" class="form-control" placeholder="ID de Recurso">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="idPrivilegioInput">Privilegio</label>
-                                                <input type="text" id="idPrivilegioInput" name="idPrivilegio" class="form-control" placeholder="ID de Privilegio">
-                                            </div>
-                                        </div>
-                                        <div class="card-footer">
-                                            <button type="submit" id="btnSubmitAsignar" class="btn btn-primary">Crear</button>
-                                        </div>
-                                    </form>
-                                </div>
-
-                            </div>
-
+                        <!-- Sección de Privilegios asignados -->
+                        <div id="privilegiosAsignadosDiv" class="col-md-6 border-right text-center">
+                            <span><b>Privilegios asignados</b></span>
+                            <small class="form-text text-muted">Haga clic sobre el botón al lado de cada privilegio para eliminarlo.</small>
+                            <table id="privilegiosAsignadosTable" class="table table-borderless text-center"></table>
                         </div>
+
+                        <!-- Sección de Privilegios no asignados -->
+                        <div id="privilegiosNoAsignadosDiv" class="col-md-6 border-left text-center">
+                            <span><b>Privilegios no asignados</b></span>
+                            <small class="form-text text-muted">Haga clic sobre el botón al lado de cada privilegio para asignarlo.</small>
+                            <table id="privilegiosNoAsignadosTable" class="table table-borderless text-center"></table>
+                        </div>
+
                     </div>
-                    <!-- Sección para mostrar errores dinámicamente -->
-                    <!--<div id="errorDiv" class="callout callout-danger">
-                        <p class="my-0"><i class="fas fa-exclamation-circle mr-2"></i><strong>Por favor, corregir los siguientes errores:</strong></p>
-                        <ul id="errorUl" class="mb-0">
-                        </ul>
-                    </div>-->
+                    <div class="d-none">
+                        <form method="POST" th:action="@{/rol-recurso-privilegio/cambiar-privilegio}">
+                            <div class="form-group">
+                                <label for="idRolInput">ID de Rol</label>
+                                <input type="text" id="idRolInput" name="idRol" class="form-control" placeholder="ID de Rol">
+                            </div>
+                            <div class="form-group">
+                                <label for="idRecursoInput">ID de Recurso</label>
+                                <input type="text" id="idRecursoInput" name="idRecurso" class="form-control" placeholder="ID de Recurso">
+                            </div>
+                            <div class="form-group">
+                                <label for="idPrivilegioInput">ID de Privilegio</label>
+                                <input type="text" id="idPrivilegioInput" name="idPrivilegio" class="form-control" placeholder="ID de Privilegio">
+                            </div>
+                            <div class="form-group">
+                                <label for="estadoInput">Estado > 1:Asignado ^ 0:No Asignado</label>
+                                <input type="text" id="estadoInput" name="estado" class="form-control" placeholder="Estado">
+                            </div>
+                            <button type="submit" id="cambiarSubmitBtn" class="btn btn-outline-primary">Enviar</button>
+                        </form>
+                    </div>
+
                 </div>
 
-                <!--Body del Modal-->
+                <!-- Footer del Modal-->
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Salir</button>
                 </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para confirmar Eliminacion de todos los privilegios sobre un recurso de un rol determinado -->
+    <div class="modal" id="rolRecursoModalDestroy" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+
+                <!-- Header del Modal -->
+                <div class="modal-header">
+                    <h5 class="modal-title">Eliminar privilegios del rol sobre el recurso</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <!-- Formulario para confirmar eliminación de todos los privilegios sobre un recurso de un rol determinado -->
+                <form method="POST" th:action="@{/rol-recurso-privilegio/destroy}">
+
+                    <!-- Body del Modal -->
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <strong><span id="destroyMessage"></span></strong><br>
+                            <span id="destroyInfoMessage"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="idRolDestroyInput">ID de Rol</label>
+                            <input type="text" id="idRolDestroyInput" name="idRolDestroy" class="form-control" placeholder="ID de Rol">
+                        </div>
+                        <div class="form-group">
+                            <label for="idRecursoDestroyInput">ID de Recurso</label>
+                            <input type="text" id="idRecursoDestroyInput" name="idRecursoDestroy" class="form-control" placeholder="ID de Recurso">
+                        </div>
+                    </div>
+
+                    <!-- Footer del Modal -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                    </div>
+
+                </form>
 
             </div>
         </div>

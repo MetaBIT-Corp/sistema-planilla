@@ -66,20 +66,28 @@
                             <td class="text-center">
                                 <a class="btn btn-primary btn-sm"
                                    href="#"
-
                                    data-toggle="modal"
                                    data-target="#rolRecursoPrivilegiosModal"
                                    th:attr="
                                    id='btnRecurso'+${recurso.idRecurso},
                                    data-id-rol=${rol.idRol},
+                                   data-rol=${rol.authority},
                                    data-id-recurso=${recurso.idRecurso},
                                    data-recurso=${recurso.recurso}"
                                    title="Gestionar privilegios del recurso">
                                     <i class="fas fa-file-contract"></i>
                                 </a>&nbsp;&nbsp;
+
                                 <a class="btn btn-danger btn-sm"
                                    href="#"
-                                   title="Denegar recursol al rol">
+                                   data-toggle="modal"
+                                   data-target="#rolRecursoModalDestroy"
+                                   th:attr="
+                                   data-id-rol=${rol.idRol},
+                                   data-rol=${rol.authority},
+                                   data-id-recurso=${recurso.idRecurso},
+                                   data-recurso=${recurso.recurso}"
+                                   title="Eliminar privilegios del Rol sobre el Recurso">
                                     <i class="far fa-times-circle"></i>
                                 </a>
                             </td>

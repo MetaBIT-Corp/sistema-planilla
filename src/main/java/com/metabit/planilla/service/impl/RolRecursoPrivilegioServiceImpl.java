@@ -60,8 +60,13 @@ public class RolRecursoPrivilegioServiceImpl implements RolRecursoPrivilegioServ
     }
 
     @Override
-    public RolRecursoPrivilegio findByRolAndRecursoAndPrivilegio(Rol rol, Recurso recurso, Privilegio privilegio) {
-        return rolRecursoPrivilegioJpaRepository.findByRolAndRecursoAndPrivilegio(rol,recurso,privilegio);
+    public List<RolRecursoPrivilegio> findByRolAndRecurso(Rol rol, Recurso recurso) {
+        return rolRecursoPrivilegioJpaRepository.findByRolAndRecurso(rol,recurso);
+    }
+
+    @Override
+    public RolRecursoPrivilegio getRolRecursoPrivilegioByRolAndRecursoAndPrivilegio(Rol rol, Recurso recurso, Privilegio privilegio) {
+        return rolRecursoPrivilegioJpaRepository.getRolRecursoPrivilegioByRolAndRecursoAndPrivilegio(rol,recurso,privilegio);
     }
 
 }

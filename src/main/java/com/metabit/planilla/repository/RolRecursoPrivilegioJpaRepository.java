@@ -14,11 +14,12 @@ import com.metabit.planilla.entity.RolRecursoPrivilegio;
 
 @Repository("rolRecursoPrivilegioJpaRepository")
 public interface RolRecursoPrivilegioJpaRepository extends JpaRepository<RolRecursoPrivilegio, Serializable> {
+
     public abstract List<RolRecursoPrivilegio> findByRol(Rol rol);
     public abstract List<RolRecursoPrivilegio> findByRecurso(Recurso recurso);
     public abstract List<RolRecursoPrivilegio> findByPrivilegio(Privilegio privilegio);
     public abstract List<RolRecursoPrivilegio> findByRecursoAndPrivilegio(Recurso recurso, Privilegio privilegio);
-
-    public abstract RolRecursoPrivilegio findByRolAndRecursoAndPrivilegio(Rol rol, Recurso recurso, Privilegio privilegio);
+    public abstract List<RolRecursoPrivilegio> findByRolAndRecurso(Rol rol, Recurso recurso);
+    public abstract RolRecursoPrivilegio getRolRecursoPrivilegioByRolAndRecursoAndPrivilegio(Rol rol, Recurso recurso, Privilegio privilegio);
 
 }

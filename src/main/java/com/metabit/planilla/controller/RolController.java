@@ -1,7 +1,9 @@
 package com.metabit.planilla.controller;
 
 import com.metabit.planilla.domain.JsonResponse;
+import com.metabit.planilla.entity.Recurso;
 import com.metabit.planilla.entity.Rol;
+import com.metabit.planilla.entity.RolRecursoPrivilegio;
 import com.metabit.planilla.service.RolRecursoPrivilegioService;
 import com.metabit.planilla.service.RolService;
 
@@ -15,6 +17,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/rol")
@@ -88,6 +92,13 @@ public class RolController {
             return "redirect:/"+INDEX_VIEW+"?delete_success=false";
         }
         else{
+
+            List<RolRecursoPrivilegio> listaPrivilegiosRecursos = rolRecursoPrivilegioService.findByRol(rol);
+
+            for(RolRecursoPrivilegio rolRecursoPrivilegio:listaPrivilegiosRecursos){
+                rolRecursoPrivilegioService.deleteRolRecursoPrivilegio(rolRecursoPrivilegio);
+            }
+
             rolService.deleteRol(idRol);
             return "redirect:/"+INDEX_VIEW+"?delete_success=true";
         }
