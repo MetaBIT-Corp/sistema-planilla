@@ -97,7 +97,7 @@ public class PlanillaController {
 			planillaService.updatePlanilla(planilla);
 			
 			//Actualizar ISSS y AFP
-			//planillaService.updatePlanillaMovimientos(planilla.getIdPlanilla());
+			planillaService.updatePlanillaMovimientos(planilla.getIdPlanilla());
 		}
 		model.addAttribute("planillas", planillas);
 		return INDEX_VIEW;
@@ -190,7 +190,7 @@ public class PlanillaController {
 				planillaService.updatePlanilla(planilla.get());
 				
 				//Actualizar ISSS y AFP
-				//planillaService.updatePlanillaMovimientos(planilla.get().getIdPlanilla());
+				planillaService.updatePlanillaMovimientos(planilla.get().getIdPlanilla());
 			}
 			
 			model.addAttribute("planilla", planilla.get());
@@ -271,7 +271,7 @@ public class PlanillaController {
 			planillaService.updatePlanilla(planilla);
 			
 			//Actualizar ISSS y AFP
-			//planillaService.updatePlanillaMovimientos(planilla.getIdPlanilla());
+			planillaService.updatePlanillaMovimientos(planilla.getIdPlanilla());
 				
 			PlanillaMovimiento planillaMovimiento = new PlanillaMovimiento();
 			planillaMovimiento.setPlanilla(planilla);
@@ -458,7 +458,12 @@ public class PlanillaController {
 				planillaMovimientosService.storePlanillaMovimiento(pm);
 				
 			}
-			planillaService.updatePlanillaMovimientos(planilla.getIdPlanilla());
+			
+			try {
+				planillaService.updatePlanillaMovimientos(planilla.getIdPlanilla());
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		
 		redirAttrs.addFlashAttribute("success_planilla", "success");
