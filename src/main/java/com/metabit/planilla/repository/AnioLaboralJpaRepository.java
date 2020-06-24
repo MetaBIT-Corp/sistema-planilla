@@ -14,4 +14,7 @@ public interface AnioLaboralJpaRepository extends JpaRepository<AnioLaboral, Ser
 	//@Query(value = "SELECT * FROM ANIOS_LABORALES WHERE ANIO_LABORAL=?1", nativeQuery=true)
 	public abstract AnioLaboral findByAnioLaboral(int anio);
 	public abstract AnioLaboral findByIdAnioLaboral(int id_anio);
+	
+	@Query(value = "SELECT MAX(anio_laboral) FROM ANIOS_LABORALES ORDER BY ANIO_LABORAL DESC", nativeQuery = true)
+	public abstract int findUltimoAnioLaboral();
 }

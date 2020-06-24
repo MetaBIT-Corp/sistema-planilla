@@ -9,4 +9,5 @@ public interface AnioLaboralService {
 	public abstract AnioLaboral getAnioLaboral(int anio);
 	public abstract AnioLaboral addAnioLaboral(AnioLaboral anioLaboral);
 	public abstract AnioLaboral getByIdAnioLaboral(int id_anio);
+	public abstract int getUltimoAnioLaboral();
 }

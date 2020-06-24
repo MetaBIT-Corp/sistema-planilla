@@ -41,5 +41,16 @@ public class AnioLaboralServiceImpl implements AnioLaboralService {
 		return anioLaboralJpaRepository.findByIdAnioLaboral(id_anio);
 	}
 
+	@Override
+	public int getUltimoAnioLaboral() {
+		// TODO Auto-generated method stub
+		try {
+			return anioLaboralJpaRepository.findUltimoAnioLaboral();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return 1;
+	}
+
 	
 }
