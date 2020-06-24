@@ -223,16 +223,482 @@ INSERT INTO GENEROS (ID_GENERO, GENERO) VALUES(507, 'Queer');;
 INSERT INTO GENEROS (ID_GENERO, GENERO) VALUES(508, 'Pansexual');;
 INSERT INTO GENEROS (ID_GENERO, GENERO) VALUES(509, 'Asexual');;
 
---Direcciones
-insert into departamentos (id_departamento,departamento) values (1, 'San Salvador');;
-insert into departamentos (id_departamento,departamento) values (2, 'Usulutan');;
+---Departamentos
 
-insert into municipios (id_municipio,municipio,id_departamento) values (1, 'San Salvador', 1);;
-insert into municipios (id_municipio,municipio,id_departamento) values (2, 'San Martin', 1);;
-insert into municipios (id_municipio,municipio,id_departamento) values (3, 'Alegria', 2);;
-insert into municipios (id_municipio,municipio,id_departamento) values (4, 'California', 2);;
+INSERT INTO departamentos(id_departamento, departamento) VALUES (500, 'Usulután');;
+INSERT INTO departamentos(id_departamento, departamento) VALUES (501, 'Santa Ana');;
+INSERT INTO departamentos(id_departamento, departamento) VALUES (502, 'Cabañas');;
+INSERT INTO departamentos(id_departamento, departamento) VALUES (503, 'Ahuachapán');;
+INSERT INTO departamentos(id_departamento, departamento) VALUES (504, 'Chalatenango');;
+INSERT INTO departamentos(id_departamento, departamento) VALUES (505, 'Cuscatlán');;
+INSERT INTO departamentos(id_departamento, departamento) VALUES (506, 'La Paz');;
+INSERT INTO departamentos(id_departamento, departamento) VALUES (507, 'La Libertad');;
+INSERT INTO departamentos(id_departamento, departamento) VALUES (508, 'Sonsonate');;
+INSERT INTO departamentos(id_departamento, departamento) VALUES (509, 'San Salvador');;
+INSERT INTO departamentos(id_departamento, departamento) VALUES (510, 'San Vicente');;
+INSERT INTO departamentos(id_departamento, departamento) VALUES (511, 'San Miguel');;
+INSERT INTO departamentos(id_departamento, departamento) VALUES (512, 'Morazán');;
+INSERT INTO departamentos(id_departamento, departamento) VALUES (513, 'La Unión');;
 
-insert into direcciones (id_direccion,calle,complemento,numero_casa,urbanizacion,id_municipio) values (78, 'Campos', 'Condominio San Francisco', '4-A', 'La loma', 3);;
+--Municipios de Usulutan (23) 
+
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (500, 'Alegría', 500);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (501, 'Berlín', 500);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (502, 'California', 500);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (503, 'Concepción Batres', 500);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (504, 'El Triunfo', 500);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (505, 'Ereguayquín', 500);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (506, 'Estanzuelas', 500);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (507, 'Jiquilisco', 500);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (508, 'Jucuapa', 500);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (509, 'Jucuarán', 500);;
+
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (510, 'Mercedes Umaña', 500);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (511, 'Nueva Granada', 500);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (512, 'Ozatlán', 500);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (513, 'Puerto El Triunfo', 500);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (514, 'San Agustín', 500);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (515, 'San Buenaventura', 500);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (516, 'San Dionisio', 500);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (517, 'San Francisco Javier', 500);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (518, 'Santa Elena', 500);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (519, 'Santa María', 500);;
+
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (520, 'Santiago de María', 500);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (521, 'Tecapán', 500);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (522, 'Usulután', 500);; 
+
+--Municipios de Santa Ana (13) 
+
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (523, 'Santa Ana', 501);; 
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (524, 'Candelaria de la Frontera', 501);; 
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (525, 'Chalchuapa', 501);; 
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (526, 'Coatepeque', 501);; 
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (527, 'El Congo', 501);; 
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (528, 'El Porvenir', 501);; 
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (529, 'Masahuat', 501);; 
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (530, 'Metapán', 501);; 
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (531, 'San Antonio Pajonal', 501);; 
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (532, 'San Sebastián Salitrillo', 501);; 
+
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (533, 'Santa Rosa Guachipilín', 501);; 
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (534, 'Santiago de la Frontera', 501);; 
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (535, 'Texistepeque', 501);; 
+
+--Municipios de Cabañas (9) 
+
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (536, 'Sensuntepeque', 502);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (537, 'Cinquera', 502);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (538, 'Dolores', 502);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (539, 'Guacotecti', 502);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (540, 'Ilobasco ', 502);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (541, 'Jutiapa', 502);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (542, 'San Isidro', 502);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (543, 'Tejutepeque', 502);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (544, 'Victoria', 502);; 
+
+--Municipios de Ahuachapan (12) 
+
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (545, 'Ahuachapán', 503);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (546, 'Apaneca', 503);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (547, 'Atiquizaya', 503);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (548, 'Concepción de Ataco', 503);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (549, 'El Refugio', 503);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (550, 'Guaymango', 503);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (551, 'Jujutla', 503);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (552, 'San Francisco Menéndez', 503);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (553, 'San Lorenzo', 503);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (554, 'San Pedro Puxtla', 503);;
+
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (555, 'Tacuba', 503);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (556, 'Turín', 503);; 
+
+--Municipios de Chalatenango (33) 
+
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (557, 'Chalatenango', 504);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (558, 'Agua Caliente', 504);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (559, 'Arcatao', 504);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (560, 'Azacualpa', 504);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (561, 'Cancasque', 504);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (562, 'Citalá', 504);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (563, 'Comalapa', 504);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (564, 'Concepción Quezaltepeque', 504);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (565, 'Dulce Nombre de María', 504);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (566, 'El Carrizal', 504);;
+
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (567, 'El Paraíso', 504);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (568, 'La Laguna', 504);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (569, 'La Palma', 504);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (570, 'La Reina', 504);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (571, 'Las Flores', 504);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (572, 'Las Vueltas', 504);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (573, 'Nombre de Jesús', 504);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (574, 'Nueva Concepción', 504);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (575, 'Nueva Trinidad', 504);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (576, 'Ojos de Agua', 504);;
+
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (577, 'Potonico', 504);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (578, 'San Antonio de la Cruz', 504);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (579, 'San Antonio Los Ranchos', 504);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (580, 'San Fernando', 504);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (581, 'San Francisco Lempa', 504);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (582, 'San Francisco Morazán', 504);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (583, 'San Ignacio', 504);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (584, 'San Isidro Labrador', 504);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (585, 'San Luis del Carmen', 504);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (586, 'San Miguel de Mercedes', 504);;
+
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (587, 'San Rafael', 504);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (588, 'Santa Rita', 504);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (589, 'Tejutla', 504);; 
+
+--Municipios de Cuscatlán (16) 
+
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (590, 'Cojutepeque', 505);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (591, 'Candelaria', 505);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (592, 'El Carmen', 505);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (593, 'El Rosario', 505);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (594, 'Monte San Juan', 505);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (595, 'Oratorio de Concepción', 505);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (596, 'San Bartolomé Perulapía', 505);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (597, 'San Cristóbal', 505);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (598, 'San José Guayabal', 505);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (599, 'San Pedro Perulapán', 505);;
+
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (600, 'San Rafael Cedros', 505);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (601, 'San Ramón', 505);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (602, 'Santa Cruz Analquito', 505);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (603, 'Santa Cruz Michapa', 505);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (604, 'Suchitoto', 505);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (605, 'Tenancingo', 505);; 
+
+--Municipios de La Paz (22) 
+
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (606, 'Zacatecoluca', 506);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (607, 'Cuyultitán', 506);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (608, 'El Rosario', 506);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (609, 'Jerusalén', 506);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (610, 'Mercedes La Ceiba', 506);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (611, 'Olocuilta', 506);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (612, 'Paraíso de Osorio', 506);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (613, 'San Antonio Masahuat', 506);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (614, 'San Emigdio', 506);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (615, 'San Francisco Chinameca', 506);;
+
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (616, 'San Pedro Masahuat', 506);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (617, 'San Juan Nonualco', 506);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (618, 'San Juan Talpa', 506);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (619, 'San Juan Tepezontes', 506);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (620, 'San Luis La Herradura', 506);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (621, 'San Luis Talpa', 506);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (622, 'San Miguel Tepezontes', 506);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (623, 'San Pedro Nonualco', 506);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (624, 'San Rafael Obrajuelo', 506);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (625, 'Santa María Ostuma', 506);;
+
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (626, 'Santiago Nonualco', 506);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (627, 'Tapalhuaca', 506);; 
+
+--Municipios de La Libertad (22) 
+
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (628, 'Santa Tecla', 507);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (629, 'Antiguo Cuscatlán', 507);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (630, 'Chiltiupán', 507);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (631, 'Ciudad Arce', 507);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (632, 'Colón', 507);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (633, 'Comasagua', 507);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (634, 'Huizúcar', 507);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (635, 'Jayaque', 507);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (636, 'Jicalapa', 507);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (637, 'La Libertad', 507);;
+
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (638, 'Nuevo Cuscatlán', 507);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (639, 'Quezaltepeque', 507);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (640, 'San Juan Opico', 507);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (641, 'Sacacoyo', 507);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (642, 'San José Villanueva', 507);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (643, 'San Matías', 507);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (644, 'San Pablo Tacachico', 507);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (645, 'Talnique', 507);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (646, 'Tamanique', 507);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (647, 'Teotepeque', 507);;
+
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (648, 'Tepecoyo', 507);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (649, 'Zaragoza', 507);; 
+
+--Municipios de Sonsonate (16) 
+
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (650, 'Sonsonate', 508);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (651, 'Acajutla', 508);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (652, 'Armenia', 508);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (653, 'Caluco', 508);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (654, 'Cuisnahuat', 508);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (655, 'Izalco', 508);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (656, 'Juayúa', 508);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (657, 'Nahuizalco', 508);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (658, 'Nahulingo', 508);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (659, 'Salcoatitán', 508);;
+
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (660, 'San Antonio del Monte', 508);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (661, 'San Julián', 508);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (662, 'Santa Catarina Masahuat', 508);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (663, 'Santa Isabel Ishuatán', 508);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (664, 'Santo Domingo de Guzmán', 508);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (665, 'Sonzacate', 508);; 
+
+--Municipios de San Salvador (19) 
+
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (666, 'San Salvador ', 509);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (667, 'Aguilares', 509);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (668, 'Apopa', 509);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (669, 'Ayutuxtepeque', 509);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (670, 'Cuscatancingo', 509);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (671, 'Delgado', 509);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (672, 'El Paisnal', 509);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (673, 'Guazapa', 509);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (674, 'Ilopango', 509);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (675, 'Mejicanos', 509);;
+
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (676, 'Nejapa', 509);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (677, 'Panchimalco', 509);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (678, 'Rosario de Mora', 509);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (679, 'San Marcos', 509);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (680, 'San Martín', 509);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (681, 'Santiago Texacuangos', 509);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (682, 'Santo Tomás', 509);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (683, 'Soyapango', 509);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (684, 'Tonacatepeque', 509);; 
+
+--Municipios de San Vicente (13)
+
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (685, 'San Vicente', 510);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (686, 'Apastepeque', 510);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (687, 'Guadalupe', 510);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (688, 'San Cayetano Istepeque', 510);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (689, 'San Esteban Catarina', 510);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (690, 'San Ildefonso', 510);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (691, 'San Lorenzo', 510);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (692, 'San Sebastián', 510);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (693, 'Santa Clara', 510);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (694, 'Santo Domingo', 510);;
+
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (695, 'Tecoluca', 510);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (696, 'Tepetitán', 510);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (697, 'Verapaz', 510);; 
+
+--Municipios de San Miguel (20)
+
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (698, 'San Miguel ', 511);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (699, 'Carolina', 511);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (700, 'Chapeltique', 511);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (701, 'Chinameca', 511);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (702, 'Chirilagua', 511);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (703, 'Ciudad Barrios', 511);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (704, 'Comacarán', 511);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (705, 'El Tránsito', 511);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (706, 'Lolotique', 511);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (707, 'Moncagua', 511);;
+
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (708, 'Nueva Guadalupe', 511);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (709, 'Nuevo Edén de San Juan', 511);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (710, 'Quelepa', 511);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (711, 'San Antonio', 511);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (712, 'San Gerardo', 511);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (713, 'San Jorge', 511);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (714, 'San Luis de la Reina', 511);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (715, 'San Rafael Oriente', 511);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (716, 'Sesori', 511);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (717, 'Uluazapa', 511);; 
+
+--Municipios de Morazan (26)
+
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (718, 'San Francisco Gotera', 512);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (719, 'Arambala', 512);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (720, 'Cacaopera', 512);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (721, 'Chilanga', 512);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (722, 'Corinto', 512);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (723, 'Delicias de Concepción', 512);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (724, 'El Divisadero', 512);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (725, 'El Rosario', 512);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (726, 'Gualococti', 512);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (727, 'Guatajiagua', 512);;
+
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (728, 'Joateca', 512);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (729, 'Jocoaitique', 512);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (730, 'Jocoro', 512);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (731, 'Lolotiquillo', 512);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (732, 'Meanguera', 512);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (733, 'Osicala', 512);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (734, 'Perquín', 512);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (735, 'San Carlos', 512);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (736, 'San Fernando', 512);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (737, 'San Isidro', 512);;
+
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (738, 'San Simón', 512);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (739, 'Sensembra', 512);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (740, 'Sociedad', 512);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (741, 'Torola', 512);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (742, 'Yamabal', 512);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (743, 'Yoloaiquín', 512);; 
+
+--Municipios de La Unión (18)
+
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (744, 'La Unión', 513);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (745, 'Anamorós', 513);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (746, 'Bolívar', 513);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (747, 'Concepción de Oriente', 513);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (748, 'Conchagua', 513);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (749, 'El Carmen', 513);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (750, 'El Sauce', 513);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (751, 'Intipucá', 513);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (752, 'Lislique', 513);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (753, 'Meanguera del Golfo', 513);;
+
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (754, 'Nueva Esparta', 513);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (755, 'Pasaquina', 513);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (756, 'Polorós', 513);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (757, 'San Alejo', 513);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (758, 'San José', 513);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (759, 'Santa Rosa de Lima', 513);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (760, 'Yayantique', 513);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (761, 'Yucuaiquín', 513);; 
+
+---------Direcciones--------
+
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (500, 'Campos', 'Condominios San Francisco', '4', 'San Jacinto', 666);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (501, 'Francisco Menéndez', 'Condominios Regis', '3', 'San Jacinto', 666);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (502, 'Campos', 'Condominios Nobel', '1', 'San Jacinto', 666);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (503, 'Luz', 'Pasaje 5', '35', 'Flor Blanca', 750);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (504, null, 'Col. La Rabida', '7', 'San Salvador', 666);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (505, 'Oriente', null, '14', 'Cojutepeque', 590);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (506, null, null, '11', 'Asturias', 650);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (507, '8va Calle Oriente', 'Barrio El Calvario', null, 'Concepcion de Atico', 548);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (508, null, 'Colonia Jardines de Cuscatlán', '4-A', 'Antiguo Cuscatlán', 629);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (509, null, null, '14-C', 'Madreselva II', 518);;
+
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (510, null, 'Alameda Deininger', null, 'Antiguo Cuscatlán', 666);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (511, 'Padres Aguilares', '626 Col. Escalon', null, 'Colonia Escalon', 666);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (512, null, 'Final Boulevard Santa Elena', null, 'Santa Elena', 629);;
+insert into direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) values (513, 'Abetos', 'Condominio Los Coquitos', '5-C', 'Santa Clara', 666);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (514, 'Campos', 'Condominios San Francisco', '7', 'San Jacinto', 666);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (515, 'Luz', 'Pasaje 7', '5', 'Flor Blanca', 750);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (516, null, 'Colonia Jardines de Cuscatlán', '4-B', 'Antiguo Cuscatlán', 629);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (517, 'Francisco Menéndez', 'Condominios Regis', '6', 'San Jacinto', 666);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (518, null, null, '10-C', 'Madreselva II', 518);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (519, null, 'Col. La Rabida', '17', 'San Salvador', 666);;
+
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (520, 'Real', 'Residencia San Rafael', '12', 'Nuevo Cuscatlán', 628);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (521, 'Prusia', null, null, 'Bosques de Prusia', 683);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (522, 'Venecia', '3A Etapa', null, 'Prados de Venecia', 683);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (523, 'Al Arenal', 'Condominios La Vega', '5', 'El Limon', 683);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (524, 'El Coro', 'Colonia Amatepec', '110', 'Jardines del Boulevard', 683);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (525, 'Mariona', 'Colonia San Antonio', '22', 'Ayutuxtepeque', 671);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (526, 'Argentina', 'Condominio Residencial las Rosas', '2', 'El Transito', 671);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (527, 'El Porvenir', 'Colonia  España', '6', 'Veracruz', 671);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (528, 'Al Volcan', 'Condominio El Pedregal', '7-c', 'Cumbres de la Escalon', 675);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (529, 'Del Mirador', 'Condominio Los Angeles', '9', 'Escalon 2000', 675);;
+
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (530, 'Principal', 'Colonia San Fernando', '9-a', 'Ayutuxtepeque', 675);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (531, 'Real', 'Residencia San Rafael', '15', 'Nuevo Cuscatlán', 628);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (532, 'El Coro', 'Colonia Amatepec', '112', 'Jardines del Boulevard', 683);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (533, 'El Porvenir', 'Colonia  España', '1', 'Veracruz', 671);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (534, 'El Gauge', 'Comunidad San Antonio', null, 'Jardines del Matazano', 674);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (535, 'Venecia', 'Colonia Morazan', '1-N', 'Sierra Morena 1', 674);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (536, 'Veracruz', 'Colonia Guadalupe', '1-M', 'Industrial San Pablo', 674);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (537, 'Veracruz', 'Colonia Guadalupe', '5-M', 'Industrial San Pablo', 674);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (538, 'El Sauce', 'Colonia El Arenal', '18', 'La Selva', 674);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (539, 'Principal', 'Colonia San Fernando', '10-B', 'Ayutuxtepeque', 675);;
+
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (540, null, null, null, 'Villa Hermosa', 574);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (541, '5a Calle Ote.', 'Colonia Buenos Aires', '7-D', 'Barrio El Rosario', 574);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (542, '5a Calle Ote.', 'Colonia Buenos Aires', '8-D', 'Barrio El Rosario', 574);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (543, '3a Calle Ote.', 'Colonia Los Primos', '91', 'Barrio El Rosario', 574);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (544, 'Rafael Osorio', 'Colonia La Esperanza', '9-C', 'San Antonio', 606);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (545, 'Rafael Osorio', 'Colonia La Esperanza', '19-C', 'San Antonio', 606);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (546, 'Al Arenal', 'Condominios La Vega', '7', 'El Limon', 683);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (547, 'Real', 'Residencia San Rafael', '5', 'Nuevo Cuscatlán', 628);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (548, 'Venecia', 'Colonia Morazan', '8-N', 'Sierra Morena 1', 674);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (549, 'El Gauge', 'Comunidad San Antonio', null, 'Jardines del Matazano', 674);;
+
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (550, 'Linda Vista', null, null, 'Marabu', 679);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (551, 'Principal', 'Condominio Santorini', '420', 'Tepeyac', 679);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (552, 'Principal', 'Condominio Santorini', '421', 'Tepeyac', 679);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (553, 'El Amate', 'Comunidad Guadalupe 2', '99', 'Santa Rosa', 628);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (554, 'El Amate', 'Comunidad Guadalupe 2', '41', 'Santa Rosa', 628);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (555, 'San Jose', 'Pinares de Santa Monica', '77', 'Las Luces', 628);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (556, 'San Jose', 'Pinares de Santa Monica', '14', 'Las Luces', 628);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (557, '5a Calle Ote.', 'Colonia Buenos Aires', '17-D', 'Barrio El Rosario', 574);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (558, 'Del Mirador', 'Condominio Los Angeles', '19', 'Escalon 2000', 675);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (559, 'Campos', 'Condominios San Francisco', '177', 'San Jacinto', 666);;
+
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (560, 'Suiza', 'Colonia El Rosario', '68', 'Santa Marta', 683);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (561, 'Suiza', 'Colonia El Rosario', '79', 'Santa Marta', 683);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (562, 'Chaparrastique', 'Garcia', '1', 'Bella Vista', 698);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (563, 'Chaparrastique', 'Garcia', '15', 'Bella Vista', 698);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (564, '17a Calle Poniente', 'Residencial Los Almendros', '5-C', 'San Jose de la Montaña', 698);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (565, '17a Calle Poniente', 'Residencial Los Almendros', '9-C', 'San Jose de la Montaña', 698);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (566, '5a Calle Oriente', 'Residencial Pasadena', '5-A', 'Jardines de Bolonia', 698);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (567, '5a Calle Oriente', 'Residencial Pasadena', '5-B', 'Jardines de Bolonia', 698);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (568, 'al Rio', 'Lotificación Concepción', '19', 'Santa Emilia', 698);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (569, 'al Rio', 'Lotificación Concepción', '20', 'Santa Emilia', 698);;
+
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (570, 'El Coro', 'Colonia Amatepec', '114', 'Jardines del Boulevard', 683);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (571, 'Linda Vista', null, null, 'Marabu', 679);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (572, 'Prusia', null, null, 'Bosques de Prusia', 683);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (573, null, null, null, 'Villa Hermosa', 574);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (574, 'Al Volcan', 'Condominio El Pedregal', '7-D', 'Cumbres de la Escalon', 675);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (575, null, 'Alameda Deininger', null, 'Antiguo Cuscatlán', 666);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (576, 'El Porvenir', 'Colonia  España', '10', 'Veracruz', 671);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (577, 'El Porvenir', 'Colonia  España', '100', 'Veracruz', 671);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (578, null, 'Col. La Rabida', '27', 'San Salvador', 666);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (579, null, null, '10-C', 'Madreselva II', 518);;
+
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (580, null, null, '10-F', 'Madreselva I', 518);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (581, 'Calle Panama', 'Colonia Unidas', '48', 'Prados de San Miguel', 698);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (582, 'Calle Panama', 'Colonia Unidas', '28', 'Prados de San Miguel', 698);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (583, 'La Aldea', 'Colonia España', '5-D', 'Altamira', 523);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (584, 'La Aldea', 'Colonia España', '7-D', 'Altamira', 523);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (585, 'Barcelona', 'Lot Minerva', '77', 'La Heroica', 523);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (586, 'Barcelona', 'Lot Minerva', '177', 'La Heroica', 523);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (587, 'Libertad Pte', 'Barrio San Juan', '44-A', 'Contixa 2', 523);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (588, 'Libertad Pte', 'Barrio San Juan', '45-A', 'Contixa 2', 523);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (589, 'Calle Panama', 'Colonia Unidas', '410', 'Prados de San Miguel', 698);;
+
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (590, 'Calle Panama', 'Colonia Unidas', '412', 'Prados de San Miguel', 698);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (591, 'Linda Vista', null, null, 'Marabu', 679);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (592, 'El Amate', 'Comunidad Guadalupe 2', '299', 'Santa Rosa', 628);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (593, '5a Calle Ote.', 'Colonia Buenos Aires', '17-E', 'Barrio El Rosario', 574);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (594, null, null, null, 'Villa Hermosa', 574);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (595, 'Real', 'Residencia San Rafael', '121', 'Nuevo Cuscatlán', 628);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (596, null, 'Colonia Jardines de Cuscatlán', '41-B', 'Antiguo Cuscatlán', 629);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (597, 'Padres Aguilares', '626 Col. Escalon', null, 'Colonia Escalon', 666);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (598, 'Campos', 'Condominios San Francisco', '107', 'San Jacinto', 666);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (599, 'El Gauge', 'Comunidad San Antonio', null, 'Jardines del Matazano', 674);;
+
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (600, '14a Calle Oriente', 'Colonia Suncuan', '100', 'Santa Isabel', 545);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (601, '14a Calle Oriente', 'Colonia Suncuan', '110', 'Santa Isabel', 545);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (602, 'Los Mangos', 'Lot. Santa Teresa', '90', 'El Nopal', 545);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (603, 'Los Mangos', 'Lot. Santa Teresa', '9-C', 'El Nopal', 545);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (604, 'al Cantón Ashapuco', null, null, 'Lot. Maria Auxiliadora', 545);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (605, '9a Calle Poniente', 'Colonia San Gerano', '15', 'Montevideo', 650);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (606, '9a Calle Poniente', 'Colonia San Gerano', '14', 'Montevideo', 650);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (607, 'Mega Plaza', 'Colonia San Rafael', '144', 'Sensunapan', 650);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (608, 'Mega Plaza', 'Colonia San Rafael', '422', 'Sensunapan', 650);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (609, 'El Porvenir', 'Colonia  España', '102', 'Veracruz', 671);;
+
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (610, 'Argentina', 'Condominio Residencial las Rosas', '20', 'El Transito', 671);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (611, '3a Calle Ote.', 'Colonia Los Primos', '94', 'Barrio El Rosario', 574);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (612, 'Prusia', null, null, 'Bosques de Prusia', 683);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (613, 'Mariona', 'Colonia San Antonio', '220', 'Ayutuxtepeque', 671);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (614, '8va Calle Oriente', 'Barrio El Calvario', null, 'Concepcion de Atico', 548);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (615, 'Principal', 'Colonia San Fernando', '10-F', 'Ayutuxtepeque', 675);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (616, 'Los Mangos', 'Lot. Santa Teresa', '16', 'El Nopal', 545);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (617, 'El Amate', 'Comunidad Guadalupe 2', '401', 'Santa Rosa', 628);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (618, 'Palmeto', 'Residencia Via del Mar', '545', 'Villa Bosque', 638);;
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (619, 'El Comercio', 'Col Zacamil', '619', 'Nueva Esperanza', 675);;
+
+INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (620, 'Venecia', 'Colonia Morazan', '8-H', 'Sierra Morena 1', 674);;
+
 
 insert into empresas (id_empresa,correo_empresa,empresa,nic_empresa,nit_empresa,page,pagina_empresa,telefono,id_direccion) values(1,'metabit@gmail.com','MetaBIT','000001','000002','@MetaBIT','www.metabit.com','2237-2828',78);;
 
