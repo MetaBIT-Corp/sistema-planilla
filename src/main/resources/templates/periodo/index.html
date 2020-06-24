@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layouts/layout}">
+
+<head>
+
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <link rel="stylesheet" th:href="@{/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css}">
+    <link rel="stylesheet" th:href="@{/plugins/toastr/toastr.min.css}">
+
+    <title>Sistema Planilla | Periodo</title>
+
+</head>
+
+<body>
+
+<div>
+    <h1 class="m-0 text-dark" layout:fragment="titulo_seccion">
+        Planillas del Periodo
+    </h1>
+
+    <ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#" th:href="@{/index}">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="#" th:href="@{/anio-laboral/index/}">Años Laborales</a>
+        </li>
+        <li class="breadcrumb-item active">Planillas del Periodo</li>
+    </ol>
+</div>
+
+<div layout:fragment="content">
+    <div class="row ml-3 mr-3">
+        <h5>
+            <b>Fecha de Inicio</b>: <span th:text="${periodo.fechaInicio}"></span>
+            -
+            <b>Fecha de Fin:</b> <span th:text="${periodo.fechaFinal}"></span>
+        </h5>
+        <div class="col-md-12 mt-3">
+            <div class="card">
+                <div class="card-body">
+
+                    <table id="example1" class="table table-bordered table-striped">
+
+                        <thead>
+                            <tr>
+                                <th>Codigo empleado</th>
+                                <th>Nombre</th>
+                                <th>Apellidos</th>
+                                <th>Salario Neto</th>
+                                <th>Tipo</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr th:each="planilla: ${planillas}">
+
+                            <td><span th:text="${planilla.empleado.codigo}"></span></td>
+                            <td>
+                                <span th:if="${planilla.empleado.nombreSegundo}" th:text="${planilla.empleado.nombrePrimero + ' ' + planilla.empleado.nombreSegundo}"></span>
+                                <span th:if="${planilla.empleado.nombreSegundo == null}" th:text="${planilla.empleado.nombrePrimero}"></span>
+                            </td>
+                            <td><span th:text="${planilla.empleado.apellidoMaterno}"></span></td>
+                            <td><span th:text="'$' + ${#numbers.formatDecimal(planilla.salarioNeto, 0, 'COMMA', 2, 'POINT')}"></span></td>
+                            <td>
+                                <div th:each="empPuestoUnidad, iterStat : ${planilla.empleado.empleadosPuestosUnidades}" th:if="${iterStat.index == iterStat.size-1}">
+                                    <span th:if="${empPuestoUnidad.puesto.esAdministrativo}">Administrativo</span>
+                                    <span th:if="${empPuestoUnidad.puesto.esAdministrativo == false}">Vendedor</span>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <a class="btn btn-sm btn-secondary"
+                                   href=""
+                                   th:href="@{/periodo/boleta/{idplanilla}(idplanilla=${planilla.idPlanilla})}"
+                                   title="Ver Boleta de Pago">
+                                    <span><i class="fas fa-file-contract"></i></span>
+                                    <span>&nbsp;&nbsp;Ver boleta de pago</span>
+                                </a>
+                            </td>
+                        </tr>
+
+                        <tr th:if="${#lists.isEmpty(planillas)}">
+                            <td colspan="7" class="text-center">
+                                No se han registrado planillas para este periodo
+                            </td>
+                        </tr>
+
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <th>Codigo empleado</th>
+                            <th>Nombre</th>
+                            <th>Apellidos</th>
+                            <th>Salario Neto</th>
+                            <th>Tipo</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </tfoot>
+                    </table>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<section layout:fragment="scripts">
+
+    <script th:src="@{/plugins/datatables/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
+    <script th:src="@{/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
+    <script th:src="@{/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
+
+    <script th:src="@{/plugins/toastr/toastr.min.js}"></script>
+    <script th:src="@{/plugins/sweetalert2/sweetalert2.min.js}"></script>
+
+    <script th:src="@{/js/datatable/datatable.js}"></script>
+
+</section>
+
+</body>
+</html>

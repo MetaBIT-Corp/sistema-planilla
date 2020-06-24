@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layouts/layout}">
+
+<head>
+
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <link rel="stylesheet" th:href="@{/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css}">
+    <link rel="stylesheet" th:href="@{/plugins/toastr/toastr.min.css}">
+
+    <title>Sistema Planilla | Boleta de Pago</title>
+
+</head>
+
+<body>
+
+<div>
+    <h1 class="m-0 text-dark" layout:fragment="titulo_seccion">
+        Boleta de Pago <span th:text="${planilla.getIdPlanilla()}"></span>
+    </h1>
+
+    <ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#" th:href="@{/index}">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="#" th:href="@{/anio-laboral/index/}">Años Laborales</a>
+        </li>
+        <li class="breadcrumb-item active">
+            <a th:href="@{/periodo/index/{id}(id=${periodo.idPeriodo})}">Planillas del Periodo</a>
+        </li>
+        <li class="breadcrumb-item active">Boleta de Pago</li>
+    </ol>
+</div>
+
+<div layout:fragment="content">
+    <div class="row ml-3 mr-3">
+        <div class="col-md-12 mt-3">
+            <div class="card">
+                <div class="card-body">
+
+                    <!-- Cabecera de Boleta de Pago -->
+                    <div class="w-100 row">
+                        <div class="col-md-4">
+                            <img alt="Logo MetaBit"
+                                 th:src="@{/img/logo.png}"
+                                 class=""
+                                 style="opacity: .75"
+                                 height="50"
+                                 width="50">
+                            <b class="align-middle">&nbsp;&nbsp;MetaBit Corporation</b>
+                        </div>
+                        <div class="col-md-4 text-center pt-2">
+                            <h3>Boleta de Pago</h3>
+                        </div>
+                        <div class="col-md-1"></div>
+                        <div class="col-md-3 text-center row">
+                            <b class="col-sm-12">Periodo</b>
+                            <span class="col-sm-12">
+                                <span th:text="${#temporals.format(periodo.fechaInicio, 'dd/MM/yyyy')}"></span>
+                                -
+                                <span th:text="${#temporals.format(periodo.fechaFinal, 'dd/MM/yyyy')}"></span>
+                            </span>
+                        </div>
+                    </div>
+                    <hr>
+
+                    <!-- Datos Personales de Empleado -->
+                    <div class="w-100 mt-3 row">
+
+                        <div class="w-100 border-bottom pb-2 text-info"><h5><b>Datos del Empleado</b></h5></div>
+
+                        <div class="w-100 mt-2 row text-center">
+                            <div class="col-md-2 row mr-2 border-right">
+                                <span class="col-sm-12">
+                                    <b>Código</b>:&nbsp;
+                                </span>
+                                <span class="col-sm-12" th:text="${empleado.codigo}"></span>
+                            </div>
+                            <div class="col-md-2 row mr-2">
+                                <span class="col-sm-12">
+                                    <b>Nombres</b>:&nbsp;
+                                </span>
+                                <span class="col-sm-12">
+                                    <span th:text="${empleado.nombrePrimero}"></span>
+                                    &nbsp;
+                                    <span th:text="${empleado.nombreSegundo}"></span>
+                                </span>
+                            </div>
+                            <div class="col-md-2 row mr-2 border-right">
+                                <span class="col-sm-12">
+                                    <b>Apellidos</b>:&nbsp;
+                                </span>
+                                <span class="col-sm-12">
+                                    <span th:text="${empleado.apellidoPaterno}"></span>
+                                    &nbsp;
+                                    <span th:text="${empleado.apellidoCasada != null} ? ${empleado.apellidoCasada} : ${empleado.apellidoMaterno}"></span>
+                                </span>
+                            </div>
+                            <div class="col-md-2 row mr-2 border-right">
+                                <span class="col-sm-12">
+                                    <b>Estado Civil</b>:&nbsp;
+                                </span>
+                                <span class="col-sm-12">
+                                    <span th:text="${empleado.estadoCivil.estadoCivil != null} ? ${empleado.estadoCivil.estadoCivil} : 'No Asignado'"></span>
+                                </span>
+                            </div>
+                            <div class="col-md-2 row mr-2 border-right">
+                                <span class="col-sm-12">
+                                    <b>Edad</b>:&nbsp;
+                                </span>
+                                <span class="col-sm-12">
+                                    <span th:text="${edad}"></span><span>&nbsp;Años</span>
+                                </span>
+                            </div>
+                            <div class="col-md-2 row">
+                                <span class="col-sm-12">
+                                    <b>Genero</b>:&nbsp;
+                                </span>
+                                <span class="col-sm-12">
+                                    <span th:text="${empleado.genero.genero != null} ? ${empleado.genero.genero} : 'No Asignado'"></span>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="w-100 mt-3 row text-center border-top pt-2">
+                            <div class="col-md-6 row mr-2 border-right">
+                                <span class="col-sm-12 text-center">
+                                    <b>Dirección</b>:&nbsp;
+                                </span>
+                                <span class="col-sm-12" th:text="${empleado.direccion.toString()}"></span>
+                            </div>
+                            <div class="col-md-3 row mr-2 border-right">
+                                <span class="col-sm-12">
+                                    <b>Correo Personal</b>:&nbsp;
+                                </span>
+                                <span class="col-sm-12">
+                                    <span th:text="${empleado.correoPersonal !=''} ? ${empleado.correoPersonal} : 'No Asignado'"></span>
+                                </span>
+                            </div>
+                            <div class="col-md-3 row">
+                                <span class="col-sm-12">
+                                    <b>Profesión</b>:&nbsp;
+                                </span>
+                                <span class="col-sm-12">
+                                    <span th:text="${empleado.profesionesEmpleado.get(0).getProfesion().getProfesion() != null} ? ${empleado.profesionesEmpleado.get(0).getProfesion().getProfesion()} : 'No Asignado'"></span>
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <hr>
+
+                    <!-- Documentos Principales de Empleado -->
+                    <div class="w-100 mt-3 row">
+                        <div class="w-100 border-bottom pb-2 text-info"><h5><b>Documentos Principales</b></h5></div>
+                        <div class="w-100 mt-2 row text-center">
+
+                            <div class="col-md-3 row mr-2 border-right">
+                                <span class="col-sm-12">
+                                    <b>DUI</b>:&nbsp;
+                                </span>
+                                <span class="col-sm-12">
+                                    <span th:text="${dui != ''} ? ${dui} : 'No Asignado'"></span>
+                                </span>
+                            </div>
+
+                            <div class="col-md-3 row mr-2 border-right">
+                                <span class="col-sm-12">
+                                    <b>NIT</b>:&nbsp;
+                                </span>
+                                <span class="col-sm-12">
+                                    <span th:text="${nit != ''} ? ${nit} : 'No Asignado'"></span>
+                                </span>
+                            </div>
+
+                            <div class="col-md-3 row mr-2 border-right">
+                                <span class="col-sm-12">
+                                    <b>NUP</b>:&nbsp;
+                                </span>
+                                <span class="col-sm-12">
+                                    <span th:text="${nup != ''} ? ${nup} : 'No Asignado'"></span>
+                                </span>
+                            </div>
+                            <div class="col-md-3 row">
+                                <span class="col-sm-12">
+                                    <b>ISSS</b>:&nbsp;
+                                </span>
+                                <span class="col-sm-12">
+                                    <span th:text="${isss != ''} ? ${isss} : 'No Asignado'"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+
+                    <!-- Datos de Empleado en la Empresa -->
+                    <div class="w-100 mt-3 row">
+                        <div class="w-100 border-bottom pb-2 text-info"><h5><b>Información sobre Empleado en la Empresa</b></h5></div>
+                        <div class="w-100 mt-2 row text-center">
+
+                            <div class="col-md-3 row mr-2 border-right">
+                                <span class="col-sm-12">
+                                    <b>Unidad</b>:&nbsp;
+                                </span>
+                                <span class="col-sm-12">
+                                    <span th:text="${unidad != ''} ? ${unidad} : 'No Asignado'"></span>
+                                </span>
+                            </div>
+
+                            <div class="col-md-3 row mr-2 border-right">
+                                <span class="col-sm-12">
+                                    <b>Puesto</b>:&nbsp;
+                                </span>
+                                <span class="col-sm-12">
+                                    <span th:text="${puesto != null} ? ${puesto.getPuesto()} : 'No Asignado'"></span>
+                                </span>
+                            </div>
+
+                            <div class="col-md-3 row mr-2 border-right">
+                                <span class="col-sm-12">
+                                    <b>Tipo de Puesto</b>:&nbsp;
+                                </span>
+                                <span class="col-sm-12">
+                                    <span th:if="${puesto != null}">
+                                        <span th:if="${puesto.esAdministrativo == true}">Administrativo</span>
+                                        <span th:unless="${puesto.esAdministrativo == true}">Vendedor</span>
+                                    </span>
+                                    <span th:unless="${puesto != null}">No asignado</span>
+
+                                </span>
+                            </div>
+
+                            <div class="col-md-3 row">
+                                <span class="col-sm-12">
+                                    <b>Jefe Inmediato</b>:&nbsp;
+                                </span>
+                                <span class="col-sm-12">
+                                    <span th:text="${jefe != null} ? ${jefe.getNombrePrimero()+' '+jefe.getApellidoPaterno()} : 'No Asignado'"></span>
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
+                    <hr>
+
+                    <!-- Detalle de Pago -->
+                    <div class="w-100 mt-3 row">
+
+                        <div class="col-md-12 border-bottom pb-2 text-info"><h5><b>Detalles de pago</b></h5></div>
+                        <span class="col-md-12 my-3">
+                            <b>Horas Diarias de Trabajo:</b>&nbsp;
+                            <span th:text="${empleado.horasTrabajo}"></span>&nbsp;Horas
+                        </span>
+
+                        <div class="col-md-12 row">
+
+                            <!-- Card de Ingresos -->
+                            <div class="card col-md-6 ">
+                                <div class="card-header text-center text-gray">
+                                    <h5><b>Remuneraciones e Ingresos</b></h5>
+                                </div>
+                                <div class="card-body row">
+                                    <!-- Salario Base Mensual -->
+                                    <span class="col-md-12 border-bottom pb-2">
+                                        <b>Salario Base Mensual:</b>&nbsp;$
+                                        <span th:text="${empleado.salarioBaseMensual}"></span>
+                                    </span>
+                                    <!-- Dias Festivos Laborados -->
+                                    <span class="col-md-12 py-2 px-0 border-bottom">
+                                        <ul class="list-group">
+                                            <li class="list-group-item text-info my-1 py-0 px-2 border-0">
+                                                <b>Dias Festivos Laborados</b>
+                                            </li>
+                                            <li class="list-group-item border-0 my-1 py-0 px-2" th:each="festivoPlanilla: ${festivosPlanilla}">
+                                                <span th:text="${festivoPlanilla.diaFestivo.getDiaDescripcion()}"></span>
+                                            </li>
+                                            <li class="list-group-item border-0 my-1 py-0 px-2" th:if="${#lists.isEmpty(festivosPlanilla)}">
+                                                El empleado no laboró días feriados en este periodo
+                                            </li>
+                                        </ul>
+                                        <span class="my-2 py-1 px-2" th:if="${!#lists.isEmpty(festivosPlanilla)}">
+                                            <b>Monto por Días Festivos Laborados:</b>&nbsp;$
+                                            <span th:text="${planilla.getMontoDiasFestivos()}"></span>
+                                        </span>
+                                    </span>
+                                    <!-- Horas Extras Laboradas -->
+                                    <span class="col-md-12 py-2 px-0 border-bottom">
+                                        <ul class="list-group">
+                                            <li class="list-group-item text-info my-1 py-0 px-2 border-0">
+                                                <b>Horas Extras Laboradas</b>
+                                            </li>
+                                            <li class="list-group-item border-0 my-1 py-0 px-2">
+                                                Horas Extra Diurnas:&nbsp;<span th:text="${planilla.getHorasExtraDiurnas()}"></span>
+                                            </li>
+                                            <li class="list-group-item border-0 my-1 py-0 px-2">
+                                                Horas Extra Nocturnas:&nbsp;<span th:text="${planilla.getHorasExtraNocturnas()}"></span>
+                                            </li>
+                                        </ul>
+                                        <span class="my-2 py-1 px-2">
+                                            <b>Monto por Horas extras Laboradas:</b>&nbsp;$
+                                            <span th:text="${#numbers.formatDecimal(planilla.getMontoHorasExtra(),1,2,'POINT')}"></span>
+                                        </span>
+                                    </span>
+                                    <!-- Monto por Venta, solo si puesto de empleado no es administrativo -->
+                                    <span class="col-md-12 py-2 px-0 border-bottom" th:if="${puesto!=null && puesto.esAdministrativo!=true}">
+                                        <ul class="list-group">
+                                            <li class="list-group-item text-info my-1 py-0 px-2 border-0">
+                                                <b>Ventas Realizadas</b>
+                                            </li>
+                                            <li class="list-group-item border-0 my-1 py-0 px-2">
+                                                Monto de Ventas Realizadas:&nbsp;$&nbsp;<span th:text="${planilla.getMontoVentas()}"></span>
+                                            </li>
+                                        </ul>
+                                        <span class="my-2 py-1 px-2">
+                                            <b>Monto por Comisión de Ventas Realizadas:</b>&nbsp;$
+                                            <span th:text="${#numbers.formatDecimal(planilla.getMontoComision(),1,2,'POINT')}"></span>
+                                        </span>
+                                    </span>
+                                    <!-- Otros Ingresos -->
+                                    <span class="col-md-12 py-2 px-0 border-bottom">
+                                        <ul class="list-group">
+                                            <li class="list-group-item text-info my-1 py-0 px-2 border-0">
+                                                <b>Otros Ingresos</b>
+                                            </li>
+                                            <li class="list-group-item border-0 my-1 py-0 px-2" th:each="movimientoIngreso: ${movimientosIngreso}">
+                                                <span th:text="${movimientoIngreso.getTipoMovimiento().getMovimiento()}"></span>:&nbsp;$
+                                                <span th:text="${movimientoIngreso.getMontoMovimiento()}"></span>
+                                            </li>
+                                            <li class="list-group-item border-0 my-1 py-0 px-2" th:if="${#lists.isEmpty(movimientosIngreso)}">
+                                                El empleado no cuenta con otros ingresos
+                                            </li>
+                                        </ul>
+                                        <span class="my-2 py-1 px-2" th:if="${!#lists.isEmpty(movimientosIngreso)}">
+                                            <b>Monto Total por Otros Ingresos:</b>&nbsp;$
+                                            <span th:text="${#numbers.formatDecimal(totalMovimientosIngreso,1,2,'POINT')}"></span>
+                                        </span>
+                                    </span>
+                                    <!-- Total Ingresos -->
+                                    <span class="col-md-12 py-3 text-center">
+                                        <b>Total de Ingresos:</b>&nbsp;$
+                                        <span th:text="${#numbers.formatDecimal(totalIngresos,1,2,'POINT')}"></span>
+                                    </span>
+
+                                </div>
+                            </div>
+
+                            <!-- Card de Descuentos -->
+                            <div class="card col-md-6">
+                                <div class="card-header text-center text-gray">
+                                    <h5><b>Aportes y Descuentos</b></h5>
+                                </div>
+                                <div class="card-body row">
+                                    <!-- Descuentos Fijos -->
+                                    <span class="col-md-12 px-0 border-bottom">
+                                        <ul class="list-group">
+                                            <li class="list-group-item text-info my-1 py-0 px-2 border-0">
+                                                <b>Descuentos Fijos</b>
+                                            </li>
+                                            <li class="list-group-item border-0 my-1 py-0 px-2" th:each="movimientoDescuentoFijo: ${movimientosDescuentoFijo}">
+                                                <span th:text="${movimientoDescuentoFijo.getTipoMovimiento().getMovimiento()}"></span>:&nbsp;$
+                                                <span th:text="${movimientoDescuentoFijo.getMontoMovimiento()}"></span>
+                                            </li>
+                                            <li class="list-group-item border-0 my-1 py-0 px-2" th:if="${#lists.isEmpty(movimientosDescuentoFijo)}">
+                                                No se le han asignado descuentos fijos al empleado
+                                            </li>
+                                        </ul>
+                                        <span class="my-2 py-1 px-2" th:if="${!#lists.isEmpty(movimientosDescuentoFijo)}">
+                                            <b>Monto Total de Descuentos Fijos:</b>&nbsp;$
+                                            <span th:text="${#numbers.formatDecimal(totalMovimientosDescuentoFijo,1,2,'POINT')}"></span>
+                                        </span>
+                                    </span>
+                                    <!-- Renta -->
+                                    <span class="col-md-12 py-2 px-0 border-bottom">
+                                        <ul class="list-group">
+                                            <li class="list-group-item text-info my-1 py-0 px-2 border-0">
+                                                <b>Renta</b>
+                                            </li>
+                                            <li class="list-group-item border-0 my-1 py-0 px-2">
+                                                Porcentaje de Renta:&nbsp;10%
+                                            </li>
+                                        </ul>
+                                        <span class="my-2 py-1 px-2">
+                                            <b>Total de Renta</b>&nbsp;$
+                                            <span th:text="${#numbers.formatDecimal(planilla.getRenta(),1,2,'POINT')}"></span>
+                                        </span>
+                                    </span>
+                                    <!-- Otros Descuentos -->
+                                    <span class="col-md-12 px-0 border-bottom">
+                                        <ul class="list-group">
+                                            <li class="list-group-item text-info my-1 py-0 px-2 border-0">
+                                                <b>Otros Descuentos</b>
+                                            </li>
+                                            <li class="list-group-item border-0 my-1 py-0 px-2" th:each="movimientoDescuento: ${movimientosDescuento}">
+                                                <span th:text="${movimientoDescuento.getTipoMovimiento().getMovimiento()}"></span>:&nbsp;$
+                                                <span th:text="${movimientoDescuento.getMontoMovimiento()}"></span>
+                                            </li>
+                                            <li class="list-group-item border-0 my-1 py-0 px-2" th:if="${#lists.isEmpty(movimientosDescuento)}">
+                                                No se le han asignado otros descuentos al empleado
+                                            </li>
+                                        </ul>
+                                        <span class="my-2 py-1 px-2" th:if="${!#lists.isEmpty(movimientosDescuento)}">
+                                            <b>Monto Total de Otros Descuentos:</b>&nbsp;$
+                                            <span th:text="${#numbers.formatDecimal(totalMovimientosDescuento,1,2,'POINT')}"></span>
+                                        </span>
+                                    </span>
+                                    <!-- Total Ingresos -->
+                                    <span class="col-md-12 py-3 text-center">
+                                        <b>Total de Descuentos:</b>&nbsp;$
+                                        <span th:text="${#numbers.formatDecimal(totalDescuentos,1,2,'POINT')}"></span>
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                    <hr>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section layout:fragment="scripts">
+
+    <script th:src="@{/plugins/datatables/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
+    <script th:src="@{/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
+    <script th:src="@{/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
+
+    <script th:src="@{/plugins/toastr/toastr.min.js}"></script>
+    <script th:src="@{/plugins/sweetalert2/sweetalert2.min.js}"></script>
+
+    <script th:src="@{/js/datatable/datatable.js}"></script>
+
+</section>
+
+</body>
+</html>

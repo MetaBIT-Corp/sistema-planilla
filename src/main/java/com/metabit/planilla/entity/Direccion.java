@@ -95,6 +95,9 @@ public class Direccion {
 	public void setMunicipio(Municipio municipio) {
 		this.municipio = municipio;
 	}
-	
-		
+
+	@Override
+	public String toString() {
+		return urbanizacion+", "+calle+", "+numeroCasa+". Complemento: "+complemento+".";
+	}
 }

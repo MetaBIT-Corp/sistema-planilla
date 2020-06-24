@@ -48,6 +48,11 @@ public class PlanillaServiceImpl implements PlanillaService {
 	}
 
 	@Override
+	public Planilla getPlanilla(int id_planilla) {
+		return planillaJpaRepository.findById(id_planilla).get();
+	}
+
+	@Override
 	public String showMessage(String p_message) {
 		return planillaJpaRepository.showMessage(p_message);
 	}
@@ -62,7 +67,11 @@ public class PlanillaServiceImpl implements PlanillaService {
 	public String pagarPlanilla(int idUnidadOrganizacional) {
 		return planillaJpaRepository.pagarPlanilla(idUnidadOrganizacional);
 	}
-	
-	
-	
+
+	@Override
+	public List<Planilla> findByPeriodo(Periodo periodo) {
+		return planillaJpaRepository.findByPeriodo(periodo);
+	}
+
+
 }
