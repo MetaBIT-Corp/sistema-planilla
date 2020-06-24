@@ -106,7 +106,14 @@
 												<i class="fas fa-clipboard-list"></i>&nbsp;&nbsp;Generar Planillas
 											</button>
 										</th:block>
-										<a class="btn btn-sm btn-info"
+										<a class="btn btn-sm btn-secondary"
+										   th:if="${periodo.fechaFinal.isBefore(local_date) || periodo.activo}"
+										   title="Ver Planillas del Periodo"
+										   th:href="@{/periodo/index/{id}(id=${periodo.idPeriodo})}">
+											<i class="fas fa-list"></i>&nbsp;&nbsp;Ver Planillas
+										</a>
+										<a class="btn btn-sm btn-secondary disabled"
+										   th:unless="${periodo.fechaFinal.isBefore(local_date) || periodo.activo}"
 										   title="Ver Planillas del Periodo"
 										   th:href="@{/periodo/index/{id}(id=${periodo.idPeriodo})}">
 											<i class="fas fa-list"></i>&nbsp;&nbsp;Ver Planillas

@@ -206,13 +206,13 @@ $(document).ready(function(){
         toastr.success("Tipo de Documento editado con éxito");
     }
     if(enable === 'true'){
-        toastr.info("Tipo Documento habilitado");
+        toastr.success("Tipo Documento habilitado");
     }
     if(disable === 'true'){
-        toastr.error("Tipo Documento deshabilitado");
+        toastr.success("Tipo Documento deshabilitado");
     }
     if(delet === 'true'){
-        toastr.error("Tipo Documento eliminado");
+        toastr.success("Tipo Documento eliminado");
     }
 
     if(delet === 'false'){

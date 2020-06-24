@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="delete_modal">
+
+    <!-- Modal para confirmar eliminacion de Municipio -->
+    <div class="modal" id="municipioModalDestroy" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+
+                <!-- Header del Modal -->
+                <div class="modal-header">
+                    <h5 class="modal-title">Eliminar Municipio</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <!-- Formulario para confirmar eliminación de Municipio -->
+                <form method="post" th:action="@{/municipio/destroy}">
+
+                    <!-- Body del Modal -->
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <strong><span id="destroyMessage"></span></strong><br>
+                            <span id="destroyInfoMessage"></span>
+                            <input type="hidden" class="form-control" id="idMunicipioInputDestroy" name="idMunicipioDestroy">
+                            <input type="hidden" th:value="${departamento.getIdDepartamento()}" class="form-control" id="idDepartamentoInputDestroy" name="idDepartamentoDestroy">
+                        </div>
+                    </div>
+
+                    <!-- Footer del Modal -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

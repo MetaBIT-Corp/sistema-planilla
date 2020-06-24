@@ -33,4 +33,19 @@ public class MunicipioServiceImpl implements MunicipioService{
 		return municipioJpaRepository.findByDepartamento(departamento);
 	}
 
+	@Override
+	public Municipio storeMunicipio(Municipio municipio) {
+		return municipioJpaRepository.save(municipio);
+	}
+
+	@Override
+	public Municipio updateMunicipio(Municipio municipio) {
+		return municipioJpaRepository.save(municipio);
+	}
+
+	@Override
+	public void deleteMunicipio(int idMunicipio) {
+		municipioJpaRepository.deleteById(idMunicipio);
+	}
+
 }

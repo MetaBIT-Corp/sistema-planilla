@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div th:fragment="municipio_modal">
+
+    <!-- Modal para registro/edición/consulta de Municipio -->
+    <div class="modal" id="municipioModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+
+                <!-- Header del Modal -->
+                <div class="modal-header">
+                    <h5 class="modal-title" id="municipioModalTitle"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <!-- Formulario para registro/edición/consulta de Municipio -->
+                <form id="municipioForm" method="post" th:action="@{/municipio/store}" th:object="${municipioEntity}">
+
+                    <!-- Body del Modal -->
+                    <div class="modal-body">
+
+                        <div class="form-group d-none">
+                            <label for="idMunicipioInput">ID de Municipio</label>
+                            <input type="text" th:field="*{idMunicipio}" class="form-control" id="idMunicipioInput" placeholder="ID de Municipio">
+                            <label for="idDepartamentoInput">ID de Departamento</label>
+                            <input type="text" th:value="${departamento.getIdDepartamento()}" class="form-control" id="idDepartamentoInput" name="idDepartamento" placeholder="ID de Municipio">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="municipioInput">Nombre *</label>
+                            <input type="text" th:field="*{municipio}" class="form-control" id="municipioInput" placeholder="Nombre de Municipio">
+                        </div>
+
+                        <!-- Sección para mostrar errores dinámicamente -->
+                        <div id="errorDiv">
+                            <p class="my-0"><i class="fas fa-exclamation-circle mr-2"></i><strong>Por favor, corregir los siguientes errores:</strong></p>
+                            <ul id="errorUl" class="mb-0">
+                            </ul>
+                        </div>
+
+                    </div>
+
+                    <!-- Footer del Modal -->
+                    <div class="modal-footer">
+                        <button type="button" id="municipioCancelarBtn" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" id="municipioSubmitBtn" class="btn btn-primary">Editar</button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

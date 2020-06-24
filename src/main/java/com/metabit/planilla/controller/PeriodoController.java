@@ -168,6 +168,8 @@ public class PeriodoController {
         float totalDescuentos = (float) (
                 planilla.getRenta()+totalMovimientosDescuentoFijo+totalMovimientosDescuento);
 
+        float salarioNeto = totalIngresos-totalDescuentos;
+
         ModelAndView modelAndView = new ModelAndView("periodo/boleta");
         modelAndView.addObject("periodo",periodo);
         modelAndView.addObject("planilla",planilla);
@@ -194,6 +196,7 @@ public class PeriodoController {
 
         modelAndView.addObject("totalIngresos",totalIngresos);
         modelAndView.addObject("totalDescuentos",totalDescuentos);
+        modelAndView.addObject("salarioNeto",salarioNeto);
 
         return modelAndView;
 

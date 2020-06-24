@@ -56,10 +56,16 @@
                                    th:if="${edit == true}" th:attr="data-id=${depto.idDepartamento}">
                                     <i class="fas fa-pen"></i>
                                 </a>&nbsp;
+                                <a class="btn btn-outline-info btn-sm"
+                                   th:href="@{/municipio/index/{id}(id=${depto.idDepartamento})}"
+                                   title="Ver Municipios del Departamento">
+                                    <i class="fas fa-map-marked-alt"></i>
+                                </a>&nbsp;
                                 <a class="btn btn-danger btn-sm delete-depto" title="Eliminar Unidad Organizacional"
                                    th:if="${delete == true}" th:attr="data-id=${depto.idDepartamento}">
                                     <i class="far fa-trash-alt"></i>
                                 </a>&nbsp;
+
                             </td>
                         </tr>
                         </tbody>

@@ -103,7 +103,7 @@ $(document).ready(function(){
         toastr.success("Rol editado con éxito");
     }
     if(delet === 'true'){
-        toastr.error("Rol eliminado con éxito");
+        toastr.success("Rol eliminado con éxito");
     }
     if(delet === 'false'){
         toastr.warning("Rol no se puede eliminar. Ya ha sido asignado a uno o más usuarios");

@@ -27,7 +27,20 @@ public class Municipio {
 	@JsonIgnore
 	Departamento departamento;
 
-	
+	public Municipio() {
+	}
+
+	public Municipio(int idMunicipio, String municipio) {
+		this.idMunicipio = idMunicipio;
+		this.municipio = municipio;
+	}
+
+	public Municipio(int idMunicipio, String municipio, Departamento departamento) {
+		this.idMunicipio = idMunicipio;
+		this.municipio = municipio;
+		this.departamento = departamento;
+	}
+
 	public int getIdMunicipio() {
 		return idMunicipio;
 	}

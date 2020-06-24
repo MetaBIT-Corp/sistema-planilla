@@ -148,13 +148,13 @@ $(document).ready(function(){
         toastr.success("Profesión editada con éxito");
     }
     if(enable === 'true'){
-        toastr.info("Profesión habilitada");
+        toastr.success("Profesión habilitada");
     }
     if(disable === 'true'){
-        toastr.error("Profesión deshabilitada");
+        toastr.success("Profesión deshabilitada");
     }
     if(delet === 'true'){
-        toastr.error("Profesión eliminada con éxito");
+        toastr.success("Profesión eliminada con éxito");
     }
     if(delet === 'false'){
         toastr.warning("Profesión no se puede eliminar. Ya ha sido asignada a uno o más empleados");

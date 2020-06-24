@@ -104,7 +104,7 @@ $(document).ready(function(){
         toastr.success("Privilegio editado con éxito");
     }
     if(delet === 'true'){
-        toastr.error("Privilegio eliminado con éxito");
+        toastr.success("Privilegio eliminado con éxito");
     }
     if(delet === 'false'){
         toastr.warning("Privilegio no se puede eliminar. Ya ha sido asignado a uno o más roles");

@@ -104,7 +104,7 @@ $(document).ready(function(){
         toastr.success("Recurso editado con éxito");
     }
     if(delet === 'true'){
-        toastr.error("Recurso eliminado con éxito");
+        toastr.success("Recurso eliminado con éxito");
     }
     if(delet === 'false'){
         toastr.warning("Recurso no se puede eliminar. Ya ha sido asignado a uno o más roles");
