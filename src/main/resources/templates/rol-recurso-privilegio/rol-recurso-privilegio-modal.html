@@ -48,9 +48,16 @@
                                     </th>
                                 </tr>
                                 </thead>
-                                <tbody class="border">
+                                <tbody>
                                 <tr th:each="privilegio:${privilegios}" class="row">
-                                    <td class="align-middle text-right my-0 py-0 col-sm-6">
+                                    <td class="text-left ml-3 py-0 col-sm-12">
+                                        <input
+                                                type="checkbox"
+                                                class="checkboxPrivilegio"
+                                                th:attr="
+                                            id='checkbox'+${privilegio.idPrivilegio},
+                                            value=${privilegio.idPrivilegio},
+                                            data-id-privilegio=${privilegio.idPrivilegio}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                         <label
                                             class="text-decoration-none"
                                             th:attr="
@@ -58,14 +65,14 @@
                                             th:text="${privilegio.privilegio}">
                                         </label>
                                     </td>
-                                    <td class="align-middle text-left my-0 py-0 col-sm-6">
-                                        <input
-                                            type="checkbox"
-                                            class="checkboxPrivilegio"
-                                            th:attr="
-                                            id='checkbox'+${privilegio.idPrivilegio},
-                                            value=${privilegio.idPrivilegio},
-                                            data-id-privilegio=${privilegio.idPrivilegio}">
+                                </tr>
+                                <tr th:if="${!#lists.isEmpty(privilegios)}" class="row">
+                                    <td class="text-left ml-3 py-0 col-sm-12">
+                                        <input type="checkbox" id="checkTodos">&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <label for="checkTodos" class="text-info" id="lblCheckTodos">
+                                            Marcar todos los Privilegios
+                                        </label>
+
                                     </td>
                                 </tr>
                                 </tbody>
@@ -188,11 +195,11 @@
                             <strong><span id="destroyMessage"></span></strong><br>
                             <span id="destroyInfoMessage"></span>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group d-none">
                             <label for="idRolDestroyInput">ID de Rol</label>
                             <input type="text" id="idRolDestroyInput" name="idRolDestroy" class="form-control" placeholder="ID de Rol">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group d-none">
                             <label for="idRecursoDestroyInput">ID de Recurso</label>
                             <input type="text" id="idRecursoDestroyInput" name="idRecursoDestroy" class="form-control" placeholder="ID de Recurso">
                         </div>

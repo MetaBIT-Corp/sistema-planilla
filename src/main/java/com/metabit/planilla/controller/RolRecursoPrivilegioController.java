@@ -49,7 +49,9 @@ public class RolRecursoPrivilegioController extends BaseController{
     private static final String INDEX_VIEW = "rol-recurso-privilegio/index";
 
     @GetMapping("/index/{id}")
-    public ModelAndView index(@PathVariable(value = "id", required = true) int idRol, Model model){
+    public ModelAndView index(@PathVariable(value = "id", required = true) int idRol, Model model,
+                              @RequestParam(name="store_success", required=false) String store_success,
+                              @RequestParam(name="delete_success", required=false) String delete_success){
 
         Rol rol = rolService.getByIdRol(idRol);
         List<Recurso> recursos = recursoService.getRolRecursos(idRol);
@@ -59,6 +61,9 @@ public class RolRecursoPrivilegioController extends BaseController{
         modelAndView.addObject("rol", rol);
         modelAndView.addObject("recursos", recursos);
         modelAndView.addObject("privilegios", privilegios);
+
+        model.addAttribute("store_success", store_success);
+        model.addAttribute("delete_success", delete_success);
 
         model.addAttribute("rolRecursoPrivilegioEntity", new RolRecursoPrivilegio());
 

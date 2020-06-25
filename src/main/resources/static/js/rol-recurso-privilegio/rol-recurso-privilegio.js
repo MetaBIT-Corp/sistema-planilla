@@ -2,6 +2,30 @@ $(document).ready(function(){
 
     $('#errorDiv').hide();
 
+    /* Manejador de Eventos en seleccionar todos los Privilegios*/
+    $('#checkTodos').change(function() {
+
+        var checkboxes = $(this).closest('form').find(':checkbox').not($(this));
+        checkboxes.prop('checked', $(this).is(':checked'));
+        var input = $("#idsPrivilegiosAsignacionInput");
+
+        if($(this).is(':checked')){
+            $("#lblCheckTodos").text("Desmarcar todos los Privilegios")
+        }else{
+            $("#lblCheckTodos").text("Marcar todos los Privilegios")
+        }
+
+
+
+        input.val("");
+
+        $('.checkboxPrivilegio').each(function(i, obj) {
+            if($(this).is(":checked")){
+                input.val(input.val()+$(this).data("idPrivilegio")+"|");
+            }else{}
+        });
+    });
+
     /* Manejadores de eventos para asignar Recursos a un Rol */
 
     $('#rolRecursoAsignarModal').on("show.bs.modal", function(event) {
@@ -98,7 +122,7 @@ $(document).ready(function(){
                     }
 
                     var li = document.createElement('li');
-                    var contentLi = document.createTextNode("Ingrese los privilegios a asignar.");
+                    var contentLi = document.createTextNode("Debe seleccionar un recurso y asignar uno o más privilegios");
                     li.appendChild(contentLi);
                     document.getElementById("errorUl").appendChild(li);
                 }
@@ -265,13 +289,28 @@ $(document).ready(function(){
         var recurso = link.data("recurso");
 
         modal.find(".modal-body #destroyMessage").text("¿Está seguro que desea eliminar los privilegios de '"+rol+"' sobre el recurso '"+recurso+"'?");
-        modal.find(".modal-body #destroyInfoMessage").text("Esta acción no es reversible");
+        modal.find(".modal-body #destroyInfoMessage").text("Eliminará todos los privilegios asignados al Rol sobre el Recurso. Esta acción no es reversible");
 
         modal.find(".modal-body #idRolDestroyInput").val(idRol);
         modal.find(".modal-body #idRecursoDestroyInput").val(idRecurso);
 
 
     });
+
+    var store = $('#store').val();
+    var delet = $('#delete').val();
+
+    setTimeout(function() {$(".alert").fadeOut();},3000);
+
+    if(store === 'true'){
+        toastr.success("Recurso y privilegios asignado al Rol con éxito");
+    }
+    if(delet === 'true'){
+        toastr.success("Recurso y privilegios eliminados del rol con éxito");
+    }
+    if(delet === 'false'){
+        toastr.warning("Recurso no se puede eliminar.");
+    }
 
 
 });
