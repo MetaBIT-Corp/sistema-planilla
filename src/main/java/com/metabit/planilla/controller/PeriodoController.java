@@ -87,20 +87,20 @@ public class PeriodoController {
         String isss = "";
 
         for (EmpleadoDocumento documento:documentos) {
-            //Obteniendo valor de DUI del empleado (TipoDocumento de DUI = 1)
-            if(documento.getTipoDocumento().getIdTipoDocumento()==1){
+            //Obteniendo valor de DUI del empleado (TipoDocumento de DUI = 500)
+            if(documento.getTipoDocumento().getIdTipoDocumento()==500){
                 dui = documento.getCodigoDocumento();
             }
-            //Obteniendo valor de NIT del empleado (TipoDocumento de NIT = 2)
-            if(documento.getTipoDocumento().getIdTipoDocumento()==2){
+            //Obteniendo valor de NIT del empleado (TipoDocumento de NIT = 501)
+            if(documento.getTipoDocumento().getIdTipoDocumento()==501){
                 nit = documento.getCodigoDocumento();
             }
-            //Obteniendo valor de NUP del empleado (TipoDocumento de NUP = 3)
-            if(documento.getTipoDocumento().getIdTipoDocumento()==3){
+            //Obteniendo valor de NUP del empleado (TipoDocumento de NUP = 502)
+            if(documento.getTipoDocumento().getIdTipoDocumento()==502){
                 nup = documento.getCodigoDocumento();
             }
-            //Obteniendo valor de ISSS del empleado (TipoDocumento de ISSS = 4)
-            if(documento.getTipoDocumento().getIdTipoDocumento()==4){
+            //Obteniendo valor de ISSS del empleado (TipoDocumento de ISSS = 503)
+            if(documento.getTipoDocumento().getIdTipoDocumento()==503){
                 isss = documento.getCodigoDocumento();
             }
         }
