@@ -58,9 +58,13 @@
 		                    <label for="">Desde*</label>
 						  	<input type="number" min="0" step="0.01" th:field="*{salarioMin}" class="form-control form-control-user" required>
 		                  </div>
-		                  <div class="col-sm-6">
-		                    <label for="">Hasta*</label>
-						  	<input type="number" min="0" step="0.01" th:field="*{salarioMax}" class="form-control form-control-user" required>
+		                  <div class="col-sm-6 row">
+		                    <label for="" class="mr-3">Hasta*</label>
+		                    <!--<div class="form-check">
+				                <input type="checkbox" name="sin_limite" th:field="*{salarioMax}" class="form-check-input" id="sm-seleccion" value="1000000000">
+				                <label class="form-check-label" for="exampleCheck1"><small class="form-text text-muted text-justify">Sin límite</small></label>
+				            </div>-->
+						  	<input type="number" min="0" step="0.01" th:field="*{salarioMax}" class="form-control form-control-user" id="idHasta" required>
 		                  </div>
 		                </div>
 
@@ -115,7 +119,15 @@
 
 		<!-- page script -->
 		<script>
-
+			/*$('#sm-seleccion').on('click', function(){
+				if($(this).prop('checked')){
+			    $('#sm-seleccion').prop('checked', true);
+			    $('#idHasta').prop('readonly', true);
+			  }else{
+			    $('#sm-seleccion').prop('checked', false);
+			    $('#idHasta').prop('readonly', false);
+			  }
+			})*/
 		</script>
 		<!-- Scripts-->
 	</section>

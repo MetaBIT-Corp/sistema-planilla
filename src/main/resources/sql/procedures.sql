@@ -1,8 +1,14 @@
-/*---PROCEDIMIENTO PARA ACTUALIZAR LOS TOTALES DE INGRESO Y DESCUENTO EN LA PLANILLA-----*/
+/* Procedimiento para actualizar los totales de ingreso y descuentos fijos de la planilla
+ * @parametro: id de la planilla a la que se actualizarán los ingresos y descuentos
+ * Realizado por: Enrique Menjívar
+ * Fecha de creación 04/06/2020
+ * Ultima modificación: 04/06/2020
+ * */
 CREATE OR REPLACE PROCEDURE planilla_update_movimientos (
     p_id_planilla_in IN NUMBER
 ) IS
 
+    --Se obtiene el total de ingresos fijos de la planilla indicada
     CURSOR cur_ingreso IS
     SELECT
         nvl(SUM(monto_movimiento), 0)
@@ -15,6 +21,7 @@ CREATE OR REPLACE PROCEDURE planilla_update_movimientos (
         AND es_fijo = 1
         AND es_descuento = 0;
 
+    --Se obtiene el total de descuentos fijos de la planilla indicada
     CURSOR cur_descuento IS
     SELECT
         nvl(SUM(monto_movimiento), 0)
@@ -27,14 +34,19 @@ CREATE OR REPLACE PROCEDURE planilla_update_movimientos (
         AND es_fijo = 1
         AND es_descuento = 1;
 
+    --Declararción de variables
     v_total_ingresos     planillas.total_ingresos%TYPE;
     v_total_descuentos   planillas.total_descuentos%TYPE;
 BEGIN
+    --Abriendo cursores
     OPEN cur_ingreso;
     OPEN cur_descuento;
+
+    --Copiando el valor de los cursores a las variables
     FETCH cur_ingreso INTO v_total_ingresos;
     FETCH cur_descuento INTO v_total_descuentos;
     
+    --Se actualiza la planilla con el total de ingresos y descuentos
     UPDATE planillas
     SET
         total_ingresos = v_total_ingresos,
@@ -42,8 +54,11 @@ BEGIN
     WHERE
         id_planilla = p_id_planilla_in;
 
+    --Se cierran los cursores
     CLOSE cur_ingreso;
     CLOSE cur_descuento;
+    
+    --Guardando los cambios
     COMMIT;
 END;
 ;;

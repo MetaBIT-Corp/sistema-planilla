@@ -36,7 +36,7 @@ public class AnioLaboralController {
 		ModelAndView mav = new ModelAndView(INDEX_VIEW);
 		
 		if(year==null) {
-			year=Calendar.getInstance().get(Calendar.YEAR);
+			year=anioLaboralService.getUltimoAnioLaboral();
 		}
 		
 		mav.addObject("years", anioLaboralService.getAllAniosLaborales());

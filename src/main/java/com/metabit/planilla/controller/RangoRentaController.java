@@ -52,7 +52,7 @@ public class RangoRentaController {
 	}
 	
 	@PostMapping("/store")
-	public String store(@Valid @ModelAttribute("rango_renta") RangoRenta rango_renta, BindingResult bindingResult, RedirectAttributes redirAttrs) {
+	public String store(@Valid @ModelAttribute("rango_renta") RangoRenta rango_renta, BindingResult bindingResult, /*@RequestParam("sin_limite") Integer sinLimite,*/ RedirectAttributes redirAttrs) {
 		List<RangoRenta> rangos_renta = rangoRentaService.getByPeriodicidad(rango_renta.getPeriodicidadRenta());
 		boolean valid_range = rangesValidate(rangos_renta, rango_renta);
 		boolean is_greater = rango_renta.getSalarioMax() > rango_renta.getSalarioMin();
@@ -68,6 +68,11 @@ public class RangoRentaController {
 			return "redirect:/rango-renta/create/";
 		}
 		
+		/*if(sinLimite != null) {
+			rango_renta.setSalarioMax(0);
+		}*/
+		
+		rango_renta.setRangoRentaHabilitado(true);
 		rangoRentaService.store(rango_renta);
 		
 		redirAttrs.addFlashAttribute("success_store", "success");

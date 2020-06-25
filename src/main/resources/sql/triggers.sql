@@ -1,4 +1,8 @@
- /*----TRIGGER PARA CREAR LOS PERIODOS CUANDO SE CREA UN ANIO LABORAL----*/
+  /*Trigger para crear los periodos después de haber insertado un año laboral
+ * Realizado por: Enrique Menjívar
+ * Fecha de creación 02/06/2020
+ * Ultima modificación: 02/06/2020
+ * */
 CREATE OR REPLACE TRIGGER CREAR_PERIODOS_AI AFTER
     INSERT ON anios_laborales
     FOR EACH ROW
@@ -8,20 +12,24 @@ DECLARE
     v_fecha_inicio   periodos.fecha_inicio%TYPE;
     v_fecha_final    periodos.fecha_final%TYPE;
 BEGIN
+    --Se obtiene el año actual
     SELECT
         to_char(sysdate, 'YYYY')
     INTO v_anio_actual
     FROM
         dual;
 
+    --Se obtiene el primer dia, del primer mes del año actual para empezar a generar los periodos desde esa fecha
     SELECT
         trunc(sysdate, 'YEAR')
     INTO v_fecha_inicio
     FROM
         dual;
 
+    --Se convierte a char la fehca en la que iniciaran los periodos
     v_anio_periodo := to_char(v_fecha_inicio, 'YYYY');
     
+    --Si la periodicidad es de 30 la fecha final será el último día del mes, si no esta será el 15 del mes
     IF :new.periodicidad = 30 THEN
         v_fecha_final := last_day(v_fecha_inicio);
     ELSE
@@ -29,8 +37,9 @@ BEGIN
     END IF;
 
     CASE
-        WHEN :new.periodicidad = 15 THEN
-            WHILE v_anio_actual = v_anio_periodo LOOP
+        WHEN :new.periodicidad = 15 THEN --Cuando la periodicidad sea quincenal (quincenal)
+            WHILE v_anio_actual = v_anio_periodo LOOP --Mientras el año en que se van generando los periodos sea igual al actual
+                --Se realiza la insersión del periodo
                 INSERT INTO periodos (
                     id_periodo,
                     fecha_inicio,
@@ -45,9 +54,13 @@ BEGIN
                     :new.id_anio_laboral
                 );
 
-                v_fecha_inicio := v_fecha_final + 1;
-                v_anio_periodo := to_char(v_fecha_inicio, 'YYYY');
+                v_fecha_inicio := v_fecha_final + 1; --La fecha de inicio del próximo periodo pasa a ser la fecha final más 1 día
+                v_anio_periodo := to_char(v_fecha_inicio, 'YYYY'); --Se obtiene el año del periodo recién insertado
                 
+                /*
+                Si la fecha de inicio del periodo es igual al primer día del mes, la fecha final del próximo periodo será el día 15
+                si no la fecha final del próximo periodo será el último día del mes
+                 */
                 IF v_fecha_inicio = trunc(v_fecha_inicio, 'MONTH') THEN
                     v_fecha_final := v_fecha_inicio + 14;
                 ELSE
@@ -55,8 +68,9 @@ BEGIN
                 END IF;
 
             END LOOP;
-        WHEN :new.periodicidad = 30 THEN
-            WHILE v_anio_actual = v_anio_periodo LOOP
+        WHEN :new.periodicidad = 30 THEN --Cuando la periodicidad es de 30 (mensual)
+            WHILE v_anio_actual = v_anio_periodo LOOP --Mientras el año en que se van generando los periodos sea igual al actual
+                --Se realiza la insersión del periodo
                 INSERT INTO periodos (
                     id_periodo,
                     fecha_inicio,
@@ -71,21 +85,26 @@ BEGIN
                     :new.id_anio_laboral
                 );
 
-                v_fecha_inicio := v_fecha_final + 1;
-                v_anio_periodo := to_char(v_fecha_inicio, 'YYYY');
-                v_fecha_final := last_day(v_fecha_inicio);
+                v_fecha_inicio := v_fecha_final + 1;       -- La fecha de inicio del próximo periodo será igual a la final más un día
+                v_anio_periodo := to_char(v_fecha_inicio, 'YYYY');  -- Se obtiene el año del periodo recién insertado
+                v_fecha_final := last_day(v_fecha_inicio);          -- La fecha final del próximo periodo será igual al último día del mes
             END LOOP;
     END CASE;
 END;
 ;;
 
-/*----TRIGGER PARA ACTUALIZAR EL SALARIO MÁXIMO DEL NIVEL MAYOR DE UN RANGO DE RENTA EN BASE A UNA PERIODICIDAD----*/
+/*Trigger para actualizar le salario máximo del nivel mayor de un rango de renta en base a la una periodicidad
+ * Realizado por: Enrique Menjívar
+ * Fecha de creación 18/06/2020
+ * Ultima modificación: 18/06/2020
+ * */
 CREATE OR REPLACE TRIGGER ACTUALIZAR_SALARIO_MAX_BI BEFORE
     INSERT ON rangos_renta
     FOR EACH ROW
 DECLARE
     v_salario_min rangos_renta.salario_min%TYPE;
 BEGIN
+    --Se obtiene el salario mínimos más alto en base a una periodicidad
     SELECT
         MAX(salario_min)
     INTO v_salario_min
@@ -94,7 +113,9 @@ BEGIN
     WHERE
         periodicidad_renta = :new.periodicidad_renta;
 
+    --Si el salario mínimos del nuevo rango es mayor que el salario mínimo más alto
     IF :new.salario_min > v_salario_min THEN
+        --Se actualiza el salario máximo del registro, poniendolo igual al salario mínimo del rango superior, menos un centavo
         UPDATE rangos_renta
         SET
             salario_max = :new.salario_min - 0.01
