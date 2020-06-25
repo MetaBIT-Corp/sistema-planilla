@@ -13,4 +13,5 @@ public interface TipoUnidadOrganizacionalJpaRepository extends JpaRepository<Tip
 	
 	public abstract List<TipoUnidadOrganizacional> findByTipoUnidadOrganizacionalHabilitado(Boolean estado);
 	public abstract TipoUnidadOrganizacional findByIdTipoUnidadOrganizacional(int id_tipo);
+	public abstract TipoUnidadOrganizacional findByNivelJerarquico(int nivel);
 }

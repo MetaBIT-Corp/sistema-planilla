@@ -45,8 +45,11 @@ public class TipoUnidadOrganizacionalController {
 	@PostMapping("/store")
 	public String store(@Valid @ModelAttribute("tipo_unidad_organizacional") TipoUnidadOrganizacional tuo, 
 			BindingResult bindingResult, RedirectAttributes redirAttrs) {
-		
-		if(bindingResult.hasErrors()) {
+			TipoUnidadOrganizacional tuo_nivel = tipoUnidadOrganizacionalService.getByNivelJerarquico(tuo.getNivelJerarquico());
+		if(bindingResult.hasErrors() || tuo_nivel != null) {
+			if(tuo_nivel != null) {
+				bindingResult.reject("nivel_duplicado", "Ya existe un tipo de unidad organizacional con este nivel jerarquico.");
+			}
 			redirAttrs.addFlashAttribute("errors", bindingResult.getAllErrors());
 			return "redirect:/tipo-unidad-organizacional/index";
 		}
