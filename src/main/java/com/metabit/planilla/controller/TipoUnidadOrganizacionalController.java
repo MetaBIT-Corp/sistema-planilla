@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +33,7 @@ public class TipoUnidadOrganizacionalController {
 	@Qualifier("tipoUnidadOrganizacionalServiceImpl")
 	private TipoUnidadOrganizacionalService tipoUnidadOrganizacionalService;
 	
+	@PreAuthorize("hasAuthority('TIPOUNIDADORGANIZACIONAL_INDEX')")
 	@GetMapping("/index")
 	public ModelAndView index() {
 		ModelAndView mav = new ModelAndView(INDEX_VIEW);
@@ -42,6 +44,7 @@ public class TipoUnidadOrganizacionalController {
 		return mav;
 	}
 	
+	@PreAuthorize("hasAuthority('TIPOUNIDADORGANIZACIONAL_CREATE')")
 	@PostMapping("/store")
 	public String store(@Valid @ModelAttribute("tipo_unidad_organizacional") TipoUnidadOrganizacional tuo, 
 			BindingResult bindingResult, RedirectAttributes redirAttrs) {
@@ -60,6 +63,7 @@ public class TipoUnidadOrganizacionalController {
 		return "redirect:/tipo-unidad-organizacional/index";
 	}
 	
+	@PreAuthorize("hasAuthority('TIPOUNIDADORGANIZACIONAL_EDIT')")
 	@PostMapping("/update")
 	public String update(@RequestParam Map<String,String> requestParams, RedirectAttributes redirAttrs) throws Exception {
 		List<String> errors = new ArrayList();
@@ -87,6 +91,7 @@ public class TipoUnidadOrganizacionalController {
 		return "redirect:/tipo-unidad-organizacional/index";
 	}
 	
+	@PreAuthorize("hasAuthority('TIPOUNIDADORGANIZACIONAL_DELETE')")
 	@PostMapping("/destroy")
 	public String destroy(@RequestParam Map<String,String> requestParams, RedirectAttributes redirAttrs) {
 		

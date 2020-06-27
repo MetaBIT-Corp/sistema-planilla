@@ -47,10 +47,12 @@
 			<div class="col-md-8 ">
 				<div class="card">
 	            <div class="card-header text-right">
-		            <button class="btn btn-sm btn-primary" title="Agregar Rango de Renta" id="add-tipo-unidad">
-						<i class="fas fa-plus-circle mr-1 text-white"></i>
-						<span class="text-white">Agregar Tipo de Unidad</span>
-					</button>
+	            	<th:block sec:authorize="hasAuthority('TIPOUNIDADORGANIZACIONAL_CREATE')">
+						<button class="btn btn-sm btn-primary" title="Agregar Rango de Renta" id="add-tipo-unidad">
+							<i class="fas fa-plus-circle mr-1 text-white"></i>
+							<span class="text-white">Agregar Tipo de Unidad</span>
+						</button>
+					</th:block>
 	              <h3 class="card-title"></h3>
 	            </div>
 					
@@ -69,18 +71,22 @@
 									<td class="tuo">[[ ${tuo.tipoUnidadOrganizacional} ]]</td>
 									<td class="nivel-tuo">[[ ${tuo.nivelJerarquico} ]]</td>
 									<td class="text-center">
-										<button class="btn btn-sm btn-primary mr-2" title="Editar" th:attr="data-edit-tuo=${tuo.idTipoUnidadOrganizacional}">
+										<th:block sec:authorize="hasAuthority('TIPOUNIDADORGANIZACIONAL_EDIT')">
+											<button class="btn btn-sm btn-primary mr-2" title="Editar" th:attr="data-edit-tuo=${tuo.idTipoUnidadOrganizacional}">
 											<i class="fas fa-pencil-alt"></i>
-										</button>
-										<th:block th:if="${tuo.tipoUnidadOrganizacionalHabilitado}">
+											</button>
+										</th:block>
+										<th:block sec:authorize="hasAuthority('TIPOUNIDADORGANIZACIONAL_DELETE')">
+											<th:block th:if="${tuo.tipoUnidadOrganizacionalHabilitado}">
 											<button class="btn btn-sm btn-danger mr-2" title="Deshabilitar" th:attr="data-change-state=${tuo.idTipoUnidadOrganizacional}, data-state=false">
 												<i class="fas fa-lock"></i>
 											</button>
-										</th:block>
-										<th:block th:unless="${tuo.tipoUnidadOrganizacionalHabilitado}">
-											<button class="btn btn-sm btn-success mr-2" title="Habilitar" th:attr="data-change-state=${tuo.idTipoUnidadOrganizacional}, data-state=true">
-												<i class="fas fa-unlock-alt"></i>
-											</button>
+											</th:block>
+											<th:block th:unless="${tuo.tipoUnidadOrganizacionalHabilitado}">
+												<button class="btn btn-sm btn-success mr-2" title="Habilitar" th:attr="data-change-state=${tuo.idTipoUnidadOrganizacional}, data-state=true">
+													<i class="fas fa-unlock-alt"></i>
+												</button>
+											</th:block>
 										</th:block>
 									</td>
 								</tr>

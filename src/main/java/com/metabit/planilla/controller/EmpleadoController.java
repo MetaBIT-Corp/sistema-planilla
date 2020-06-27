@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.metabit.planilla.entity.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,21 +35,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.metabit.planilla.entity.Direccion;
-import com.metabit.planilla.entity.Email;
-import com.metabit.planilla.entity.Empleado;
-import com.metabit.planilla.entity.EmpleadoDocumento;
-import com.metabit.planilla.entity.EmpleadoProfesion;
-import com.metabit.planilla.entity.EmpleadosPuestosUnidades;
-import com.metabit.planilla.entity.EstadoCivil;
-import com.metabit.planilla.entity.Genero;
-import com.metabit.planilla.entity.Municipio;
-import com.metabit.planilla.entity.Profesion;
-import com.metabit.planilla.entity.Puesto;
-import com.metabit.planilla.entity.Rol;
-import com.metabit.planilla.entity.TipoDocumento;
-import com.metabit.planilla.entity.UnidadOrganizacional;
-import com.metabit.planilla.entity.Usuario;
 import com.metabit.planilla.repository.UserJpaRepository;
 import com.metabit.planilla.service.DepartamentoService;
 import com.metabit.planilla.service.DireccionService;
@@ -153,11 +142,20 @@ public class EmpleadoController {
                               @RequestParam(name = "lock_success", required = false) String lock_success,
                               @RequestParam(name = "unlock_success", required = false) String unlock_success) {
         ModelAndView mav = new ModelAndView(INDEX_VIEW);
-        mav.addObject("empleados", empleadoService.getAllEmployees());
 
+        //Verificando si el usuario logueado posee los permisos para acceder a las funcionalidades (para mostrar botones)
+        String recurso = "EMPLEADO";
+        Boolean create = verifyResourcePrivileges("CREATE",recurso);
+        Boolean edit = verifyResourcePrivileges("EDIT",recurso);
+        Boolean delete = verifyResourcePrivileges("DELETE",recurso);
+
+        mav.addObject("empleados", empleadoService.getAllEmployees());
         model.addAttribute("lock_success", lock_success);
         model.addAttribute("unlock_success", unlock_success);
 
+        mav.addObject("create",create);
+        mav.addObject("edit",edit);
+        mav.addObject("delete",delete);
         return mav;
     }
 
@@ -948,5 +946,25 @@ public class EmpleadoController {
         
         return "redirect:/login";
         
+    }
+
+    private Usuario getUserLogueado() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetail = (UserDetails) auth.getPrincipal();
+        Usuario usuario = userJpaRepository.findByUsername(userDetail.getUsername());
+        return usuario;
+    }
+
+    private Boolean verifyResourcePrivileges(String privilegio, String recurso){
+        Usuario usuario = getUserLogueado();
+        for (Rol rol : rolService.getUserRoles(usuario.getIdUsuario())) {
+            for (RolRecursoPrivilegio rrp : rol.getRolesRecursosPrivilegios()) {
+                //SE VERIFICA SI TIENE EL RECURSO Y EL PRIVILEGIO REQUERIDO
+                if (rrp.getRecurso().getRecurso().equals(recurso)&&rrp.getPrivilegio().getPrivilegio().equals(privilegio)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

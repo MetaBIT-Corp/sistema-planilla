@@ -45,10 +45,12 @@
 			<div class="col-md-10 ">
 				<div class="card">
 	            <div class="card-header text-right">
-		            <a class="btn btn-sm btn-primary" title="Agregar Rango de Renta" th:href="@{/rango-renta/create}">
-						<i class="fas fa-plus-circle mr-1 text-white"></i>
-						<span class="text-white">Nuevo Rango de Renta</span>
-					</a>
+	            	<th:block sec:authorize="hasAuthority('RANGORENTA_INDEX')">
+						<a class="btn btn-sm btn-primary" title="Agregar Rango de Renta" th:href="@{/rango-renta/create}">
+							<i class="fas fa-plus-circle mr-1 text-white"></i>
+							<span class="text-white">Nuevo Rango de Renta</span>
+						</a>
+					</th:block>
 	              <h3 class="card-title"></h3>
 	            </div>
 					
@@ -80,19 +82,23 @@
 										<td th:case="7">Semanalmente</td>
 									</th:block>
 									<td class="text-center">
-										<a class="btn btn-sm btn-primary mr-2" title="Editar" th:href="@{/rango-renta/edit/{id}(id=${rango_renta.idRangoRenta})}">
-											<i class="fas fa-pencil-alt"></i>
-										</a>
-										<th:block th:if="${rango_renta.rangoRentaHabilitado}">
-											<button class="btn btn-sm btn-danger mr-2" title="Deshabilitar" th:attr="data-change-state=${rango_renta.idRangoRenta}, data-state=false">
-												<i class="fas fa-lock"></i>
-											</button>
+										<th:block sec:authorize="hasAuthority('RANGORENTA_EDIT')">
+											<a class="btn btn-sm btn-primary mr-2" title="Editar" th:href="@{/rango-renta/edit/{id}(id=${rango_renta.idRangoRenta})}">
+												<i class="fas fa-pencil-alt"></i>
+											</a>
 										</th:block>
-										<th:block th:unless="${rango_renta.rangoRentaHabilitado}">
-											<button class="btn btn-sm btn-success mr-2" title="Habilitar" th:attr="data-change-state=${rango_renta.idRangoRenta}, data-state=true">
-												<i class="fas fa-unlock-alt"></i>
-											</button>
-										</th:block>	
+										<th:block sec:authorize="hasAuthority('RANGORENTA_DELETE')">
+											<th:block th:if="${rango_renta.rangoRentaHabilitado}">
+												<button class="btn btn-sm btn-danger mr-2" title="Deshabilitar" th:attr="data-change-state=${rango_renta.idRangoRenta}, data-state=false">
+													<i class="fas fa-lock"></i>
+												</button>
+											</th:block>
+											<th:block th:unless="${rango_renta.rangoRentaHabilitado}">
+												<button class="btn btn-sm btn-success mr-2" title="Habilitar" th:attr="data-change-state=${rango_renta.idRangoRenta}, data-state=true">
+													<i class="fas fa-unlock-alt"></i>
+												</button>
+											</th:block>	
+										</th:block>
 									</td>
 								</tr>
 								<tr th:if="${#lists.isEmpty(rangos_renta)}">

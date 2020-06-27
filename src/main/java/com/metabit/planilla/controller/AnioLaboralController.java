@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +32,7 @@ public class AnioLaboralController {
 	
 	private static final String INDEX_VIEW = "anio-laboral/index";
 	
+	@PreAuthorize("hasAuthority('ANIOLABORAL_INDEX')")
 	@GetMapping(path = {"/index","/index/{year}"})
 	public ModelAndView index(@PathVariable(value = "year", required=false) Integer year) {
 		ModelAndView mav = new ModelAndView(INDEX_VIEW);
@@ -46,6 +48,7 @@ public class AnioLaboralController {
 		return mav;
 	}
 	
+	@PreAuthorize("hasAuthority('ANIOLABORAL_CREATE')")
 	@PostMapping("/store")
 	public String store(@RequestParam("anioLaboral") int al, @RequestParam("periodicidad") int periodicidad, RedirectAttributes redirAttrs) {
 		int current_year = Calendar.getInstance().get(Calendar.YEAR);

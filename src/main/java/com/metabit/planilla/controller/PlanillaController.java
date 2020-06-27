@@ -416,6 +416,7 @@ public class PlanillaController {
 		return "redirect:/planilla/show?planilla=" + planilla.getIdPlanilla() + "&updateDiasFestivos=true";
 	}
 
+	@PreAuthorize("hasAuthority('PLANILLA_CREATE')")
 	@PostMapping("/store")
 	public String store(@RequestParam(name =  "id_periodo", required = false) Integer id_periodo, RedirectAttributes redirAttrs) {
 		List<Empleado> empleados = empleadoService.getAllEmployees();
@@ -470,6 +471,7 @@ public class PlanillaController {
 		return "redirect:/anio-laboral/index";
 	}
 	
+	@PreAuthorize("hasAuthority('PLANILLA_INDEX')")
 	@GetMapping("/planillas-por-unidad")
 	public ModelAndView planillasPorUnidad() {
 		ModelAndView mav = new ModelAndView(PLANILLAS_POR_UNIDAD_VIEW);

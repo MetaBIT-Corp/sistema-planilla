@@ -65,6 +65,75 @@ BEGIN
 END;
 ;;
 
+/* Procedimiento para generar las planillas del periodo
+ * @parametro: id del periodo al que se le quieren generar las planillas
+ * Realizado por: Enrique Menjívar
+ * Fecha de creación 23/06/2020
+ * Ultima modificación: 23/06/2020
+ * */
+CREATE OR REPLACE PROCEDURE generar_planillas (
+    p_id_periodo_in IN NUMBER
+) IS
+
+    v_id_periodo     periodos.id_periodo%TYPE := p_id_periodo_in; --Almacena el periodo en el que se generarán las planilals
+    v_periodicidad   anios_laborales.periodicidad%TYPE; --Almacena la periodicidad del año laboral
+    v_movimiento     empleados.salario_base_mensual%TYPE; --Almacena el total del movimiento
+    
+    --Se obtienen los tipos de movimientos que son fijos y que no son patronales
+    CURSOR cur_tipo_movimientos IS
+    SELECT *
+    FROM tipos_movimiento
+    WHERE es_fijo = 1 AND es_patronal = 0;
+
+BEGIN
+    --Se obtiene la periodicidad del año laboral
+    SELECT periodicidad
+    INTO v_periodicidad
+    FROM periodos NATURAL JOIN anios_laborales
+    WHERE id_periodo = v_id_periodo;
+
+    --Para cada empleado se crea su planilla se generan sus movimientos fijos
+    FOR v_empleado IN (SELECT id_empleado, salario_base_mensual FROM empleados) LOOP
+        INSERT INTO planillas (
+            id_planilla,
+            id_empleado,
+            id_periodo
+        ) VALUES (
+            planillas_seq.NEXTVAL,
+            v_empleado.id_empleado,
+            v_id_periodo
+        );
+
+        --Por cada tipo de movimiento se calcula el monto total y se almacena en la tabla planilla_movimientos
+        FOR v_tm IN cur_tipo_movimientos LOOP
+            IF v_periodicidad = 30 THEN
+                v_movimiento := v_tm.monto_base + ( v_tm.porcentaje_movimiento / 100 ) * v_empleado.salario_base_mensual;
+            ELSE
+                v_movimiento := ( v_tm.monto_base + ( v_tm.porcentaje_movimiento / 100 ) * v_empleado.salario_base_mensual ) / 2;
+            END IF;
+
+            INSERT INTO planilla_movimientos (
+                id_planilla_movimiento,
+                monto_movimiento,
+                id_planilla,
+                id_movimiento
+            ) VALUES (
+                planilla_movimientos_seq.NEXTVAL,
+                v_movimiento,
+                planillas_seq.CURRVAL,
+                v_tm.id_movimiento
+            );
+
+        END LOOP;
+        
+        --Llamada al procedimiento para actualizar los totales de ingresos y descuentos fijos en la planilla
+        PLANILLA_UPDATE_MOVIMIENTOS(planillas_seq.CURRVAL);
+
+    END LOOP;
+
+END;
+;;
+
 /*---PROCEDIMIENTO DE PRUEBA -----*/
 CREATE OR REPLACE PROCEDURE SHOW_MENSAJE_PROCEDURE
     (p_message IN varchar2, p_message_completo OUT varchar2) -- parametros

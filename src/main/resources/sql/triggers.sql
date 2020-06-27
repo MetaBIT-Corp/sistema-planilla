@@ -127,6 +127,44 @@ BEGIN
 END;
 ;;
 
+/*Trigger generarle la planilla al empelado que se insertó
+ * Realizado por: Enrique Menjívar
+ * Fecha de creación 27/06/2020
+ * Ultima modificación: 27/06/2020
+ * */
+CREATE OR REPLACE TRIGGER crear_planilla_ai_compound FOR INSERT ON empleados COMPOUND TRIGGER
+
+    --Guardará el periodo activo
+    v_id_periodo periodos.id_periodo%TYPE;
+
+    --Ejecutar después de cada fila afectada en la tabla empleados
+    AFTER EACH ROW IS BEGIN
+    --Se obtiene el periodo activo
+        SELECT id_periodo
+        INTO v_id_periodo
+        FROM periodos
+        WHERE activo = 1;
+
+        --Se crea la planilla con el empleado recién insertado en el periodo activo
+        INSERT INTO planillas (
+            id_planilla,
+            id_empleado,
+            id_periodo
+        ) VALUES (
+            planillas_seq.NEXTVAL,
+            :new.id_empleado,
+            v_id_periodo
+        );
+
+    END AFTER EACH ROW;
+
+    --Ejecutar después de la consulta DML
+    AFTER STATEMENT IS BEGIN
+        planilla_update_movimientos(planillas_seq.currval);
+    END AFTER STATEMENT;
+    
+END compound_crear_planilla_ai;
+
 /*-----------Trigger para Crear Cuotas luego de crear un nuevo Plan -------------*/
 CREATE OR REPLACE TRIGGER crearcuotas AFTER
     INSERT ON planes
@@ -294,7 +332,11 @@ END LOOP;
 END;
 ;;
 
-/*---TRIGGER PARA LA CREACION DE CENTRO DE COSTO POR CADA UNIDAD ORGANIZACIONAL QUE SE INSERTA R. E.---*/
+/* Trigger para la creacion de centro de costo por cada unidad organizaciona que se inserta.
+ * Realizado por: Ricardo Estupinian
+ * Fecha de creación 17/06/2020
+ * Ultima modificación: 17/06/2020
+ * */
 CREATE OR REPLACE TRIGGER create_centro_costo AFTER
     INSERT ON unidades_organizacionales
     FOR EACH ROW
@@ -318,7 +360,11 @@ BEGIN
 END;
 ;;
 
-/*---TRIGGER PARA LA ASIGNACION DE PRESUPUESTO A UNIDAD ORGANIZACIONAL R. E.---*/
+/* Trigger para la asignacion de presupuesto a unidades organizacionales.
+ * Realizado por: Ricardo Estupinian
+ * Fecha de creación 17/06/2020
+ * Ultima modificación: 17/06/2020
+ * */
 CREATE OR REPLACE TRIGGER asignacion_presupuesto_before_insert BEFORE
     INSERT ON planilla.asignaciones_presupuestos
     FOR EACH ROW
@@ -381,7 +427,11 @@ BEGIN
 END;
 ;;
 
-/*Trigger para actualizar la fecha de inicio y de finalizacion de un empleado en un puesto dentro de una unidad organizacional*/
+/* Trigger para la fecha de inicio y de finalizacion de un empleado en un puesto dentro de una unidad organizaciona.
+ * Realizado por: Ricardo Estupinian
+ * Fecha de creación 18/06/2020
+ * Ultima modificación: 18/06/2020
+ * */
 CREATE OR REPLACE TRIGGER  empleado_puesto_unidad_before_insert BEFORE
     INSERT ON planilla.empleados_puestos_unidades
     FOR EACH ROW
@@ -481,3 +531,94 @@ COMPOUND TRIGGER
     END AFTER EACH ROW;
 END actualizar_monto_dias_festivos;
 ;;
+
+/* Paquete que contiene la variable public donde se almacena el id de año pasado, este se utiliza para crear centros de costo
+ * en un TRIGGER AFTER INSERT ON ANIOS_LABORALES
+ * Realizado por: Ricardo Estupinian
+ * Fecha de creación 27/06/2020
+ * Ultima modificación: 27/06/2020
+ * */
+CREATE OR REPLACE PACKAGE planilla.pkg_anio_laboral IS
+    v_id_anio_anterior planilla.anios_laborales.id_anio_laboral%TYPE;
+END;;
+
+/* Trigger BEFORE INSERT en la tabla ANIOS_LABORALES, que asigna un valor a la variable public del paquete PKG_ANIO_LABORAL.
+ * Realizado por: Ricardo Estupinian
+ * Fecha de creación 27/06/2020
+ * Ultima modificación: 27/06/2020
+ * */
+CREATE OR REPLACE TRIGGER planilla.GET_ANIO_ANTERIOR BEFORE
+    INSERT ON planilla.anios_laborales
+    FOR EACH ROW
+BEGIN
+    -- Buscamos el anio laboral anterior al nuevo y lo almacenamos en la variable publica dentro que esta en el paguete
+    SELECT id_anio_laboral INTO planilla.pkg_anio_laboral.v_id_anio_anterior
+    FROM planilla.anios_laborales
+    WHERE anio_laboral = TO_CHAR(SYSDATE-366,'yyyy'); -- Se usa 366 por si es anio bisiesto
+
+    -- Manejo de excepcion por si no encuentra un año anterior
+    -- Este caso se dara solo en la primera vez que se cree un anio laboral
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+        planilla.pkg_anio_laboral.v_id_anio_anterior := NULL;
+END;;
+
+/* Trigger AFTER INSERT en la tabla ANIOS_LABORALES, para crear los nuevos CENTROS DE COSTOS, cuando se crea un nuevo año laboral.
+ * Realizado por: Ricardo Estupinian
+ * Fecha de creación 27/06/2020
+ * Ultima modificación: 27/06/2020
+ * */
+CREATE OR REPLACE TRIGGER planilla.CREATE_CC_AFTER_INSERT_ANIO AFTER
+    INSERT ON planilla.anios_laborales
+    FOR EACH ROW
+DECLARE
+    -- Variables
+    v_monto_asignacion planilla.centros_costos.presupuesto_anterior%TYPE;
+    v_id_anio_anteorior planilla.anios_laborales.id_anio_laboral%TYPE;
+
+    -- Registro
+    rec_nuevo_cc planilla.centros_costos%ROWTYPE;
+BEGIN
+    -- Referenciamos la variable global para obtener el id del año anterior
+    v_id_anio_anteorior := planilla.pkg_anio_laboral.v_id_anio_anterior;
+
+    IF v_id_anio_anteorior IS NOT NULL THEN
+        -- Se usa un FOR para recorrer un cursor implicito usando un registro implicito
+        -- El dato se recupera usando la variable global almacenada en el paquete
+        FOR rec_centro_costo IN (   SELECT *
+                                    FROM planilla.centros_costos
+                                    WHERE id_anio = v_id_anio_anteorior)
+        LOOP
+            -- Resta de presupuesto asignado y devengado del centro de costos del anio pasado que sera la nueva asignacion del nuevo cc.
+            v_monto_asignacion := rec_centro_costo.presupuesto_asignado - rec_centro_costo.presupuesto_devengado;
+
+            -- Asignacion de valores al registro que se insertara como nuevo centro de costos en el anio nuevo
+            rec_nuevo_cc.id_centro_costo := planilla.centro_costo_seq.NEXTVAL;
+            rec_nuevo_cc.presupuesto_anterior := v_monto_asignacion;
+            rec_nuevo_cc.presupuesto_asignado := v_monto_asignacion;
+            rec_nuevo_cc.presupuesto_devengado := 0.00;
+            rec_nuevo_cc.id_anio := :NEW.id_anio_laboral;
+            rec_nuevo_cc.id_unidad_organizacional := rec_centro_costo.id_unidad_organizacional;
+
+            -- Guardamos el registro
+             INSERT INTO planilla.centros_costos VALUES rec_nuevo_cc;
+        END LOOP;
+        -- FIN LOOP
+    ELSE
+        -- Recorremos un cursor explicito con un FOR utilizando un registro implicito
+        FOR rec_unidad IN ( SELECT *
+                            FROM planilla.unidades_organizacionales )
+        LOOP
+            rec_nuevo_cc.id_centro_costo := centro_costo_seq.NEXTVAL;
+            rec_nuevo_cc.presupuesto_anterior := 0.00;
+            rec_nuevo_cc.presupuesto_asignado := 0.00;
+            rec_nuevo_cc.presupuesto_devengado := 0.00;
+            rec_nuevo_cc.id_anio := :NEW.id_anio_laboral;
+            rec_nuevo_cc.id_unidad_organizacional := rec_unidad.id_unidad_organizacional;
+
+            -- Guardamos el registro
+            INSERT INTO planilla.centros_costos VALUES rec_nuevo_cc;
+        END LOOP;
+        -- FIN LOOP
+    END IF;
+END;;
