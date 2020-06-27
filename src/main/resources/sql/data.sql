@@ -56,8 +56,8 @@ INSERT INTO tipos_documento(id_tipo_documento, tipo_documento, formato, tipo_doc
 
 -- Privilegios Fin R.E
 INSERT ALL INTO PRIVILEGIOS VALUES(500, 'INDEX')
-           INTO PRIVILEGIOS VALUES(501, 'EDIT') 
-           INTO PRIVILEGIOS VALUES(502, 'CREATE') 
+           INTO PRIVILEGIOS VALUES(501, 'EDIT')
+           INTO PRIVILEGIOS VALUES(502, 'CREATE')
            INTO PRIVILEGIOS VALUES(503, 'DELETE')
            INTO PRIVILEGIOS VALUES(504, 'SHOW')
 
@@ -77,10 +77,6 @@ INSERT ALL INTO RECURSOS VALUES(500, 'EMPLEADO')
 		   INTO	RECURSOS VALUES(511, 'DEPARTAMENTO')
 		   INTO	RECURSOS VALUES(512, 'DIAFESTIVO')
 		   INTO	RECURSOS VALUES(513, 'PLANILLA')
-		   INTO	RECURSOS VALUES(514, 'MUNICIPIO')
-		   INTO	RECURSOS VALUES(515, 'ROL')
-		   INTO	RECURSOS VALUES(516, 'RECURSO')
-		   INTO	RECURSOS VALUES(517, 'PRIVILEGIO')
 SELECT * FROM DUAL;;
 
 INSERT ALL INTO ROLES VALUES(500, 'ROLE_ADMIN')
@@ -93,7 +89,7 @@ SELECT * FROM DUAL;;
 
 -- Falta modificar cada quien los IDs de Usuario y seccionar por role con comentario
 INSERT ALL
-        -- AGREGANDO PRIVILEGIOS AL ROL ADMIN PARA EMPLEADOS
+         -- AGREGANDO PRIVILEGIOS AL ROL ADMIN PARA EMPLEADOS
         INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(500,500,500,500)
         INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(501,501,500,500)
         INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(502,502,500,500)
@@ -147,10 +143,10 @@ INSERT ALL
         INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(542,502,506,501)
         INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(543,503,506,501)
 
-        INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(544,500,506,504)
-        INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(545,501,506,504)
-        INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(546,502,506,504)
-        INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(547,503,506,504)
+        INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(544,500,506,502)
+        INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(545,501,506,502)
+        INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(546,502,506,502)
+        INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(547,503,506,502)
 
         -- ROL JEFE UNIDAD, RECURSO UNIDADORGANIZACIONAL_JEFE
         INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(548,500,508,505)
@@ -181,8 +177,16 @@ INSERT ALL
         INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(565,501,511,500)
         INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(566,502,511,500)
         INTO ROLES_RECURSOS_PRIVILEGIOS VALUES(567,503,511,500)
-
 SELECT * FROM DUAL;;
+
+
+
+
+
+
+
+
+
 
 /* USUARIOS */
 INSERT INTO USUARIOS (ID_USUARIO,ACCOUNT_EXPERIRED,ACCOUNT_LOCKED,ENABLED,INTENTOS,PASSWORD,PASSWORD_EXPIRED,USERNAME) VALUES (500,0,0,1,0,'$2a$10$.wYsFS0/zPkY3.LnN8F/reqimatDtOS71.5Uzh/RzlF718/aFO7oS',0,'jefe01');;
@@ -202,13 +206,13 @@ INSERT INTO USUARIOS (ID_USUARIO,ACCOUNT_EXPERIRED,ACCOUNT_LOCKED,ENABLED,INTENT
 INSERT INTO USUARIOS (ID_USUARIO,ACCOUNT_EXPERIRED,ACCOUNT_LOCKED,ENABLED,INTENTOS,PASSWORD,PASSWORD_EXPIRED,USERNAME) VALUES (514,0,0,1,0,'$2a$10$.wYsFS0/zPkY3.LnN8F/reqimatDtOS71.5Uzh/RzlF718/aFO7oS',0,'jefe11');;
 INSERT INTO USUARIOS (ID_USUARIO,ACCOUNT_EXPERIRED,ACCOUNT_LOCKED,ENABLED,INTENTOS,PASSWORD,PASSWORD_EXPIRED,USERNAME) VALUES (515,0,0,1,0,'$2a$10$.wYsFS0/zPkY3.LnN8F/reqimatDtOS71.5Uzh/RzlF718/aFO7oS',0,'jefe12');;
 
-/* USUARIOS ROLES*/ 
+/* USUARIOS ROLES*/
 INSERT INTO USUARIOS_ROLES (ID_USUARIO, ID_ROL) VALUES(500,504);; -- Jefe01
 INSERT INTO USUARIOS_ROLES (ID_USUARIO, ID_ROL) VALUES(501,500);; -- Admin
 INSERT INTO USUARIOS_ROLES (ID_USUARIO, ID_ROL) VALUES(502,501);; -- Jefe planilla
 INSERT INTO USUARIOS_ROLES (ID_USUARIO, ID_ROL) VALUES(503,502);; -- Auxiliar
 INSERT INTO USUARIOS_ROLES (ID_USUARIO, ID_ROL) VALUES(504,503);; -- Presupuestario
-INSERT INTO USUARIOS_ROLES (ID_USUARIO, ID_ROL) VALUES(505,504);; -- Jefe02 
+INSERT INTO USUARIOS_ROLES (ID_USUARIO, ID_ROL) VALUES(505,504);; -- Jefe02
 INSERT INTO USUARIOS_ROLES (ID_USUARIO, ID_ROL) VALUES(506,504);;
 INSERT INTO USUARIOS_ROLES (ID_USUARIO, ID_ROL) VALUES(507,504);;
 INSERT INTO USUARIOS_ROLES (ID_USUARIO, ID_ROL) VALUES(508,504);;
@@ -249,7 +253,7 @@ INSERT INTO departamentos(id_departamento, departamento) VALUES (511, 'San Migue
 INSERT INTO departamentos(id_departamento, departamento) VALUES (512, 'Morazán');;
 INSERT INTO departamentos(id_departamento, departamento) VALUES (513, 'La Unión');;
 
---Municipios de Usulutan (23) 
+--Municipios de Usulutan (23)
 
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (500, 'Alegría', 500);;
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (501, 'Berlín', 500);;
@@ -275,26 +279,26 @@ INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (519, 'S
 
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (520, 'Santiago de María', 500);;
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (521, 'Tecapán', 500);;
-INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (522, 'Usulután', 500);; 
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (522, 'Usulután', 500);;
 
---Municipios de Santa Ana (13) 
+--Municipios de Santa Ana (13)
 
-INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (523, 'Santa Ana', 501);; 
-INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (524, 'Candelaria de la Frontera', 501);; 
-INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (525, 'Chalchuapa', 501);; 
-INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (526, 'Coatepeque', 501);; 
-INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (527, 'El Congo', 501);; 
-INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (528, 'El Porvenir', 501);; 
-INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (529, 'Masahuat', 501);; 
-INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (530, 'Metapán', 501);; 
-INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (531, 'San Antonio Pajonal', 501);; 
-INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (532, 'San Sebastián Salitrillo', 501);; 
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (523, 'Santa Ana', 501);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (524, 'Candelaria de la Frontera', 501);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (525, 'Chalchuapa', 501);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (526, 'Coatepeque', 501);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (527, 'El Congo', 501);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (528, 'El Porvenir', 501);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (529, 'Masahuat', 501);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (530, 'Metapán', 501);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (531, 'San Antonio Pajonal', 501);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (532, 'San Sebastián Salitrillo', 501);;
 
-INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (533, 'Santa Rosa Guachipilín', 501);; 
-INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (534, 'Santiago de la Frontera', 501);; 
-INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (535, 'Texistepeque', 501);; 
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (533, 'Santa Rosa Guachipilín', 501);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (534, 'Santiago de la Frontera', 501);;
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (535, 'Texistepeque', 501);;
 
---Municipios de Cabañas (9) 
+--Municipios de Cabañas (9)
 
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (536, 'Sensuntepeque', 502);;
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (537, 'Cinquera', 502);;
@@ -304,9 +308,9 @@ INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (540, 'I
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (541, 'Jutiapa', 502);;
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (542, 'San Isidro', 502);;
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (543, 'Tejutepeque', 502);;
-INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (544, 'Victoria', 502);; 
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (544, 'Victoria', 502);;
 
---Municipios de Ahuachapan (12) 
+--Municipios de Ahuachapan (12)
 
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (545, 'Ahuachapán', 503);;
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (546, 'Apaneca', 503);;
@@ -320,9 +324,9 @@ INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (553, 'S
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (554, 'San Pedro Puxtla', 503);;
 
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (555, 'Tacuba', 503);;
-INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (556, 'Turín', 503);; 
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (556, 'Turín', 503);;
 
---Municipios de Chalatenango (33) 
+--Municipios de Chalatenango (33)
 
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (557, 'Chalatenango', 504);;
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (558, 'Agua Caliente', 504);;
@@ -359,9 +363,9 @@ INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (586, 'S
 
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (587, 'San Rafael', 504);;
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (588, 'Santa Rita', 504);;
-INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (589, 'Tejutla', 504);; 
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (589, 'Tejutla', 504);;
 
---Municipios de Cuscatlán (16) 
+--Municipios de Cuscatlán (16)
 
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (590, 'Cojutepeque', 505);;
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (591, 'Candelaria', 505);;
@@ -379,9 +383,9 @@ INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (601, 'S
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (602, 'Santa Cruz Analquito', 505);;
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (603, 'Santa Cruz Michapa', 505);;
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (604, 'Suchitoto', 505);;
-INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (605, 'Tenancingo', 505);; 
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (605, 'Tenancingo', 505);;
 
---Municipios de La Paz (22) 
+--Municipios de La Paz (22)
 
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (606, 'Zacatecoluca', 506);;
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (607, 'Cuyultitán', 506);;
@@ -406,9 +410,9 @@ INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (624, 'S
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (625, 'Santa María Ostuma', 506);;
 
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (626, 'Santiago Nonualco', 506);;
-INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (627, 'Tapalhuaca', 506);; 
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (627, 'Tapalhuaca', 506);;
 
---Municipios de La Libertad (22) 
+--Municipios de La Libertad (22)
 
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (628, 'Santa Tecla', 507);;
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (629, 'Antiguo Cuscatlán', 507);;
@@ -433,9 +437,9 @@ INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (646, 'T
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (647, 'Teotepeque', 507);;
 
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (648, 'Tepecoyo', 507);;
-INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (649, 'Zaragoza', 507);; 
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (649, 'Zaragoza', 507);;
 
---Municipios de Sonsonate (16) 
+--Municipios de Sonsonate (16)
 
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (650, 'Sonsonate', 508);;
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (651, 'Acajutla', 508);;
@@ -453,9 +457,9 @@ INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (661, 'S
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (662, 'Santa Catarina Masahuat', 508);;
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (663, 'Santa Isabel Ishuatán', 508);;
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (664, 'Santo Domingo de Guzmán', 508);;
-INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (665, 'Sonzacate', 508);; 
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (665, 'Sonzacate', 508);;
 
---Municipios de San Salvador (19) 
+--Municipios de San Salvador (19)
 
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (666, 'San Salvador ', 509);;
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (667, 'Aguilares', 509);;
@@ -476,7 +480,7 @@ INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (680, 'S
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (681, 'Santiago Texacuangos', 509);;
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (682, 'Santo Tomás', 509);;
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (683, 'Soyapango', 509);;
-INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (684, 'Tonacatepeque', 509);; 
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (684, 'Tonacatepeque', 509);;
 
 --Municipios de San Vicente (13)
 
@@ -493,7 +497,7 @@ INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (694, 'S
 
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (695, 'Tecoluca', 510);;
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (696, 'Tepetitán', 510);;
-INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (697, 'Verapaz', 510);; 
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (697, 'Verapaz', 510);;
 
 --Municipios de San Miguel (20)
 
@@ -517,7 +521,7 @@ INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (713, 'S
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (714, 'San Luis de la Reina', 511);;
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (715, 'San Rafael Oriente', 511);;
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (716, 'Sesori', 511);;
-INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (717, 'Uluazapa', 511);; 
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (717, 'Uluazapa', 511);;
 
 --Municipios de Morazan (26)
 
@@ -548,7 +552,7 @@ INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (739, 'S
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (740, 'Sociedad', 512);;
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (741, 'Torola', 512);;
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (742, 'Yamabal', 512);;
-INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (743, 'Yoloaiquín', 512);; 
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (743, 'Yoloaiquín', 512);;
 
 --Municipios de La Unión (18)
 
@@ -570,7 +574,7 @@ INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (757, 'S
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (758, 'San José', 513);;
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (759, 'Santa Rosa de Lima', 513);;
 INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (760, 'Yayantique', 513);;
-INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (761, 'Yucuaiquín', 513);; 
+INSERT INTO municipios(id_municipio, municipio, id_departamento) VALUES (761, 'Yucuaiquín', 513);;
 
 ---------Direcciones--------
 
@@ -708,9 +712,7 @@ INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizac
 INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (620, 'Venecia', 'Colonia Morazan', '8-H', 'Sierra Morena 1', 674);;
 INSERT INTO direcciones(id_direccion, calle, complemento, numero_casa, urbanizacion, id_municipio) VALUES (621, 'Aguilares', 'Cerca del Colegio Ricaldone', '5A', 'Reparto Metropolitano', 666);;
 
-
 insert into empresas (id_empresa,correo_empresa,empresa,nic_empresa,nit_empresa,page,pagina_empresa,telefono,id_direccion) values(1,'metabit@gmail.com','MetaBIT','000001','000002','@MetaBIT','www.metabit.com','2237-2828',621);;
-
 
 --Estado Civil Final R.E
 insert into estados_civiles values(500,'Soltero/a');;
@@ -3115,7 +3117,6 @@ INSERT INTO PLANILLAS(ID_PLANILLA, FECHA_EMISION, HORAS_EXTRA_DIURNAS, HORAS_EXT
 INSERT INTO PLANILLAS(ID_PLANILLA, FECHA_EMISION, HORAS_EXTRA_DIURNAS, HORAS_EXTRA_NOCTURNAS, MONTO_COMISION, MONTO_DIAS_FESTIVOS, MONTO_HORAS_EXTRA, MONTO_VENTAS, RENTA, SALARIO_NETO, TOTAL_DESCUENTOS, TOTAL_INGRESOS, ID_EMPLEADO, ID_PERIODO) VALUES(6438, '31-12-19', 4, 0, 11.55, 31.18, 33.21, 54.64, 48.43, 1224.0, 25.1, 54.27, 618, 511);;
 INSERT INTO PLANILLAS(ID_PLANILLA, FECHA_EMISION, HORAS_EXTRA_DIURNAS, HORAS_EXTRA_NOCTURNAS, MONTO_COMISION, MONTO_DIAS_FESTIVOS, MONTO_HORAS_EXTRA, MONTO_VENTAS, RENTA, SALARIO_NETO, TOTAL_DESCUENTOS, TOTAL_INGRESOS, ID_EMPLEADO, ID_PERIODO) VALUES(6439, '31-12-19', 9, 8, 13.63, 47.4, 41.28, 55.48, 78.62, 1376.0, 44.75, 89.97, 619, 511);;
 
-
 /*----------------------PLANILLA MOVIMIENTOS----------------------*/
 /*INSERT ALL
   INTO PLANILLA_MOVIMIENTOS VALUES(100, 150, 100, 1)
@@ -3151,7 +3152,6 @@ INSERT INTO RANGOS_COMISION (id_rango_comision, venta_min, venta_max, tasa_comis
 INSERT INTO RANGOS_COMISION (id_rango_comision, venta_min, venta_max, tasa_comision, rango_comision_habilitado) VALUES (501,1000.00,1499.99,0.25,1);;
 INSERT INTO RANGOS_COMISION (id_rango_comision, venta_min, venta_max, tasa_comision, rango_comision_habilitado) VALUES (502,1500.00,1999.99,0.35,1);;
 
-
 -- Dias Festivos Final R.E.
 INSERT INTO DIAS_FESTIVOS (id_dia_festivo, dia, dia_descripcion, mes) VALUES (500, 1,  'Año Nuevo', 1);;
 INSERT INTO DIAS_FESTIVOS (id_dia_festivo, dia, dia_descripcion, mes) VALUES (501, 1,  'Día del trabajo', 5);;
@@ -3161,4 +3161,3 @@ INSERT INTO DIAS_FESTIVOS (id_dia_festivo, dia, dia_descripcion, mes) VALUES (50
 INSERT INTO DIAS_FESTIVOS (id_dia_festivo, dia, dia_descripcion, mes) VALUES (505, 15, 'Día de la independencia', 9);;
 INSERT INTO DIAS_FESTIVOS (id_dia_festivo, dia, dia_descripcion, mes) VALUES (506, 2,  'Día de los difuntos', 11);;
 INSERT INTO DIAS_FESTIVOS (id_dia_festivo, dia, dia_descripcion, mes) VALUES (507, 25, 'Día de navidad', 12);;
-

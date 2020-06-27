@@ -56,6 +56,12 @@ public class TipoUnidadOrganizacionalServiceImpl implements TipoUnidadOrganizaci
 		// TODO Auto-generated method stub
 		return tipoUnidadOrganizacionalJpaRepository.findByIdTipoUnidadOrganizacional(id_tipo);
 	}
+
+	@Override
+	public TipoUnidadOrganizacional getByNivelJerarquico(int nivel) {
+		// TODO Auto-generated method stub
+		return tipoUnidadOrganizacionalJpaRepository.findByNivelJerarquico(nivel);
+	}
     
     
 }
