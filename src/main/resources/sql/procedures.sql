@@ -76,12 +76,13 @@ CREATE OR REPLACE PROCEDURE generar_planillas (
     v_id_periodo     periodos.id_periodo%TYPE := p_id_periodo_in; --Almacena el periodo en el que se generarán las planilals
     v_periodicidad   anios_laborales.periodicidad%TYPE; --Almacena la periodicidad del año laboral
     v_movimiento     empleados.salario_base_mensual%TYPE; --Almacena el total del movimiento
-    
+    v_es_base tipos_movimiento.monto_base%TYPE; --Servirá para verficar las planilla movimientos se crearán en base al monto base o al porcentaje
+
     --Se obtienen los tipos de movimientos que son fijos y que no son patronales
     CURSOR cur_tipo_movimientos IS
     SELECT *
     FROM tipos_movimiento
-    WHERE es_fijo = 1 AND es_patronal = 0;
+    WHERE es_fijo = 1;
 
 BEGIN
     --Se obtiene la periodicidad del año laboral
@@ -104,10 +105,26 @@ BEGIN
 
         --Por cada tipo de movimiento se calcula el monto total y se almacena en la tabla planilla_movimientos
         FOR v_tm IN cur_tipo_movimientos LOOP
+            SELECT nvl(monto_base,0) INTO v_es_base FROM tipos_movimiento WHERE id_movimiento=v_tm.id_movimiento;
+
+            --Si la peridicidad es mensual
             IF v_periodicidad = 30 THEN
-                v_movimiento := v_tm.monto_base + ( v_tm.porcentaje_movimiento / 100 ) * v_empleado.salario_base_mensual;
+                
+                IF v_es_base = 0 THEN --si no posee monto base el movimiento se calcula multiplicando el porcentaje del movimeinto por el salario del empleado
+                    v_movimiento := ( v_tm.porcentaje_movimiento / 100 ) * v_empleado.salario_base_mensual;
+                ELSE
+                    v_movimiento := v_tm.monto_base;
+                END IF;
+
+            --Si la periodicidad es quincenal el monto se divide entre 2
             ELSE
-                v_movimiento := ( v_tm.monto_base + ( v_tm.porcentaje_movimiento / 100 ) * v_empleado.salario_base_mensual ) / 2;
+
+                IF v_es_base = 0 THEN
+                    v_movimiento := (( v_tm.porcentaje_movimiento / 100 ) * v_empleado.salario_base_mensual ) / 2;
+                ELSE
+                    v_movimiento := v_tm.monto_base / 2;
+                END IF;
+
             END IF;
 
             INSERT INTO planilla_movimientos (
