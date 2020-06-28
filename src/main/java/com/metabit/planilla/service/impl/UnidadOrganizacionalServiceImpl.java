@@ -47,4 +47,12 @@ public class UnidadOrganizacionalServiceImpl implements UnidadOrganizacionalServ
     public void deleteUnidad(UnidadOrganizacional unidadOrganizacional) {
         unidadOrganizacionalJpaRepository.delete(unidadOrganizacional);
     }
+
+	@Override
+	public List<UnidadOrganizacional> getByTipoUnidad(int id_tipo) {
+		// TODO Auto-generated method stub
+		return unidadOrganizacionalJpaRepository.findByTipoUnidadOrganizacional(id_tipo);
+	}
+    
+    
 }

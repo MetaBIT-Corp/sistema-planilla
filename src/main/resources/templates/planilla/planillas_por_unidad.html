@@ -156,9 +156,7 @@
 				var id_tipo = $(this).val();
 				var html = '';
 
-				console.log("tipo: "+id_tipo);
 				$.get('/api/tipo-unidad/' + id_tipo + '/unidades', function(data){
-					console.log(data);
 
 					for (var i = 0; i < data.length; i++) {
 						html += '<option value="' + data[i].idUnidadOrganizacional + '">' + data[i].unidadOrganizacional + '</option>';
