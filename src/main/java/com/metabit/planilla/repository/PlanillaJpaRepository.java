@@ -15,11 +15,11 @@ import com.metabit.planilla.entity.Planilla;
 @Repository("planillaJpaRepository")
 public interface PlanillaJpaRepository extends JpaRepository<Planilla, Serializable>{
 
-	@Procedure(procedureName = "PLANILLA_UPDATE_MOVIMIENTOS")
-	public abstract void planillaUpdateMovimientos(int id_planilla);
+	@Procedure(name = "planillaUpdateMovimiento")
+	public abstract void planillaUpdateMovimientos(@Param("p_id_planilla_in") int id_planilla);
 	
-	@Procedure(procedureName = "GENERAR_PLANILLAS")
-	public abstract void generarPlanillas(int id_periodo);
+	@Procedure(name = "generarPlanilla")
+	public abstract void generarPlanillas(@Param("p_id_periodo_in") int id_periodo);
 	
 	public abstract List<Planilla> findByPeriodo(Periodo periodo);
 	
