@@ -56,6 +56,7 @@
 	                  <th>Nombre</th>
 	                  <th>Apellidos</th>
 	                  <th>Horas de trabajo</th>
+	                  <th>Salario Base</th>
 	                  <th>Salario Neto</th>
 	                  <th>Tipo</th>
 					  <th>Acciones</th>
@@ -63,13 +64,14 @@
 	                </thead>
 	                <tbody>
 	                <tr th:each="planilla: ${planillas}">
-	                  <td><span th:text="${planilla.empleado.codigo}"></span></td>
+	                  <td><a th:href="@{/empleado/show?id={id}(id=${planilla.empleado.idEmpleado})}"><span th:text="${planilla.empleado.codigo}"></span></a></td>
 	                  <td>
 	                    <span th:if="${planilla.empleado.nombreSegundo}" th:text="${planilla.empleado.nombrePrimero + ' ' + planilla.empleado.nombreSegundo}"></span>
 	                  	<span th:if="${planilla.empleado.nombreSegundo == null}" th:text="${planilla.empleado.nombrePrimero}"></span>
 	                  </td>
 	                  <td><span th:text="${planilla.empleado.apellidoMaterno}"></span></td>
 	                  <td><span th:text="${planilla.empleado.horasTrabajo}"></span></td>
+	                  <td><span th:text="'$' + ${#numbers.formatDecimal(planilla.empleado.salarioBaseMensual, 0, 'COMMA', 2, 'POINT')}"></span></td>
 	                  <td><span th:text="'$' + ${#numbers.formatDecimal(planilla.salarioNeto, 0, 'COMMA', 2, 'POINT')}"></span></td>
 	                  <td>
 	                  	<div th:each="empPuestoUnidad, iterStat : ${planilla.empleado.empleadosPuestosUnidades}" th:if="${iterStat.index == iterStat.size-1}">
@@ -100,6 +102,7 @@
 	                  <th>Nombre</th>
 	                  <th>Apellidos</th>
 	                  <th>Horas de trabajo</th>
+	                  <th>Salario Base</th>
 	                  <th>Salario Neto</th>
 	                  <th>Tipo</th>
 					  <th>Acciones</th>
