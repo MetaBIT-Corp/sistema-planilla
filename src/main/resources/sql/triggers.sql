@@ -134,16 +134,29 @@ END;
  * */
 CREATE OR REPLACE TRIGGER crear_planilla_ai_compound FOR INSERT ON empleados COMPOUND TRIGGER
 
-    --Guardará el periodo activo
-    v_id_periodo periodos.id_periodo%TYPE;
+    v_id_periodo periodos.id_periodo%TYPE; --Guardará el periodo activo
+    v_periodicidad   anios_laborales.periodicidad%TYPE; --Almacena la periodicidad del año laboral
+    v_movimiento     empleados.salario_base_mensual%TYPE; --Almacena el total del movimiento
+    
+    --Se obtienen los tipos de movimientos que son fijos y que no son patronales
+    CURSOR cur_tipo_movimientos IS
+    SELECT *
+    FROM tipos_movimiento
+    WHERE es_fijo = 1 AND es_patronal = 0;
 
     --Ejecutar después de cada fila afectada en la tabla empleados
     AFTER EACH ROW IS BEGIN
-    --Se obtiene el periodo activo
+        --Se obtiene el periodo activo
         SELECT id_periodo
         INTO v_id_periodo
         FROM periodos
         WHERE activo = 1;
+        
+        --Se obtiene la periodicidad del año laboral
+        SELECT periodicidad
+        INTO v_periodicidad
+        FROM periodos NATURAL JOIN anios_laborales
+        WHERE id_periodo = v_id_periodo;
 
         --Se crea la planilla con el empleado recién insertado en el periodo activo
         INSERT INTO planillas (
@@ -155,7 +168,29 @@ CREATE OR REPLACE TRIGGER crear_planilla_ai_compound FOR INSERT ON empleados COM
             :new.id_empleado,
             v_id_periodo
         );
+        
+        --Por cada tipo de movimiento se calcula el monto total y se almacena en la tabla planilla_movimientos
+        FOR v_tm IN cur_tipo_movimientos LOOP
+            IF v_periodicidad = 30 THEN
+                v_movimiento := v_tm.monto_base + ( v_tm.porcentaje_movimiento / 100 ) * :new.salario_base_mensual;
+            ELSE
+                v_movimiento := ( v_tm.monto_base + ( v_tm.porcentaje_movimiento / 100 ) * :new.salario_base_mensual ) / 2;
+            END IF;
 
+            INSERT INTO planilla_movimientos (
+                id_planilla_movimiento,
+                monto_movimiento,
+                id_planilla,
+                id_movimiento
+            ) VALUES (
+                planilla_movimientos_seq.NEXTVAL,
+                v_movimiento,
+                planillas_seq.CURRVAL,
+                v_tm.id_movimiento
+            );
+
+        END LOOP;
+        
     END AFTER EACH ROW;
 
     --Ejecutar después de la consulta DML
@@ -163,7 +198,8 @@ CREATE OR REPLACE TRIGGER crear_planilla_ai_compound FOR INSERT ON empleados COM
         planilla_update_movimientos(planillas_seq.currval);
     END AFTER STATEMENT;
     
-END compound_crear_planilla_ai;
+END crear_planilla_ai_compound;
+;;
 
 /*-----------Trigger para Crear Cuotas luego de crear un nuevo Plan -------------*/
 CREATE OR REPLACE TRIGGER crearcuotas AFTER

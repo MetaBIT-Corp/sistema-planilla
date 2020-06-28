@@ -13,4 +13,7 @@ public interface UnidadOrganizacionalJpaRepository extends JpaRepository<UnidadO
 
     public abstract UnidadOrganizacional findByIdUnidadOrganizacional(int id);
     public abstract List<UnidadOrganizacional> findByUnidadPadreIs(UnidadOrganizacional unidad);
+    
+    @Query(value = "SELECT * FROM UNIDADES_ORGANIZACIONALES WHERE ID_TIPO_UNIDAD_ORGANIZACIONAL = ?1", nativeQuery = true)
+    public abstract List<UnidadOrganizacional> findByTipoUnidadOrganizacional(int id_tipo);
 }

@@ -60,8 +60,6 @@ BEGIN
     CLOSE cur_ingreso;
     CLOSE cur_descuento;
     
-    --Guardando los cambios
-    COMMIT;
 END;
 ;;
 
