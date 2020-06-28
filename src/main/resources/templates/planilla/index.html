@@ -64,7 +64,7 @@
 	                </thead>
 	                <tbody>
 	                <tr th:each="planilla: ${planillas}">
-	                  <td><a th:href="@{/empleado/show?id={id}(id=${planilla.empleado.idEmpleado})}"><span th:text="${planilla.empleado.codigo}"></span></a></td>
+	                  <td><a th:href="@{/empleado/show?id={id}(id=${planilla.empleado.idEmpleado})}" th:text="${planilla.empleado.codigo}"></a></td>
 	                  <td>
 	                    <span th:if="${planilla.empleado.nombreSegundo}" th:text="${planilla.empleado.nombrePrimero + ' ' + planilla.empleado.nombreSegundo}"></span>
 	                  	<span th:if="${planilla.empleado.nombreSegundo == null}" th:text="${planilla.empleado.nombrePrimero}"></span>
