@@ -97,7 +97,7 @@ public class PlanillaController {
 			planillaService.updatePlanilla(planilla);
 			
 			//Actualizar ISSS y AFP
-			planillaService.updatePlanillaMovimientos(planilla.getIdPlanilla());
+			//planillaService.updatePlanillaMovimientos(planilla.getIdPlanilla());
 		}
 		model.addAttribute("planillas", planillas);
 		return INDEX_VIEW;
@@ -189,8 +189,10 @@ public class PlanillaController {
 				planilla.get().setSalarioNeto(calcularSalarioNeto(planilla.get()));
 				planillaService.updatePlanilla(planilla.get());
 				
-				//Actualizar ISSS y AFP
-				planillaService.updatePlanillaMovimientos(planilla.get().getIdPlanilla());
+				//Paso1: Actualizar los totales de ingreso/descuento
+				// Ya esta. Ya lo cubrió Pablo
+				//Paso2: Actualizar ISSS, AFP (Empleado, patronal) y renta
+				// agregar Edwin, y acopla Pablo
 			}
 			
 			model.addAttribute("planilla", planilla.get());
@@ -271,7 +273,7 @@ public class PlanillaController {
 			planillaService.updatePlanilla(planilla);
 			
 			//Actualizar ISSS y AFP
-			planillaService.updatePlanillaMovimientos(planilla.getIdPlanilla());
+			planillaService.recalcularImpuestos(planilla.getIdPlanilla(),  planilla.getPeriodo().getAnioLaboral().getPeriodicidad());
 				
 			PlanillaMovimiento planillaMovimiento = new PlanillaMovimiento();
 			planillaMovimiento.setPlanilla(planilla);
