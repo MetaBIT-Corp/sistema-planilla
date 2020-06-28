@@ -200,7 +200,7 @@
 			      <div class="modal-footer">
 			      	<input id="id_periodo" type="hidden" name="id_periodo" value="">
 			        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-			        <button type="submit" class="btn btn-primary">Sí</button>
+			        <button onClick="this.form.submit(); this.disabled=true;" id="btnConfirmar" type="submit" class="btn btn-primary">Sí</button>
 			      </div>
 		      </form>
 		    </div>
@@ -270,6 +270,13 @@
 				$('#id_periodo').val(id_periodo);
 				$('#generarPlanillas').modal('show');
 			});
+
+			$("#btnConfirmar").on('click',function() {
+		      // add spinner to button
+		      $(this).html(
+		        `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Generando...`
+		      );
+		    });
 
 		</script>
 		<!-- Scripts-->
