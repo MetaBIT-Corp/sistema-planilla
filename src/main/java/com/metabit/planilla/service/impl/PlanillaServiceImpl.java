@@ -73,5 +73,11 @@ public class PlanillaServiceImpl implements PlanillaService {
 		return planillaJpaRepository.findByPeriodo(periodo);
 	}
 
+	@Override
+	public void generarPlanillas(int id_periodo) {
+		// TODO Auto-generated method stub
+		planillaJpaRepository.generarPlanillas(id_periodo);
+		
+	}
 
 }

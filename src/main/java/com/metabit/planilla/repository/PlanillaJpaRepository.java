@@ -17,6 +17,10 @@ public interface PlanillaJpaRepository extends JpaRepository<Planilla, Serializa
 
 	@Procedure(procedureName = "PLANILLA_UPDATE_MOVIMIENTOS")
 	public abstract void planillaUpdateMovimientos(int id_planilla);
+	
+	@Procedure(procedureName = "GENERAR_PLANILLAS")
+	public abstract void generarPlanillas(int id_periodo);
+	
 	public abstract List<Planilla> findByPeriodo(Periodo periodo);
 	
 	@Procedure(name = "show")

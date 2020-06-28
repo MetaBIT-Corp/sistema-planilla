@@ -149,9 +149,9 @@ public class DataRestController {
 	
 	@GetMapping("/tipo-unidad/{id_tipo}/unidades")
 	public List<UnidadOrganizacional> unidadesTipoUnidad(@PathVariable("id_tipo") Integer id_tipo){
-		/*TipoUnidadOrganizacional tuo = tipoUnidadOrganizacionalService.getById(id_tipo);
-		return tuo.getUnidades_organizacional();*/
+		TipoUnidadOrganizacional tuo = tipoUnidadOrganizacionalService.getById(id_tipo);
+		return tuo.getUnidades_organizacional();
 		
-		return unidadOrganizacionalService.getByTipoUnidad(id_tipo);
+		//return unidadOrganizacionalService.getByTipoUnidad(id_tipo);
 	}
 }

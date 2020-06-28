@@ -13,6 +13,7 @@ public interface PlanillaService {
 	public abstract Planilla storePlanilla(Planilla planilla);
 	public abstract Planilla updatePlanilla(Planilla planilla);
 	public abstract void updatePlanillaMovimientos(int id_planilla);
+	public abstract void generarPlanillas(int id_periodo);
 	public abstract List<Planilla> getPlanillasByPeriodo(Periodo periodo);
 	public abstract List<Planilla> getPlanillasUnidad(int id_unidad, int id_periodo);
 	public abstract String showMessage(String p_message);

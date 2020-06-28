@@ -97,7 +97,7 @@ public class PlanillaController {
 			planillaService.updatePlanilla(planilla);
 			
 			//Actualizar ISSS y AFP
-			planillaService.updatePlanillaMovimientos(planilla.getIdPlanilla());
+			//planillaService.updatePlanillaMovimientos(planilla.getIdPlanilla());
 		}
 		model.addAttribute("planillas", planillas);
 		return INDEX_VIEW;
@@ -190,7 +190,7 @@ public class PlanillaController {
 				planillaService.updatePlanilla(planilla.get());
 				
 				//Actualizar ISSS y AFP
-				planillaService.updatePlanillaMovimientos(planilla.get().getIdPlanilla());
+				//planillaService.updatePlanillaMovimientos(planilla.get().getIdPlanilla());
 			}
 			
 			model.addAttribute("planilla", planilla.get());
@@ -271,7 +271,7 @@ public class PlanillaController {
 			planillaService.updatePlanilla(planilla);
 			
 			//Actualizar ISSS y AFP
-			planillaService.updatePlanillaMovimientos(planilla.getIdPlanilla());
+			//planillaService.updatePlanillaMovimientos(planilla.getIdPlanilla());
 				
 			PlanillaMovimiento planillaMovimiento = new PlanillaMovimiento();
 			planillaMovimiento.setPlanilla(planilla);
@@ -436,8 +436,8 @@ public class PlanillaController {
 		
 		periodo.setActivo(true);
 		periodoService.storePeriodo(periodo);
-		
-		for (Empleado empleado : empleados) {
+		planillaService.generarPlanillas(periodo.getIdPeriodo());
+		/*for (Empleado empleado : empleados) {
 			Planilla planilla = new Planilla();
 			planilla.setEmpleado(empleado);
 			planilla.setPeriodo(periodo);
@@ -465,7 +465,7 @@ public class PlanillaController {
 			}catch (Exception e) {
 				e.printStackTrace();
 			}
-		}
+		}*/
 		
 		redirAttrs.addFlashAttribute("success_planilla", "success");
 		return "redirect:/anio-laboral/index";

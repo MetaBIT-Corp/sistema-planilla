@@ -576,7 +576,8 @@ END actualizar_monto_dias_festivos;
  * */
 CREATE OR REPLACE PACKAGE planilla.pkg_anio_laboral IS
     v_id_anio_anterior planilla.anios_laborales.id_anio_laboral%TYPE;
-END;;
+END;
+;;
 
 /* Trigger BEFORE INSERT en la tabla ANIOS_LABORALES, que asigna un valor a la variable public del paquete PKG_ANIO_LABORAL.
  * Realizado por: Ricardo Estupinian
@@ -597,7 +598,8 @@ BEGIN
     EXCEPTION
         WHEN NO_DATA_FOUND THEN
         planilla.pkg_anio_laboral.v_id_anio_anterior := NULL;
-END;;
+END;
+;;
 
 /* Trigger AFTER INSERT en la tabla ANIOS_LABORALES, para crear los nuevos CENTROS DE COSTOS, cuando se crea un nuevo año laboral.
  * Realizado por: Ricardo Estupinian
@@ -657,4 +659,5 @@ BEGIN
         END LOOP;
         -- FIN LOOP
     END IF;
-END;;
+END;
+;;
