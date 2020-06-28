@@ -16,8 +16,8 @@ public interface PlanillaService {
 	public abstract void generarPlanillas(int id_periodo);
 	public abstract List<Planilla> getPlanillasByPeriodo(Periodo periodo);
 	public abstract List<Planilla> getPlanillasUnidad(int id_unidad, int id_periodo);
-	public abstract String showMessage(String p_message);
 	public abstract String pagarPlanilla(int idUnidadOrganizacional);
 	public abstract List<Planilla> findByPeriodo(Periodo periodo);
+	public abstract void recalcularImpuestos(int idPlanilla, int periodicidad);
 
 }

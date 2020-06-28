@@ -85,3 +85,26 @@ BEGIN
     RETURN v_monto_plan;
 END;
 ;;
+
+CREATE OR REPLACE FUNCTION calcular_renta(p_monto  planillas.renta%TYPE, p_periodicidad anios_laborales.periodicidad%TYPE)
+    RETURN  empleados.salario_base_mensual%TYPE
+    IS
+    -- cursor de rangos
+    CURSOR cur_rangos_renta 
+        (p_periodicidad anios_laborales.periodicidad%TYPE)  
+        IS 
+        SELECT *
+        FROM rangos_renta
+        WHERE (periodicidad_renta = p_periodicidad); 
+    -- variables
+    v_renta     planillas.renta%TYPE := 0;
+BEGIN
+    FOR rec_rangos_renta IN cur_rangos_renta(p_periodicidad) 
+    LOOP
+        IF p_monto >= rec_rangos_renta.salario_min AND p_monto <= rec_rangos_renta.salario_max THEN
+           v_renta :=  (p_monto - rec_rangos_renta.exceso)*(rec_rangos_renta.porcentaje_renta/100) + rec_rangos_renta.cuota_fija;    
+        END IF;
+    END LOOP;
+    return v_renta;
+END;
+;;

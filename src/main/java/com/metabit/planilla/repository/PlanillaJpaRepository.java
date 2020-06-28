@@ -23,9 +23,6 @@ public interface PlanillaJpaRepository extends JpaRepository<Planilla, Serializa
 	
 	public abstract List<Planilla> findByPeriodo(Periodo periodo);
 	
-	@Procedure(name = "show")
-	String showMessage(@Param("p_message") String p_message);
-	
 	@Query(value = "SELECT * FROM planillas\n" + 
 			"WHERE id_empleado IN (\n" + 
 			"    SELECT id_empleado FROM tipos_unidad_organizacional\n" + 
@@ -40,4 +37,7 @@ public interface PlanillaJpaRepository extends JpaRepository<Planilla, Serializa
 
 	@Procedure(name = "pagoPlanilla")
 	String pagarPlanilla(@Param("p_id_unidad") int idUnidadOrganizacional);
+	
+	@Procedure(name = "recalcularImpuestos")
+	void recalcularImpuestos(@Param("p_id_planilla") int idPlanilla, @Param("p_periodicidad") int periodicidad);
 }

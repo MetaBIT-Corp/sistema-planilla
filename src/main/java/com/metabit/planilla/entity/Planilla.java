@@ -29,11 +29,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "planillas")
 @NamedStoredProcedureQueries({
 	@NamedStoredProcedureQuery(
-		name = "show",
-		procedureName = "SHOW_MENSAJE_PROCEDURE",
+		name = "recalcularImpuestos",
+		procedureName = "RECALCULAR_IMPUESTOS",
 		parameters = {
-				@StoredProcedureParameter(mode = ParameterMode.IN, name="p_message", type = String.class),
-				@StoredProcedureParameter(mode = ParameterMode.OUT, name="p_message_completo", type = String.class)
+				@StoredProcedureParameter(mode = ParameterMode.IN, name="p_id_planilla", type = Integer.class),
+				@StoredProcedureParameter(mode = ParameterMode.IN, name="p_periodicidad", type = Integer.class)
 		}),
 	@NamedStoredProcedureQuery(
 		name = "pagoPlanilla",
