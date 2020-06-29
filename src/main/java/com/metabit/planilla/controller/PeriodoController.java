@@ -149,8 +149,11 @@ public class PeriodoController {
 
                 // Si el movimiento es fijo se almacena en 'movimientosDescuentoFijo' de lo contrario en 'totalMovimientosDescuento'
                 if(movimiento.getTipoMovimiento().isEsFijo()){
-                    movimientosDescuentoFijo.add(movimiento);
-                    totalMovimientosDescuentoFijo+=movimiento.getMontoMovimiento();
+                    //Verificando que el descuento no sea patronal.
+                    if (!movimiento.getTipoMovimiento().isEsPatronal()){
+                        movimientosDescuentoFijo.add(movimiento);
+                        totalMovimientosDescuentoFijo+=movimiento.getMontoMovimiento();
+                    }
                 }else{
                     movimientosDescuento.add(movimiento);
                     totalMovimientosDescuento+=movimiento.getMontoMovimiento();

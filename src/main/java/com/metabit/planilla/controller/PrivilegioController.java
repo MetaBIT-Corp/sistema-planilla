@@ -57,6 +57,8 @@ public class PrivilegioController {
         return modelAndView;
     }
 
+
+    // Almacenar/Editar Privilegios
     @PostMapping("/store")
     public @ResponseBody
     JsonResponse store(@ModelAttribute(name="privilegioEntity") Privilegio privilegio, BindingResult bindingResult){
@@ -65,14 +67,32 @@ public class PrivilegioController {
 
         ValidationUtils.rejectIfEmpty(bindingResult,"privilegio","Ingrese el nombre del privilegio.");
 
+        // Si no hay errores, almacena o actualiza
         if(!bindingResult.hasErrors()){
+            // Si la entidad enviada desde la vista no posee un id, almacena una nueva.
             if(privilegio.getIdPrivilegio() == null) {
-                privilegioService.storePrivilegio(privilegio);
+                privilegioService.storePrivilegio(privilegio); // Almacenando
+                jsonResponse.setStatus("SUCCESS");
+                jsonResponse.setResult(privilegio);
             }else{
-                privilegioService.updatePrivilegio(privilegio);
+
+            // Si la entidad enviada desde la vista posee un id, actualiza el registro correspondiente en la base
+            // Antes verificamos que no haya sido asignado a un RolRecursoPrivilegio
+            // Obtenemos la cantidad de veces que el privilegio aparece en la taba de Roles_Recursos_Privilegios
+            // Si no hay ninguna aparición, actualiza, de lo contrario envia un status de NOEDITABLE en el JSON
+
+                int asignaciones = rolRecursoPrivilegioService.findByPrivilegio(privilegio).size();
+                if (!(asignaciones>0)){
+                    privilegioService.updatePrivilegio(privilegio);
+                    jsonResponse.setStatus("SUCCESS");
+                    jsonResponse.setResult(privilegio);
+                }else{
+                    jsonResponse.setStatus("NOEDITABLE");
+                    jsonResponse.setResult(privilegio);
+                }
+
             }
-            jsonResponse.setStatus("SUCCESS");
-            jsonResponse.setResult(privilegio);
+
         }else{
             jsonResponse.setStatus("FAIL");
             jsonResponse.setResult(bindingResult.getAllErrors());

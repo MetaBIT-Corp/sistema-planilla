@@ -70,11 +70,20 @@ public class RolController {
         if(!bindingResult.hasErrors()){
             if(rol.getIdRol() == null) {
                 rolService.storeRol(rol);
+                jsonResponse.setStatus("SUCCESS");
+                jsonResponse.setResult(rol);
             }else{
-                rolService.updateRol(rol);
+                int asignaciones = rolRecursoPrivilegioService.findByRol(rol).size();
+                if (!(asignaciones>0)){
+                    rolService.updateRol(rol);
+                    jsonResponse.setStatus("SUCCESS");
+                    jsonResponse.setResult(rol);
+                }else{
+                    jsonResponse.setStatus("NOEDITABLE");
+                    jsonResponse.setResult(rol);
+                }
             }
-            jsonResponse.setStatus("SUCCESS");
-            jsonResponse.setResult(rol);
+
         }else{
             jsonResponse.setStatus("FAIL");
             jsonResponse.setResult(bindingResult.getAllErrors());

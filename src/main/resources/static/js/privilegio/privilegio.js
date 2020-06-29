@@ -71,12 +71,14 @@ $(document).ready(function(){
                     }
 
                 }else{
-                    formularioError(response);
+                    if(response.status=="NOEDITABLE"){
+                        window.location.href = document.location.origin + "/privilegio/index?update_success=false";
+                    }else{
+                        formularioError(response);
+                    }
+
                 }
             },
-
-            error: conexionError()
-
         });
     });
 
@@ -102,6 +104,9 @@ $(document).ready(function(){
     }
     if(update === 'true'){
         toastr.success("Privilegio editado con éxito");
+    }
+    if(update === 'false'){
+        toastr.warning("Privilegio no se puede editar. Ya ha sido asignado a uno o más roles");
     }
     if(delet === 'true'){
         toastr.success("Privilegio eliminado con éxito");

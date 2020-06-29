@@ -57,6 +57,7 @@ public class RecursoController {
         return modelAndView;
     }
 
+    // Almacenar/Editar Privilegios
     @PostMapping("/store")
     public @ResponseBody JsonResponse store(@ModelAttribute(name="recursoEntity") Recurso recurso, BindingResult bindingResult){
 
@@ -64,14 +65,28 @@ public class RecursoController {
 
         ValidationUtils.rejectIfEmpty(bindingResult,"recurso","Ingrese el nombre del recurso.");
 
+        // Si no hay errores, almacena o actualiza
         if(!bindingResult.hasErrors()){
+            // Si la entidad enviada desde la vista no posee un id, almacena una nueva.
             if(recurso.getIdRecurso() == null) {
                 recursoService.storeRecurso(recurso);
+                jsonResponse.setStatus("SUCCESS");
+                jsonResponse.setResult(recurso);
             }else{
-                recursoService.updateRecurso(recurso);
+                // Si la entidad enviada desde la vista posee un id, actualiza el registro correspondiente en la base
+                // Antes verificamos que no haya sido asignado a un RolRecursoPrivilegio
+                // Obtenemos la cantidad de veces que el recurso aparece en la taba de Roles_Recursos_Privilegios
+                // Si no hay ninguna aparición, actualiza, de lo contrario envia un status de NOEDITABLE en el JSON
+                int asignaciones = rolRecursoPrivilegioService.findByRecurso(recurso).size();
+                if (!(asignaciones>0)){
+                    recursoService.updateRecurso(recurso);
+                    jsonResponse.setStatus("SUCCESS");
+                    jsonResponse.setResult(recurso);
+                }else{
+                    jsonResponse.setStatus("NOEDITABLE");
+                    jsonResponse.setResult(recurso);
+                }
             }
-            jsonResponse.setStatus("SUCCESS");
-            jsonResponse.setResult(recurso);
         }else{
             jsonResponse.setStatus("FAIL");
             jsonResponse.setResult(bindingResult.getAllErrors());
