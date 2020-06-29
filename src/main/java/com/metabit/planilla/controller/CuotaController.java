@@ -34,6 +34,7 @@ public class CuotaController {
 		Plan plan = planService.getPlan(idPlan);
 		List<Cuota> cuotas = cuotaService.getAllCuotasByPlan(plan);
 		model.addAttribute("cuotas", cuotas);
+		model.addAttribute("plan", plan.getPlan());
 		model.addAttribute("idEmpleado", plan.getEmpleado().getIdEmpleado());
 		
 		return INDEX_VIEW;
