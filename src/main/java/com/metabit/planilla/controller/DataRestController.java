@@ -108,8 +108,11 @@ public class DataRestController {
 					if(planillas.get(k).getFechaEmision() == null) unidadPagada = false;
 				}
 			}
-			if(!unidadPagada) {
-				unidadesSinPagar.add(unidadesAll.get(i));
+			if(!unidadPagada) {	
+				UnidadOrganizacional unidad = new UnidadOrganizacional();
+				unidad.setIdUnidadOrganizacional(unidadesAll.get(i).getIdUnidadOrganizacional());
+				unidad.setUnidadOrganizacional(unidadesAll.get(i).getUnidadOrganizacional());
+				unidadesSinPagar.add(unidad);
 			}
 		}
 		return unidadesSinPagar;
@@ -150,7 +153,12 @@ public class DataRestController {
 	@GetMapping("/tipo-unidad/{id_tipo}/unidades")
 	public List<UnidadOrganizacional> unidadesTipoUnidad(@PathVariable("id_tipo") Integer id_tipo){
 		TipoUnidadOrganizacional tuo = tipoUnidadOrganizacionalService.getById(id_tipo);
-		return tuo.getUnidades_organizacional();
+		List<UnidadOrganizacional> uo = new ArrayList<UnidadOrganizacional>();
+		for (UnidadOrganizacional unidadOrganizacional : tuo.getUnidades_organizacional()) {
+			unidadOrganizacional.setUnidadPadre(null);
+			uo.add(unidadOrganizacional);
+		}
+		return uo;
 		
 		//return unidadOrganizacionalService.getByTipoUnidad(id_tipo);
 	}

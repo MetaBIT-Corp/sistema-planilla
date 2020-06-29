@@ -71,12 +71,13 @@ $(document).ready(function(){
                     }
 
                 }else{
-                    formularioError(response);
+                    if(response.status=="NOEDITABLE"){
+                        window.location.href = document.location.origin + "/recurso/index?update_success=false";
+                    }else{
+                        formularioError(response);
+                    }
                 }
             },
-
-            error: conexionError()
-
         });
     });
 
@@ -102,6 +103,9 @@ $(document).ready(function(){
     }
     if(update === 'true'){
         toastr.success("Recurso editado con éxito");
+    }
+    if(update === 'false'){
+        toastr.warning("Recurso no se puede editar. Ya ha sido asignado a uno o más roles");
     }
     if(delet === 'true'){
         toastr.success("Recurso eliminado con éxito");

@@ -30,65 +30,65 @@
 
 <div layout:fragment="content">
     <div class="row">
-        <div class="col-5 mt-4">
+        <div class="col-md-5 mt-4">
             <div class="card card-primary">
                 <div class="card-header">
                     <h3 class="card-title" id="unidadId" th:attr="data-id=${unidad.idUnidadOrganizacional}">Detalle de unidad organizacional</h3>
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-md-6">
                             <label><strong>Nombre Unidad: </strong></label>
                         </div>
-                        <div class="col-6 text-center">
+                        <div class="col-md-6 text-center">
                             <h5 th:text="${unidad.unidadOrganizacional}"></h5>
                         </div>
                     </div>
                     <div class="row" th:if="${unidad.unidadPadre != null}">
-                        <div class="col-6">
+                        <div class="col-md-6">
                             <label><strong>Unidad Padre: </strong></label>
                         </div>
-                        <div class="col-6 text-center">
+                        <div class="col-md-6 text-center">
                             <h5 th:text="${unidad.unidadPadre.unidadOrganizacional}"></h5>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-md-6">
                             <label><strong>Tipo de unidad: </strong></label>
                         </div>
-                        <div class="col-6 text-center">
+                        <div class="col-md-6 text-center">
                             <h5 th:text="${unidad.tipoUnidadOrganizacional.tipoUnidadOrganizacional}"></h5>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-8">
+                        <div class="col-md-8">
                             <label><strong>Presupuesto asignado: </strong></label>
                         </div>
-                        <div class="col-4">
+                        <div class="col-md-4">
                             <h5 th:text="'$ '+${#numbers.formatDecimal(centroCosto.presupuestoAsignado,1,'COMMA',2,'POINT')}"></h5>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-8">
+                        <div class="col-md-8">
                             <label><strong>Presupuesto anterior: </strong></label>
                         </div>
-                        <div class="col-4">
+                        <div class="col-md-4">
                             <h5 th:text="'$ '+${#numbers.formatDecimal(centroCosto.presupuestoAnterior,1,'COMMA',2,'POINT')}"></h5>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-8">
+                        <div class="col-md-8">
                             <label><strong>Presupuesto devengado: </strong></label>
                         </div>
-                        <div class="col-4">
+                        <div class="col-md-4">
                             <h5 th:text="'$ '+${#numbers.formatDecimal(centroCosto.presupuestoDevengado,1,'COMMA',2,'POINT')}"></h5>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-8">
+                        <div class="col-md-8">
                             <label><strong>Año laboral: </strong></label>
                         </div>
-                        <div class="col-4">
+                        <div class="col-md-4">
                             <h5 th:text="${anio.anioLaboral}"></h5>
                         </div>
                     </div>
@@ -98,9 +98,9 @@
                 </div>
             </div>
         </div>
-        <div class="col-7">
+        <div class="col-md-7">
             <h6 class="text-center" id="mensaje">Seleccione Sub-Unidad</h6>
-            <div id="basicdiagram" class="col-12" style="height: 370px; border-style: dotted; border-width: 1px;/"></div>
+            <div id="basicdiagram" class="col-md-12" style="height: 370px; border-style: dotted; border-width: 1px;/"></div>
         </div>
 
     </div>

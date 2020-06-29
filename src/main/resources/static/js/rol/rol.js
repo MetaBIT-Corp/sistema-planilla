@@ -71,12 +71,13 @@ $(document).ready(function(){
                     }
 
                 }else{
-                    formularioError(response);
+                    if(response.status=="NOEDITABLE"){
+                        window.location.href = document.location.origin + "/rol/index?update_success=false";
+                    }else{
+                        formularioError(response);
+                    }
                 }
             },
-
-            error: conexionError()
-
         });
     });
 
@@ -101,6 +102,9 @@ $(document).ready(function(){
     }
     if(update === 'true'){
         toastr.success("Rol editado con éxito");
+    }
+    if(update === 'false'){
+        toastr.warning("Rol no se puede editar. Ya ha sido asignado a uno o más usuarios");
     }
     if(delet === 'true'){
         toastr.success("Rol eliminado con éxito");
