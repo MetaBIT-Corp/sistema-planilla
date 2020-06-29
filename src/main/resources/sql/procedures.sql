@@ -149,24 +149,6 @@ BEGIN
 END;
 ;;
 
-/*---PROCEDIMIENTO DE PRUEBA -----*/
-CREATE OR REPLACE PROCEDURE SHOW_MENSAJE_PROCEDURE
-    (p_message IN varchar2, p_message_completo OUT varchar2) -- parametros
-    IS
-    p_message_date  DATE := sysdate;
-    e_monto_bajo_exception    EXCEPTION; 
-BEGIN
-    p_message_completo := 'Hola, Soy un procedimiento de prueba: ' 
-                          || p_message 
-                          || ' Fecha: ' 
-                          || p_message_date;
-    --RAISE e_monto_bajo_exception;
-EXCEPTION
-    WHEN e_monto_bajo_exception THEN
-       RAISE_APPLICATION_ERROR(-20001, 'Error: El presupuesto no es suficiente'); 
-END;
-;;
-
 /* Procedimiento para realizar el pago de planilla
  * @parametro: id de la unidad a pagar planilla (Parametro de entrada)
  * @parametro: mensaje que indica el resultado de la ejecución del procedimiento (Parametro de salida)
@@ -313,8 +295,13 @@ BEGIN
 END;
 ;;
 
-
-
+/* Procedimiento que permite recalcular isss, afp y renta de una planilla
+ * @parametro: p_id_planilla
+ * @parametro: p_periodicidad. 15 si es quincenal, 30 si es mensual
+ * Realizado por: Edwin Palacios
+ * Fecha de creación 27/06/2020
+ * Ultima modificación: 27/06/2020
+ * */
 CREATE OR REPLACE PROCEDURE RECALCULAR_IMPUESTOS(p_id_planilla  planillas.id_planilla%TYPE, p_periodicidad anios_laborales.periodicidad%TYPE) 
     IS
     -- cursor de impuestos
