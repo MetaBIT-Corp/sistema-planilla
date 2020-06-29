@@ -32,7 +32,7 @@
 		<!-- DataTable de Generos -->
 		<div class="row ml-10 mr-10">
 			
-			<div class="offset-1 col-md-10">
+			<div class="col-md-12">
 			 <div class="card">
 	            <div class="card-header text-right">
 		            <button class="btn btn-md btn-primary" title="Agregar Plan" data-toggle="modal" data-target="#planModal">
@@ -49,6 +49,7 @@
 	                  <th>Plan</th>
 	                  <th>Monto del plan</th>
 	                  <th>Monto por cuota</th>
+	                  <th>Periodicidad</th>
 	                  <th>Tipo</th> <!-- Ingreso o Egreso -->
 	                  <th>Estado</th>
 					  <th>Acciones</th>
@@ -59,6 +60,10 @@
 	                  <td><span th:text="${plan.plan}"></span></td>
 	                  <td><span th:text="'$' + ${#numbers.formatDecimal(plan.montoPlan, 0, 'COMMA', 2, 'POINT')}"></span></td>
 	                  <td><span th:text="'$' + ${#numbers.formatDecimal(plan.montoCuota, 0, 'COMMA', 2, 'POINT')}"></span></td>
+	                  <td>
+	                  	<span th:if="${plan.periodicidadPlan == 15}" th:text="Quincenal"></span>
+	                  	<span th:if="${plan.periodicidadPlan == 30}" th:text="Mensual"></span>
+	                  </td>
 	                  <td>
 	                  	<div th:switch="${plan.esEgreso}"> 
 						  <p th:case="true"><i style="text-decoration: none; color: red;" class="fa fa-arrow-circle-down" aria-hidden="true"></i>Egreso</p>
@@ -111,6 +116,7 @@
 	                  <th>Plan</th>
 	                  <th>Monto del plan</th>
 	                  <th>Monto por cuota</th>
+	                  <th>Periodicidad</th>
 	                  <th>Tipo</th> <!-- Ingreso o Egreso -->
 	                  <th>Estado</th>
 					  <th>Acciones</th>
