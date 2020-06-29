@@ -186,7 +186,8 @@ CREATE OR REPLACE PROCEDURE PAGO_PLANILLA
         JOIN empleados_puestos_unidades epu ON (u.id_unidad_organizacional = epu.id_unidad_organizacional)
         JOIN empleados e ON (epu.id_empleado=e.id_empleado)
         JOIN planillas p ON (e.id_empleado=p.id_empleado)
-        WHERE (u.id_unidad_organizacional= p_id_unidad AND e.empleado_habilitado = 1 AND epu.fecha_fin IS NULL);      
+        JOIN periodos  pe ON (p.id_periodo = pe.id_periodo)
+        WHERE (u.id_unidad_organizacional= p_id_unidad AND e.empleado_habilitado = 1 AND epu.fecha_fin IS NULL AND pe.activo = 1);      
     
     -- declaracion de variables
     
@@ -252,12 +253,12 @@ BEGIN
             Where pm.id_planilla = rec_planilla.id_planilla AND tm.es_patronal = 1;                        
             
             v_descuentos_empleado := rec_planilla.renta 
-                                    + (rec_planilla.total_descuentos); -- Obs - v_aportacion_patronal
+                                    + (rec_planilla.total_descuentos);
             
             v_valor_neto_a_pagar := v_salario_devengado - v_descuentos_empleado; 
                                    
             v_total_pago_planilla := v_total_pago_planilla 
-                                    + v_valor_neto_a_pagar
+                                    + v_salario_devengado
                                     + v_aportacion_patronal;
                                     
             -- actualizamos la planilla del empleado

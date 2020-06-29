@@ -127,10 +127,10 @@ public class PresupuestoController {
                     double presupuestoPadreDisponible = centroCostoPadre.getPresupuestoAsignado() - centroCosto.getPresupuestoDevengado();
 
                     // Validacion de que si el presupuesto nuevo excede las capacidades del disponible del padre
-                    if (nuevoPresupuesto > presupuestoPadreDisponible) {
+                    if (montoAsignacion > presupuestoPadreDisponible) {
                         LOGGER.info(nuevoPresupuesto + "---------------------");
                         LOGGER.info(presupuestoPadreDisponible + "---------------------");
-                        mensajes.put("errorPadre", "La unidad organizacional padre, no posee con los fondos suficientes.");
+                        mensajes.put("errorPadre", "La unidad organizacional padre, no posee los fondos suficientes.");
                         return new ResponseEntity<>(mensajes, HttpStatus.BAD_REQUEST);
                     }
                 }
