@@ -15,12 +15,13 @@ import com.metabit.planilla.entity.Planilla;
 @Repository("planillaJpaRepository")
 public interface PlanillaJpaRepository extends JpaRepository<Planilla, Serializable>{
 
-	@Procedure(procedureName = "PLANILLA_UPDATE_MOVIMIENTOS")
-	public abstract void planillaUpdateMovimientos(int id_planilla);
-	public abstract List<Planilla> findByPeriodo(Periodo periodo);
+	@Procedure(name = "planillaUpdateMovimiento")
+	public abstract void planillaUpdateMovimientos(@Param("p_id_planilla_in") int id_planilla);
 	
-	@Procedure(name = "show")
-	String showMessage(@Param("p_message") String p_message);
+	@Procedure(name = "generarPlanilla")
+	public abstract void generarPlanillas(@Param("p_id_periodo_in") int id_periodo);
+	
+	public abstract List<Planilla> findByPeriodo(Periodo periodo);
 	
 	@Query(value = "SELECT * FROM planillas\n" + 
 			"WHERE id_empleado IN (\n" + 
@@ -36,4 +37,7 @@ public interface PlanillaJpaRepository extends JpaRepository<Planilla, Serializa
 
 	@Procedure(name = "pagoPlanilla")
 	String pagarPlanilla(@Param("p_id_unidad") int idUnidadOrganizacional);
+	
+	@Procedure(name = "recalcularImpuestos")
+	void recalcularImpuestos(@Param("p_id_planilla") int idPlanilla, @Param("p_periodicidad") int periodicidad);
 }

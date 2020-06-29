@@ -53,11 +53,6 @@ public class PlanillaServiceImpl implements PlanillaService {
 	}
 
 	@Override
-	public String showMessage(String p_message) {
-		return planillaJpaRepository.showMessage(p_message);
-	}
-
-	@Override
 	public List<Planilla> getPlanillasUnidad(int id_unidad, int id_periodo) {
 		// TODO Auto-generated method stub
 		return planillaJpaRepository.findPlanillasUnidad(id_unidad, id_periodo);
@@ -73,5 +68,17 @@ public class PlanillaServiceImpl implements PlanillaService {
 		return planillaJpaRepository.findByPeriodo(periodo);
 	}
 
+	@Override
+	public void generarPlanillas(int id_periodo) {
+		// TODO Auto-generated method stub
+		planillaJpaRepository.generarPlanillas(id_periodo);
+		
+	}
+
+	@Override
+	public void recalcularImpuestos(int idPlanilla, int periodicidad) {
+		planillaJpaRepository.recalcularImpuestos(idPlanilla, periodicidad);
+		
+	}
 
 }

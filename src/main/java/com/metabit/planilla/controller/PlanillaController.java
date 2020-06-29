@@ -87,17 +87,13 @@ public class PlanillaController {
 	public String index(Model model) {
 		Periodo periodo_activo = periodoService.getPeriodoActivo();
 		List<Planilla> planillas = planillaService.getPlanillasByPeriodo(periodo_activo);
-		
-		float salarioNeto = 0;
-		
+				
 		for (Planilla planilla : planillas) {
 			
 			planilla.setSalarioNeto(calcularSalarioNeto(planilla));
 			
 			planillaService.updatePlanilla(planilla);
-			
-			//Actualizar ISSS y AFP
-			planillaService.updatePlanillaMovimientos(planilla.getIdPlanilla());
+			//Actualizar ISSS y AFP (Ya se actualiza al crear las planillas)
 		}
 		model.addAttribute("planillas", planillas);
 		return INDEX_VIEW;
@@ -185,13 +181,32 @@ public class PlanillaController {
 			//Variable que determina el resultado de Actualizar los Dias Festivos a la planilla
 			model.addAttribute("updateDiasFestivos", updateDiasFestivos);
 			
-			if(updateMontoVentas != null || updateHorasExtras != null || deleteIngresos != null || deleteDescuentos != null || updateDiasFestivos != null) {
+			if(deleteDescuentos != null || asignacionDescuentos != null) {
 				planilla.get().setSalarioNeto(calcularSalarioNeto(planilla.get()));
 				planillaService.updatePlanilla(planilla.get());
 				
 				//Actualizar ISSS y AFP
-				planillaService.updatePlanillaMovimientos(planilla.get().getIdPlanilla());
+
+				//Paso1: Actualizar los totales de ingreso/descuento
+				// Ya esta. Ya lo cubrió Pablo
+				//Paso2: Actualizar ISSS, AFP (Empleado, patronal) y renta
+				// agregar Edwin, y acopla Pabloç
+
 			}
+			//Nuevo
+			if(asignacionIngresos != null || deleteIngresos != null || updateMontoVentas != null || updateHorasExtras != null || updateDiasFestivos != null) {
+			
+				//Actualizamos el total de Descuentos
+				planilla.get().setTotalDescuentos(recalcularTotalDescuentos(planilla.get()));
+				
+				//Por ultimo, actualizamos el salario Neto
+				planilla.get().setSalarioNeto(calcularSalarioNeto(planilla.get()));
+				
+				//Almacenamos los cambios en la BD
+				planillaService.updatePlanilla(planilla.get());
+				
+			}
+			//fin
 			
 			model.addAttribute("planilla", planilla.get());
 			
@@ -264,14 +279,28 @@ public class PlanillaController {
 			//Cada vez que se asigne un TipoMovimiento, se actualizara el total de Descuentos e Ingresos
 			if(tipo.equals("Descuentos"))
 				planilla.setTotalDescuentos(planilla.getTotalDescuentos() + montoMovimiento);
-			else
+			else {
+				//Si es ingreso, entonces actualizamos en la BD el totalIngresos para recalcular
+				//ISSS, AFP y Renta
 				planilla.setTotalIngresos(planilla.getTotalIngresos() + montoMovimiento);
-			
+				planillaService.updatePlanilla(planilla);
+				
+				//Actualizar ISSS, AFP y Renta
+				planillaService.recalcularImpuestos(planilla.getIdPlanilla(),  planilla.getPeriodo().getAnioLaboral().getPeriodicidad());
+				
+				//Actualizamos el total de Descuentos
+				//planilla.setTotalDescuentos(recalcularTotalDescuentos(planilla));
+				//Por ultimo, actualizamos el salario Neto
+				//planilla.setSalarioNeto(calcularSalarioNeto(planilla));
+				//Almacenamos los cambios en la BD
+				//planillaService.updatePlanilla(planilla);
+			}
+				
+			//Por ultimo, actualizamos el salario Neto
 			planilla.setSalarioNeto(calcularSalarioNeto(planilla));
+			//Almacenamos los cambios en la BD
 			planillaService.updatePlanilla(planilla);
 			
-			//Actualizar ISSS y AFP
-			planillaService.updatePlanillaMovimientos(planilla.getIdPlanilla());
 				
 			PlanillaMovimiento planillaMovimiento = new PlanillaMovimiento();
 			planillaMovimiento.setPlanilla(planilla);
@@ -286,6 +315,23 @@ public class PlanillaController {
 		return "redirect:/planilla/show?planilla=" + planilla.getIdPlanilla() + "&asignacion" + tipo + "=true";
 	}
 	
+	private float recalcularTotalDescuentos(Planilla planilla) {
+		float totalDescuentos = 0;
+		
+		List<PlanillaMovimiento> planillaMovimientos = planilla.getPlanillaMovimientos();
+		
+		for (PlanillaMovimiento planillaMovimiento : planillaMovimientos) {
+			//Si es Descuento y no es Patronal, entonces se toma el valor del monto movimiento
+			if(planillaMovimiento.getTipoMovimiento().isEsDescuento() && !(planillaMovimiento.getTipoMovimiento().isEsPatronal())) {
+				totalDescuentos += planillaMovimiento.getMontoMovimiento();
+				System.out.println(planillaMovimiento.getTipoMovimiento().getMovimiento() + ": " + planillaMovimiento.getMontoMovimiento());
+			}
+			
+		}
+		
+		return totalDescuentos;
+	}
+
 	private float calcularSalarioNeto(Planilla planilla) {
 		
 		float salarioNeto = 0;
@@ -318,10 +364,20 @@ public class PlanillaController {
 			
 			if(tipo.equals("Descuentos"))
 				planilla.setTotalDescuentos(planilla.getTotalDescuentos() - planilla_movimiento.getMontoMovimiento());
-			else
+			else {
+				//Si es ingreso, entonces actualizamos en la BD el totalIngresos para recalcular
+				//ISSS, AFP y Renta
 				planilla.setTotalIngresos(planilla.getTotalIngresos() - planilla_movimiento.getMontoMovimiento());
+				planillaService.updatePlanilla(planilla);
 				
+				//Actualizar ISSS, AFP y Renta
+				planillaService.recalcularImpuestos(planilla.getIdPlanilla(),  planilla.getPeriodo().getAnioLaboral().getPeriodicidad());
+				//Actualizamos el total de Descuentos
+				//planilla.setTotalDescuentos(recalcularTotalDescuentos(planilla));
+			}
+			
 			planillaMovimientosService.deletePlanillaMovimientosById(planilla_movimiento.getIdPlaillaMovimiento());
+			//planillaService.updatePlanilla(planilla);
 			
 		}
 		
@@ -337,6 +393,9 @@ public class PlanillaController {
 		if(planilla.isPresent()) {
 			planilla.get().setMontoVentas(monto_ventas);
 			planillaService.updatePlanilla(planilla.get());
+			
+			//Actualizar ISSS, AFP y Renta
+			planillaService.recalcularImpuestos(planilla.get().getIdPlanilla(),  planilla.get().getPeriodo().getAnioLaboral().getPeriodicidad());
 		}
 		
 		
@@ -354,6 +413,9 @@ public class PlanillaController {
 			planilla.get().setHorasExtraDiurnas(horas_extras_diurnas);
 			planilla.get().setHorasExtraNocturnas(horas_extras_nocturnas);
 			planillaService.updatePlanilla(planilla.get());
+			
+			//Actualizar ISSS, AFP y Renta
+			planillaService.recalcularImpuestos(planilla.get().getIdPlanilla(),  planilla.get().getPeriodo().getAnioLaboral().getPeriodicidad());
 		}
 		
 		
@@ -413,6 +475,9 @@ public class PlanillaController {
 			System.out.println("GUARDADOS: " + planillaDFG.size());
 		}
 		
+		//Actualizar ISSS, AFP y Renta
+		planillaService.recalcularImpuestos(planilla.getIdPlanilla(),  planilla.getPeriodo().getAnioLaboral().getPeriodicidad());
+		
 		return "redirect:/planilla/show?planilla=" + planilla.getIdPlanilla() + "&updateDiasFestivos=true";
 	}
 
@@ -436,8 +501,8 @@ public class PlanillaController {
 		
 		periodo.setActivo(true);
 		periodoService.storePeriodo(periodo);
-		
-		for (Empleado empleado : empleados) {
+		planillaService.generarPlanillas(periodo.getIdPeriodo());
+		/*for (Empleado empleado : empleados) {
 			Planilla planilla = new Planilla();
 			planilla.setEmpleado(empleado);
 			planilla.setPeriodo(periodo);
@@ -465,7 +530,7 @@ public class PlanillaController {
 			}catch (Exception e) {
 				e.printStackTrace();
 			}
-		}
+		}*/
 		
 		redirAttrs.addFlashAttribute("success_planilla", "success");
 		return "redirect:/anio-laboral/index";

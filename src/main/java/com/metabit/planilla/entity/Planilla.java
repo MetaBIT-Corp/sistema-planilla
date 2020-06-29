@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -16,6 +17,7 @@ import javax.persistence.NamedStoredProcedureQueries;
 import javax.persistence.NamedStoredProcedureQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.ParameterMode;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
 
@@ -29,11 +31,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "planillas")
 @NamedStoredProcedureQueries({
 	@NamedStoredProcedureQuery(
-		name = "show",
-		procedureName = "SHOW_MENSAJE_PROCEDURE",
+		name = "recalcularImpuestos",
+		procedureName = "RECALCULAR_IMPUESTOS",
 		parameters = {
-				@StoredProcedureParameter(mode = ParameterMode.IN, name="p_message", type = String.class),
-				@StoredProcedureParameter(mode = ParameterMode.OUT, name="p_message_completo", type = String.class)
+				@StoredProcedureParameter(mode = ParameterMode.IN, name="p_id_planilla", type = Integer.class),
+				@StoredProcedureParameter(mode = ParameterMode.IN, name="p_periodicidad", type = Integer.class)
 		}),
 	@NamedStoredProcedureQuery(
 		name = "pagoPlanilla",
@@ -41,12 +43,25 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 		parameters = {
 				@StoredProcedureParameter(mode = ParameterMode.IN, name="p_id_unidad", type = Integer.class),
 				@StoredProcedureParameter(mode = ParameterMode.OUT, name="p_message", type = String.class)
-		})
+		}),
+	@NamedStoredProcedureQuery(
+			name = "generarPlanilla",
+			procedureName = "GENERAR_PLANILLAS",
+			parameters = {
+					@StoredProcedureParameter(mode = ParameterMode.IN, name="p_id_periodo_in", type = Integer.class)
+			}),
+	@NamedStoredProcedureQuery(
+			name = "planillaUpdateMovimiento",
+			procedureName = "planilla_update_movimientos",
+			parameters = {
+					@StoredProcedureParameter(mode = ParameterMode.IN, name="p_id_planilla_in", type = Integer.class)
+			})
 })
 public class Planilla{
 	
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "planillas_generator")
+    @SequenceGenerator(name = "planillas_generator", sequenceName = "planillas_seq",  allocationSize = 1)
 	@Column(name = "id_planilla", unique = true, nullable = false)
 	private int idPlanilla;
 	

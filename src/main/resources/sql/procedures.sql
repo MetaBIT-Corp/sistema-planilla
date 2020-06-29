@@ -76,12 +76,13 @@ CREATE OR REPLACE PROCEDURE generar_planillas (
     v_id_periodo     periodos.id_periodo%TYPE := p_id_periodo_in; --Almacena el periodo en el que se generarán las planilals
     v_periodicidad   anios_laborales.periodicidad%TYPE; --Almacena la periodicidad del año laboral
     v_movimiento     empleados.salario_base_mensual%TYPE; --Almacena el total del movimiento
-    
+    v_es_base tipos_movimiento.monto_base%TYPE; --Servirá para verficar las planilla movimientos se crearán en base al monto base o al porcentaje
+
     --Se obtienen los tipos de movimientos que son fijos y que no son patronales
     CURSOR cur_tipo_movimientos IS
     SELECT *
     FROM tipos_movimiento
-    WHERE es_fijo = 1 AND es_patronal = 0;
+    WHERE es_fijo = 1;
 
 BEGIN
     --Se obtiene la periodicidad del año laboral
@@ -104,10 +105,26 @@ BEGIN
 
         --Por cada tipo de movimiento se calcula el monto total y se almacena en la tabla planilla_movimientos
         FOR v_tm IN cur_tipo_movimientos LOOP
+            SELECT nvl(monto_base,0) INTO v_es_base FROM tipos_movimiento WHERE id_movimiento=v_tm.id_movimiento;
+
+            --Si la peridicidad es mensual
             IF v_periodicidad = 30 THEN
-                v_movimiento := v_tm.monto_base + ( v_tm.porcentaje_movimiento / 100 ) * v_empleado.salario_base_mensual;
+                
+                IF v_es_base = 0 THEN --si no posee monto base el movimiento se calcula multiplicando el porcentaje del movimeinto por el salario del empleado
+                    v_movimiento := ( v_tm.porcentaje_movimiento / 100 ) * v_empleado.salario_base_mensual;
+                ELSE
+                    v_movimiento := v_tm.monto_base;
+                END IF;
+
+            --Si la periodicidad es quincenal el monto se divide entre 2
             ELSE
-                v_movimiento := ( v_tm.monto_base + ( v_tm.porcentaje_movimiento / 100 ) * v_empleado.salario_base_mensual ) / 2;
+
+                IF v_es_base = 0 THEN
+                    v_movimiento := (( v_tm.porcentaje_movimiento / 100 ) * v_empleado.salario_base_mensual ) / 2;
+                ELSE
+                    v_movimiento := v_tm.monto_base / 2;
+                END IF;
+
             END IF;
 
             INSERT INTO planilla_movimientos (
@@ -169,7 +186,8 @@ CREATE OR REPLACE PROCEDURE PAGO_PLANILLA
         JOIN empleados_puestos_unidades epu ON (u.id_unidad_organizacional = epu.id_unidad_organizacional)
         JOIN empleados e ON (epu.id_empleado=e.id_empleado)
         JOIN planillas p ON (e.id_empleado=p.id_empleado)
-        WHERE (u.id_unidad_organizacional= p_id_unidad AND e.empleado_habilitado = 1 AND epu.fecha_fin IS NULL);      
+        JOIN periodos  pe ON (p.id_periodo = pe.id_periodo)
+        WHERE (u.id_unidad_organizacional= p_id_unidad AND e.empleado_habilitado = 1 AND epu.fecha_fin IS NULL AND pe.activo = 1);      
     
     -- declaracion de variables
     
@@ -201,7 +219,7 @@ BEGIN
     -- Si existe periodo
     IF (SQL%ROWCOUNT > 0) THEN
         -- Obtenemos el presupuesto actual de la unidad y la periodicidad 
-        SELECT (c.presupuesto_anterior + c.presupuesto_asignado - c.presupuesto_devengado) as "presupuesto_actual", a.periodicidad, c.id_centro_costo
+        SELECT (c.presupuesto_asignado - c.presupuesto_devengado) as "presupuesto_actual", a.periodicidad, c.id_centro_costo
         INTO v_presupuesto_unidad, v_periodicidad, v_id_centro_costo
         FROM unidades_organizacionales u
             JOIN centros_costos c ON (u.id_unidad_organizacional = c.id_unidad_organizacional)
@@ -235,12 +253,12 @@ BEGIN
             Where pm.id_planilla = rec_planilla.id_planilla AND tm.es_patronal = 1;                        
             
             v_descuentos_empleado := rec_planilla.renta 
-                                    + (rec_planilla.total_descuentos); -- Obs - v_aportacion_patronal
+                                    + (rec_planilla.total_descuentos);
             
             v_valor_neto_a_pagar := v_salario_devengado - v_descuentos_empleado; 
                                    
             v_total_pago_planilla := v_total_pago_planilla 
-                                    + v_valor_neto_a_pagar
+                                    + v_salario_devengado
                                     + v_aportacion_patronal;
                                     
             -- actualizamos la planilla del empleado
@@ -292,5 +310,89 @@ BEGIN
     ELSE
         p_message := 'No existe un periodo activo. Por favor revisar';
     END IF;
+END;
+;;
+
+
+
+CREATE OR REPLACE PROCEDURE RECALCULAR_IMPUESTOS(p_id_planilla  planillas.id_planilla%TYPE, p_periodicidad anios_laborales.periodicidad%TYPE) 
+    IS
+    -- cursor de impuestos
+    CURSOR cur_impuestos 
+        (p_id_planilla  planillas.id_planilla%TYPE)  
+        IS 
+        SELECT pm.id_planilla_movimiento, tm.*
+        FROM planillas p
+            JOIN planilla_movimientos pm ON (p.id_planilla = pm.id_planilla) 
+            JOIN tipos_movimiento tm ON (pm.id_movimiento = tm.id_movimiento)
+        WHERE (tm.tipo_movimiento_habilitado = 1 
+                AND tm.es_descuento = 1 
+                AND tm.id_movimiento IN (500,501,502,503)
+                AND p.id_planilla = p_id_planilla); 
+    
+    -- declaracion de variables
+    v_planilla_empleado     planillas%ROWTYPE;  
+    v_salario_base          empleados.salario_base_mensual%TYPE := 0;
+    v_salario_devengado     planillas.salario_neto%TYPE := 0;
+    v_impuesto_isss_afp     planilla_movimientos.monto_movimiento%TYPE := 0;
+    v_salario_base_renta    planillas.renta%TYPE := 0;
+    v_renta                 planillas.renta%TYPE := 0;
+    
+    
+BEGIN
+    -- Se obtiene salario base
+    SELECT e.salario_base_mensual 
+    INTO v_salario_base
+    FROM empleados e
+    JOIN planillas p ON (e.id_empleado = p.id_empleado)
+    WHERE id_planilla = p_id_planilla;
+    
+    -- Se obtiene la planilla 
+    SELECT p.* 
+    INTO v_planilla_empleado
+    FROM planillas p
+    WHERE id_planilla = p_id_planilla;
+    
+    IF (SQL%ROWCOUNT > 0) THEN
+    
+        IF p_periodicidad = 15 THEN
+           v_salario_base := v_salario_base/2;
+        END IF;
+        
+        -- obtenemos salario devengado
+        v_salario_devengado :=  v_salario_base  
+                                + v_planilla_empleado.monto_comision
+                                + v_planilla_empleado.monto_horas_extra
+                                + v_planilla_empleado.monto_dias_festivos
+                                + v_planilla_empleado.total_ingresos;
+        
+        -- se recorre cada uno de los impuestos
+        FOR rec_impuestos IN cur_impuestos(p_id_planilla)
+        LOOP
+            IF v_salario_devengado > rec_impuestos.monto_maximo THEN
+                IF rec_impuestos.movimiento IN ('ISSS', 'AFP') THEN
+                    v_impuesto_isss_afp := v_impuesto_isss_afp + ((rec_impuestos.monto_maximo*rec_impuestos.porcentaje_movimiento)/100);
+                END IF;
+                UPDATE planilla_movimientos 
+                SET monto_movimiento = ((rec_impuestos.monto_maximo*rec_impuestos.porcentaje_movimiento)/100)
+                WHERE id_planilla_movimiento = rec_impuestos.id_planilla_movimiento;
+            ELSE
+                IF rec_impuestos.movimiento IN ('ISSS', 'AFP') THEN
+                    v_impuesto_isss_afp := v_impuesto_isss_afp + ((v_salario_devengado*rec_impuestos.porcentaje_movimiento)/100);
+                END IF;
+                UPDATE planilla_movimientos 
+                SET monto_movimiento = ((v_salario_devengado*rec_impuestos.porcentaje_movimiento)/100)
+            WHERE id_planilla_movimiento = rec_impuestos.id_planilla_movimiento;
+           END IF;
+        END LOOP;
+        
+        -- calculo de renta
+        v_salario_base_renta := v_salario_devengado - v_impuesto_isss_afp;
+        
+        update planillas set renta = calcular_renta(v_salario_base_renta, p_periodicidad)
+        WHERE id_planilla = p_id_planilla;
+        
+    END IF;
+    COMMIT;
 END;
 ;;

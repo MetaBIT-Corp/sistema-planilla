@@ -73,6 +73,7 @@
                                             <a class="dropdown-item" href="#" th:href="@{/empleado/show?id={id}(id=${e.idEmpleado})}"><i class="far fa-eye mr-3"></i>Ver</a>
                                             <a class="dropdown-item" th:if="${edit == true}" th:href="@{/empleado/edit/{id}(id=${e.idEmpleado})}" ><i class="far fa-edit mr-3"></i>Editar</a>
                                             <a class="dropdown-item" href="#" th:href="@{/plan/index?idEmpleado={idEmpleado}(idEmpleado=${e.idEmpleado})}"><i class="fa fa-address-card mr-3"></i>Planes</a>
+                                            <!--  
                                             <a th:if="${!e.empleadoHabilitado && delete == true}" class="disable_enable dropdown-item" href="#" th:attr="data-id=${e.idEmpleado}, data-type=${e.empleadoHabilitado}"><i class="far fa-check-circle mr-3"></i>Habiltar</a>
                                             <a th:unless="${!e.empleadoHabilitado && delete == true}}" class="disable_enable dropdown-item" href="#" th:attr="data-id=${e.idEmpleado}, data-type=${e.empleadoHabilitado}"><i class="far fa-window-close mr-3"></i>Deshabilitar</a>
                                             
@@ -89,7 +90,7 @@
 													<i class="fas fa-lock-open mr-2"></i> Desbloquear
 												</button>
                                             </div>
-                                            
+                                            -->
                                         </div>
                                     </div>
                                 </div>

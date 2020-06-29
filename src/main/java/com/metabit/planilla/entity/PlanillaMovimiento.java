@@ -19,9 +19,8 @@ import org.hibernate.annotations.FetchMode;
 public class PlanillaMovimiento {
 	
 	@Id
-	@GeneratedValue
-	/*@GeneratedValue(strategy = GenerationType.AUTO, generator = "pm_generator")
-    @SequenceGenerator(name = "pm_generator", sequenceName = "planilla_movimientos_seq",  allocationSize = 1)*/
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "pm_generator")
+    @SequenceGenerator(name = "pm_generator", sequenceName = "planilla_movimientos_seq",  allocationSize = 1)
 	@Column(name = "id_planilla_movimiento")
 	private int idPlaillaMovimiento;
 	
