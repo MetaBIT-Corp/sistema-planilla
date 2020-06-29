@@ -90,16 +90,18 @@
 									<td th:text="${#temporals.format(periodo.fechaInicio, 'dd, MMM. yyyy')}" class="fecha_inicio"></td>
 									<td th:text="${#temporals.format(periodo.fechaFinal, 'dd, MMM. yyyy')}" class="fecha_final"></td>
 					                <td>
-					                	<span th:if="${periodo.fechaFinal.isBefore(local_date) && !periodo.activo}" class="badge badge-danger">Cerrado</span>
+					                	<span th:if="${(periodo.fechaFinal.isBefore(local_date) && !periodo.activo) || (!periodo.activo && !#lists.isEmpty(periodo.planillas))}" class="badge badge-danger">
+					                		Cerrado
+					                	</span>
 					                	<th:block th:if="${periodo.fechaInicio.isBefore(local_date) && periodo.fechaFinal.isAfter(local_date)}">
 					                		<span th:if="${periodo.activo}" class="badge badge-success">Activo</span>
-					                		<span th:if="${!periodo.activo}" class="badge badge-info">No iniciado</span>
+					                		<span th:if="${#lists.isEmpty(periodo.planillas)}" class="badge badge-info">No iniciado</span>
 					                	</th:block>
-					                	<span th:if="${periodo.fechaInicio.isAfter(local_date) && !periodo.activo}" class="badge badge-info">No iniciado</span>
+					                	<span th:if="${periodo.fechaInicio.isAfter(local_date)}" class="badge badge-info">No iniciado</span>
 					                </td>
 									<td class="text-center">
 										<th:block sec:authorize="hasAuthority('PLANILLA_CREATE')">
-											<th:block th:if="${periodo.fechaInicio.isBefore(local_date) && periodo.fechaFinal.isAfter(local_date)}">
+											<th:block th:if="${periodo.fechaInicio.isBefore(local_date) && periodo.fechaFinal.isAfter(local_date) || periodo.activo && #lists.isEmpty(periodo.planillas)}">
 											<button class="btn btn-sm btn-info" title="Generar planillas" th:attr="data-periodo=${periodo.idPeriodo}">
 												<i class="fas fa-clipboard-list"></i>&nbsp;&nbsp;Generar Planillas
 											</button>
