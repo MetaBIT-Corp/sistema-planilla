@@ -11,12 +11,11 @@ function desplegarUnidades(){
 }
 
 function renderSelect(unidades){
-	console.log(unidades);
-	 $('#submitPago').show();
 	 var html = '';
 	 if(unidades.length>0){
 		 html = `<label>Seleccione la Unidad que desea pagar planilla</label>
-				 <select class="form-control select2" style="width: 100%;" aria-hidden="true" id="idUnidadOrganizacional" name="idUnidadOrganizacional">`;
+				 <select class="form-control select2" style="width: 100%;" aria-hidden="true" id="idUnidadOrganizacional" name="idUnidadOrganizacional">
+				 <option value="0">Pagar Todas las Unidades</option>`;
 		 for (var i = 0; i < unidades.length; ++i) {
 			 html += `<option value=${unidades[i].idUnidadOrganizacional}>${unidades[i].unidadOrganizacional}</option>`;
 	     }
@@ -30,7 +29,10 @@ function renderSelect(unidades){
 	              </div>`;
 		 $('#submitPago').hide();
 	 }
+	 
 	 $('#divBodyDesplegarUnidades').html(html);
+	 
+	 $('#submitPago').show();
 	 $('.select2').select2();
 }
 

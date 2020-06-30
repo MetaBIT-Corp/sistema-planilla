@@ -19,7 +19,7 @@
 
 <body>
 	
-	<h1 class="m-0 text-dark" layout:fragment="titulo_seccion">Planilla Salarial</h1>
+	<h1 class="m-0 text-dark" layout:fragment="titulo_seccion">Planilla Salarial - <a th:href="@{/empleado/show?id={id}(id=${planilla.empleado.idEmpleado})}" th:text="${planilla.empleado.codigo}"></a></h1>
 
 	<ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
         <li class="breadcrumb-item"><a href="#" th:href="@{/index}">Home</a></li>
@@ -136,7 +136,7 @@
 								    <label>
 								    	Horas Extras:
 								    	<button class="btn btn-sm btn-light" style="text-decoration: none; color: black; border-radius: 50%;"
-												title="Editar Monto de Ventas" onclick="activateModalEditHorasExtras(this);"
+												title="Editar Horas Extras" onclick="activateModalEditHorasExtras(this);"
 												th:attr="data-idPlanilla=${planilla.idPlanilla}, data-horasExtrasDiurnas=${planilla.horasExtraDiurnas}, 
 												data-horasExtrasNocturnas=${planilla.horasExtraNocturnas}">
 												
@@ -168,6 +168,12 @@
 								    <label>Monto por Dias Festivos:</label><br>
 								    <span class="diasFestivos" th:text="'$' + ${#numbers.formatDecimal(planilla.montoDiasFestivos, 1, 'COMMA', 2, 'POINT')}"></span>
 								  </div>
+							  </div>
+							  <div class="row">
+							  	<div class="col-md-6 mb-3">
+							  		<label>Planes:</label><br>
+							  		<a th:href="@{/plan/index?idEmpleado={idEmpleado}(idEmpleado=${planilla.empleado.idEmpleado})}" class="stretched-link">Ir a listado de Planes</a>
+							  	</div>
 							  </div>
                          </div>
                       </div>
@@ -335,7 +341,7 @@
 		                    <form action="#" method="post"  th:action="@{/planilla/agregar-dias-festivos}">
 		                    <input type="hidden" name="id_planilla" th:value="${planilla.idPlanilla}">
 					            <div class="card-header text-right" style="background-color: #E6E6E6;">
-						            <button type="submit" class="btn btn-md btn-primary" title="Agregar a Planilla">
+						            <button type="submit" class="btn btn-md btn-primary btnSubmit" title="Agregar a Planilla">
 										<span class="text-white">Agregar a Planilla</span>
 									</button>
 					            </div>
@@ -428,7 +434,7 @@
 		                  </table>
 		                </div>
 	                  <div class="modal-footer">
-				        <button type="submit" class="btn btn-primary">Guardar</button>
+				        <button onClick="this.form.submit(); this.disabled=true;" type="submit" class="btn btn-primary btnSubmit">Guardar</button>
 				        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
 				      </div>
 			      </form>
@@ -489,7 +495,7 @@
 		                  </table>
 		                </div>
 	                  <div class="modal-footer">
-				        <button type="submit" class="btn btn-primary">Guardar</button>
+				        <button onClick="this.form.submit(); this.disabled=true;" type="submit" class="btn btn-primary btnSubmit">Guardar</button>
 				        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
 				      </div>
 			      </form>
@@ -523,7 +529,7 @@
 				  </div>
 		      </div>
 		      <div class="modal-footer">
-		        <button type="submit" class="btn btn-danger">Confirmar</button>
+		        <button onClick="this.form.submit(); this.disabled=true;" type="submit" class="btn btn-danger btnSubmit">Confirmar</button>
 		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
 		      </div>
 	      </form>
@@ -551,7 +557,7 @@
 					  </div>
 			      </div>
 			      <div class="modal-footer">
-			        <button type="submit" class="btn btn-primary">Actualizar</button>
+			        <button onClick="this.form.submit(); this.disabled=true;" type="submit" class="btn btn-primary btnSubmit">Actualizar</button>
 			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
 			      </div>
 		      </form>
@@ -584,7 +590,7 @@
 					  </div>
 			      </div>
 			      <div class="modal-footer">
-			        <button type="submit" class="btn btn-primary">Actualizar</button>
+			        <button onClick="this.form.submit(); this.disabled=true;" type="submit" class="btn btn-primary btnSubmit">Actualizar</button>
 			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
 			      </div>
 		      </form>
@@ -628,6 +634,13 @@
 		</script>
 		
 		<script type="text/javascript">
+		
+			$(".btnSubmit").on('click',function() {
+		      // add spinner to button
+		      $(this).html(
+		        `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Procesando...`
+		      );
+		    });
 		
 			function activateModalEditMontoVentas(param){
 				  

@@ -90,26 +90,26 @@
 									<td th:text="${#temporals.format(periodo.fechaInicio, 'dd, MMM. yyyy')}" class="fecha_inicio"></td>
 									<td th:text="${#temporals.format(periodo.fechaFinal, 'dd, MMM. yyyy')}" class="fecha_final"></td>
 					                <td>
-					                	<span th:if="${periodo.fechaFinal.isBefore(local_date) && !periodo.activo}" class="badge badge-danger">Cerrado</span>
-					                	<th:block th:if="${periodo.fechaInicio.isBefore(local_date) && periodo.fechaFinal.isAfter(local_date)}">
-					                		<span th:if="${periodo.activo}" class="badge badge-success">Activo</span>
-					                		<span th:if="${!periodo.activo}" class="badge badge-info">No iniciado</span>
-					                	</th:block>
+					                	<span th:if="${(periodo.fechaFinal.isBefore(local_date) && !periodo.activo) || (!periodo.activo && !#lists.isEmpty(periodo.planillas))}" class="badge badge-danger">
+					                		Cerrado
+					                	</span>
+					                	<span th:if="${periodo.activo}" class="badge badge-success">Activo</span>
 					                	<span th:if="${periodo.fechaInicio.isAfter(local_date) && !periodo.activo}" class="badge badge-info">No iniciado</span>
 					                </td>
 									<td class="text-center">
 										<th:block sec:authorize="hasAuthority('PLANILLA_CREATE')">
-											<th:block th:if="${periodo.fechaInicio.isBefore(local_date) && periodo.fechaFinal.isAfter(local_date)}">
-											<button class="btn btn-sm btn-info" title="Generar planillas" th:attr="data-periodo=${periodo.idPeriodo}">
-												<i class="fas fa-clipboard-list"></i>&nbsp;&nbsp;Generar Planillas
-											</button>
+											<th:block th:if="${periodo.activo}">
+												<button class="btn btn-sm btn-info" title="Generar planillas" th:attr="data-periodo=${periodo.idPeriodo}">
+													<i class="fas fa-clipboard-list"></i>&nbsp;&nbsp;Generar Planillas
+												</button>
 											</th:block>
-											<th:block th:if="${periodo.fechaFinal.isBefore(local_date) || periodo.fechaInicio.isAfter(local_date) && !periodo.activo}">
+											<th:block th:if="${!periodo.activo}">
 												<button class="btn btn-sm btn-info" title="Generar planillas" th:attr="data-periodo=${periodo.idPeriodo}" disabled="true">
 													<i class="fas fa-clipboard-list"></i>&nbsp;&nbsp;Generar Planillas
 												</button>
 											</th:block>
 										</th:block>
+
 										<a class="btn btn-sm btn-secondary"
 										   th:if="${periodo.fechaInicio.isBefore(local_date) || periodo.activo}"
 										   title="Ver Planillas del Periodo"
@@ -122,6 +122,7 @@
 										   th:href="@{/periodo/index/{id}(id=${periodo.idPeriodo})}">
 											<i class="fas fa-list"></i>&nbsp;&nbsp;Ver Planillas
 										</a>
+								
 									</td>
 								</tr>
 								</div>
@@ -197,6 +198,7 @@
 			        <div class="form-group">
 			            <p>¿Desea generar las planillas para el periodo del <em></em>?</p>
 			        </div>
+				  </div>
 			      <div class="modal-footer">
 			      	<input id="id_periodo" type="hidden" name="id_periodo" value="">
 			        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>

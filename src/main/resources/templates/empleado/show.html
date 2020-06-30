@@ -77,7 +77,8 @@
 	<h1 class="m-0 text-dark" layout:fragment="titulo_seccion"></h1>
 
 	<ol class="breadcrumb float-sm-right" layout:fragment="breadcrumb">
-        <li class="breadcrumb-item"><a href="#" th:href="@{/index}">Home</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/index}">Home</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/empleado/index}">Listado de Empleados</a></li>
         <li class="breadcrumb-item active">Empleado</li>
     </ol>
 
@@ -183,7 +184,7 @@
 	                                </tr>
 	
 	                                <tbody>
-	                                <tr th:each="tipoDocumento: ${documents}">
+	                                <tr th:if="${#lists.isEmpty(documents) == false}" th:each="tipoDocumento: ${documents}">
 	                                    <td><span th:text="${tipoDocumento.tipoDocumento.tipoDocumento}"></span></td>
 	                                    <td><span th:text="${tipoDocumento.codigoDocumento}"></span></td>
 	                                </tr>
@@ -264,23 +265,33 @@
 	                                        </div>
 	                                        <div class="form-group">
 	                                            <label>Jefe Inmediato:</label><br/>
-	                                            <div th:each="empPuestoUnidad, iterStat : ${empleado.empleadosPuestosUnidades}" th:if="${iterStat.index == iterStat.size-1}">
-												    <div th:if="${empPuestoUnidad.unidadOrganizacional.empleadoJefe.codigo != empleado.codigo}">
-												    	<a th:href="@{/empleado/show?id={id}(id=${empPuestoUnidad.unidadOrganizacional.empleadoJefe.idEmpleado})}" th:text="${empPuestoUnidad.unidadOrganizacional.empleadoJefe.codigo}"></a><span th:text="${' - ' + empPuestoUnidad.unidadOrganizacional.empleadoJefe.nombrePrimero + ' ' + empPuestoUnidad.unidadOrganizacional.empleadoJefe.apellidoMaterno}"></span>
-												    </div>
-												    <div th:if="${empPuestoUnidad.unidadOrganizacional.empleadoJefe.codigo == empleado.codigo}">
-												    	<div th:if="${empPuestoUnidad.unidadOrganizacional.unidadPadre}">
-												    		<div th:if="${empPuestoUnidad.unidadOrganizacional.unidadPadre.empleadoJefe}">
-												    			<a th:href="@{/empleado/show?id={id}(id=${empPuestoUnidad.unidadOrganizacional.unidadPadre.empleadoJefe.idEmpleado})}" th:text="${empPuestoUnidad.unidadOrganizacional.unidadPadre.empleadoJefe.codigo}"></a><span th:text="${' - ' + empPuestoUnidad.unidadOrganizacional.unidadPadre.empleadoJefe.nombrePrimero + ' ' + empPuestoUnidad.unidadOrganizacional.unidadPadre.empleadoJefe.apellidoMaterno}"></span>
-												    		</div>
-												    		<div th:if="${empPuestoUnidad.unidadOrganizacional.unidadPadre.empleadoJefe == null}">
-												    			<span>No posee actualmente.</span>
-												    		</div>
-												    	</div>
-												    	<div th:if="${empPuestoUnidad.unidadOrganizacional.unidadPadre == null}">
-												    		<span>No posee actualmente.</span>
-												    	</div>
-												    </div>
+	                                            <div th:if="${#lists.isEmpty(empleado.empleadosPuestosUnidades) == false}">
+		                                            <div th:each="empPuestoUnidad, iterStat : ${empleado.empleadosPuestosUnidades}" th:if="${iterStat.index == iterStat.size-1}">
+													   	<div th:if="${empPuestoUnidad.unidadOrganizacional.empleadoJefe != null}">
+														    <div th:if="${empPuestoUnidad.unidadOrganizacional.empleadoJefe.codigo != empleado.codigo}">
+														    	<a th:href="@{/empleado/show?id={id}(id=${empPuestoUnidad.unidadOrganizacional.empleadoJefe.idEmpleado})}" th:text="${empPuestoUnidad.unidadOrganizacional.empleadoJefe.codigo}"></a><span th:text="${' - ' + empPuestoUnidad.unidadOrganizacional.empleadoJefe.nombrePrimero + ' ' + empPuestoUnidad.unidadOrganizacional.empleadoJefe.apellidoMaterno}"></span>
+														    </div>
+														    <div th:if="${empPuestoUnidad.unidadOrganizacional.empleadoJefe.codigo == empleado.codigo}">
+														    	<div th:if="${empPuestoUnidad.unidadOrganizacional.unidadPadre}">
+														    		<div th:if="${empPuestoUnidad.unidadOrganizacional.unidadPadre.empleadoJefe}">
+														    			<a th:href="@{/empleado/show?id={id}(id=${empPuestoUnidad.unidadOrganizacional.unidadPadre.empleadoJefe.idEmpleado})}" th:text="${empPuestoUnidad.unidadOrganizacional.unidadPadre.empleadoJefe.codigo}"></a><span th:text="${' - ' + empPuestoUnidad.unidadOrganizacional.unidadPadre.empleadoJefe.nombrePrimero + ' ' + empPuestoUnidad.unidadOrganizacional.unidadPadre.empleadoJefe.apellidoMaterno}"></span>
+														    		</div>
+														    		<div th:if="${empPuestoUnidad.unidadOrganizacional.unidadPadre.empleadoJefe == null}">
+														    			<span>No posee actualmente.</span>
+														    		</div>
+														    	</div>
+														    	<div th:if="${empPuestoUnidad.unidadOrganizacional.unidadPadre == null}">
+														    		<span>No posee actualmente.</span>
+														    	</div>
+														    </div>
+													    </div>
+													    <div th:if="${empPuestoUnidad.unidadOrganizacional.empleadoJefe == null}">
+													    	<span>No posee actualmente.</span>
+													    </div>
+													</div>
+												</div>
+												<div th:if="${#lists.isEmpty(empleado.empleadosPuestosUnidades)}">
+													<span>No posee actualmente.</span>
 												</div>
 	                                        </div>
 	                                    </div>
@@ -301,6 +312,10 @@
 												    <span th:text="${empPuestoUnidad.puesto.puesto + ' - ' + empPuestoUnidad.unidadOrganizacional.unidadOrganizacional}"></span>
 												</div>
 	                                        </div>
+	                                        <div class="form-group" th:if="${empleado.usuario != null}">
+	                                            <label>Nombre de Usuario</label><br/>
+	                                            <span th:text="${empleado.usuario.username}"></span>
+	                                        </div>
 	                                    </div>
 	                                    <!--FIN SEGUNDA COLUMNA-->
 	                                </div>
@@ -316,7 +331,7 @@
 	                                                <th>Profesi&oacute;n/Oficio</th>
 	                                            </tr>
 	                                            <tbody>
-	                                            <tr th:each="p: ${professions}">
+	                                            <tr th:if="${#lists.isEmpty(professions) == false}" th:each="p: ${professions}">
 	
 	                                                <td><span th:text="${p.profesion.profesion}"></span></td>
 	

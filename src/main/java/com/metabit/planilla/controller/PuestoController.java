@@ -140,7 +140,7 @@ public class PuestoController {
  	 * @param int id: id del puesto
  	 * @return String
  	 */
-	@PreAuthorize("permitAll()")
+	@PreAuthorize("hasAuthority('PUESTO_EDIT')")
 	@PostMapping("/enable")
 	public String enablePuesto(@RequestParam("idPuestoEnable") int id) {
 		Puesto puesto = puestoService.getPuesto(id);
@@ -155,7 +155,7 @@ public class PuestoController {
  	 * @param int id: id del puesto
  	 * @return String
  	 */
-	@PreAuthorize("permitAll()")
+	@PreAuthorize("hasAuthority('PUESTO_EDIT')")
 	@PostMapping("/disable")
 	public String disablePuesto(@RequestParam("idPuestoDisable") int id) {
 		Puesto puesto = puestoService.getPuesto(id);

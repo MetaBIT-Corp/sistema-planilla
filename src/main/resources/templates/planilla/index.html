@@ -28,9 +28,52 @@
         <li class="breadcrumb-item active">Empleados-Planilla</li>
     </ol>
 
-	<div layout:fragment="content">
-		<div th:classappend="'alert-' + (${clase != null} ? ${clase} : info)" th:if="${mensaje != null}" th:text="${mensaje}" class="alert">
+		<div layout:fragment="content">
+			<div th:classappend="'alert-' + (${clase != null} ? ${clase} : info)" th:if="${mensaje != null}" th:text="${mensaje}" class="alert">
 		</div>
+		
+		
+		<div class="card card-default ml-3 mr-3" th:if="${resultados != null}">
+          <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-info-circle mr-2"></i>Información sobre pago de unidades</h3>
+            <div class="card-tools">
+              <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+              <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
+            </div>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+          	<table class="table table-sm">
+                  <thead>
+                    <tr>
+                      <th style="width: 10px">#</th>
+                      <th>Unidad</th>
+                      <th>Resultado</th>
+                      <th style="width: 40px">Estado</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr th:each="resultado, state : ${resultados}">
+                      <td th:utext="${state.index + 1}">1.</td>
+                      <td th:text="${#strings.arraySplit(resultado, ':')[0]}"></td>
+                      <td th:text="${#strings.arraySplit(resultado, ':')[1]}"></td>
+                      <td> 
+                      	<span class="badge bg-warning" th:if="${#strings.contains(resultado, 'suficiente')}">
+                      		<i class="fas fa-times-circle"></i>
+                      	</span>
+                      	<span class="badge bg-success" th:if="${#strings.contains(resultado, 'exitosa')}">
+                      		<i class="fas fa-check-circle"></i>
+                      	</span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+          </div>
+          <!-- /.card-body -->
+          <div class="card-footer"></div>
+        </div>
+		
+		
 		 
 		<!-- DataTable de Empleados Planilla -->
 		<div class="row ml-1 mr-1">
@@ -81,11 +124,19 @@
 	                  </td>
 						<td>						
 							<a class="btn btn-sm btn-primary" style="text-decoration: none; color: white;"
-									title="Ver Planilla" th:href="@{/planilla/show?planilla={id_planilla}(id_planilla=${planilla.idPlanilla})}">
+									title="Asignaciones a Planilla" th:href="@{/planilla/show?planilla={id_planilla}(id_planilla=${planilla.idPlanilla})}">
 									
-								<span><i class="fas fa-eye"></i></span>
+								<span><i class="fas fa-pencil-alt"></i></span>
 								
 							</a>
+							<a class="btn btn-sm btn-secondary"
+                               href=""
+                               th:href="@{/periodo/boleta/{idplanilla}(idplanilla=${planilla.idPlanilla})}"
+                               title="Ver Boleta de Pago">
+                               
+                                <span><i class="fas fa-file-contract"></i></span>
+                                
+                            </a>
 						</td>
 	                </tr>
 	                

@@ -46,7 +46,7 @@ public class DiaFestivoController {
 	 * @param String *_success: permite mostrar los toast-mensajes según la accion ejecutada anteriormente
 	 * @return ModelAndView
 	 */
-	@PreAuthorize("permitAll()")
+	@PreAuthorize("hasAuthority('DIAFESTIVO_INDEX')")
 	@GetMapping("/index")
 	public ModelAndView index(@RequestParam(name = "store_success", required = false) String store_success,
 			@RequestParam(name = "update_success", required = false) String update_success,
@@ -72,7 +72,7 @@ public class DiaFestivoController {
 	 * @param RequestParam de atributos de dia festivo
 	 * @return String
 	 */
-	@PreAuthorize("permitAll()")
+	@PreAuthorize("hasAuthority('DIAFESTIVO_CREATE') or hasAuthority('DIAFESTIVO_EDIT')")
 	@PostMapping("/form-post")
 	public String createUpdatePost(@RequestParam("idDiaFestivo") int idDiaFestivo, @RequestParam("mes") int mes,
 			@RequestParam("dia") int dia, @RequestParam("descripcionDiaFestivo") String descripcionDiaFestivo) {
@@ -102,7 +102,7 @@ public class DiaFestivoController {
 	 * @param int id: id del dia festivo
 	 * @return String
 	 */
-	@PreAuthorize("permitAll()")
+	@PreAuthorize("hasAuthority('DIAFESTIVO_DELETE')")
 	@PostMapping("/destroy")
 	public String destroyPuesto(@RequestParam("idDiaFestivoEliminar") int idDiaFestivo) {
 		// obtenemos el dia festivo para verificar que no este asignado a ningun

@@ -50,7 +50,7 @@
 					    <h5 class="card-title">Editar Rango de Renta</h5>
 					  </div>
 					  
-					<form method="post" th:action="@{/rango-renta/update}" th:object="${rango_renta}" novalidate>
+					<form method="post" th:action="@{/rango-renta/update}" th:object="${rango_renta}">
 						<input type="hidden" th:field="*{idRangoRenta}">
 						<div class="card-body">
 

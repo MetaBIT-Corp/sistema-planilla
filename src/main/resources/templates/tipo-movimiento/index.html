@@ -36,7 +36,8 @@
 				
 					<div class="card-header text-right">
 						<a href="#" th:href="@{/tipo-movimiento/form-tipo-movimiento}"
-							type="button" class="btn btn-sm btn-primary"> 
+							type="button" class="btn btn-sm btn-primary"
+							sec:authorize="hasAuthority('TIPOMOVIMIENTO_CREATE')"> 
 							<i class="fas fa-plus-circle mr-1 text-white"></i> 
 							<span class="text-white">Nuevo Tipo de Movimiento</span>
 						</a>
@@ -75,25 +76,29 @@
 				                          <div class="dropdown-menu">
 				                          
 				                            <a class="dropdown-item" href="#" title="Editar Tipo de Movimiento"
-				                            	th:href="@{'/tipo-movimiento/form-tipo-movimiento/'+${tipoMovimiento.idMovimiento} + ''}">
+				                            	th:href="@{'/tipo-movimiento/form-tipo-movimiento/'+${tipoMovimiento.idMovimiento} + ''}"
+				                            	sec:authorize="hasAuthority('TIPOMOVIMIENTO_EDIT')">
 												<i class="far fa-edit mr-3"></i>Editar
 											</a>
 				                            
 				                            <button class="dropdown-item" title="Eliminar Tipo de Movimiento"
 				                             th:attr="data-idTipoMovimiento=${tipoMovimiento.IdMovimiento}, data-movimiento=${tipoMovimiento.movimiento}, data-movimientos=${tipoMovimiento.planillaMovimientos.size()}" 
-												onclick="activateModalDestroy(this)">
+												onclick="activateModalDestroy(this)"
+												sec:authorize="hasAuthority('TIPOMOVIMIENTO_DELETE')">
 												<i class="far fa-trash-alt mr-3" ></i> Eliminar
 											</button>
 											
 											<button th:if="${tipoMovimiento.tipoMovimientoHabilitado}" class="dropdown-item" title="Deshabilitar Tipo de Movimiento"
                                            		th:attr="data-idTipoMovimiento=${tipoMovimiento.idMovimiento}, data-movimiento=${tipoMovimiento.movimiento}" 
-                                           		onclick="activateModalDisable(this)">
+                                           		onclick="activateModalDisable(this)"
+                                           		sec:authorize="hasAuthority('TIPOMOVIMIENTO_EDIT')">
 											<i class="fas fa-lock mr-3"></i> Deshabilitar
 											</button>
 											
 											<button th:unless="${tipoMovimiento.tipoMovimientoHabilitado}" class="dropdown-item" title="Habilitar Tipo de Movimiento"
 												th:attr="data-idTipoMovimiento=${tipoMovimiento.idMovimiento}, data-movimiento=${tipoMovimiento.movimiento}"
-                                           		onclick="activateModalEnable(this)">
+                                           		onclick="activateModalEnable(this)"
+                                           		sec:authorize="hasAuthority('TIPOMOVIMIENTO_EDIT')">
 												<i class="fas fa-unlock mr-3"></i> Habilitar
 											</button>
 											
