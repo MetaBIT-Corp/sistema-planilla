@@ -253,10 +253,10 @@ BEGIN
 
          -- Despues de recorrer todas las planillas se valida si el presupuesto fue suficiente para pagar planilla
         IF (v_total_pago_planilla > v_presupuesto_unidad) THEN
-            p_message := 'Presupuesto no suficiente. El presupuesto actual es de $'
-                         || round(v_presupuesto_unidad, 2) 
-                         || ' y el pago requerido es de $'
-                         || round(v_total_pago_planilla, 2);
+            p_message := 'Presupuesto no suficiente. El presupuesto actual es de '
+                         || to_char(v_presupuesto_unidad,'$99,999.99') 
+                         || ' y el pago requerido es de '
+                         || to_char(v_total_pago_planilla,'$99,999.99'); 
             ROLLBACK;
         ELSE
             -- actualizamos el centro de costo de la planilla
@@ -282,10 +282,10 @@ BEGIN
                 WHERE id_periodo = (v_periodos_rec.id_periodo + 1);
             END IF;
             
-            p_message := 'Pago realizado de manera exitosa. El presupuesto actual es de $'
-                         || round((v_presupuesto_unidad - v_total_pago_planilla),2)
-                         || ' El cobro realizado fue de $'
-                         || round(v_total_pago_planilla,2);
+            p_message := 'Pago realizado de manera exitosa. El presupuesto actual es de '
+                         || to_char((v_presupuesto_unidad - v_total_pago_planilla),'$99,999.99')
+                         || ' El cobro realizado fue de '
+                         || to_char(v_total_pago_planilla,'$99,999.99');
                          
             COMMIT;
         END IF;
