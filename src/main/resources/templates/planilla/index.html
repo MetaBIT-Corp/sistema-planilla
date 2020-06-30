@@ -124,11 +124,19 @@
 	                  </td>
 						<td>						
 							<a class="btn btn-sm btn-primary" style="text-decoration: none; color: white;"
-									title="Ver Planilla" th:href="@{/planilla/show?planilla={id_planilla}(id_planilla=${planilla.idPlanilla})}">
+									title="Asignaciones a Planilla" th:href="@{/planilla/show?planilla={id_planilla}(id_planilla=${planilla.idPlanilla})}">
 									
-								<span><i class="fas fa-eye"></i></span>
+								<span><i class="fas fa-pencil-alt"></i></span>
 								
 							</a>
+							<a class="btn btn-sm btn-secondary"
+                               href=""
+                               th:href="@{/periodo/boleta/{idplanilla}(idplanilla=${planilla.idPlanilla})}"
+                               title="Ver Boleta de Pago">
+                               
+                                <span><i class="fas fa-file-contract"></i></span>
+                                
+                            </a>
 						</td>
 	                </tr>
 	                

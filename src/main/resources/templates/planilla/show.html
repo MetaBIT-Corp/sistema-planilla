@@ -136,7 +136,7 @@
 								    <label>
 								    	Horas Extras:
 								    	<button class="btn btn-sm btn-light" style="text-decoration: none; color: black; border-radius: 50%;"
-												title="Editar Monto de Ventas" onclick="activateModalEditHorasExtras(this);"
+												title="Editar Horas Extras" onclick="activateModalEditHorasExtras(this);"
 												th:attr="data-idPlanilla=${planilla.idPlanilla}, data-horasExtrasDiurnas=${planilla.horasExtraDiurnas}, 
 												data-horasExtrasNocturnas=${planilla.horasExtraNocturnas}">
 												
@@ -168,6 +168,12 @@
 								    <label>Monto por Dias Festivos:</label><br>
 								    <span class="diasFestivos" th:text="'$' + ${#numbers.formatDecimal(planilla.montoDiasFestivos, 1, 'COMMA', 2, 'POINT')}"></span>
 								  </div>
+							  </div>
+							  <div class="row">
+							  	<div class="col-md-6 mb-3">
+							  		<label>Planes:</label><br>
+							  		<a th:href="@{/plan/index?idEmpleado={idEmpleado}(idEmpleado=${planilla.empleado.idEmpleado})}" class="stretched-link">Ir a listado de Planes</a>
+							  	</div>
 							  </div>
                          </div>
                       </div>
