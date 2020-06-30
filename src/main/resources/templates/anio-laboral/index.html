@@ -93,20 +93,17 @@
 					                	<span th:if="${(periodo.fechaFinal.isBefore(local_date) && !periodo.activo) || (!periodo.activo && !#lists.isEmpty(periodo.planillas))}" class="badge badge-danger">
 					                		Cerrado
 					                	</span>
-					                	<th:block th:if="${periodo.fechaInicio.isBefore(local_date) && periodo.fechaFinal.isAfter(local_date)}">
-					                		<span th:if="${periodo.activo}" class="badge badge-success">Activo</span>
-					                		<span th:if="${#lists.isEmpty(periodo.planillas)}" class="badge badge-info">No iniciado</span>
-					                	</th:block>
-					                	<span th:if="${periodo.fechaInicio.isAfter(local_date)}" class="badge badge-info">No iniciado</span>
+					                	<span th:if="${periodo.activo}" class="badge badge-success">Activo</span>
+					                	<span th:if="${periodo.fechaInicio.isAfter(local_date) && !periodo.activo}" class="badge badge-info">No iniciado</span>
 					                </td>
 									<td class="text-center">
 										<th:block sec:authorize="hasAuthority('PLANILLA_CREATE')">
-											<th:block th:if="${periodo.fechaInicio.isBefore(local_date) && periodo.fechaFinal.isAfter(local_date) || periodo.activo && #lists.isEmpty(periodo.planillas)}">
-											<button class="btn btn-sm btn-info" title="Generar planillas" th:attr="data-periodo=${periodo.idPeriodo}">
-												<i class="fas fa-clipboard-list"></i>&nbsp;&nbsp;Generar Planillas
-											</button>
+											<th:block th:if="${periodo.activo}">
+												<button class="btn btn-sm btn-info" title="Generar planillas" th:attr="data-periodo=${periodo.idPeriodo}">
+													<i class="fas fa-clipboard-list"></i>&nbsp;&nbsp;Generar Planillas
+												</button>
 											</th:block>
-											<th:block th:if="${periodo.fechaFinal.isBefore(local_date) || periodo.fechaInicio.isAfter(local_date) && !periodo.activo}">
+											<th:block th:if="${!periodo.activo}">
 												<button class="btn btn-sm btn-info" title="Generar planillas" th:attr="data-periodo=${periodo.idPeriodo}" disabled="true">
 													<i class="fas fa-clipboard-list"></i>&nbsp;&nbsp;Generar Planillas
 												</button>
