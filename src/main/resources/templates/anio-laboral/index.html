@@ -111,13 +111,13 @@
 											</th:block>
 										</th:block>
 										<a class="btn btn-sm btn-secondary"
-										   th:if="${periodo.fechaFinal.isBefore(local_date) || periodo.activo}"
+										   th:if="${periodo.fechaInicio.isBefore(local_date) || periodo.activo}"
 										   title="Ver Planillas del Periodo"
 										   th:href="@{/periodo/index/{id}(id=${periodo.idPeriodo})}">
 											<i class="fas fa-list"></i>&nbsp;&nbsp;Ver Planillas
 										</a>
 										<a class="btn btn-sm btn-secondary disabled"
-										   th:unless="${periodo.fechaFinal.isBefore(local_date) || periodo.activo}"
+										   th:unless="${periodo.fechaInicio.isBefore(local_date) || periodo.activo}"
 										   title="Ver Planillas del Periodo"
 										   th:href="@{/periodo/index/{id}(id=${periodo.idPeriodo})}">
 											<i class="fas fa-list"></i>&nbsp;&nbsp;Ver Planillas

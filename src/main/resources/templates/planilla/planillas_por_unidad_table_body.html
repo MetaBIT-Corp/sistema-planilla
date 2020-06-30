@@ -24,8 +24,11 @@
 			<td> [[ ${planilla.montoHorasExtra} ]] </td>
 			<td> [[ ${planilla.salarioNeto} ]] </td>
 			<td>
-				<a th:href="@{/planilla/index}" class="btn btn-sm btn-secondary" id="test" title="Ver detalle de la planilla">
-					<i class="far fa-eye"></i>
+				<a class="btn btn-sm btn-secondary"
+				   href=""
+				   th:href="@{/periodo/boleta/{idplanilla}(idplanilla=${planilla.idPlanilla})}"
+				   title="Ver Boleta de Pago del Empleado">
+					<span><i class="fas fa-file-contract"></i></span>
 				</a>
 			</td>
 		</tr>
