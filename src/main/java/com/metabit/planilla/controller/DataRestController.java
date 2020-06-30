@@ -95,26 +95,7 @@ public class DataRestController {
 	
 	@GetMapping("/unidades-organizacionales")
 	public List<UnidadOrganizacional> getUnidadesOrganizacionales(){
-		List<UnidadOrganizacional> unidadesAll = unidadOrganizacionalService.getAllUnidadesOrganizacionales();
-		List<UnidadOrganizacional> unidadesSinPagar = new ArrayList<UnidadOrganizacional>();
-		Boolean unidadPagada = true;
-		
-		for(int i = 0; i < unidadesAll.size(); i++) {
-			unidadPagada = true;
-			List<EmpleadosPuestosUnidades> epu = unidadesAll.get(i).getEmpleadosPuestosUnidades();
-			for(int j = 0; j < epu.size(); j++) {
-				List<Planilla> planillas = epu.get(j).getEmpleado().getPlanillasEmpleado();
-				for(int k = 0; k < planillas.size(); k++) {
-					if(planillas.get(k).getFechaEmision() == null) unidadPagada = false;
-				}
-			}
-			if(!unidadPagada) {	
-				UnidadOrganizacional unidad = new UnidadOrganizacional();
-				unidad.setIdUnidadOrganizacional(unidadesAll.get(i).getIdUnidadOrganizacional());
-				unidad.setUnidadOrganizacional(unidadesAll.get(i).getUnidadOrganizacional());
-				unidadesSinPagar.add(unidad);
-			}
-		}
+		List<UnidadOrganizacional> unidadesSinPagar = unidadOrganizacionalService.getAllUnidadesOrganizacionalesSinPagar();
 		return unidadesSinPagar;
 	}
 

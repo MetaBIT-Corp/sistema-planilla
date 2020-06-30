@@ -154,7 +154,7 @@ END;
  * @parametro: mensaje que indica el resultado de la ejecución del procedimiento (Parametro de salida)
  * Realizado por: Edwin Palacios
  * Fecha de creación 18/06/2020
- * Ultima modificación: 21/06/2020
+ * Ultima modificación: 29/06/2020
  * */
 
 CREATE OR REPLACE PROCEDURE PAGO_PLANILLA
@@ -253,10 +253,10 @@ BEGIN
 
          -- Despues de recorrer todas las planillas se valida si el presupuesto fue suficiente para pagar planilla
         IF (v_total_pago_planilla > v_presupuesto_unidad) THEN
-            p_message := 'El presupuesto no es suficiente. El presupuesto actual es de $'
-                         || v_presupuesto_unidad 
-                         || ' y el pago requerido consta de $'
-                         || v_total_pago_planilla;
+            p_message := 'Presupuesto no suficiente. El presupuesto actual es de $'
+                         || round(v_presupuesto_unidad, 2) 
+                         || ' y el pago requerido es de $'
+                         || round(v_total_pago_planilla, 2);
             ROLLBACK;
         ELSE
             -- actualizamos el centro de costo de la planilla
@@ -282,10 +282,10 @@ BEGIN
                 WHERE id_periodo = (v_periodos_rec.id_periodo + 1);
             END IF;
             
-            p_message := 'El pago de la planilla se ha realizado de manera exitosa. El presupuesto actual es de $'
-                         || (v_presupuesto_unidad - v_total_pago_planilla)
+            p_message := 'Pago realizado de manera exitosa. El presupuesto actual es de $'
+                         || round((v_presupuesto_unidad - v_total_pago_planilla),2)
                          || ' El cobro realizado fue de $'
-                         || v_total_pago_planilla;
+                         || round(v_total_pago_planilla,2);
                          
             COMMIT;
         END IF;

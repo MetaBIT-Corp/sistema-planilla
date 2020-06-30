@@ -12,4 +12,5 @@ public interface UnidadOrganizacionalService {
     public abstract List<UnidadOrganizacional> getByTipoUnidad(int id_tipo);
     public abstract UnidadOrganizacional addOrUpdateUnidadOrganizaional(UnidadOrganizacional unidadOrganizacional);
     public abstract void deleteUnidad(UnidadOrganizacional unidadOrganizacional);
+    public abstract List<UnidadOrganizacional> getAllUnidadesOrganizacionalesSinPagar();
 }

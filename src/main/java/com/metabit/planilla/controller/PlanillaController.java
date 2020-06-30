@@ -28,6 +28,7 @@ import com.metabit.planilla.entity.PlanillaDiaFestivo;
 import com.metabit.planilla.entity.PlanillaMovimiento;
 import com.metabit.planilla.entity.TipoMovimiento;
 import com.metabit.planilla.entity.TipoUnidadOrganizacional;
+import com.metabit.planilla.entity.UnidadOrganizacional;
 import com.metabit.planilla.service.AnioLaboralService;
 import com.metabit.planilla.service.DiaFestivoService;
 import com.metabit.planilla.service.EmpleadoService;
@@ -37,6 +38,7 @@ import com.metabit.planilla.service.PlanillaMovimientosService;
 import com.metabit.planilla.service.PlanillaService;
 import com.metabit.planilla.service.TipoMovimientoService;
 import com.metabit.planilla.service.TipoUnidadOrganizacionalService;
+import com.metabit.planilla.service.UnidadOrganizacionalService;
 
 @Controller
 @RequestMapping("/planilla")
@@ -82,6 +84,10 @@ public class PlanillaController {
 	@Autowired
 	@Qualifier("planillaDiaFestivoServiceImpl")
 	private PlanillaDiaFestivoService planillaDiaFestivoService;
+	
+	@Autowired
+	@Qualifier("unidadOrganizacionalServiceImpl")
+	private UnidadOrganizacionalService unidadOrganizacionalService;
 	
 	@GetMapping("/index")
 	public String index(Model model) {
@@ -570,21 +576,26 @@ public class PlanillaController {
 	@PreAuthorize("permitAll()")
 	@PostMapping("/pago-planilla")
 	public String pagoPlanilla(@RequestParam("idUnidadOrganizacional") int id, RedirectAttributes redirectAttrs) {
-		String mensajeResultado = "";
+		List<String> resultados = new ArrayList<String>();
+		String mensaje = " ";
 		try {
-			mensajeResultado = planillaService.pagarPlanilla(id);
-			redirectAttrs.addFlashAttribute("mensaje", mensajeResultado)
-						 .addFlashAttribute("clase", "info");
+			if(id != 0) {
+				resultados.add(unidadOrganizacionalService.getOneUnidadOrganizacional(id).getUnidadOrganizacional() + ": "+
+						planillaService.pagarPlanilla(id));
+			}else {
+				List<UnidadOrganizacional> unidadesSinPagar = unidadOrganizacionalService.getAllUnidadesOrganizacionalesSinPagar();
+				for (UnidadOrganizacional unidadOrganizacional : unidadesSinPagar) {
+					resultados.add(unidadOrganizacional.getUnidadOrganizacional() + ": "+
+							planillaService.pagarPlanilla(unidadOrganizacional.getIdUnidadOrganizacional())
+							);
+				}
+			}
+			redirectAttrs.addFlashAttribute("resultados", resultados)
+			 .addFlashAttribute("clase", "info");
 		}catch(Exception e) {
-			mensajeResultado = "No se ha podido realizar el pago, Por favor vuelva a intentar";
-			redirectAttrs.addFlashAttribute("mensaje", mensajeResultado)
+			mensaje = "No se ha podido realizar el pago, Por favor vuelva a intentar";
+			redirectAttrs.addFlashAttribute("mensaje", mensaje)
 						 .addFlashAttribute("clase", "danger");
-		}
-		
-		try {   
-			Thread.sleep(2*1000);
-		} catch (Exception e) {
-		    System.out.println(e);
 		}
 		return "redirect:/planilla/index";
 	}
