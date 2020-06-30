@@ -36,7 +36,8 @@
 				
 					<div class="card-header text-right">
 						<a href="#" th:href="@{/puesto/form-puesto}"
-							type="button" class="btn btn-sm btn-primary"> 
+							type="button" class="btn btn-sm btn-primary"
+							sec:authorize="hasAuthority('PUESTO_CREATE')"> 
 							<i class="fas fa-plus-circle mr-1 text-white"></i> 
 							<span class="text-white">Nuevo Puesto</span>
 						</a>
@@ -71,24 +72,28 @@
 				                          	<span>Accion</span>
 				                          </button>
 				                          <div class="dropdown-menu">
-				                            <a class="dropdown-item" href="#" th:href="@{'/puesto/form-puesto/'+${puesto.idPuesto}+''}">
+				                            <a class="dropdown-item" href="#" th:href="@{'/puesto/form-puesto/'+${puesto.idPuesto}+''}"
+				                            	sec:authorize="hasAuthority('PUESTO_EDIT')">
 												<i class="far fa-edit mr-3"></i>Editar
 											</a>
 				                            
 				                            <button class="dropdown-item" th:attr="data-idPuesto=${puesto.IdPuesto}, data-puesto=${puesto.puesto}, data-epu=${puesto.epu.size()}" 
-												onclick="activateModalDestroy(this)" title="Eliminar Puesto">
+												onclick="activateModalDestroy(this)" title="Eliminar Puesto"
+												sec:authorize="hasAuthority('PUESTO_DELETE')">
 												<i class="far fa-trash-alt mr-3" ></i> Eliminar
 											</button>
 											
 											<button th:if="${puesto.puestoHabilitado}" class="dropdown-item" title="Deshabilitar Puesto"
                                            		th:attr="data-idPuesto=${puesto.IdPuesto}, data-puesto=${puesto.puesto}"
-                                           		onclick="activateModalDisable(this)">
+                                           		onclick="activateModalDisable(this)"
+                                           		sec:authorize="hasAuthority('PUESTO_EDIT')">
 											<i class="fas fa-lock mr-3"></i> Deshabilitar
 											</button>
 											
 											<button th:unless="${puesto.puestoHabilitado}" class="dropdown-item" title="Habilitar Puesto"
 												th:attr="data-idPuesto=${puesto.IdPuesto}, data-puesto=${puesto.puesto}"
-                                           		onclick="activateModalEnable(this)">
+                                           		onclick="activateModalEnable(this)"
+                                           		sec:authorize="hasAuthority('PUESTO_EDIT')">
 												<i class="fas fa-unlock mr-3"></i> Habilitar
 											</button>
 											

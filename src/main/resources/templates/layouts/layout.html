@@ -130,13 +130,13 @@
 	              </p>
 	            </a>
 	            <ul class="nav nav-treeview">
-					<li class="nav-item">
+					<li class="nav-item" sec:authorize="hasAuthority('EMPRESA_INDEX')">
 						<a href="#" th:href="@{/empresa/perfil/show}" class="nav-link">
 						  <i class="far fa-building ml-1 mr-3"></i>
 						  <p> Empresa</p>
 						</a>
 					</li>
-					<li class="nav-item">
+					<li class="nav-item" sec:authorize="hasAuthority('EMPLEADO_INDEX')">
 						<a href="#" th:href="@{/empleado/index}" class="nav-link">
 						  <i class="fas fa-users mr-3"></i>
 						  <p> Empleados</p>
@@ -148,26 +148,26 @@
 						  <p>Puestos</p>
 						</a>
 					</li>
-					<li class="nav-item">
+					<li class="nav-item" sec:authorize="hasAuthority('PROFESION_INDEX')">
 						<a href="#" th:href="@{/profesion/index}" class="nav-link">
 						  <i class="fas fa-user-tie mr-3"></i>
 						  <p>Profesiones</p>
 						</a>
 					</li>
-					 <li class="nav-item">
+					 <li class="nav-item" sec:authorize="hasAuthority('TIPODOCUMENTO_INDEX')">
 						<a href="#" th:href="@{/tipo-documento/index}" class="nav-link">
 						  <i class="far fa-id-card mr-2"></i>
 						  <p>Tipos de documentos</p>
 						</a>
 					</li>
-					 <li class="nav-item">
+					 <li class="nav-item" sec:authorize="hasAuthority('GENERO_INDEX')">
 						<a href="#" th:href="@{/genero/index}" class="nav-link">
 						  <i class="fas fa-venus-mars mr-2"></i>
 						  <p>Generos</p>
 						</a>
 					</li>
 					
-					<li class="nav-item" >
+					<li class="nav-item" sec:authorize="hasAuthority('UNIDADORGANIZACIONAL_INDEX')">
 						<a href="#" th:href="@{/unidades-organizacionales/index}" class="nav-link">
 							<div style="display: flex; align-items: center;">
 								<i class="fas fa-sitemap mr-2" ></i>
@@ -175,7 +175,7 @@
 							</div>
 						</a>
 					</li>
-					<li class="nav-item">
+					<li class="nav-item" sec:authorize="hasAuthority('TIPOUNIDADORGANIZACIONAL_INDEX')">
 						<a href="#" th:href="@{/tipo-unidad-organizacional/index}" class="nav-link">
 							<div style="display: flex; align-items: center;">
 							  <i class="fas fa-building mr-2"></i>
@@ -183,7 +183,7 @@
 						  	</div>
 						</a>
 					</li>
-					<li class="nav-item">
+					<li class="nav-item" sec:authorize="hasAuthority('RANGORENTA_INDEX')">
 						<a href="#" th:href="@{/rango-renta/index}" class="nav-link">
 						  <i class="fas fa-file-invoice-dollar mr-2"></i>
 						  <p>Rangos de Renta</p>
@@ -195,7 +195,7 @@
 						  <p>Estados Civiles</p>
 						</a>
 					</li>
-					<li class="nav-item">
+					<li class="nav-item" sec:authorize="hasAuthority('DEPARTAMENTO_INDEX')">
 						<a href="#" th:href="@{/departamentos/index}" class="nav-link">
 							<i class="fa fa-globe-americas mr-2"></i>
 							<p>Departamentos</p>
@@ -216,38 +216,38 @@
 	            </a>
 	            <ul class="nav nav-treeview">
 	            
-	            	<li class="nav-item">
+	            	<li class="nav-item" sec:authorize="hasAuthority('PLANILLA_INDEX')">
 						<a href="#" th:href="@{/planilla/index}" class="nav-link">
 						  <i class="fas fa-id-card mr-3"></i>
 						  <p>Empleados-Planilla</p>
 						</a>
 					</li>
-					<li class="nav-item">
+					<li class="nav-item" sec:authorize="hasAuthority('PLANILLA_INDEX')">
 						<a href="#" th:href="@{/planilla/planillas-por-unidad}" class="nav-link">
 						  <i class="fas fa-clipboard-check mr-3"></i>
 						  <p>Historial de planillas</p>
 						</a>
 					</li>
-	            	<li class="nav-item">
+	            	<li class="nav-item" sec:authorize="hasAuthority('RANGO_COMISION_INDEX')">
 						<a href="#" th:href="@{/rango-comision/index}" class="nav-link">
 						  <i class="fas fa-percent mr-3"></i>
 						  <p>Rangos Comisión</p>
 						</a>
 					</li>
 					
-					<li class="nav-item">
+					<li class="nav-item" sec:authorize="hasAuthority('TIPOMOVIMIENTO_INDEX')">
 						<a href="#" th:href="@{/tipo-movimiento/index}" class="nav-link" id="tipoMovimientoItem">
 							<i class="fas fa-hand-holding-usd  mr-2"></i>
 							<p>Tipos de Movimiento</p>
 						</a>
 					</li>
-					<li class="nav-item">
+					<li class="nav-item" sec:authorize="hasAuthority('TIPOMOVIMIENTO_INDEX')">
 						<a href="#" th:href="@{/anio-laboral/index}" class="nav-link" id="tipoMovimientoItem">
 							<i class="fas fa-business-time mr-2"></i>
 							<p>Año laboral</p>
 						</a>
 					</li>
-					<li class="nav-item">
+					<li class="nav-item" sec:authorize="hasAuthority('DIAFESTIVO_INDEX')">
 						<a href="#" th:href="@{/dia-festivo/index}" class="nav-link" id="diaFestivoItem">
 							<i class="fas fa-award mr-3"></i>
 							<p>Días Festivos</p>

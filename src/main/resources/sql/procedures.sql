@@ -149,30 +149,12 @@ BEGIN
 END;
 ;;
 
-/*---PROCEDIMIENTO DE PRUEBA -----*/
-CREATE OR REPLACE PROCEDURE SHOW_MENSAJE_PROCEDURE
-    (p_message IN varchar2, p_message_completo OUT varchar2) -- parametros
-    IS
-    p_message_date  DATE := sysdate;
-    e_monto_bajo_exception    EXCEPTION; 
-BEGIN
-    p_message_completo := 'Hola, Soy un procedimiento de prueba: ' 
-                          || p_message 
-                          || ' Fecha: ' 
-                          || p_message_date;
-    --RAISE e_monto_bajo_exception;
-EXCEPTION
-    WHEN e_monto_bajo_exception THEN
-       RAISE_APPLICATION_ERROR(-20001, 'Error: El presupuesto no es suficiente'); 
-END;
-;;
-
 /* Procedimiento para realizar el pago de planilla
  * @parametro: id de la unidad a pagar planilla (Parametro de entrada)
  * @parametro: mensaje que indica el resultado de la ejecución del procedimiento (Parametro de salida)
  * Realizado por: Edwin Palacios
  * Fecha de creación 18/06/2020
- * Ultima modificación: 21/06/2020
+ * Ultima modificación: 29/06/2020
  * */
 
 CREATE OR REPLACE PROCEDURE PAGO_PLANILLA
@@ -271,10 +253,10 @@ BEGIN
 
          -- Despues de recorrer todas las planillas se valida si el presupuesto fue suficiente para pagar planilla
         IF (v_total_pago_planilla > v_presupuesto_unidad) THEN
-            p_message := 'El presupuesto no es suficiente. El presupuesto actual es de $'
-                         || v_presupuesto_unidad 
-                         || ' y el pago requerido consta de $'
-                         || v_total_pago_planilla;
+            p_message := 'Presupuesto no suficiente. El presupuesto actual es de $'
+                         || round(v_presupuesto_unidad, 2) 
+                         || ' y el pago requerido es de $'
+                         || round(v_total_pago_planilla, 2);
             ROLLBACK;
         ELSE
             -- actualizamos el centro de costo de la planilla
@@ -300,10 +282,10 @@ BEGIN
                 WHERE id_periodo = (v_periodos_rec.id_periodo + 1);
             END IF;
             
-            p_message := 'El pago de la planilla se ha realizado de manera exitosa. El presupuesto actual es de $'
-                         || (v_presupuesto_unidad - v_total_pago_planilla)
+            p_message := 'Pago realizado de manera exitosa. El presupuesto actual es de $'
+                         || round((v_presupuesto_unidad - v_total_pago_planilla),2)
                          || ' El cobro realizado fue de $'
-                         || v_total_pago_planilla;
+                         || round(v_total_pago_planilla,2);
                          
             COMMIT;
         END IF;
@@ -313,8 +295,13 @@ BEGIN
 END;
 ;;
 
-
-
+/* Procedimiento que permite recalcular isss, afp y renta de una planilla
+ * @parametro: p_id_planilla
+ * @parametro: p_periodicidad. 15 si es quincenal, 30 si es mensual
+ * Realizado por: Edwin Palacios
+ * Fecha de creación 27/06/2020
+ * Ultima modificación: 27/06/2020
+ * */
 CREATE OR REPLACE PROCEDURE RECALCULAR_IMPUESTOS(p_id_planilla  planillas.id_planilla%TYPE, p_periodicidad anios_laborales.periodicidad%TYPE) 
     IS
     -- cursor de impuestos

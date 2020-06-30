@@ -4,7 +4,7 @@
  * @parametro: si es descuento o ingreso. 0 si es ingreso, 1 si es descuento
  * Realizado por: Edwin Palacios
  * Fecha de creación 20/06/2020
- * Ultima modificación: 21/06/2020
+ * Ultima modificación: 29/06/2020
  * */
 CREATE OR REPLACE FUNCTION obtener_plan
     --parametros
@@ -44,24 +44,14 @@ BEGIN
             
         -- Caso 2: Si el plan de cuotas es de 15 de dias y el de planillas 30, en este caso se efectuan dos cuotas 
         ELSIF rec_plan.periodicidad_plan = 15 AND  p_periodicidad_planilla = 30 THEN    
-            FOR i IN 1..2
-            LOOP
-                UPDATE cuotas set monto_cancelado= rec_plan.monto_cuota, fecha_real_pago = SYSDATE
-                WHERE id_cuota = (v_cuota.id_cuota);
-                v_monto_plan := v_monto_plan + (rec_plan.monto_cuota - v_cuota.monto_cancelado);
-                
-                -- Si el plan ya no tiene cuotas se setea como un plan ya no activo
-                UPDATE planes set es_activo = 0
-                WHERE id_plan =  rec_plan.id_plan AND not exists (  SELECT c.id_cuota
-                                                                FROM cuotas c 
-                                                                WHERE (c.id_plan = rec_plan.id_plan AND c.fecha_real_pago IS NULL AND ROWNUM = 1));
-                -- Si no hay mas cuotas ya no ejecutará la segunda iteración
-                EXIT WHEN (SQL%FOUND);
-                
-                SELECT c.* INTO v_cuota
-                FROM cuotas c 
-                WHERE (c.id_plan = rec_plan.id_plan AND c.fecha_real_pago IS NULL AND ROWNUM = 1);   
-            END LOOP;
+            UPDATE cuotas set monto_cancelado= rec_plan.monto_cuota, fecha_real_pago = SYSDATE
+            WHERE id_cuota IN (v_cuota.id_cuota, v_cuota.id_cuota + 1) AND fecha_prevista_pago <= LAST_DAY(v_cuota.fecha_prevista_pago);
+            v_monto_plan := v_monto_plan + (rec_plan.monto_cuota - v_cuota.monto_cancelado);   
+            
+            IF(SQL%ROWCOUNT = 2) THEN
+                v_monto_plan := v_monto_plan + rec_plan.monto_cuota;  
+            END IF;
+              
         -- Caso 3: Si el plan de cuotas es de 30 de dias y el de planillas 15     
         ELSIF rec_plan.periodicidad_plan = 30 AND  p_periodicidad_planilla = 15 THEN
             -- Si el monto cancelado es 0 significa que es primera que se efectua la cuota, caso contrario, ya se habrá efectuado la mitad de la cuota
@@ -85,7 +75,15 @@ BEGIN
     RETURN v_monto_plan;
 END;
 ;;
+;;
 
+/* Funcion que permite calcular la renta en base al monto imponible de renta y la periodicidad
+ * @parametro: p_monto
+ * @parametro: p_periodicidad. 15 si es quincenal, 30 si es mensual
+ * Realizado por: Edwin Palacios
+ * Fecha de creación 27/06/2020
+ * Ultima modificación: 27/06/2020
+ * */
 CREATE OR REPLACE FUNCTION calcular_renta(p_monto  planillas.renta%TYPE, p_periodicidad anios_laborales.periodicidad%TYPE)
     RETURN  empleados.salario_base_mensual%TYPE
     IS

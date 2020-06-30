@@ -135,7 +135,7 @@ public class TipoMovimientoController {
  	 * @param id: id del tipo de movimiento
  	 * @return String
  	 */
-	@PreAuthorize("permitAll()")
+	@PreAuthorize("hasAuthority('TIPOMOVIMIENTO_EDIT')")
 	@PostMapping("/enable")
 	public String enableTipoMovimiento(@RequestParam("idTipoMovimientoEnable") int id) {
 		TipoMovimiento tipoMovimiento = tipoMovimientoService.getTipoMovimiento(id);
@@ -150,7 +150,7 @@ public class TipoMovimientoController {
  	 * @param id: id del tipo de movimiento
  	 * @return String
  	 */
-	@PreAuthorize("permitAll()")
+	@PreAuthorize("hasAuthority('TIPOMOVIMIENTO_EDIT')")
 	@PostMapping("/disable")
 	public String disableTipoMovimiento(@RequestParam("idTipoMovimientoDisable") int id) {
 		TipoMovimiento tipoMovimiento = tipoMovimientoService.getTipoMovimiento(id);
