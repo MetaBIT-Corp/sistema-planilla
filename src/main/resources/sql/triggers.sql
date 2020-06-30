@@ -11,6 +11,7 @@ DECLARE
     v_anio_periodo   VARCHAR2(4);
     v_fecha_inicio   periodos.fecha_inicio%TYPE;
     v_fecha_final    periodos.fecha_final%TYPE;
+    v_activo         periodos.activo%TYPE;
 BEGIN
     --Se obtiene el año actual
     SELECT
@@ -36,60 +37,68 @@ BEGIN
         v_fecha_final := v_fecha_inicio + 14;
     END IF;
 
-    CASE
-        WHEN :new.periodicidad = 15 THEN --Cuando la periodicidad sea quincenal (quincenal)
-            WHILE v_anio_actual = v_anio_periodo LOOP --Mientras el año en que se van generando los periodos sea igual al actual
-                --Se realiza la insersión del periodo
-                INSERT INTO periodos (
-                    id_periodo,
-                    fecha_inicio,
-                    fecha_final,
-                    activo,
-                    id_anio_laboral
-                ) VALUES (
-                    periodos_seq.NEXTVAL,
-                    v_fecha_inicio,
-                    v_fecha_final,
-                    0,
-                    :new.id_anio_laboral
-                );
-
-                v_fecha_inicio := v_fecha_final + 1; --La fecha de inicio del próximo periodo pasa a ser la fecha final más 1 día
-                v_anio_periodo := to_char(v_fecha_inicio, 'YYYY'); --Se obtiene el año del periodo recién insertado
+    WHILE v_anio_actual = v_anio_periodo LOOP --Mientras el año en que se van generando los periodos sea igual al actual
+        
+        --Poner en activo el periodo que comprende la fecha actual
+        IF TRUNC(SYSDATE) BETWEEN v_fecha_inicio AND v_fecha_final THEN
+            v_activo := 1;
+        ELSE
+            v_activo := 0;
+        END IF;
+        
+        CASE
+            WHEN :new.periodicidad = 15 THEN --Cuando la periodicidad sea quincenal (quincenal)
+            
+                    --Se realiza la insersión del periodo
+                    INSERT INTO periodos (
+                        id_periodo,
+                        fecha_inicio,
+                        fecha_final,
+                        activo,
+                        id_anio_laboral
+                    ) VALUES (
+                        periodos_seq.NEXTVAL,
+                        v_fecha_inicio,
+                        v_fecha_final,
+                        v_activo,
+                        :new.id_anio_laboral
+                    );
+    
+                    v_fecha_inicio := v_fecha_final + 1; --La fecha de inicio del próximo periodo pasa a ser la fecha final más 1 día
+                    v_anio_periodo := to_char(v_fecha_inicio, 'YYYY'); --Se obtiene el año del periodo recién insertado
+                    
+                    /*
+                    Si la fecha de inicio del periodo es igual al primer día del mes, la fecha final del próximo periodo será el día 15
+                    si no la fecha final del próximo periodo será el último día del mes
+                     */
+                    IF v_fecha_inicio = trunc(v_fecha_inicio, 'MONTH') THEN
+                        v_fecha_final := v_fecha_inicio + 14;
+                    ELSE
+                        v_fecha_final := last_day(v_fecha_inicio);
+                    END IF;
+    
+            WHEN :new.periodicidad = 30 THEN --Cuando la periodicidad es de 30 (mensual)
+                    --Se realiza la insersión del periodo
+                    INSERT INTO periodos (
+                        id_periodo,
+                        fecha_inicio,
+                        fecha_final,
+                        activo,
+                        id_anio_laboral
+                    ) VALUES (
+                        periodos_seq.NEXTVAL,
+                        v_fecha_inicio,
+                        v_fecha_final,
+                        v_activo,
+                        :new.id_anio_laboral
+                    );
+    
+                    v_fecha_inicio := v_fecha_final + 1;       -- La fecha de inicio del próximo periodo será igual a la final más un día
+                    v_anio_periodo := to_char(v_fecha_inicio, 'YYYY');  -- Se obtiene el año del periodo recién insertado
+                    v_fecha_final := last_day(v_fecha_inicio);          -- La fecha final del próximo periodo será igual al último día del mes
                 
-                /*
-                Si la fecha de inicio del periodo es igual al primer día del mes, la fecha final del próximo periodo será el día 15
-                si no la fecha final del próximo periodo será el último día del mes
-                 */
-                IF v_fecha_inicio = trunc(v_fecha_inicio, 'MONTH') THEN
-                    v_fecha_final := v_fecha_inicio + 14;
-                ELSE
-                    v_fecha_final := last_day(v_fecha_inicio);
-                END IF;
-
-            END LOOP;
-        WHEN :new.periodicidad = 30 THEN --Cuando la periodicidad es de 30 (mensual)
-            WHILE v_anio_actual = v_anio_periodo LOOP --Mientras el año en que se van generando los periodos sea igual al actual
-                --Se realiza la insersión del periodo
-                INSERT INTO periodos (
-                    id_periodo,
-                    fecha_inicio,
-                    fecha_final,
-                    activo,
-                    id_anio_laboral
-                ) VALUES (
-                    periodos_seq.NEXTVAL,
-                    v_fecha_inicio,
-                    v_fecha_final,
-                    0,
-                    :new.id_anio_laboral
-                );
-
-                v_fecha_inicio := v_fecha_final + 1;       -- La fecha de inicio del próximo periodo será igual a la final más un día
-                v_anio_periodo := to_char(v_fecha_inicio, 'YYYY');  -- Se obtiene el año del periodo recién insertado
-                v_fecha_final := last_day(v_fecha_inicio);          -- La fecha final del próximo periodo será igual al último día del mes
-            END LOOP;
-    END CASE;
+        END CASE;
+    END LOOP;
 END;
 ;;
 

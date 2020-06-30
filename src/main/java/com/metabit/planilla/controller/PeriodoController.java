@@ -51,6 +51,14 @@ public class PeriodoController {
     @Qualifier("planillaMovimientosServiceImpl")
     private PlanillaMovimientosService planillaMovimientosService;
 
+    @Autowired
+    @Qualifier("planServiceImpl")
+    private PlanService planService;
+
+    @Autowired
+    @Qualifier("cuotaServiceImpl")
+    private CuotaService cuotaService;
+
     private static final String INDEX_VIEW = "periodo/index";
     private static final Log LOGGER = LogFactory.getLog(ProfesionController.class);
 
@@ -124,6 +132,25 @@ public class PeriodoController {
         // Obteniendo los días festivos en los que laboró el empleado según la planilla
         List<PlanillaDiaFestivo> festivosPlanilla = planillaDiaFestivoService.findByPlanilla(planilla);
 
+        // Obteniendo Cuotas de Planes Ingresos/Egresos correspondientes al periodo en cuestión.
+
+        // Todas las Cuotas Ingresos
+        List<Cuota> cuotasIngresoPeriodo = cuotaService.getCuotasPlanesIngresoActivosByEmpleado(empleado.getIdEmpleado(), periodo.getFechaInicio(), periodo.getFechaFinal().plusDays(1));
+        Double totalCuotasIngreso=0.0;
+        for (Cuota cuota:cuotasIngresoPeriodo) {
+            if(cuota.getFechaRealPago()!=null){
+                totalCuotasIngreso+=cuota.getMontoCancelado();
+            }
+        }
+        // Todas las Cuotas Egresos
+        List<Cuota> cuotasEgresoPeriodo = cuotaService.getCuotasPlanesEgresoActivosByEmpleado(empleado.getIdEmpleado(), periodo.getFechaInicio(), periodo.getFechaFinal().plusDays(1));
+        Double totalCuotasEgreso=0.0;
+        for (Cuota cuota:cuotasEgresoPeriodo) {
+            if(cuota.getFechaRealPago()!=null){
+                totalCuotasEgreso+=cuota.getMontoCancelado();
+            }
+        }
+
         // Obteniendo todos los movimientos asignados a la planilla (Tanto descuentos como ingresos)
         List<PlanillaMovimiento> movimientosPlanilla = planillaMovimientosService.getPlanillaMovimientosByPlanilla(planilla);
         // Array para almacenar Ingresos
@@ -166,10 +193,20 @@ public class PeriodoController {
                 +planilla.getMontoHorasExtra()
                 +planilla.getMontoComision()
                 +empleado.getSalarioBaseMensual()
-                +totalMovimientosIngreso);
+                +totalMovimientosIngreso
+                +totalCuotasIngreso);
 
         float totalDescuentos = (float) (
-                planilla.getRenta()+totalMovimientosDescuentoFijo+totalMovimientosDescuento);
+                planilla.getRenta()
+                +totalMovimientosDescuentoFijo  //No patronales
+                +totalMovimientosDescuento
+                +totalCuotasEgreso);
+
+        System.out.println("ACAAAAAAAAAAA");
+        System.out.println(planilla.getRenta());
+        System.out.println(totalMovimientosDescuentoFijo);
+        System.out.println(totalMovimientosDescuento);
+        System.out.println(totalCuotasEgreso);
 
         float salarioNeto = totalIngresos-totalDescuentos;
 
@@ -186,6 +223,9 @@ public class PeriodoController {
         modelAndView.addObject("unidad",unidad);
         modelAndView.addObject("jefe",jefe);
         modelAndView.addObject("festivosPlanilla",festivosPlanilla);
+
+        modelAndView.addObject("cuotasIngresoPeriodo",cuotasIngresoPeriodo);
+        modelAndView.addObject("cuotasEgresoPeriodo",cuotasEgresoPeriodo);
 
         modelAndView.addObject("movimientosPlanilla",movimientosPlanilla);
         modelAndView.addObject("movimientosIngreso",movimientosIngreso);
