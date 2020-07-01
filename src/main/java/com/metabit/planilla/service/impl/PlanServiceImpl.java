@@ -43,6 +43,16 @@ public class PlanServiceImpl implements PlanService{
 	}
 
 	@Override
+	public List<Plan> getPlanesIngresoActivosByEmpleado(int idEmpleado) {
+		return planJpaRepository.getPlanesIngresoActivosByEmpleado(idEmpleado);
+	}
+
+	@Override
+	public List<Plan> getPlanesEgresoActivosByEmpleado(int idEmpleado) {
+		return planJpaRepository.getPlanesEgresoActivosByEmpleado(idEmpleado);
+	}
+
+	@Override
 	public Plan getPlan(int idPlan) {
 		
 		return planJpaRepository.getOne(idPlan);

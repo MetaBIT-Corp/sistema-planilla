@@ -83,7 +83,7 @@
 	            <!-- /.card-header -->
 	            <!-- se mostrará opcion de pagar solamente si existen planillas de empleados-->
 	            <div th:if="${!#lists.isEmpty(planillas)}" class="card_header text-right">
-	            	<button  class="btn btn-sm btn-primary mt-3 mr-4 "
+	            	<button  class="btn btn-sm btn-primary mt-3 mr-4 " id="btnSolicitarPago"
 	            		th:attr="data-idPeriodo=${planillas[0].periodo.idPeriodo}"
                         onclick="activateModalPago(this)"> 
 	            		<i class="fas fa-hand-holding-usd mr-1 text-white"></i>

@@ -53,9 +53,11 @@ public class TipoMovimientoServiceImpl implements TipoMovimientoService {
 		return tipoMovimientoJpaRepository.findByEsFijo(esFijo);
 	}
 
+	
 	@Override
-	public List<TipoMovimiento> getByEsDescuento(boolean esDescuento) {
-		return tipoMovimientoJpaRepository.getByEsDescuento(esDescuento);
+	public List<TipoMovimiento> getByEsDescuentoAndEsPatronalAndEsFijoAndHabilitado(boolean esDescuento, boolean esPatronal,
+			boolean esFijo, boolean tipoMovimientoHabilitado) {
+		return tipoMovimientoJpaRepository.findByEsDescuentoAndEsPatronalAndEsFijoAndTipoMovimientoHabilitado(esDescuento, esPatronal, esFijo, tipoMovimientoHabilitado);
 	}
 	
 	

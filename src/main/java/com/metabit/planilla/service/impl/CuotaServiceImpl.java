@@ -1,5 +1,7 @@
 package com.metabit.planilla.service.impl;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +42,16 @@ public class CuotaServiceImpl implements CuotaService {
 	public List<Cuota> getAllCuotasByPlan(Plan plan) {
 		
 		return cuotaJpaRepository.findByPlan(plan);
+	}
+
+	@Override
+	public List<Cuota> getCuotasPlanesIngresoActivosByEmpleado(int idEmpleado, LocalDate inicioPeriodo, LocalDate finPeriodo) {
+		return cuotaJpaRepository.getCuotasPlanesIngresoActivosByEmpleado(idEmpleado, inicioPeriodo, finPeriodo);
+	}
+
+	@Override
+	public List<Cuota> getCuotasPlanesEgresoActivosByEmpleado(int idEmpleado, LocalDate inicioPeriodo, LocalDate finPeriodo) {
+		return cuotaJpaRepository.getCuotasPlanesEgresoActivosByEmpleado(idEmpleado,inicioPeriodo, finPeriodo);
 	}
 
 }

@@ -109,21 +109,20 @@
 												</button>
 											</th:block>
 										</th:block>
-										
 										<a class="btn btn-sm btn-secondary"
 										   th:if="${periodo.activo}"
 										   title="Ver Planillas del Periodo"
-										   th:href="@{/planilla/index}">
+										   th:href="@{/planilla/index/}">
 											<i class="fas fa-list"></i>&nbsp;&nbsp;Ver Planillas
 										</a>
 										<a class="btn btn-sm btn-secondary"
-										   th:if="${periodo.fechaFinal.isBefore(local_date)}"
+										   th:if="${periodo.fechaInicio.isBefore(local_date) and periodo.activo == false}"
 										   title="Ver Planillas del Periodo"
 										   th:href="@{/periodo/index/{id}(id=${periodo.idPeriodo})}">
 											<i class="fas fa-list"></i>&nbsp;&nbsp;Ver Planillas
 										</a>
 										<a class="btn btn-sm btn-secondary disabled"
-										   th:unless="${periodo.fechaFinal.isBefore(local_date) || periodo.activo}"
+										   th:unless="${periodo.fechaInicio.isBefore(local_date) || periodo.activo}"
 										   title="Ver Planillas del Periodo"
 										   th:href="@{/periodo/index/{id}(id=${periodo.idPeriodo})}">
 											<i class="fas fa-list"></i>&nbsp;&nbsp;Ver Planillas
@@ -204,6 +203,7 @@
 			        <div class="form-group">
 			            <p>¿Desea generar las planillas para el periodo del <em></em>?</p>
 			        </div>
+				  </div>
 			      <div class="modal-footer">
 			      	<input id="id_periodo" type="hidden" name="id_periodo" value="">
 			        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>

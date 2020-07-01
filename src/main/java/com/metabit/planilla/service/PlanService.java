@@ -12,4 +12,6 @@ public interface PlanService {
 	public Plan updatePlan(Plan plan);
 	public void deletePlan(int idPlan);
 	public List<Plan> getAllPlansByEmpleado(Empleado empleado);
+	public List<Plan> getPlanesIngresoActivosByEmpleado(int idEmpleado);
+	public List<Plan> getPlanesEgresoActivosByEmpleado(int idEmpleado);
 }

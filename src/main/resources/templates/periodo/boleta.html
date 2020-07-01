@@ -319,6 +319,32 @@
                                             <span th:text="${#numbers.formatDecimal(planilla.getMontoComision(),1,2,'POINT')}"></span>
                                         </span>
                                     </span>
+                                    <!-- Cuotas por Planes de Tipo Ingreso -->
+                                    <span class="col-md-12 py-2 px-0 border-bottom">
+                                        <ul class="list-group">
+                                            <li class="list-group-item text-info my-1 py-0 px-2 border-0">
+                                                <b>Cuotas de Ingreso por Planes</b>
+                                            </li>
+                                            <li class="list-group-item border-0 my-1 py-0 px-2" th:each="cuotaIngreso: ${cuotasIngresoPeriodo}">
+                                                <b><span th:text="${cuotaIngreso.getPlan().getPlan()}"></span></b><br>
+                                                <i>Fecha Prevista de Pago:&nbsp;</i>
+                                                <span th:text="${#dates.format(cuotaIngreso.fechaPrevistaPago, 'dd/MM/yyyy')}"></span><br>
+                                                <i>Fecha Real de Pago:&nbsp;</i>
+                                                <span th:if="${cuotaIngreso.fechaRealPago != null}">
+                                                    <span th:text="${#dates.format(cuotaIngreso.fechaRealPago, 'dd/MM/yyyy')}"></span><br>
+                                                    <i>Monto:</i>&nbsp;$
+                                                    <span th:text="${cuotaIngreso.getMontoCancelado()}"></span><br>
+                                                </span>
+                                                <span th:unless="${cuotaIngreso.fechaRealPago != null}">
+                                                    <span>Aun no cancelado</span>
+                                                </span>
+
+                                            </li>
+                                            <li class="list-group-item border-0 my-1 py-0 px-2" th:if="${#lists.isEmpty(cuotasIngresoPeriodo)}">
+                                                El empleado no cuenta con ingresos por planes
+                                            </li>
+                                        </ul>
+                                    </span>
                                     <!-- Otros Ingresos -->
                                     <span class="col-md-12 py-2 px-0 border-bottom">
                                         <ul class="list-group">
@@ -340,7 +366,7 @@
                                     </span>
                                     <!-- Total Ingresos -->
                                     <span class="col-md-12 py-3 text-center">
-                                        <b>Total de Ingresos:</b>&nbsp;$
+                                        <b>Total de Remuneraciones e Ingresos:</b>&nbsp;$
                                         <span th:text="${#numbers.formatDecimal(totalIngresos,1,2,'POINT')}"></span>
                                     </span>
 
@@ -387,6 +413,32 @@
                                             <span th:text="${#numbers.formatDecimal(planilla.getRenta(),1,2,'POINT')}"></span>
                                         </span>
                                     </span>
+                                    <!-- Cuotas por Planes de Tipo Egreso -->
+                                    <span class="col-md-12 py-2 px-0 border-bottom">
+                                        <ul class="list-group">
+                                            <li class="list-group-item text-info my-1 py-0 px-2 border-0">
+                                                <b>Cuotas de Egreso por Planes</b>
+                                            </li>
+                                            <li class="list-group-item border-0 my-1 py-0 px-2" th:each="cuotaEgreso: ${cuotasEgresoPeriodo}">
+                                                <b><span th:text="${cuotaEgreso.getPlan().getPlan()}"></span></b><br>
+                                                <i>Fecha Prevista de Pago:&nbsp;</i>
+                                                <span th:text="${#dates.format(cuotaEgreso.fechaPrevistaPago, 'dd/MM/yyyy')}"></span><br>
+                                                <i>Fecha Real de Pago:&nbsp;</i>
+                                                <span th:if="${cuotaEgreso.fechaRealPago != null}">
+                                                    <span th:text="${#dates.format(cuotaEgreso.fechaRealPago, 'dd/MM/yyyy')}"></span><br>
+                                                    <i>Monto:</i>&nbsp;$
+                                                    <span th:text="${cuotaEgreso.getMontoCancelado()}"></span><br>
+                                                </span>
+                                                <span th:unless="${cuotaEgreso.fechaRealPago != null}">
+                                                    <span>Aun no cancelado</span>
+                                                </span>
+
+                                            </li>
+                                            <li class="list-group-item border-0 my-1 py-0 px-2" th:if="${#lists.isEmpty(cuotasEgresoPeriodo)}">
+                                                El empleado no cuenta con egresos por planes
+                                            </li>
+                                        </ul>
+                                    </span>
                                     <!-- Otros Descuentos -->
                                     <span class="col-md-12 px-0 border-bottom">
                                         <ul class="list-group">
@@ -406,9 +458,9 @@
                                             <span th:text="${#numbers.formatDecimal(totalMovimientosDescuento,1,2,'POINT')}"></span>
                                         </span>
                                     </span>
-                                    <!-- Total Ingresos -->
+                                    <!-- Total Descuentos -->
                                     <span class="col-md-12 py-3 text-center">
-                                        <b>Total de Descuentos:</b>&nbsp;$
+                                        <b>Total de Aportes y Descuentos:</b>&nbsp;$
                                         <span th:text="${#numbers.formatDecimal(totalDescuentos,1,2,'POINT')}"></span>
                                     </span>
                                 </div>

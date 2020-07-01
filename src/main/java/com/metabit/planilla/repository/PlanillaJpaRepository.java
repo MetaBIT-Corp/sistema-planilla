@@ -1,6 +1,7 @@
 package com.metabit.planilla.repository;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,6 +22,7 @@ public interface PlanillaJpaRepository extends JpaRepository<Planilla, Serializa
 	@Procedure(name = "generarPlanilla")
 	public abstract void generarPlanillas(@Param("p_id_periodo_in") int id_periodo);
 	
+	public abstract List<Planilla> findByPeriodoAndFechaEmisionIsNull(Periodo periodo);
 	public abstract List<Planilla> findByPeriodo(Periodo periodo);
 	
 	@Query(value = "SELECT * FROM planillas\n" + 
