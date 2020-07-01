@@ -49,18 +49,20 @@ public class TipoUnidadOrganizacionalController {
 	public String store(@Valid @ModelAttribute("tipo_unidad_organizacional") TipoUnidadOrganizacional tuo, 
 			BindingResult bindingResult, RedirectAttributes redirAttrs) {
 			TipoUnidadOrganizacional tuo_nivel = tipoUnidadOrganizacionalService.getByNivelJerarquico(tuo.getNivelJerarquico());
-		if(bindingResult.hasErrors() || tuo_nivel != null) {
-			if(tuo_nivel != null) {
-				bindingResult.reject("nivel_duplicado", "Ya existe un tipo de unidad organizacional con este nivel jerarquico.");
+			
+			if(bindingResult.hasErrors() || tuo_nivel != null) {
+				if(tuo_nivel != null) {
+					bindingResult.reject("nivel_duplicado", "Ya existe un tipo de unidad organizacional con este nivel jerarquico.");
+				}
+				redirAttrs.addFlashAttribute("errors", bindingResult.getAllErrors());
+				return "redirect:/tipo-unidad-organizacional/index";
 			}
-			redirAttrs.addFlashAttribute("errors", bindingResult.getAllErrors());
+			
+			tuo.setTipoUnidadOrganizacionalHabilitado(true);
+			tipoUnidadOrganizacionalService.store(tuo);
+			
+			redirAttrs.addFlashAttribute("success_store", "success");
 			return "redirect:/tipo-unidad-organizacional/index";
-		}
-		tuo.setTipoUnidadOrganizacionalHabilitado(true);
-		tipoUnidadOrganizacionalService.store(tuo);
-		
-		redirAttrs.addFlashAttribute("success_store", "success");
-		return "redirect:/tipo-unidad-organizacional/index";
 	}
 	
 	@PreAuthorize("hasAuthority('TIPOUNIDADORGANIZACIONAL_EDIT')")
@@ -70,14 +72,19 @@ public class TipoUnidadOrganizacionalController {
 		int id_tuo = Integer.parseInt(requestParams.get("id-edit"));
 		int nivel_tuo = Integer.parseInt(requestParams.get("nivel"));
 		String tipo = requestParams.get("tipo");
+		TipoUnidadOrganizacional nivel_verify = tipoUnidadOrganizacionalService.getByNivelJerarquico(nivel_tuo);
 		
-		if(nivel_tuo < 1 || tipo == "" || tipo == null) {
+		if(nivel_tuo < 1 || tipo == "" || tipo == null || nivel_verify != null) {
 			if(nivel_tuo < 1) {
 				errors.add("El nivel jerarquico debe ser igual o mayor a 1");
 			}
 			if(tipo == "" || tipo == null) {
 				errors.add("Debe ingresar el nombre del tipo de unidad a crear");
 			}
+			if(nivel_verify != null && id_tuo != nivel_verify.getIdTipoUnidadOrganizacional()) {
+				errors.add("Ya existe un tipo de unidad organizacional con este nivel jerarquico.");
+			}
+			
 			redirAttrs.addFlashAttribute("errors_edit", errors);
 			return "redirect:/tipo-unidad-organizacional/index";
 		}
