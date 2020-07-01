@@ -26,7 +26,8 @@
 
 <div layout:fragment="content">
     <div class="row ml-3 mr-3">
-		<input type="hidden" id="lock_success" th:value="${lock_success}">
+        <input type="hidden" id="lock_success" th:value="${lock_success}">
+        <input type="hidden" id="enable_success" th:value="${enable}">
 		<input type="hidden" id="unlock_success" th:value="${unlock_success}">
 		
         <div class="col-md-12 ">
@@ -76,8 +77,8 @@
                                             </th:block>
                                             <a sec:authorize="hasAuthority('PLAN_INDEX')" class="dropdown-item" href="#" th:href="@{/plan/index?idEmpleado={idEmpleado}(idEmpleado=${e.idEmpleado})}"><i class="fa fa-address-card mr-3"></i>Planes</a>
                                             <th:block sec:authorize="hasAuthority('EMPLEADO_DELETE')">
-                                                <a th:if="${!e.empleadoHabilitado}" class="disable_enable dropdown-item" href="#" th:attr="data-id=${e.idEmpleado}, data-type=${e.empleadoHabilitado}"><i class="far fa-check-circle mr-3"></i>Habiltar</a>
-                                                <a th:unless="${!e.empleadoHabilitado}" class="disable_enable dropdown-item" href="#" th:attr="data-id=${e.idEmpleado}, data-type=${e.empleadoHabilitado}"><i class="far fa-window-close mr-3"></i>Deshabilitar</a>
+                                                <button th:if="${!e.empleadoHabilitado}" class="disable_enable dropdown-item" th:attr="data-id=${e.idEmpleado}, data-type=${e.empleadoHabilitado}"><i class="far fa-check-circle mr-3"></i>Habiltar</button>
+                                                <button th:unless="${!e.empleadoHabilitado}" class="disable_enable dropdown-item"  th:attr="data-id=${e.idEmpleado}, data-type=${e.empleadoHabilitado}"><i class="far fa-window-close mr-3"></i>Deshabilitar</button>
                                             </th:block>
                                             <div th:if="${e.usuario}">
                                             	<button th:if="${e.usuario.enabled}" class="dropdown-item" title="Bloquear Usuario"
