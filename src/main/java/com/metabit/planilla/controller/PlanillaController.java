@@ -135,8 +135,8 @@ public class PlanillaController {
 			model.addAttribute("ingresos", ingresos);
 			model.addAttribute("descuentos", descuentos);
 			
-			List<TipoMovimiento> allDescuentos = tipoMovimientoService.getByEsDescuento(true);
-			List<TipoMovimiento> allIngresos = tipoMovimientoService.getByEsDescuento(false);
+			List<TipoMovimiento> allDescuentos = tipoMovimientoService.getByEsDescuentoAndEsPatronalAndEsFijoAndHabilitado(true, false, false, true);
+			List<TipoMovimiento> allIngresos = tipoMovimientoService.getByEsDescuentoAndEsPatronalAndEsFijoAndHabilitado(false, false, false, true);
 			
 			List<TipoMovimiento> descuentosPendientes = obtenerPendientes(descuentos, allDescuentos);
 			List<TipoMovimiento> ingresosPendientes = obtenerPendientes(ingresos, allIngresos);
@@ -275,12 +275,25 @@ public class PlanillaController {
 			
 			if(movimiento.getMontoBase() > 0)
 				montoMovimiento = (float) movimiento.getMontoBase();
-			else //Posiblemente aqui se debe validar si el periodo es Mensual o Quincenal, con base a eso, el salario base del empleado debe cambiar (a la mitad si es quincenal)
-				if(periodicidad_mensual)
-					montoMovimiento = (float) (planilla.getEmpleado().getSalarioBaseMensual() * (movimiento.getPorcentajeMovimiento()/100));
-				else
-					montoMovimiento = (float) ((planilla.getEmpleado().getSalarioBaseMensual()/2) * (movimiento.getPorcentajeMovimiento()/100));
-					
+			else { //Posiblemente aqui se debe validar si el periodo es Mensual o Quincenal, con base a eso, el salario base del empleado debe cambiar (a la mitad si es quincenal)
+				
+				//Si el salario base mensual sobrepasa el monto maximo, entonces trabajamos con el monto maximo
+				//Caso contrario se trabaja con el salario base mensual
+				if(planilla.getEmpleado().getSalarioBaseMensual() > movimiento.getMontoMaximo()) {
+					if(periodicidad_mensual) {
+						montoMovimiento = (float) (movimiento.getMontoMaximo() * (movimiento.getPorcentajeMovimiento()/100));
+					}else {
+						montoMovimiento = (float) ((movimiento.getMontoMaximo()/2) * (movimiento.getPorcentajeMovimiento()/100));
+					}
+				}
+				else {
+					if(periodicidad_mensual) {
+						montoMovimiento = (float) (planilla.getEmpleado().getSalarioBaseMensual() * (movimiento.getPorcentajeMovimiento()/100));
+					}else {
+						montoMovimiento = (float) ((planilla.getEmpleado().getSalarioBaseMensual()/2) * (movimiento.getPorcentajeMovimiento()/100));
+					}
+				}
+			}
 			
 			//Cada vez que se asigne un TipoMovimiento, se actualizara el total de Descuentos e Ingresos
 			if(tipo.equals("Descuentos"))
