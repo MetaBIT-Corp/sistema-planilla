@@ -504,9 +504,7 @@ public class PlanillaController {
 			redirAttrs.addFlashAttribute("errors", errors);
 			return "redirect:/anio-laboral/index";
 		}
-		
-		periodo.setActivo(true);
-		periodoService.storePeriodo(periodo);
+	
 		planillaService.generarPlanillas(periodo.getIdPeriodo());
 		/*for (Empleado empleado : empleados) {
 			Planilla planilla = new Planilla();

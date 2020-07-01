@@ -34,7 +34,7 @@ public class RangoRentaController {
 	private static final String EDIT_VIEW = "rango-renta/edit";
 	private static final String CREATE_VIEW = "rango-renta/create";
 	
-	@PreAuthorize("hasAuthority('ANIOLABORAL_INDEX')")
+	@PreAuthorize("hasAuthority('RANGORENTA_INDEX')")
 	@GetMapping("/index")
 	public ModelAndView index() {
 		ModelAndView mav = new ModelAndView(INDEX_VIEW);
@@ -44,7 +44,7 @@ public class RangoRentaController {
 		return mav;
 	}
 	
-	@PreAuthorize("hasAuthority('ANIOLABORAL_CREATE')")
+	@PreAuthorize("hasAuthority('RANGORENTA_CREATE')")
 	@GetMapping("/create")
 	public ModelAndView create() {
 		ModelAndView mav = new ModelAndView(CREATE_VIEW);
@@ -54,7 +54,7 @@ public class RangoRentaController {
 		return mav;
 	}
 	
-	@PreAuthorize("hasAuthority('ANIOLABORAL_CREATE')")
+	@PreAuthorize("hasAuthority('RANGORENTA_CREATE')")
 	@PostMapping("/store")
 	public String store(@Valid @ModelAttribute("rango_renta") RangoRenta rango_renta, BindingResult bindingResult, /*@RequestParam("sin_limite") Integer sinLimite,*/ RedirectAttributes redirAttrs) {
 		List<RangoRenta> rangos_renta = rangoRentaService.getByPeriodicidad(rango_renta.getPeriodicidadRenta());
@@ -83,7 +83,7 @@ public class RangoRentaController {
 		return "redirect:/rango-renta/index";
 	}
 	
-	@PreAuthorize("hasAuthority('ANIOLABORAL_EDIT')")
+	@PreAuthorize("hasAuthority('RANGORENTA_EDIT')")
 	@GetMapping("/edit/{id}")
 	public ModelAndView edit(@PathVariable int id) {
 		ModelAndView mav = new ModelAndView(EDIT_VIEW);
@@ -95,7 +95,7 @@ public class RangoRentaController {
 		return mav;
 	}
 	
-	@PreAuthorize("hasAuthority('ANIOLABORAL_EDIT')")
+	@PreAuthorize("hasAuthority('RANGORENTA_EDIT')")
 	@PostMapping("/update")
 	public String update(@Valid @ModelAttribute("rango_renta") RangoRenta rango_renta, BindingResult bindingResult, RedirectAttributes redirAttrs) {
 		List<RangoRenta> rangos_renta = rangoRentaService.getByPeriodicidad(rango_renta.getPeriodicidadRenta());
@@ -127,7 +127,7 @@ public class RangoRentaController {
 		return "redirect:/rango-renta/index";
 	}
 	
-	@PreAuthorize("hasAuthority('ANIOLABORAL_DELETE')")
+	@PreAuthorize("hasAuthority('RANGORENTA_DELETE')")
 	@PostMapping("/destroy")
 	public String destroy(@RequestParam Map<String,String> requestParams, RedirectAttributes redirAttrs) {
 		

@@ -90,7 +90,7 @@
 									<td th:text="${#temporals.format(periodo.fechaInicio, 'dd, MMM. yyyy')}" class="fecha_inicio"></td>
 									<td th:text="${#temporals.format(periodo.fechaFinal, 'dd, MMM. yyyy')}" class="fecha_final"></td>
 					                <td>
-					                	<span th:if="${(periodo.fechaFinal.isBefore(local_date) && !periodo.activo) || (!periodo.activo && !#lists.isEmpty(periodo.planillas))}" class="badge badge-danger">
+					                	<span th:if="${(periodo.fechaFinal.isBefore(local_date) || periodo.fechaFinal.equals(local_date) && !periodo.activo) || (!periodo.activo && !#lists.isEmpty(periodo.planillas))}" class="badge badge-danger">
 					                		Cerrado
 					                	</span>
 					                	<span th:if="${periodo.activo}" class="badge badge-success">Activo</span>

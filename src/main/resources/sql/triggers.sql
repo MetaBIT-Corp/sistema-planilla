@@ -146,7 +146,9 @@ CREATE OR REPLACE TRIGGER crear_planilla_ai_compound FOR INSERT ON empleados COM
     v_id_periodo periodos.id_periodo%TYPE; --Guardará el periodo activo
     v_periodicidad   anios_laborales.periodicidad%TYPE; --Almacena la periodicidad del año laboral
     v_movimiento     empleados.salario_base_mensual%TYPE; --Almacena el total del movimiento
-    
+    v_planillas_number NUMBER; --Servirá para controlar si el periodo tiene planillas
+    v_es_base tipos_movimiento.monto_base%TYPE; --Servirá para verficar las planilla movimientos se crearán en base al monto base o al porcentaje
+
     --Se obtienen los tipos de movimientos que son fijos y que no son patronales
     CURSOR cur_tipo_movimientos IS
     SELECT *
@@ -156,57 +158,79 @@ CREATE OR REPLACE TRIGGER crear_planilla_ai_compound FOR INSERT ON empleados COM
     --Ejecutar después de cada fila afectada en la tabla empleados
     AFTER EACH ROW IS BEGIN
         --Se obtiene el periodo activo
-        SELECT id_periodo
-        INTO v_id_periodo
-        FROM periodos
-        WHERE activo = 1;
+        SELECT id_periodo INTO v_id_periodo FROM periodos WHERE activo = 1;
+
+        --Obtiene el número de planillas que existen en el periodo
+        SELECT COUNT(ROWNUM) INTO v_planillas_number FROM PLANILLAS WHERE ID_PERIODO = v_id_periodo;
         
         --Se obtiene la periodicidad del año laboral
-        SELECT periodicidad
-        INTO v_periodicidad
-        FROM periodos NATURAL JOIN anios_laborales
-        WHERE id_periodo = v_id_periodo;
+        SELECT periodicidad INTO v_periodicidad FROM periodos NATURAL JOIN anios_laborales WHERE id_periodo = v_id_periodo;
 
-        --Se crea la planilla con el empleado recién insertado en el periodo activo
-        INSERT INTO planillas (
-            id_planilla,
-            id_empleado,
-            id_periodo
-        ) VALUES (
-            planillas_seq.NEXTVAL,
-            :new.id_empleado,
-            v_id_periodo
-        );
-        
-        --Por cada tipo de movimiento se calcula el monto total y se almacena en la tabla planilla_movimientos
-        FOR v_tm IN cur_tipo_movimientos LOOP
-            IF v_periodicidad = 30 THEN
-                v_movimiento := v_tm.monto_base + ( v_tm.porcentaje_movimiento / 100 ) * :new.salario_base_mensual;
-            ELSE
-                v_movimiento := ( v_tm.monto_base + ( v_tm.porcentaje_movimiento / 100 ) * :new.salario_base_mensual ) / 2;
-            END IF;
-
-            INSERT INTO planilla_movimientos (
-                id_planilla_movimiento,
-                monto_movimiento,
+        --Si ya fueron creadas las planillas del periodo
+        IF v_planillas_number > 0 THEN
+            --Se crea la planilla con el empleado recién insertado en el periodo activo
+            INSERT INTO planillas (
                 id_planilla,
-                id_movimiento
+                id_empleado,
+                id_periodo
             ) VALUES (
-                planilla_movimientos_seq.NEXTVAL,
-                v_movimiento,
-                planillas_seq.CURRVAL,
-                v_tm.id_movimiento
+                planillas_seq.NEXTVAL,
+                :new.id_empleado,
+                v_id_periodo
             );
+            
+            --Por cada tipo de movimiento se calcula el monto total y se almacena en la tabla planilla_movimientos
+            FOR v_tm IN cur_tipo_movimientos LOOP
+                SELECT nvl(monto_base,0) INTO v_es_base FROM tipos_movimiento WHERE id_movimiento=v_tm.id_movimiento;
+                
+                --Si la periodicidad es mensual
+                IF v_periodicidad = 30 THEN
 
-        END LOOP;
-        
+                    IF v_es_base = 0 THEN --si no posee monto base el movimiento se calcula multiplicando el porcentaje del movimeinto por el salario del empleado
+                        v_movimiento := ( v_tm.porcentaje_movimiento / 100 ) * :new.salario_base_mensual;
+                    ELSE
+                        v_movimiento := v_tm.monto_base;
+                    END IF;
+
+                ELSE
+
+                    IF v_es_base = 0 THEN
+                        v_movimiento := (( v_tm.porcentaje_movimiento / 100 ) * :new.salario_base_mensual ) / 2;
+                    ELSE
+                        v_movimiento := v_tm.monto_base / 2;
+                    END IF;
+
+                END IF;
+
+                INSERT INTO planilla_movimientos (
+                    id_planilla_movimiento,
+                    monto_movimiento,
+                    id_planilla,
+                    id_movimiento
+                ) VALUES (
+                    planilla_movimientos_seq.NEXTVAL,
+                    v_movimiento,
+                    planillas_seq.CURRVAL,
+                    v_tm.id_movimiento
+                );
+--v_movimiento := ( v_tm.monto_base + ( v_tm.porcentaje_movimiento / 100 ) * :new.salario_base_mensual ) / 2;
+            END LOOP;
+        END IF;
+
+        --Si no encuentra periodos activos
+        EXCEPTION
+            WHEN NO_DATA_FOUND THEN
+                v_id_periodo := NULL;
+
     END AFTER EACH ROW;
 
     --Ejecutar después de la consulta DML
     AFTER STATEMENT IS BEGIN
-        planilla_update_movimientos(planillas_seq.currval);
+        IF v_planillas_number > 0 THEN
+            planilla_update_movimientos(planillas_seq.currval);
+        END IF;
     END AFTER STATEMENT;
-    
+
 END crear_planilla_ai_compound;
 ;;
 
