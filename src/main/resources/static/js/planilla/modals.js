@@ -1,7 +1,11 @@
-function activateModalPago(param){  
+function activateModalPago(param){
+  $('#btnSolicitarPago').html(
+		    `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> 
+		    <i class="fas fa-hand-holding-usd mr-1 text-white"></i>
+			<span class="text-white">Pagar Planilla</span>`
+		  );
   var id_periodo = $(param).attr("data-idPeriodo"); 
   desplegarUnidades();
-  $("#modalElegirUnidad").modal();
 }
 
 function desplegarUnidades(){
@@ -11,6 +15,7 @@ function desplegarUnidades(){
 }
 
 function renderSelect(unidades){
+	 $('#submitPago').show();
 	 var html = '';
 	 if(unidades.length>0){
 		 html = `<label>Seleccione la Unidad que desea pagar planilla</label>
@@ -31,8 +36,13 @@ function renderSelect(unidades){
 	 }
 	 
 	 $('#divBodyDesplegarUnidades').html(html);
-	 
-	 $('#submitPago').show();
+	 //quitamos spinner de boton
+	 $('#btnSolicitarPago').html(
+			    `<i class="fas fa-hand-holding-usd mr-1 text-white"></i>
+				<span class="text-white">Pagar Planilla</span>`
+			  );
+	 //presentamos modal
+	 $("#modalElegirUnidad").modal();
 	 $('.select2').select2();
 }
 
@@ -51,5 +61,9 @@ $button.addEventListener('click', (event) => {
     $wrapLoad.classList.add('is-active')
     $wrapper.classList.add('ocultar')
 })
+
+
+
+
 
 

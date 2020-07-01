@@ -39,7 +39,7 @@ public class PlanillaServiceImpl implements PlanillaService {
 
 	@Override
 	public List<Planilla> getPlanillasByPeriodo(Periodo periodo) {
-		return planillaJpaRepository.findByPeriodo(periodo);
+		return planillaJpaRepository.findByPeriodoAndFechaEmisionIsNull(periodo);
 	}
 
 	@Override

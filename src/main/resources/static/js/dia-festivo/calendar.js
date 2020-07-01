@@ -74,7 +74,7 @@ $(function () {
 			  dateClick: function(info) {
 				  //Se creará un nuevo dia festivo
 				  
-				  document.getElementById("divFecha").innerHTML = "Fecha: " + info.dateStr;
+				  document.getElementById("divFecha").innerHTML = info.dateStr;
 				  document.getElementById("modalTitulo").innerHTML = "Nuevo Día Festivo";
 				  var elementosFecha = info.dateStr.split("-");
 				  $("#mes").val(elementosFecha[1]); 
@@ -88,7 +88,7 @@ $(function () {
 				//Se edita dia festivo
 				if(info.event.title != ' ' && info.view.type === 'dayGridMonth' && info.event.extendedProps.id !== 0){
 					
-					document.getElementById("divFecha").innerHTML = `Fecha: ${y}-${info.event.extendedProps.mes}-${info.event.extendedProps.dia}`;
+					document.getElementById("divFecha").innerHTML = `${y}-${info.event.extendedProps.mes}-${info.event.extendedProps.dia}`;
 					document.getElementById("modalTitulo").innerHTML = "Día Festivo";
 					$("#descripcionDiaFestivo").val(info.event.title);
 					$("#mes").val(info.event.extendedProps.mes); 

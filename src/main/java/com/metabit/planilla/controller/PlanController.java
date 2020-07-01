@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -40,6 +41,7 @@ public class PlanController {
 	@Qualifier("cuotaServiceImpl")
 	private CuotaService cuotaService;
 	
+	@PreAuthorize("hasAuthority('PLAN_INDEX')")
 	@GetMapping("/index")
 	public String index(Model model, @RequestParam(value = "idEmpleado", required = true) int idEmpleado,
 			@RequestParam(name="store_success", required=false) String store_success,
@@ -72,6 +74,7 @@ public class PlanController {
 		return INDEX_VIEW;
 	}
 	
+	@PreAuthorize("hasAuthority('PLAN_CREATE')")
 	@PostMapping("/store")
 	public String store(@Valid @ModelAttribute("planEntity") Plan plan, BindingResult bindingResult) {
 		//Recuperamos al empleado
@@ -90,6 +93,7 @@ public class PlanController {
 		return "redirect:/plan/index?idEmpleado=" + empleado.getIdEmpleado() + "&store_success";
 	}
 	
+	@PreAuthorize("hasAuthority('PLAN_DELETE')")
 	@PostMapping("/destroy")
 	public String destroy(@RequestParam("idPlanDestroy") int idPlan) {
 		Plan plan = planService.getPlan(idPlan);
