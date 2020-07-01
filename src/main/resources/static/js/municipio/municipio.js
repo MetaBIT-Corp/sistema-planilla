@@ -80,8 +80,6 @@ $(document).ready(function(){
                 }
             },
 
-            error: conexionError()
-
         });
     });
 

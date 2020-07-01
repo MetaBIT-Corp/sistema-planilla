@@ -66,6 +66,28 @@
                         </div>
                     </div>
                     <hr>
+                    <!-- Cabecera 2 de Boleta de Pago -->
+                    <div class="w-100 row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-3">
+                            <span class="text-bold">Estado:</span>
+                            <span th:if="${planilla.getFechaEmision()!=null}">
+                                <span class="text-success text-bold">Boleta Pagada</span>
+                            </span>
+                            <span th:unless="${planilla.getFechaEmision()!=null}">
+                                <span class="text-danger text-bold">Pago Pendiente</span>
+                            </span>
+                        </div>
+                        <div class="col-md-4"></div>
+                        <div class="col-md-3">
+                            <span th:if="${planilla.getFechaEmision() != null}">
+                                <span class="text-bold">Fecha de Emisión:</span>
+                                <span th:text="${#dates.format(planilla.fechaEmision, 'dd/MM/yyyy')}"></span>
+                            </span>
+                        </div>
+                        <div class="col-md-1"></div>
+                    </div>
+                    <hr>
 
                     <!-- Datos Personales de Empleado -->
                     <div class="w-100 mt-3 row">
