@@ -123,7 +123,7 @@
 						</div>	          
 	                  </td>
 						<td>						
-							<a class="btn btn-sm btn-primary" style="text-decoration: none; color: white;"
+							<a sec:authorize="hasAuthority('PLANILLA_SHOW')" class="btn btn-sm btn-primary" style="text-decoration: none; color: white;"
 									title="Asignaciones a Planilla" th:href="@{/planilla/show?planilla={id_planilla}(id_planilla=${planilla.idPlanilla})}">
 									
 								<span><i class="fas fa-pencil-alt"></i></span>

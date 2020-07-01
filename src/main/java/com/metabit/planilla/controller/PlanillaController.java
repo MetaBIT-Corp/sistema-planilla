@@ -89,6 +89,7 @@ public class PlanillaController {
 	@Qualifier("unidadOrganizacionalServiceImpl")
 	private UnidadOrganizacionalService unidadOrganizacionalService;
 	
+	@PreAuthorize("hasAuthority('PLANILLA_INDEX')")
 	@GetMapping("/index")
 	public String index(Model model) {
 		Periodo periodo_activo = periodoService.getPeriodoActivo();
@@ -105,6 +106,7 @@ public class PlanillaController {
 		return INDEX_VIEW;
 	}
 	
+	@PreAuthorize("hasAuthority('PLANILLA_SHOW')")
 	@GetMapping("/show")
 	public String show(Model model, @RequestParam(name = "planilla", required = true) int id_planilla,
 			@RequestParam(name = "asignacionIngresos", required = false) String asignacionIngresos,
