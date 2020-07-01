@@ -11,5 +11,5 @@ import com.metabit.planilla.entity.TipoMovimiento;
 @Repository("tipoMovimientoJpaRepository")
 public interface TipoMovimientoJpaRepository extends JpaRepository<TipoMovimiento, Serializable>{
 	public abstract List<TipoMovimiento> findByEsFijo(boolean esFijo);
-	public abstract List<TipoMovimiento> getByEsDescuento(boolean esDescuento);
+	public abstract List<TipoMovimiento> findByEsDescuentoAndEsPatronalAndEsFijoAndTipoMovimientoHabilitado(boolean esDescuento, boolean esPatronal, boolean esFijo, boolean tipoMovimientoHabilitado);
 }

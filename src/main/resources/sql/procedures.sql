@@ -36,17 +36,30 @@ CREATE OR REPLACE PROCEDURE planilla_update_movimientos (
         AND es_fijo = 1
         AND es_descuento = 1;
 
+    --Se obtiene la periodicidad de planilla
+    CURSOR cur_periodicidad IS
+    SELECT 
+        periodicidad 
+    FROM 
+        PLANILLAS 
+        NATURAL JOIN PERIODOS 
+        NATURAL JOIN ANIOS_LABORALES 
+    WHERE id_planilla=p_id_planilla_in;
+
     --Declararción de variables
     v_total_ingresos     planillas.total_ingresos%TYPE;
     v_total_descuentos   planillas.total_descuentos%TYPE;
+    v_periodicidad       anios_laborales.periodicidad%TYPE;
 BEGIN
     --Abriendo cursores
     OPEN cur_ingreso;
     OPEN cur_descuento;
+    OPEN cur_periodicidad;
 
     --Copiando el valor de los cursores a las variables
     FETCH cur_ingreso INTO v_total_ingresos;
     FETCH cur_descuento INTO v_total_descuentos;
+    FETCH cur_periodicidad INTO v_periodicidad;
     
     --Se actualiza la planilla con el total de ingresos y descuentos
     UPDATE planillas
@@ -56,9 +69,12 @@ BEGIN
     WHERE
         id_planilla = p_id_planilla_in;
 
+    RECALCULAR_IMPUESTOS(p_id_planilla_in, v_periodicidad);
+
     --Se cierran los cursores
     CLOSE cur_ingreso;
     CLOSE cur_descuento;
+    CLOSE cur_periodicidad;
     
 END;
 ;;
@@ -381,6 +397,6 @@ BEGIN
         WHERE id_planilla = p_id_planilla;
         
     END IF;
-    COMMIT;
+    --COMMIT;
 END;
 ;;

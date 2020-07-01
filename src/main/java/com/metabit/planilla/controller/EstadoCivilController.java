@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +31,7 @@ public class EstadoCivilController {
 	@Qualifier("empleadoServiceImpl")
 	private EmpleadoService empleadoService;
 	
+	@PreAuthorize("hasAuthority('ESTADOCIVIL_INDEX')")
 	@GetMapping("/index")
 	public String index(Model model, @RequestParam(name = "store_success", required = false) String store_success,
 			@RequestParam(name = "store_restricted", required = false) String store_restricted,
@@ -51,6 +53,7 @@ public class EstadoCivilController {
 		return INDEX_VIEW;
 	}
 	
+	@PreAuthorize("hasAuthority('ESTADOCIVIL_CREATE')")
 	@PostMapping("/store")
 	public String store(@ModelAttribute("estadoCivilEntity") EstadoCivil estadoCivil) {
 		
@@ -65,6 +68,7 @@ public class EstadoCivilController {
 		return "redirect:/estados-civiles/index?store_success";
 	}
 	
+	@PreAuthorize("hasAuthority('ESTADOCIVIL_EDIT')")
 	@PostMapping("/update")
 	public String update(@RequestParam(name = "idEstadoCivil", required = true) int idEstadoCivil,
 			@RequestParam(name = "estadoCivil", required = true) String estadoCivilStr) {
@@ -86,6 +90,7 @@ public class EstadoCivilController {
 		return "redirect:/estados-civiles/index?update_success";
 	}
 	
+	@PreAuthorize("hasAuthority('ESTADOCIVIL_DELETE')")
 	@PostMapping("/destroy")
 	public String destroy(@RequestParam(name = "idEstadoCivilDestroy", required = true) int idEstadoCivil) {
 		

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -42,6 +43,7 @@ public class RangoComisionController {
 	@Qualifier("rolServiceImpl")
 	private RolService rolService;
 	
+	@PreAuthorize("hasAuthority('RANGO_COMISION_INDEX')")
 	@GetMapping("/index")
 	public String index(Model model, @RequestParam(name="delete_success", required=false) String delete_success) {
 		
@@ -77,7 +79,8 @@ public class RangoComisionController {
 		//System.out.println("Recibiendo: " + rangoComisionService.getAllRangoComision().size());
 		return INDEX_VIEW;
 	}
-
+	
+	@PreAuthorize("hasAuthority('RANGO_COMISION_EDIT')")
 	@GetMapping("/edit/{id}")
 	public @ResponseBody
 	JsonResponse edit(@PathVariable(value = "id", required = true) int id) {
@@ -86,7 +89,8 @@ public class RangoComisionController {
 		jsonResponse.setResult(rangoComision);
 		return jsonResponse;
 	}
-
+	
+	@PreAuthorize("hasAuthority('RANGO_COMISION_CREATE')")
 	@PostMapping("/store")
 	public ResponseEntity<?> store(@RequestParam Map<String, String> allParams) {
 
@@ -139,6 +143,7 @@ public class RangoComisionController {
 		return new ResponseEntity<>(mensaje, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasAuthority('RANGO_COMISION_DELETE')")
 	@PostMapping("/destroy")
 	public String destroy(@RequestParam("idRangoComisionDestroy") int idRangoComision) {
 		

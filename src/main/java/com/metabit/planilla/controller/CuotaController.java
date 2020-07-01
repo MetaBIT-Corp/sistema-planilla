@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +30,7 @@ public class CuotaController {
 	@Qualifier("cuotaServiceImpl")
 	private CuotaService cuotaService;
 	
+	 @PreAuthorize("hasAuthority('CUOTA_INDEX')")
 	@GetMapping("/index")
 	public String index(Model model, @RequestParam(value = "idPlan", required = true) int idPlan) {
 		Plan plan = planService.getPlan(idPlan);
