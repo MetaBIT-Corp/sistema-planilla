@@ -32,7 +32,7 @@
 						<h3 class="card-title">Formulario Tipo de Movimiento</h3>
 					</div>
 
-					<form role="form" class="user" action="#" method="POST"
+					<form role="form" class="user" action="#" method="POST" id="formTipoMovimiento"
 						th:action="@{/tipo-movimiento/form-post}"
 						th:object="${tipoMovimientoEntity}">
 						<div class="card-body">
@@ -130,10 +130,30 @@
 									</div>
 								</div>
 							</div>
-
-							<div  class="callout callout-danger" th:if="${ #fields.hasErrors('movimiento') }">
+							<div  class="callout callout-danger" id="divMensajesError" style="display: none;"></div>
+							<div  class="callout callout-danger"
+								th:if="${ #fields.hasErrors('movimiento') 
+									   or #fields.hasErrors('porcentajeMovimiento')
+									   or #fields.hasErrors('montoBase')
+									   or #fields.hasErrors('montoMaximo')}">
+									   
 								<p th:if="${#fields.hasErrors('movimiento')}">
 									<i class="icon fas fa-ban mr-2" style="color:red;"></i><span th:errors="*{movimiento}"> </span>
+								</p>
+								<p th:if="${#fields.hasErrors('porcentajeMovimiento')}">
+									<i class="icon fas fa-ban mr-2" style="color:red;"></i>
+									<span> El porcentaje </span>
+									<span th:errors="*{porcentajeMovimiento}"></span>
+								</p>
+								<p th:if="${#fields.hasErrors('montoBase')}">
+									<i class="icon fas fa-ban mr-2" style="color:red;"></i>
+									<span> El monto base </span>
+									<span th:errors="*{montoBase}"> </span>
+								</p>
+								<p th:if="${#fields.hasErrors('montoMaximo')}">
+									<i class="icon fas fa-ban mr-2" style="color:red;"></i>
+									<span> El monto máximo </span>
+									<span th:errors="*{montoMaximo}"> </span>
 								</p>
 							</div>
 							

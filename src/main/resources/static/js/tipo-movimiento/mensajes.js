@@ -18,15 +18,15 @@ $(document).ready(function(){
 	  toastr.success("Tipo de movimiento editado con éxito"); 
   }
   if(delet === 'true'){
-	  toastr.error("Tipo de movimiento eliminado"); 
+	  toastr.success("Tipo de movimiento eliminado con éxito"); 
   }
   if(delet === 'false'){
 	  toastr.warning("No se ha podido eliminar el tipo de movimiento. Por favor intente de nuevo.");
   }
   if(enable === 'true'){
-	  toastr.info("Tipo de movimiento habilitado con éxito"); 
+	  toastr.success("Tipo de movimiento habilitado con éxito"); 
   }
   if(disable === 'true'){
-	  toastr.error("Tipo de movimiento deshabilitado"); 
+	  toastr.success("Tipo de movimiento deshabilitado con éxito"); 
   }
 })

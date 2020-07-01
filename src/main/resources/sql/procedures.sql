@@ -235,7 +235,8 @@ BEGIN
             Where pm.id_planilla = rec_planilla.id_planilla AND tm.es_patronal = 1;                        
             
             v_descuentos_empleado := rec_planilla.renta 
-                                    + (rec_planilla.total_descuentos);
+                                    + rec_planilla.total_descuentos
+                                    + v_plan_descuento;
             
             v_valor_neto_a_pagar := v_salario_devengado - v_descuentos_empleado; 
                                    

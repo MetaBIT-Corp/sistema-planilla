@@ -17,16 +17,16 @@ $(document).ready(function(){
 	  toastr.success("Puesto editado con éxito"); 
   }
   if(delet === 'true'){
-	  toastr.error("Puesto eliminado"); 
+	  toastr.success("Puesto eliminado con éxito"); 
   }
   if(delet === 'false'){
 	  toastr.warning("No se ha podido eliminar el puesto. Por favor intente de nuevo.");
   }
   if(enable === 'true'){
-	  toastr.info("Puesto habilitado con éxito"); 
+	  toastr.success("Puesto habilitado con éxito"); 
   }
   if(disable === 'true'){
-	  toastr.error("Puesto deshabilitado"); 
+	  toastr.success("Puesto deshabilitado con éxito"); 
   }
 })
 
