@@ -140,11 +140,17 @@ public class EmpleadoController {
     @GetMapping("/index")
     public ModelAndView index(Model model,
                               @RequestParam(name = "lock_success", required = false) String lock_success,
-                              @RequestParam(name = "unlock_success", required = false) String unlock_success) {
+                              @RequestParam(name = "unlock_success", required = false) String unlock_success,
+                              @RequestParam(name = "enable", required = false) String enable,
+                              @RequestParam(name = "create", required = false) String create,
+                              @RequestParam(name = "edit", required = false) String edit) {
         ModelAndView mav = new ModelAndView(INDEX_VIEW);
         mav.addObject("empleados", empleadoService.getAllEmployees());
         model.addAttribute("lock_success", lock_success);
         model.addAttribute("unlock_success", unlock_success);
+        model.addAttribute("enable", enable);
+        model.addAttribute("create", create);
+        model.addAttribute("edit", edit);
         return mav;
     }
 

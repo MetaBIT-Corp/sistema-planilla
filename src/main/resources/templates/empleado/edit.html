@@ -450,7 +450,7 @@
                 data:$("#form").serialize(),
                 dataType:"json",
                 success:function (data) {
-                    window.location.href=document.location.origin+"/empleado/index";
+                    window.location.href=document.location.origin+"/empleado/index?edit=true";
                 },
                 error:function (data) {
                     $("#error_alert_div").removeAttr("hidden");
