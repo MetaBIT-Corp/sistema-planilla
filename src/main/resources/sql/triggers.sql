@@ -235,7 +235,12 @@ END crear_planilla_ai_compound;
 ;;
 
 /*-----------Trigger para Crear Cuotas luego de crear un nuevo Plan -------------*/
-CREATE OR REPLACE TRIGGER crearcuotas AFTER
+/* Descripción: Crear las cuotas del plan que se ha ingresado. 
+ * Realizado por: Pablo Díaz
+ * Fecha de creación 31/05/2020
+ * Ultima modificación: 31/05/2020
+ * */
+CREATE OR REPLACE TRIGGER crear_cuotas AFTER
     INSERT ON planes
     FOR EACH ROW
 DECLARE
@@ -247,14 +252,21 @@ DECLARE
 BEGIN
     --Si es Mensual
     IF v_peridicidad_plan = 30 THEN
+    --Recorremos la lista para la cantidad de plazos que se ha seleccionado
         FOR i IN 1..v_plazo_plan LOOP
             v_numero_cuota := i;
             IF i = 1 THEN
+            	--Si estamos en la primera iteración, la v_fecha_prevista_pago
+            	--debe ser el último dia del mes
                 v_fecha_prevista_pago := last_day(sysdate);
             ELSE
+            	--En caso contrario, a la ultima v_fecha_prevista_pago, le sumamos un mes
+            	-- y obtenemos el último dia del siguiente mes, y asi sucesivamente hasta 
+            	--crear todas las cuotas 
                 v_fecha_prevista_pago := last_day(add_months(v_fecha_prevista_pago, 1));
             END IF;
-
+			
+            --Por último creamos la Cuota
             INSERT INTO cuotas (
                 id_cuota,
                 fecha_prevista_pago,
@@ -274,24 +286,37 @@ BEGIN
         END LOOP;
 
     ELSE
+    	--Si es quincenal
         FOR i IN 1..v_plazo_plan LOOP
             v_numero_cuota := i;
             IF i = 1 THEN
+            --Si estamos en la primera iteración
+            --primero debemos evaluar que para este mes, no hayamos pasado la primera quincena
                 IF ( sysdate - ( add_months(last_day(sysdate), -1) + 1 ) ) < 15 THEN
+                --Si no hemos pasado la primera del mes, entonces la primera cuota será en el 15
+                --del mes actual
                     v_fecha_prevista_pago := ( add_months(last_day(sysdate), -1) + 1 ) + 14;
 
                 ELSE
+                --Caso contrario, si ya paso la primera quincena, entonces la primera Cuota
+                --Será al final del mes y posteriormente seguira normal, con dos cuotas al mes
                     v_fecha_prevista_pago := last_day(sysdate);
                 END IF;
 
             ELSE
+            	--Si no es la primera iteración
+            	--Primero evaluamos que la v_fecha_prevista_pago no sea la ultima del mes
                 IF last_day(v_fecha_prevista_pago) = v_fecha_prevista_pago THEN
+                	--Si es la ultima del mes, entonces nos pasamos al siguiente mes y ponemos la fecha del 15
                     v_fecha_prevista_pago := v_fecha_prevista_pago + 15;
                 ELSE
+                	--Si no es la última del mes, entonces ahora si pasamos a la última del mes
+                	--con last_day se logra esto
                     v_fecha_prevista_pago := last_day(v_fecha_prevista_pago);
                 END IF;
             END IF;
-
+			
+            --Por último creamos la Cuota
             INSERT INTO cuotas (
                 id_cuota,
                 fecha_prevista_pago,
@@ -314,12 +339,19 @@ END;
 ;;
 
 /*--------- Trigger para Eliminar Cuotas antes de eliminar Plan, Eliminacion en Cascada ---------*/
-CREATE OR REPLACE TRIGGER eliminarcuotas BEFORE
+/* Descripción: Eliminar Cuotas antes de eliminar Plan, Eliminación en Cascada. 
+ * Realizado por: Pablo Díaz
+ * Fecha de creación 31/05/2020
+ * Ultima modificación: 31/05/2020
+ * */
+CREATE OR REPLACE TRIGGER eliminar_cuotas BEFORE
     DELETE ON planes
     FOR EACH ROW
 DECLARE
+	--Almacenamos en una variable el id del plan que se va a eliminar
     v_id_plan planes.id_plan%TYPE := :old.id_plan;
 BEGIN
+	--Eliminamos las Cuotas que estan asociadas al Plan que se va a eliminar 
     DELETE FROM cuotas
     WHERE
         id_plan = v_id_plan;
@@ -328,7 +360,12 @@ END;
 ;;
 
 /*--------- Trigger para Calcular el Monto de las Horas Extra ---------*/
-CREATE OR REPLACE TRIGGER calcularmontohorasextra BEFORE
+/* Descripción: Realiza el cálculo del monto de las horas extra. 
+ * Realizado por: Pablo Díaz
+ * Fecha de creación 05/06/2020
+ * Ultima modificación: 20/06/2020
+ * */
+CREATE OR REPLACE TRIGGER calcular_monto_horas_extra BEFORE
     UPDATE OF horas_extra_diurnas, horas_extra_nocturnas ON planillas
     FOR EACH ROW
 DECLARE
@@ -369,12 +406,18 @@ END calcularmontohorasextra;
 ;;
 
 /*--------- Trigger para Calcular el Monto Comisión ---------*/
-CREATE OR REPLACE TRIGGER calcularmontocomision BEFORE 
+/* Descripción: Realiza el cálculo del monto comisión, luego de ingresar el monto de ventas. 
+ * Realizado por: Pablo Díaz
+ * Fecha de creación 07/06/2020
+ * Ultima modificación: 07/06/2020
+ * */
+CREATE OR REPLACE TRIGGER calcular_monto_comision BEFORE 
 	UPDATE OF monto_ventas ON planillas
 	FOR EACH ROW
 
 DECLARE
-
+--Declaramos un Cursor de los rangos comisión que se tienen almacenamos en la BD
+--y que se encuentran habilitados
 CURSOR cur_rangos_comision IS
 	SELECT venta_min, venta_max, tasa_comision
 	FROM rangos_comision
@@ -385,15 +428,23 @@ v_monto_comision planillas.monto_comision%TYPE DEFAULT 0;
 
 BEGIN
 
+--Recorremos el cursor de Rangos Comisión
 FOR rec_rango_comision IN cur_rangos_comision
 LOOP
+	--Si el v_monto_ventas esta dentro del rango, o sea entre el valor mínimo y el valor máximo
+	--Entonces con base a este rango comisión se cálculo el monto comisión para este vendedor
 	IF v_monto_ventas BETWEEN rec_rango_comision.venta_min AND rec_rango_comision.venta_max THEN
-
+		--Obtenemos la tasa de comisión de este rango y lo múltiplicamos con el monto de ventas
+		--Con esto obtenemos el monto de comisión
 		v_monto_comision := v_monto_ventas * rec_rango_comision.tasa_comision; 
+		--Guardamos el monto de comisión
 		:new.monto_comision := v_monto_comision;
 
 	END IF;
 
+	--Para este bucle se saldra en el caso que v_monto_comision sea mayor a cero
+	--Ya que esto indicara que ya se realizo el cálculo correspondiente
+	--Caso contrario terminara el bucle hasta terminar de recorrer el cursor
 	EXIT WHEN v_monto_comision > 0;
 
 END LOOP;
@@ -529,6 +580,11 @@ END;
 ;;
 
 /*----------------------Trigger para Actualizar Monto por Dias Festivos Trabajados ------------------*/
+/* Descripción: Actualiza el monto por días festivos trabajados, en los casos que se agregan o eliminan días festivos para la planilla vigente. 
+ * Realizado por: Pablo Díaz
+ * Fecha de creación 19/06/2020
+ * Ultima modificación: 19/06/2020
+ * */
 CREATE OR REPLACE TRIGGER actualizar_monto_dias_festivos FOR
     INSERT OR DELETE ON planillas_dias_festivos
 COMPOUND TRIGGER
