@@ -134,7 +134,7 @@ public class UnidadOrganizacionalController {
         mav.addObject("presupuesto", presupuesto);
         mav.addObject("jefeUnidad", jefeUnidad);
         mav.addObject("unidad", new UnidadOrganizacional());
-        mav.addObject("tipos_unidad", tipoUnidadOrganizacionalService.getAll());
+        mav.addObject("tipos_unidad", tipoUnidadOrganizacionalService.getByTipoUnidadOrganizacionalHabilitado(true));
         return mav;
     }
 

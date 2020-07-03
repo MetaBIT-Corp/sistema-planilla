@@ -11,10 +11,10 @@ $(document).ready(function(){
 	  toastr.success("Día festivo editado con éxito"); 
   }
   if(delet === 'true'){
-	  toastr.error("Día festivo eliminado"); 
+	  toastr.success("Día festivo eliminado con éxito"); 
   }
   if(delet === 'false'){
-	  toastr.warning("No se ha podido eliminar el día festivo. Ha sido asignado.");
+	  toastr.warning("No se ha podido eliminar el día festivo. Ya ha sido asignado.");
   }
   if(store === 'false'){
 	  toastr.warning("No se ha podido guardar el registro. Por favor intente de nuevo."); 

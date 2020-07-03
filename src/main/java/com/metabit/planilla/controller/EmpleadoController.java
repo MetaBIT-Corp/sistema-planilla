@@ -140,22 +140,17 @@ public class EmpleadoController {
     @GetMapping("/index")
     public ModelAndView index(Model model,
                               @RequestParam(name = "lock_success", required = false) String lock_success,
-                              @RequestParam(name = "unlock_success", required = false) String unlock_success) {
+                              @RequestParam(name = "unlock_success", required = false) String unlock_success,
+                              @RequestParam(name = "enable", required = false) String enable,
+                              @RequestParam(name = "create", required = false) String create,
+                              @RequestParam(name = "edit", required = false) String edit) {
         ModelAndView mav = new ModelAndView(INDEX_VIEW);
-
-        //Verificando si el usuario logueado posee los permisos para acceder a las funcionalidades (para mostrar botones)
-        String recurso = "EMPLEADO";
-        Boolean create = verifyResourcePrivileges("CREATE",recurso);
-        Boolean edit = verifyResourcePrivileges("EDIT",recurso);
-        Boolean delete = verifyResourcePrivileges("DELETE",recurso);
-
         mav.addObject("empleados", empleadoService.getAllEmployees());
         model.addAttribute("lock_success", lock_success);
         model.addAttribute("unlock_success", unlock_success);
-
-        mav.addObject("create",create);
-        mav.addObject("edit",edit);
-        mav.addObject("delete",delete);
+        model.addAttribute("enable", enable);
+        model.addAttribute("create", create);
+        model.addAttribute("edit", edit);
         return mav;
     }
 
@@ -826,6 +821,7 @@ public class EmpleadoController {
     @GetMapping("/status")
     public String disable(@RequestParam("id") int id) {
         Empleado e = empleadoService.findEmployeeById(id);
+        String mensaje = "false";
 
         if (e.getEmpleadoHabilitado()) {
             e.setEmpleadoHabilitado(false);
@@ -838,9 +834,10 @@ public class EmpleadoController {
 
         } else {
             e.setEmpleadoHabilitado(true);
+            mensaje = "true";
         }
         empleadoService.updateEmployee(e);
-        return "redirect:/empleado/index";
+        return "redirect:/empleado/index?enable="+mensaje;
     }
 
     @PreAuthorize("hasAuthority('EMPLEADO_SHOW')")
@@ -946,25 +943,5 @@ public class EmpleadoController {
         
         return "redirect:/login";
         
-    }
-
-    private Usuario getUserLogueado() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails userDetail = (UserDetails) auth.getPrincipal();
-        Usuario usuario = userJpaRepository.findByUsername(userDetail.getUsername());
-        return usuario;
-    }
-
-    private Boolean verifyResourcePrivileges(String privilegio, String recurso){
-        Usuario usuario = getUserLogueado();
-        for (Rol rol : rolService.getUserRoles(usuario.getIdUsuario())) {
-            for (RolRecursoPrivilegio rrp : rol.getRolesRecursosPrivilegios()) {
-                //SE VERIFICA SI TIENE EL RECURSO Y EL PRIVILEGIO REQUERIDO
-                if (rrp.getRecurso().getRecurso().equals(recurso)&&rrp.getPrivilegio().getPrivilegio().equals(privilegio)) {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 }

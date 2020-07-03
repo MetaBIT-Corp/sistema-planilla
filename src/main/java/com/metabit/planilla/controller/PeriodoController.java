@@ -188,11 +188,17 @@ public class PeriodoController {
             }
         }
 
+        Double salarioBase = empleado.getSalarioBaseMensual();
+
+        if(periodo.getAnioLaboral().getPeriodicidad()==15){
+            salarioBase=salarioBase/2;
+        }
+
         float totalIngresos = (float) (
                  planilla.getMontoDiasFestivos()
                 +planilla.getMontoHorasExtra()
                 +planilla.getMontoComision()
-                +empleado.getSalarioBaseMensual()
+                +salarioBase
                 +totalMovimientosIngreso
                 +totalCuotasIngreso);
 
@@ -201,12 +207,6 @@ public class PeriodoController {
                 +totalMovimientosDescuentoFijo  //No patronales
                 +totalMovimientosDescuento
                 +totalCuotasEgreso);
-
-        System.out.println("ACAAAAAAAAAAA");
-        System.out.println(planilla.getRenta());
-        System.out.println(totalMovimientosDescuentoFijo);
-        System.out.println(totalMovimientosDescuento);
-        System.out.println(totalCuotasEgreso);
 
         float salarioNeto = totalIngresos-totalDescuentos;
 

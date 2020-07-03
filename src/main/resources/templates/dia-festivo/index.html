@@ -64,20 +64,31 @@
 		          <span aria-hidden="true">&times;</span>
 		        </button>
 		      </div>
-		      <div class="row ml-3 mt-4">
-		      	<div class="col-md-10">
-		      		<div class="btn btn-block btn-outline-secondary mr-1" id="divFecha" align="center"></div>
-		      	</div>
-		      	<div class="col-md-2">
-		      		<form method="post" action="#" th:action="@{/dia-festivo/destroy}">
-		      			<input type="hidden" id="idDiaFestivoEliminar" name="idDiaFestivoEliminar" value="">
-		      			<button type="submit" class="btn  btn-outline-danger" id="btnEliminarDia"><i class="far fa-trash-alt"></i></button>
-		      		</form>
-		      	</div>
-		      </div>
+		      
+	            <div class="info-box ml-4 mr-4 mt-4">
+	              <span class="info-box-icon bg-primary"><i class="far fa-calendar-plus"></i></span>
+	
+	              <div class="info-box-content">
+		              <div class="row">
+		      				<div class="col-md-10">
+		                		<span class="info-box-text">Fecha: </span>
+		                		<span class="info-box-number" id="divFecha"></span>
+		                	</div>
+		                	<div class="col-md-2">
+					      		<form method="post" action="#" th:action="@{/dia-festivo/destroy}">
+					      			<input type="hidden" id="idDiaFestivoEliminar" name="idDiaFestivoEliminar" value="">
+					      			<button type="submit" class="btn  btn-outline-danger" id="btnEliminarDia"><i class="far fa-trash-alt"></i></button>
+					      		</form>
+				      		</div>
+				      </div>
+	              </div>
+	              <!-- /.info-box-content -->
+	            </div>
+		        <!-- /.info-box -->
+		      	
 		      <form method="post" action="#" th:action="@{/dia-festivo/form-post}">
 			      <div class="modal-body">   	
-			        <div class="form-group mt-2 ml-2 mr-2 mb-2">
+			        <div class="form-group ml-2 mr-2">
 					    <input type="text" class="form-control " id="descripcionDiaFestivo" name="descripcionDiaFestivo"> 				
 					</div>
 					<input type="hidden" class="form-control" id="idDiaFestivo" name="idDiaFestivo" value="">
@@ -85,7 +96,7 @@
 					<input type="hidden" class="form-control" id="dia" name="dia" value="">
 			      </div>
 			      <div class="modal-footer">
-			        <button type="submit" id="submitDiaFestivo" class="btn btn-success">Guardar</button>
+			        <button type="submit" id="submitDiaFestivo" class="btn btn-primary">Guardar</button>
 			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
 			      </div>
 		      </form>

@@ -66,6 +66,28 @@
                         </div>
                     </div>
                     <hr>
+                    <!-- Cabecera 2 de Boleta de Pago -->
+                    <div class="w-100 row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-3">
+                            <span class="text-bold">Estado:</span>
+                            <span th:if="${planilla.getFechaEmision()!=null}">
+                                <span class="text-success text-bold">Boleta Pagada</span>
+                            </span>
+                            <span th:unless="${planilla.getFechaEmision()!=null}">
+                                <span class="text-danger text-bold">Pago Pendiente</span>
+                            </span>
+                        </div>
+                        <div class="col-md-4"></div>
+                        <div class="col-md-3">
+                            <span th:if="${planilla.getFechaEmision() != null}">
+                                <span class="text-bold">Fecha de Emisión:</span>
+                                <span th:text="${#dates.format(planilla.fechaEmision, 'dd/MM/yyyy')}"></span>
+                            </span>
+                        </div>
+                        <div class="col-md-1"></div>
+                    </div>
+                    <hr>
 
                     <!-- Datos Personales de Empleado -->
                     <div class="w-100 mt-3 row">
@@ -387,7 +409,7 @@
                                             </li>
                                             <li class="list-group-item border-0 my-1 py-0 px-2" th:each="movimientoDescuentoFijo: ${movimientosDescuentoFijo}">
                                                 <span th:text="${movimientoDescuentoFijo.getTipoMovimiento().getMovimiento()}"></span>:&nbsp;$
-                                                <span th:text="${movimientoDescuentoFijo.getMontoMovimiento()}"></span>
+                                                <span th:text="${#numbers.formatDecimal(movimientoDescuentoFijo.getMontoMovimiento(),1,2,'POINT')}"></span>
                                             </li>
                                             <li class="list-group-item border-0 my-1 py-0 px-2" th:if="${#lists.isEmpty(movimientosDescuentoFijo)}">
                                                 No se le han asignado descuentos fijos al empleado
