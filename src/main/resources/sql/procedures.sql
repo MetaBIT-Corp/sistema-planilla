@@ -108,7 +108,7 @@ BEGIN
     WHERE id_periodo = v_id_periodo;
 
     --Para cada empleado se crea su planilla se generan sus movimientos fijos
-    FOR v_empleado IN (SELECT id_empleado, salario_base_mensual FROM empleados) LOOP
+    FOR v_empleado IN (SELECT id_empleado, salario_base_mensual FROM empleados WHERE empleado_habilitado=1) LOOP
         INSERT INTO planillas (
             id_planilla,
             id_empleado,
