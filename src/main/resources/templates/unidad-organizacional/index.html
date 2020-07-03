@@ -25,11 +25,13 @@
 </ol>
 
 <div layout:fragment="content">
+    <div class="alert alert-danger text-center ml-4 mr-4" role="alert" th:if="${existAnio==false}">
+        No se pueden crear unidades organizacionales. Es necesario que exista un año laboral activo.
+      </div>
     <div class="row ml-3 mr-3">
-
         <div class="col-md-12 ">
             <div class="card">
-                <div class="card-header text-right">
+                <div class="card-header text-right" th:if="${existAnio==true}">
                     <a type="button" class="btn btn-sm btn-primary" id="crear_unidad_btn" th:if="${create == true}">
                         <i class="fas fa-plus-circle mr-1 text-white"></i>
                         <span class="text-white">Nueva Unidad Organizacional</span>
@@ -133,11 +135,11 @@
     <script th:src="@{/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
     <script th:src="@{/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
     <script th:src="@{/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
-    <script th:src="@{/js/unidad-org/unidad-org.js}"></script>
     <!-- Toastr -->
     <script th:src="@{/plugins/toastr/toastr.min.js}"></script>
     <!-- SweetAlert2 -->
     <script th:src="@{/plugins/sweetalert2/sweetalert2.min.js}"></script>
+    <script th:src="@{/js/unidad-org/unidad_org.js}"></script>
 </section>
 </body>
 </html>

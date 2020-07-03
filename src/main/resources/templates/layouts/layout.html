@@ -167,7 +167,7 @@
 						</a>
 					</li>
 					
-					<li class="nav-item" sec:authorize="hasAuthority('UNIDADORGANIZACIONAL_INDEX')">
+					<li class="nav-item" sec:authorize="hasAuthority('UNIDADORGANIZACIONAL_INDEX') or hasAuthority('PRESUPUESTO_EDIT')">
 						<a href="#" th:href="@{/unidades-organizacionales/index}" class="nav-link">
 							<div style="display: flex; align-items: center;">
 								<i class="fas fa-sitemap mr-2" ></i>

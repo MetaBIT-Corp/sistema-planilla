@@ -122,11 +122,9 @@ public class UnidadOrganizacionalController {
             unidadOrganizacionalList = unidadOrganizacionalService.getAllUnidadesOrganizacionales();
             mav.addObject("unidades", unidadOrganizacionalList);
         }
-
-        //Recuperacion de todos los empleados que no sean jefes en alguna otra unidad organizacional
-        /*List<Empleado> empleadoList= empleadoService.ge;
-
-        mav.addObject("empleados",empleadoList);*/
+        AnioLaboral anioLaboral = anioLaboralService.getAnioLaboral(LocalDate.now().getYear());
+        
+        mav.addObject("existAnio", anioLaboral==null?false:true);
         mav.addObject("create", create);
         mav.addObject("edit", edit);
         mav.addObject("delete", delete);
