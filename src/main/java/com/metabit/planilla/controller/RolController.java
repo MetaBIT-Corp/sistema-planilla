@@ -11,6 +11,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -35,6 +36,7 @@ public class RolController {
     private static final String INDEX_VIEW = "rol/index";
     private static final Log LOGGER = LogFactory.getLog(RolController.class);
 
+    @PreAuthorize("hasAuthority('PERMISO_INDEX')")
     @GetMapping("/index")
     public ModelAndView index(
             Model model,
@@ -60,6 +62,7 @@ public class RolController {
         return modelAndView;
     }
 
+    @PreAuthorize("hasAuthority('PERMISO_CREATE')")
     @PostMapping("/store")
     public @ResponseBody JsonResponse store(@ModelAttribute(name="rolEntity") Rol rol, BindingResult bindingResult){
 
@@ -93,6 +96,7 @@ public class RolController {
 
     }
 
+    @PreAuthorize("hasAuthority('PERMISO_DELETE')")
     @PostMapping("/destroy")
     public String destroy(@RequestParam("idRolDestroy") int idRol) {
 

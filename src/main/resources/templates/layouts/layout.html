@@ -257,7 +257,7 @@
             </li>
 	        <!-- PLANILLA -->
 			<!-- Permisos -->
-			<li class="nav-item has-treeview">
+			<li class="nav-item has-treeview" sec:authorize="hasAuthority('PERMISO_INDEX')">
 				<a href="#" class="nav-link">
 					<i class="fas fa-key mr-2"></i>
 					<p>Permisos<i class="right fas fa-angle-left"></i></p>
