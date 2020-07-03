@@ -409,7 +409,7 @@
                                             </li>
                                             <li class="list-group-item border-0 my-1 py-0 px-2" th:each="movimientoDescuentoFijo: ${movimientosDescuentoFijo}">
                                                 <span th:text="${movimientoDescuentoFijo.getTipoMovimiento().getMovimiento()}"></span>:&nbsp;$
-                                                <span th:text="${movimientoDescuentoFijo.getMontoMovimiento()}"></span>
+                                                <span th:text="${#numbers.formatDecimal(movimientoDescuentoFijo.getMontoMovimiento(),1,2,'POINT')}"></span>
                                             </li>
                                             <li class="list-group-item border-0 my-1 py-0 px-2" th:if="${#lists.isEmpty(movimientosDescuentoFijo)}">
                                                 No se le han asignado descuentos fijos al empleado
