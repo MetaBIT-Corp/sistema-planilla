@@ -16,7 +16,7 @@ $(document).ready(function(){
 
             $.ajax({
                 type: "POST",
-                url: "/departamentos/store",
+                url: "planilla/departamentos/store",
                 data: $("#create_form").serialize(),
                 success: function (data) {
                     $("#error").attr("hidden", "hidden");
@@ -36,7 +36,7 @@ $(document).ready(function(){
         $("#example1").on("click",'.edit-depto', function () {
             var idDepto = $(this).data("id");
             $("#idDepartamento_edit").val(idDepto);
-            $.get('/departamentos/edit/' + idDepto, function (data) {
+            $.get('planilla/departamentos/edit/' + idDepto, function (data) {
                 $("#departamento_edit").val(data.result.departamento + "");
             });
             $("#error_edit").attr("hidden", "hidden");
@@ -47,7 +47,7 @@ $(document).ready(function(){
 
             $.ajax({
                 type: "POST",
-                url: "/departamentos/update",
+                url: "planilla/departamentos/update",
                 data: $("#update_form").serialize(),
                 success: function (data) {
                     $("#error_edit").attr("hidden", "hidden");
@@ -71,7 +71,7 @@ $(document).ready(function(){
             $("#delete").on("click", function () {
                 $.ajax({
                     type: "POST",
-                    url: "/departamentos/delete",
+                    url: "planilla/departamentos/delete",
                     data: $("#delete_form").serialize(),
                     success: function (data) {
                         $("#delete_modal").modal("hide");

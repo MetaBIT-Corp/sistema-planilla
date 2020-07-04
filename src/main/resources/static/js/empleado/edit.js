@@ -3,14 +3,14 @@
         var idGenero = $("#genero_select").val();
         var idPuesto = $("#puestos_select").val();
 
-        $.get('/api/genero/' + idGenero, function (data) {
+        $.get('planilla/api/genero/' + idGenero, function (data) {
             if(data.genero=="Mujer"){
                 $("#divCasada").removeAttr("hidden");
             }else{
                 $("#divCasada").attr("hidden","hidden")
             }
         });
-        $.get('/api/required-user/' + idPuesto, function (data) {
+        $.get('planilla/api/required-user/' + idPuesto, function (data) {
             if (data == true) {
                 $("#usuario-tab").removeAttr("hidden");
             } else {
@@ -20,7 +20,7 @@
     });
     $("#departamento_select").on('change', function () {
         var idDepartamento = $(this).val();
-        $.get('/api/municipios/' + idDepartamento, function (data) {
+        $.get('planilla/api/municipios/' + idDepartamento, function (data) {
             var options = "";
             for (var i = 0; i < data.length; i++) {
                 var municipio = data[i];
@@ -35,7 +35,7 @@
 
     $("#genero_select").on('change', function () {
         var idGenero = $(this).val();
-        $.get('/api/genero/' + idGenero, function (data) {
+        $.get('planilla/api/genero/' + idGenero, function (data) {
             if(data.genero=="Mujer"){
                 $("#divCasada").removeAttr("hidden");
             }else{
@@ -52,11 +52,11 @@
         $("#save").text("Enviando");
         $.ajax({
             type: "POST",
-            url:"/empleado/update",
+            url:"planilla/empleado/update",
             data:$("#form").serialize(),
             dataType:"json",
             success:function (data) {
-                window.location.href=document.location.origin+"/empleado/index?edit=true";
+                window.location.href=document.location.origin+"planilla/empleado/index?edit=true";
             },
             error:function (data) {
                 $("#error_alert_div").removeAttr("hidden");
@@ -81,7 +81,7 @@
     /*Funcion para activar zona de usuario segun puesto*/
     $("#puestos_select").on('change', function () {
         var idPuesto = $(this).val();
-        $.get('/api/required-user/' + idPuesto, function (data) {
+        $.get('planilla/api/required-user/' + idPuesto, function (data) {
             if (data == true) {
                 $("#usuario-tab").removeAttr("hidden");
             } else {
