@@ -65,14 +65,14 @@ $(document).ready(function(){
                     $('#errorDiv').hide();
 
                     if($('#idRolInput').val()!=''){
-                        window.location.href = document.location.origin + "/planilla/rol/index?update_success=true";
+                        window.location.href = document.location.origin + "/rol/index?update_success=true";
                     }else{
-                        window.location.href = document.location.origin + "/planilla/rol/index?store_success=true";
+                        window.location.href = document.location.origin + "/rol/index?store_success=true";
                     }
 
                 }else{
                     if(response.status=="NOEDITABLE"){
-                        window.location.href = document.location.origin + "/planilla/rol/index?update_success=false";
+                        window.location.href = document.location.origin + "/rol/index?update_success=false";
                     }else{
                         formularioError(response);
                     }

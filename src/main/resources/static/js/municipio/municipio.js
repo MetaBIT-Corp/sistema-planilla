@@ -70,9 +70,9 @@ $(document).ready(function(){
                     $('#errorDiv').hide();
 
                     if($('#idMunicipioInput').val()!=''){
-                        window.location.href = document.location.origin + "/planilla/municipio/index/"+idDepartamento+"?update_success=true";
+                        window.location.href = document.location.origin + "/municipio/index/"+idDepartamento+"?update_success=true";
                     }else{
-                        window.location.href = document.location.origin + "/planilla/municipio/index/"+idDepartamento+"?store_success=true";
+                        window.location.href = document.location.origin + "/municipio/index/"+idDepartamento+"?store_success=true";
                     }
 
                 }else{
