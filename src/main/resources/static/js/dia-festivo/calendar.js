@@ -37,7 +37,7 @@ $(function () {
 		diasFestivosList.push(periodo);
 		diasFestivosList.push(pago);
 		
-		fetch(window.location.origin + 'planilla/api/dias-festivos')
+		fetch(window.location.origin + '/planilla/api/dias-festivos')
 		.then(response => response.json())
 		.then(data => {
 			for(var i=0; i < data.length; ++i){
