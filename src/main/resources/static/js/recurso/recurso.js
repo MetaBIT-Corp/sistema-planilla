@@ -65,14 +65,14 @@ $(document).ready(function(){
                     $('#errorDiv').hide();
 
                     if($('#idRecursoInput').val()!=''){
-                        window.location.href = document.location.origin + "/recurso/index?update_success=true";
+                        window.location.href = document.location.origin + "/planilla/recurso/index?update_success=true";
                     }else{
-                        window.location.href = document.location.origin + "/recurso/index?store_success=true";
+                        window.location.href = document.location.origin + "/planilla/recurso/index?store_success=true";
                     }
 
                 }else{
                     if(response.status=="NOEDITABLE"){
-                        window.location.href = document.location.origin + "/recurso/index?update_success=false";
+                        window.location.href = document.location.origin + "/planilla/recurso/index?update_success=false";
                     }else{
                         formularioError(response);
                     }

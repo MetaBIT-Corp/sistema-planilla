@@ -65,14 +65,14 @@ $(document).ready(function(){
                     $('#errorDiv').hide();
 
                     if($('#idPrivilegioInputInput').val()!=''){
-                        window.location.href = document.location.origin + "/privilegio/index?update_success=true";
+                        window.location.href = document.location.origin + "/planilla/privilegio/index?update_success=true";
                     }else{
-                        window.location.href = document.location.origin + "/privilegio/index?store_success=true";
+                        window.location.href = document.location.origin + "/planilla/privilegio/index?store_success=true";
                     }
 
                 }else{
                     if(response.status=="NOEDITABLE"){
-                        window.location.href = document.location.origin + "/privilegio/index?update_success=false";
+                        window.location.href = document.location.origin + "/planilla/privilegio/index?update_success=false";
                     }else{
                         formularioError(response);
                     }
