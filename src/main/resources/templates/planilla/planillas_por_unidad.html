@@ -135,7 +135,7 @@
 				var id_anio = $(this).val();
 				var html = '';
 
-				$.get('/api/anio-laboral/' + id_anio + '/periodos', function(data){
+				$.get('/planilla/api/anio-laboral/' + id_anio + '/periodos', function(data){
 					
 					for (var i = 0; i < data.length; i++) {
 						html += '<option value="' + data[i].idPeriodo + '">Del ' + data[i].fechaInicio + ' al ' + data[i].fechaFinal + '</option>';
@@ -156,7 +156,7 @@
 				var id_tipo = $(this).val();
 				var html = '';
 
-				$.get('/api/tipo-unidad/' + id_tipo + '/unidades', function(data){
+				$.get('/planilla/api/tipo-unidad/' + id_tipo + '/unidades', function(data){
 
 					for (var i = 0; i < data.length; i++) {
 						html += '<option value="' + data[i].idUnidadOrganizacional + '">' + data[i].unidadOrganizacional + '</option>';
@@ -171,7 +171,7 @@
 				var id_unidad = $('#unidad').val();
 				var id_periodo = $('#periodos').val();
 
-				$.get('/planilla/planillas-por-unidad-table-body/unidad/' + id_unidad + '/periodo/' + id_periodo, function(data){
+				$.get('/planilla/planilla/planillas-por-unidad-table-body/unidad/' + id_unidad + '/periodo/' + id_periodo, function(data){
 					$('#planillaBody').html(data)
 				});
 			});
@@ -181,7 +181,7 @@
 				var id_unidad = $('#unidad').val();
 				var id_periodo = $('#periodos').val();
 
-				$.get('/planilla/planillas-por-unidad-table-body/unidad/' + id_unidad + '/periodo/' + id_periodo, function(data){
+				$.get('/planilla/planilla/planillas-por-unidad-table-body/unidad/' + id_unidad + '/periodo/' + id_periodo, function(data){
 					$('#planillaBody').html(data)
 				});
 			});

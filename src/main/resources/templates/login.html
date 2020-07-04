@@ -142,7 +142,7 @@ $(document).ready(function(){
 
   $('#unlock-username').on('keyup', function(){
     var username = $('#unlock-username').val();
-    $.get('api/user/' + username, function(data){
+    $.get('/planilla/api/user/' + username, function(data){
       
       if(data != ""){
       $('#user-exists').hide();
