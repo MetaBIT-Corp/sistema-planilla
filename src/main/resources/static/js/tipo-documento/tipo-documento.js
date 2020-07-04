@@ -2,7 +2,7 @@ $(document).ready(function(){
 
     $('#tipoDocumentoModal').on('show.bs.modal', function(event){
 
-        $('#divError').hide();
+        $('#errorDiv').hide();
 
         var modal = $(this);
         var link = $(event.relatedTarget);
@@ -85,7 +85,7 @@ $(document).ready(function(){
 
     });
 
-    $('#tipoDocumentoBtnSubmit').click(function (e) {
+    $('#tipoDocumentoBtnSubmit').on('click',function (e) {
 
         e.preventDefault();
 
@@ -103,21 +103,19 @@ $(document).ready(function(){
                 if (response.status=="SUCCESS"){
 
                     $('#tipoDocumentoBtnSubmit').attr('disabled',true);
-                    $('#divError').hide();
+                    $('#errorDiv').hide();
 
                     if($('#idTipoDocumentoInput').val()!=''){
-                        window.location.href = document.location.origin + "/tipo-documento/index?update_success=true";
+                        window.location.href = document.location.origin + "/planilla/tipo-documento/index?update_success=true";
 
                     }else{
-                        window.location.href = document.location.origin + "/tipo-documento/index?store_success=true";
+                        window.location.href = document.location.origin + "/planilla/tipo-documento/index?store_success=true";
                     }
 
                 }else{
                     formularioError(response);
                 }
             },
-
-            error: conexionError()
 
         });
     });
