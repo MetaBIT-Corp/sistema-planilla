@@ -27,7 +27,7 @@ $(document).ready(function(){
 
         $('#titulo_modal').text(title);
         $('#mensaje_modal').text(message_modal);
-        $('#accion_modal').attr("href",document.location.origin+"planilla/empleado/status?id="+id);
+        $('#accion_modal').attr("href",document.location.origin+"/planilla/empleado/status?id="+id);
         $('#accion_modal').text(accion_modal).click();
         $('#status_modal').modal("show");
     });

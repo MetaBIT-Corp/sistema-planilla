@@ -12,14 +12,14 @@ $(document).ready(function(){
     $(document).ready(function () {
         var idGenero = $("#genero_select").val();
         var idPuesto = $("#puestos_select").val();
-        $.get('planilla/api/genero/' + idGenero, function (data) {
+        $.get('/planilla/api/genero/' + idGenero, function (data) {
             if (data.genero == "Mujer") {
                 $("#divCasada").removeAttr("hidden");
             } else {
                 $("#divCasada").attr("hidden", "hidden")
             }
         });
-        $.get('planilla/api/required-user/' + idPuesto, function (data) {
+        $.get('/planilla/api/required-user/' + idPuesto, function (data) {
             if (data == true) {
                 $("#usuario-tab").removeAttr("hidden");
             } else {
@@ -31,7 +31,7 @@ $(document).ready(function(){
     
     $("#departamento_select").on('change', function () {
         var idDepartamento = $(this).val();
-        $.get('planilla/api/municipios/' + idDepartamento, function (data) {
+        $.get('/planilla/api/municipios/' + idDepartamento, function (data) {
             var options = "";
             for (var i = 0; i < data.length; i++) {
                 var municipio = data[i];
@@ -46,7 +46,7 @@ $(document).ready(function(){
 
     $("#genero_select").on('change', function () {
         var idGenero = $(this).val();
-        $.get('planilla/api/genero/' + idGenero, function (data) {
+        $.get('/planilla/api/genero/' + idGenero, function (data) {
             if (data.genero == "Mujer") {
                 $("#divCasada").removeAttr("hidden");
             } else {
@@ -58,7 +58,7 @@ $(document).ready(function(){
     /*Funcion para activar zona de usuario segun puesto*/
     $("#puestos_select").on('change', function () {
         var idPuesto = $(this).val();
-        $.get('planilla/api/required-user/' + idPuesto, function (data) {
+        $.get('/planilla/api/required-user/' + idPuesto, function (data) {
             if (data == true) {
                 $("#usuario-tab").removeAttr("hidden");
             } else {
@@ -78,11 +78,11 @@ $(document).ready(function(){
 
         $.ajax({
             type: "POST",
-            url: "planilla/empleado/store",
+            url: "/planilla/empleado/store",
             data: $("#form1").serialize() + "&" + $("#form2").serialize() + "&" + $("#form3").serialize() + "&" + $("#form4").serialize()+ "&" + data_prof + "&" + data_docs,
             dataType: "json",
             success: function (data) {
-                window.location.href = document.location.origin + "planilla/empleado/index?create=true";
+                window.location.href = document.location.origin + "/planilla/empleado/index?create=true";
             },
             error: function (data) {
                 var error_div = $("#error_alert_div");

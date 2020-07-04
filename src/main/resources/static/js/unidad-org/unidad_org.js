@@ -18,7 +18,7 @@ $(document).ready(function(){
 
         $.ajax({
             type: "POST",
-            url: "planilla/unidades-organizacionales/store",
+            url: "/planilla/unidades-organizacionales/store",
             data: $("#create_form").serialize(),
             success: function (data) {
                 $("#error").attr("hidden", "hidden");
@@ -39,7 +39,7 @@ $(document).ready(function(){
     $("#example1").on("click",".edit-unidad", function () {
         var idUnidad = $(this).data("id");
         $("#idUnidadOrganizacional").val(idUnidad);
-        $.get('planilla/unidades-organizacionales/edit/' + idUnidad, function (data) {
+        $.get('/planilla/unidades-organizacionales/edit/' + idUnidad, function (data) {
             $("#edit_nombreUnidad").val(data.result.unidadOrganizacional + "");
             $("#edit_tipo_unidad option:selected").removeAttr("selected");
             $("#edit_tipo_unidad option[value=" + data.result.tipoUnidadOrganizacional.idTipoUnidadOrganizacional + "]").attr("selected", "selected");
@@ -51,7 +51,7 @@ $(document).ready(function(){
             }
 
             //Empleados para asignar jefe de unidad
-            $.get('planilla/api/empleados-unidad/' + idUnidad, function (data_emp) {
+            $.get('/planilla/api/empleados-unidad/' + idUnidad, function (data_emp) {
                 var options = "";
                 if(data_emp.length !=0){
                     for (var i = 0; i < data_emp.length; i++) {
@@ -84,7 +84,7 @@ $(document).ready(function(){
 
         $.ajax({
             type: "POST",
-            url: "planilla/unidades-organizacionales/update",
+            url: "/planilla/unidades-organizacionales/update",
             data: $("#update_form").serialize(),
             success: function (data) {
                 $("#error_edit").attr("hidden", "hidden");
@@ -108,7 +108,7 @@ $(document).ready(function(){
         $("#delete").on("click", function () {
             $.ajax({
                 type: "POST",
-                url: "planilla/unidades-organizacionales/delete",
+                url: "/planilla/unidades-organizacionales/delete",
                 data: $("#delete_form").serialize(),
                 success: function (data) {
                     $("#delete_modal").modal("hide");
