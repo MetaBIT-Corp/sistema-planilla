@@ -36,7 +36,7 @@ $(document).ready(function(){
             console.log(input.serialize());
             $.ajax({
                 type: "POST",
-                url: "/empleado/update-documentos",
+                url: "planilla/empleado/update-documentos",
                 data: input.serialize(),
                 dataType: "json",
                 success: function (data) {
@@ -74,7 +74,7 @@ $(document).ready(function(){
     $("#accion_modal").on("click", function () {
         $.ajax({
             type: "POST",
-            url: "/empleado/delete-documentos",
+            url: "planilla/empleado/delete-documentos",
             data: $("#id-doc-emp").serialize(),
             dataType: "json",
             success: function (data) {
@@ -94,7 +94,7 @@ $(document).ready(function(){
 
         $.ajax({
             type: "POST",
-            url: "/empleado/add-documentos",
+            url: "planilla/empleado/add-documentos",
             data: tabla_docs.$('input').serialize()+ "&" +$("#idEmpleado").serialize(),
             dataType: "json",
             success: function (data) {

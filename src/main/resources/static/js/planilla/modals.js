@@ -9,7 +9,7 @@ function activateModalPago(param){
 }
 
 function desplegarUnidades(){
-	fetch(window.location.origin + '/api/unidades-organizacionales')
+	fetch(window.location.origin + 'planilla/api/unidades-organizacionales')
 	.then(response => response.json())
 	.then(data => renderSelect(data))
 }

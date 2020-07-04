@@ -21,7 +21,7 @@ $(document).ready(function(){
         var tabla_prof = $("#example1").DataTable();
         $.ajax({
             type: "POST",
-            url: "/empleado/delete-profesiones",
+            url: "planilla/empleado/delete-profesiones",
             data: tabla_prof.$('input').serialize()+ "&" + $("#idEmpleado").serialize(),
             dataType: "json",
             success: function (data) {
@@ -56,7 +56,7 @@ $(document).ready(function(){
         var tabla_prof = $("#example2").DataTable();
         $.ajax({
             type: "POST",
-            url: "/empleado/add-profesiones",
+            url: "planilla/empleado/add-profesiones",
             data: tabla_prof.$('input').serialize()+ "&" + $("#idEmpleado").serialize(),
             dataType: "json",
             success: function (data) {

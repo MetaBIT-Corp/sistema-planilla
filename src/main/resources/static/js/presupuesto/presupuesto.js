@@ -4,7 +4,7 @@ $(document).ready(function () {
         $(this).attr("disabled","disabled");
         $.ajax({
             type: "POST",
-            url: "/presupuesto/store",
+            url: "planilla/presupuesto/store",
             data: $("#presupuesto_form").serialize(),
             dataType: "json",
             success: function (data) {
@@ -33,7 +33,7 @@ $(document).ready(function () {
     });
     $.ajax({
         type: "GET",
-        url: "/unidades-organizacionales/show-unidad/"+idUnidad,
+        url: "planilla/unidades-organizacionales/show-unidad/"+idUnidad,
         dataType: "json",
         success: function (data) {
             if (data.result.length == 0) {
@@ -116,7 +116,7 @@ $(document).ready(function () {
                 options.pageFitMode = primitives.common.PageFitMode.None;
                 options.hasSelectorCheckbox = primitives.common.Enabled.False;
                 options.onCursorChanged = function (e, d) {
-                    window.location.href = document.location.origin + "/presupuesto/edit/" + d.context.link;
+                    window.location.href = document.location.origin + "planilla/presupuesto/edit/" + d.context.link;
                 };
                 options.cursorItem = 0;
 
