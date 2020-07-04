@@ -108,7 +108,7 @@ $(document).ready(function(){
                     $('#rolRecursoAsignarSubmitBtn').attr('disabled',true);
                     $('#errorDiv').hide();
 
-                    window.location.href = document.location.origin + "/planilla/rol-recurso-privilegio/index/"+response.result.idRol+"?store_success=true";
+                    window.location.href = document.location.origin + "/rol-recurso-privilegio/index/"+response.result.idRol+"?store_success=true";
 
                 }else{
 

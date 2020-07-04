@@ -106,10 +106,10 @@ $(document).ready(function(){
                     $('#errorDiv').hide();
 
                     if($('#idTipoDocumentoInput').val()!=''){
-                        window.location.href = document.location.origin + "/planilla/tipo-documento/index?update_success=true";
+                        window.location.href = document.location.origin + "/tipo-documento/index?update_success=true";
 
                     }else{
-                        window.location.href = document.location.origin + "/planilla/tipo-documento/index?store_success=true";
+                        window.location.href = document.location.origin + "/tipo-documento/index?store_success=true";
                     }
 
                 }else{

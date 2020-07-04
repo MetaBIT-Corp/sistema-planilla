@@ -80,9 +80,9 @@ $(document).ready(function(){
                     $('#errorDiv').hide();
 
                     if($('#idProfesionInput').val()!=''){
-                        window.location.href = document.location.origin + "/planilla/profesion/index?update_success=true";
+                        window.location.href = document.location.origin + "/profesion/index?update_success=true";
                     }else{
-                        window.location.href = document.location.origin + "/planilla/profesion/index?store_success=true";
+                        window.location.href = document.location.origin + "/profesion/index?store_success=true";
                     }
 
                 }else{
