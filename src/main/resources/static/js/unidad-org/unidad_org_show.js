@@ -10,11 +10,11 @@ $(document).ready(function () {
             }else{
                 function ruta_imagen(tipo) {
                     switch (tipo) {
-                        case "Gerencias": return "/primitives/samples/images/photos/g.png";break;
-                        case "Departamentos": return "/primitives/samples/images/photos/d.png";break;
-                        case "Secciones": return "/primitives/samples/images/photos/s.png";break;
-                        case "Areas": return "/primitives/samples/images/photos/a.png";break;
-                        default: return "/primitives/samples/images/photos/o.png";
+                        case "Gerencias": return "/planilla/primitives/samples/images/photos/g.png";break;
+                        case "Departamentos": return "/planilla/primitives/samples/images/photos/d.png";break;
+                        case "Secciones": return "/planilla/primitives/samples/images/photos/s.png";break;
+                        case "Areas": return "/planilla/primitives/samples/images/photos/a.png";break;
+                        default: return "/planilla/primitives/samples/images/photos/o.png";
                     }
 
                 }

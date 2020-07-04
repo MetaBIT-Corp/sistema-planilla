@@ -4,7 +4,7 @@ $(document).ready(function () {
         $(this).attr("disabled","disabled");
         $.ajax({
             type: "POST",
-            url: "planilla/presupuesto/store",
+            url: "/planilla/presupuesto/store",
             data: $("#presupuesto_form").serialize(),
             dataType: "json",
             success: function (data) {
@@ -33,7 +33,7 @@ $(document).ready(function () {
     });
     $.ajax({
         type: "GET",
-        url: "planilla/unidades-organizacionales/show-unidad/"+idUnidad,
+        url: "/planilla/unidades-organizacionales/show-unidad/"+idUnidad,
         dataType: "json",
         success: function (data) {
             if (data.result.length == 0) {
@@ -41,11 +41,11 @@ $(document).ready(function () {
             }else{
                 function ruta_imagen(tipo) {
                     switch (tipo) {
-                        case "Gerencias": return "/primitives/samples/images/photos/g.png";break;
-                        case "Departamentos": return "/primitives/samples/images/photos/d.png";break;
-                        case "Secciones": return "/primitives/samples/images/photos/s.png";break;
-                        case "Areas": return "/primitives/samples/images/photos/a.png";break;
-                        default: return "/primitives/samples/images/photos/o.png";
+                        case "Gerencias": return "/planilla/primitives/samples/images/photos/g.png";break;
+                        case "Departamentos": return "/planilla/primitives/samples/images/photos/d.png";break;
+                        case "Secciones": return "/planilla/primitives/samples/images/photos/s.png";break;
+                        case "Areas": return "/planilla/primitives/samples/images/photos/a.png";break;
+                        default: return "/planilla/primitives/samples/images/photos/o.png";
                     }
 
                 }
@@ -116,7 +116,7 @@ $(document).ready(function () {
                 options.pageFitMode = primitives.common.PageFitMode.None;
                 options.hasSelectorCheckbox = primitives.common.Enabled.False;
                 options.onCursorChanged = function (e, d) {
-                    window.location.href = document.location.origin + "planilla/presupuesto/edit/" + d.context.link;
+                    window.location.href = document.location.origin + "/planilla/presupuesto/edit/" + d.context.link;
                 };
                 options.cursorItem = 0;
 
