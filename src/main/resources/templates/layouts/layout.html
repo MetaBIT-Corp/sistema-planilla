@@ -122,12 +122,13 @@
 	          
 	          <!-- ADMINISTRACION -->
 	          <li class="nav-item has-treeview" id="admonLista">
-	            <a href="#" class="nav-link" id="admonItem">
-	              <i class="nav-icon fas fa-circle"></i>
-	              <p>
-	                Administración
-	                <i class="right fas fa-angle-left"></i>
-	              </p>
+	            <a href="#" class="nav-link row" id="admonItem">
+					<i class="fas fa-users-cog col-sm-2"></i>
+					<p class="col-sm-10 text-bold">
+						Administración
+					</p>
+					<p><i class="right fas fa-angle-left"></i></p>
+
 	            </a>
 	            <ul class="nav nav-treeview">
 					<li class="nav-item" sec:authorize="hasAuthority('EMPRESA_INDEX')">
@@ -207,12 +208,13 @@
 	          
 	          <!-- PLANILLA -->
 			<li class="nav-item has-treeview" id="planillaLista">
-	            <a href="#" class="nav-link" id="planillaItem">
-	              <i class="nav-icon fas fa-circle"></i>
-	              <p>
-	                Planilla
-	                <i class="right fas fa-angle-left"></i>
-	              </p>
+	            <a href="#" class="nav-link row" id="planillaItem">
+					<i class="fas fa-file-invoice-dollar col-sm-2"></i>
+					<p class="col-sm-10 text-bold">
+						Planilla
+					</p>
+					<p><i class="right fas fa-angle-left"></i></p>
+
 	            </a>
 	            <ul class="nav nav-treeview">
 	            
@@ -256,11 +258,13 @@
 	            </ul>
             </li>
 	        <!-- PLANILLA -->
-			<!-- Permisos -->
-			<li class="nav-item has-treeview">
-				<a href="#" class="nav-link">
-					<i class="fas fa-key mr-2"></i>
-					<p>Permisos<i class="right fas fa-angle-left"></i></p>
+
+			<!-- PERMISOS -->
+			<li class="nav-item has-treeview" sec:authorize="hasAuthority('PERMISO_INDEX')">
+				<a href="#" class="nav-link row">
+					<i class="fas fa-key col-sm-2"></i>
+					<p class="col-sm-10 text-bold">Permisos</p>
+					<p><i class="right fas fa-angle-left"></i></p>
 				</a>
 				<ul class="nav nav-treeview">
 					<li class="nav-item">
@@ -284,7 +288,7 @@
 
 				</ul>
 			</li>
-			<!-- Fin Permisos -->
+			<!-- PERMISOS -->
 	          
 	        </ul>
 	      </nav>

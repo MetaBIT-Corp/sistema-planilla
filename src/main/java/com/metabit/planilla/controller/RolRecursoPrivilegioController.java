@@ -15,6 +15,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -48,6 +49,7 @@ public class RolRecursoPrivilegioController extends BaseController{
 
     private static final String INDEX_VIEW = "rol-recurso-privilegio/index";
 
+    @PreAuthorize("hasAuthority('PERMISO_INDEX')")
     @GetMapping("/index/{id}")
     public ModelAndView index(@PathVariable(value = "id", required = true) int idRol, Model model,
                               @RequestParam(name="store_success", required=false) String store_success,
@@ -71,6 +73,7 @@ public class RolRecursoPrivilegioController extends BaseController{
 
     }
 
+    @PreAuthorize("hasAuthority('PERMISO_CREATE')")
     @PostMapping("/asignar-recurso")
     public @ResponseBody JsonResponse asignarRecurso(@RequestParam("idRolAsignacion") String idRol, @RequestParam("idRecursoAsignacion") String idRecurso, @RequestParam("idsPrivilegiosAsignacion") String idsPrivilegios) throws JSONException {
 
@@ -113,6 +116,7 @@ public class RolRecursoPrivilegioController extends BaseController{
 
     }
 
+    @PreAuthorize("hasAuthority('PERMISO_INDEX')")
     @GetMapping("/recurso-privilegios/{idrol}/{idrecurso}")
     public @ResponseBody String recursoPrivilegios(@PathVariable(value = "idrol", required = true)int idRol, @PathVariable(value = "idrecurso", required = true)int idRecurso) throws JSONException {
 
@@ -143,6 +147,7 @@ public class RolRecursoPrivilegioController extends BaseController{
 
     }
 
+    @PreAuthorize("hasAuthority('PERMISO_INDEX')")
     @GetMapping("/rol-recursos/{idrol}")
     public @ResponseBody String rolRecursos(@PathVariable(value = "idrol", required = true)int idRol) throws JSONException {
 
@@ -173,6 +178,7 @@ public class RolRecursoPrivilegioController extends BaseController{
 
     }
 
+    @PreAuthorize("hasAuthority('PERMISO_EDIT')")
     @PostMapping("/cambiar-privilegio")
     public @ResponseBody JsonResponse cambiarPrivilegio(@RequestParam("idRol") int idRol, @RequestParam("idRecurso") int idRecurso, @RequestParam("idPrivilegio") int idPrivilegio, @RequestParam("estado") int estado){
 
@@ -220,6 +226,7 @@ public class RolRecursoPrivilegioController extends BaseController{
 
     }
 
+    @PreAuthorize("hasAuthority('PERMISO_DELETE')")
     @PostMapping("/destroy")
     public String destroy(@RequestParam("idRolDestroy") int idRol, @RequestParam("idRecursoDestroy") int idRecurso) {
 

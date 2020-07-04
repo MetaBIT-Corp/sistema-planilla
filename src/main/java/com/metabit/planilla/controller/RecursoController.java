@@ -10,6 +10,7 @@ import org.apache.commons.logging.LogFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -32,6 +33,7 @@ public class RecursoController {
     private static final String INDEX_VIEW = "recurso/index";
     private static final Log LOGGER = LogFactory.getLog(RecursoController.class);
 
+    @PreAuthorize("hasAuthority('PERMISO_INDEX')")
     @GetMapping("/index")
     public ModelAndView index(
             Model model,
@@ -58,6 +60,7 @@ public class RecursoController {
     }
 
     // Almacenar/Editar Privilegios
+    @PreAuthorize("hasAuthority('PERMISO_CREATE')")
     @PostMapping("/store")
     public @ResponseBody JsonResponse store(@ModelAttribute(name="recursoEntity") Recurso recurso, BindingResult bindingResult){
 
@@ -96,6 +99,7 @@ public class RecursoController {
 
     }
 
+    @PreAuthorize("hasAuthority('PERMISO_DELETE')")
     @PostMapping("/destroy")
     public String destroy(@RequestParam("idRecursoDestroy") int idRecurso) {
 
