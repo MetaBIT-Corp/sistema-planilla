@@ -918,7 +918,7 @@ public class EmpleadoController {
             
             
         	String  url_base = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort(); 
-            String 	url_unlock = url_base + "/empleado/unlock-user";
+            String 	url_unlock = url_base + "/planilla/empleado/unlock-user";
         	
         	model.put("email_per", email_personal);
         	model.put("email_ins", email_institucional);

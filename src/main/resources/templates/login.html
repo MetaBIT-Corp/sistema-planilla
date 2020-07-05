@@ -97,7 +97,7 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="submit" class="btn btn-primary" id="btn-send" disabled>Enviar</button>
+                <button onClick="this.form.submit(); this.disabled=true;" type="submit" class="btn btn-primary" id="btn-send" disabled>Enviar</button>
               </div>
             </form>
         </div>
@@ -168,7 +168,10 @@ $(document).ready(function(){
   });
 
   $('#btn-send').on('click', function(){
-    $(this).text('Enviando...');
+    // add spinner to button
+    $(this).html(
+      `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Enviando...`
+    );
   })
 
   var email_success = $('#email_success').val();
