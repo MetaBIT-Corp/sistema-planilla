@@ -47,7 +47,7 @@ $(document).ready(function(){
         $.ajax({
 
             type : "GET",
-            url : "/rol-recurso-privilegio/rol-recursos/"+idRol,
+            url : "/planilla/rol-recurso-privilegio/rol-recursos/"+idRol,
 
             success : function(data) {
 
@@ -155,7 +155,7 @@ $(document).ready(function(){
         $.ajax({
 
             type: "GET",
-            url: "/rol-recurso-privilegio/recurso-privilegios/"+idRol+"/"+idRecurso,
+            url: "/planilla/rol-recurso-privilegio/recurso-privilegios/"+idRol+"/"+idRecurso,
 
             //Si petición es exitosa
             success: function (response) {
@@ -363,7 +363,7 @@ $(document).on('click', '#cambiarSubmitBtn', function(e) {
             $.ajax({
 
                 type: "GET",
-                url: "/rol-recurso-privilegio/recurso-privilegios/"+idRol+"/"+idRecurso,
+                url: "/planilla/rol-recurso-privilegio/recurso-privilegios/"+idRol+"/"+idRecurso,
 
                 //Si petición es exitosa
                 success: function (response) {
