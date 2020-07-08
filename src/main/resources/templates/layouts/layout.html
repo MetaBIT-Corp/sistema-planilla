@@ -74,9 +74,9 @@
 	        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
 	          <span class="dropdown-item dropdown-header">Cuenta</span>
 	          <div class="dropdown-divider"></div>
-	          <a href="#" class="dropdown-item">
+	          <!--<a href="#" class="dropdown-item">
 	           <i class="far fa-id-badge mr-2"></i> Ver perfil
-	          </a>
+	          </a>-->
 	          <div class="dropdown-divider"></div>
 	          	<form th:action="@{/logout}" method="POST">
 	           		<button class="dropdown-item" type="submit"><i class="fas fa-sign-out-alt mr-2"></i> Logout</button>
@@ -184,12 +184,6 @@
 						  	</div>
 						</a>
 					</li>
-					<li class="nav-item" sec:authorize="hasAuthority('RANGORENTA_INDEX')">
-						<a href="#" th:href="@{/rango-renta/index}" class="nav-link">
-						  <i class="fas fa-file-invoice-dollar mr-2"></i>
-						  <p>Rangos de Renta</p>
-						</a>
-					</li>
 					<li class="nav-item" sec:authorize="hasAuthority('ESTADOCIVIL_INDEX')">
 						<a href="#" th:href="@{/estados-civiles/index}" class="nav-link">
 						  <i class="fa fa-street-view mr-2"></i>
@@ -253,6 +247,12 @@
 						<a href="#" th:href="@{/dia-festivo/index}" class="nav-link" id="diaFestivoItem">
 							<i class="fas fa-award mr-3"></i>
 							<p>Días Festivos</p>
+						</a>
+					</li>
+					<li class="nav-item" sec:authorize="hasAuthority('RANGORENTA_INDEX')">
+						<a href="#" th:href="@{/rango-renta/index}" class="nav-link">
+						  <i class="fas fa-file-invoice-dollar mr-2"></i>
+						  <p>Rangos de Renta</p>
 						</a>
 					</li>
 	            </ul>

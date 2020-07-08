@@ -374,14 +374,14 @@ BEGIN
         FOR rec_impuestos IN cur_impuestos(p_id_planilla)
         LOOP
             IF v_salario_devengado > rec_impuestos.monto_maximo THEN
-                IF rec_impuestos.movimiento IN ('ISSS', 'AFP') THEN
+                IF rec_impuestos.id_movimiento IN (500,502) THEN
                     v_impuesto_isss_afp := v_impuesto_isss_afp + ((rec_impuestos.monto_maximo*rec_impuestos.porcentaje_movimiento)/100);
                 END IF;
                 UPDATE planilla_movimientos 
                 SET monto_movimiento = ((rec_impuestos.monto_maximo*rec_impuestos.porcentaje_movimiento)/100)
                 WHERE id_planilla_movimiento = rec_impuestos.id_planilla_movimiento;
             ELSE
-                IF rec_impuestos.movimiento IN ('ISSS', 'AFP') THEN
+                IF rec_impuestos.id_movimiento IN (500,502) THEN
                     v_impuesto_isss_afp := v_impuesto_isss_afp + ((v_salario_devengado*rec_impuestos.porcentaje_movimiento)/100);
                 END IF;
                 UPDATE planilla_movimientos 

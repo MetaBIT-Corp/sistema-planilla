@@ -69,13 +69,14 @@
 							</thead>
 							<tbody>
 
-								<tr th:each="rango_renta: ${rangos_renta}">
-									<td class="min" th:text="${#numbers.formatCurrency(rango_renta.salarioMin)}"></td>
+								<tr th:each="rango_renta: ${rangos_renta}" class="text-center">
+									<td class="min" th:text="'$' + ${#numbers.formatDecimal(rango_renta.salarioMin, 0, 'COMMA', 2, 'POINT')}"></td>
 									<td class="text-center" th:if="${rango_renta.salarioMax == 0}"> - </td>
-									<td class="max" th:unless="${rango_renta.salarioMax == 0}" th:text="${#numbers.formatCurrency(rango_renta.salarioMax)}"></td>
-									<td th:text="${rango_renta.porcentajeRenta}"></td>
-									<td th:text="${#numbers.formatCurrency(rango_renta.exceso)}"></td>
-									<td th:text="${#numbers.formatCurrency(rango_renta.cuotaFija)}"></td>
+									<td class="max" th:unless="${rango_renta.salarioMax == 0}" th:text="'$' + ${#numbers.formatDecimal(rango_renta.salarioMax, 0, 'COMMA', 2, 'POINT')}"></td>
+									<td th:text="${rango_renta.porcentajeRenta} + '%'"></td>
+
+									<td class="min" th:text="'$' + ${#numbers.formatDecimal(rango_renta.exceso, 0, 'COMMA', 2, 'POINT')}"></td><td class="min" th:text="'$' + ${#numbers.formatDecimal(rango_renta.cuotaFija, 0, 'COMMA', 2, 'POINT')}"></td>
+
 									<th:block th:switch="${rango_renta.periodicidadRenta}">
 										<td th:case="30">Mensualmente</td>
 										<td th:case="15">Quincenalmente</td>
