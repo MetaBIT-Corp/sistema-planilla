@@ -265,7 +265,7 @@ BEGIN
             WHERE id_planilla = rec_planilla.id_planilla;  
                              
             -- Si el presupuesto no es suficiente se sale del ciclo
-            EXIT WHEN (v_total_pago_planilla > v_presupuesto_unidad);
+            -- EXIT WHEN (v_total_pago_planilla > v_presupuesto_unidad);
         END LOOP;
 
          -- Despues de recorrer todas las planillas se valida si el presupuesto fue suficiente para pagar planilla
